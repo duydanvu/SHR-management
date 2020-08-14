@@ -157,83 +157,189 @@
 {{--        <!-- /.modal-dialog -->--}}
 {{--    </div>--}}
 
-{{--    --}}{{-- modal --}}
-{{--    <div class="modal fade" id="modal-create-member">--}}
-{{--        <div class="modal-dialog">--}}
-{{--            <div class="modal-content">--}}
-{{--                <div class="modal-header">--}}
-{{--                    <h4 class="modal-title">Create Member</h4>--}}
-{{--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-{{--                        <span aria-hidden="true">&times;</span>--}}
-{{--                    </button>--}}
-{{--                </div>--}}
-{{--                <form class="form-horizontal" action="{{ route('register_process') }}" method="post">--}}
-{{--                    <div class="modal-body">--}}
-{{--                        @csrf--}}
-{{--                        <div class="row">--}}
-{{--                            <div class="col-sm-12">--}}
-{{--                                <div class="card-body">--}}
-
-{{--                                    <div class="form-group">--}}
-{{--                                        <label for="name">Tên tài khoản</label>--}}
-{{--                                        <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>--}}
-{{--                                        @error('txtName')--}}
-{{--                                        <span class="invalid-feedback" role="alert">--}}
-{{--                                            <strong>{{ $message }}</strong>--}}
-{{--                                        </span>--}}
-{{--                                        @enderror--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        <label for="name">Mật Khẩu</label>--}}
-{{--                                        <input id="txtPassword" type="password" class="form-control @error('txtPassword') is-invalid @enderror" name="txtPassword" value=""  autocomplete="number" required>--}}
-{{--                                        @error('txtPassword')--}}
-{{--                                        <span class="invalid-feedback" role="alert">--}}
-{{--                                            <strong>{{ $message }}</strong>--}}
-{{--                                        </span>--}}
-{{--                                        @enderror--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        <label for="name">First Name</label>--}}
-{{--                                        <input id="fName" type="text" class="form-control @error('txtFName') is-invalid @enderror" name="txtFName" value=""  autocomplete="number" required>--}}
-{{--                                        @error('txtFName')--}}
-{{--                                        <span class="invalid-feedback" role="alert">--}}
-{{--                                            <strong>{{ $message }}</strong>--}}
-{{--                                        </span>--}}
-{{--                                        @enderror--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        <label for="name">Last Name</label>--}}
-{{--                                        <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value=""  autocomplete="number" required>--}}
-{{--                                        @error('txtLName')--}}
-{{--                                        <span class="invalid-feedback" role="alert">--}}
-{{--                                            <strong>{{ $message }}</strong>--}}
-{{--                                        </span>--}}
-{{--                                        @enderror--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        <label for="name">Email</label>--}}
-{{--                                        <input id="email" type="text" class="form-control @error('txtEmail') is-invalid @enderror" name="txtEmail" value=""  autocomplete="number" required>--}}
-{{--                                        @error('txtEmail')--}}
-{{--                                        <span class="invalid-feedback" role="alert">--}}
-{{--                                            <strong>{{ $message }}</strong>--}}
-{{--                                        </span>--}}
-{{--                                        @enderror--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <div class="modal-footer justify-content-between">--}}
-{{--                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>--}}
-{{--                        <button id="create_member" type="submit" class="btn btn-primary">Save changers</button>--}}
-{{--                    </div>--}}
-{{--                </form>--}}
-{{--            </div>--}}
-{{--            <!-- /.modal-content -->--}}
-{{--        </div>--}}
-{{--        <!-- /.modal-dialog -->--}}
-{{--    </div>--}}
-{{--    --}}{{-- modal --}}
+{{--     modal --}}
+    <div class="modal fade" id="modal-create-member">
+        <div class="modal-dialog col-lg-8" style="max-width: 1200px">
+            <div class="modal-content col-lg-12 ">
+                <div class="modal-header">
+                    <h4 class="modal-title">Create Member</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="card-body col-lg-2 float-left">
+                                <span id="uploaded_image"><img src="{{URL::to('/')}}/upload/shih_tzu_beds.jpg" style="max-width: 150px;max-height: 200px; width: 150px;height: 200px"></span>
+                                <div class="form-group">
+                                    <label for="name">Upload Ảnh</label>
+                                    <form action="#" id="upload_form" enctype="multipart/form-data" method="POST">
+                                        {{ csrf_field() }}
+                                        <input id="select_file" type="file" name="select_file" required="true">
+                                    </form>
+                                </div>
+                                <span id="uploaded_image"></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form class="form-horizontal" action="#" method="post">
+                    <div class="modal-body">
+                        @csrf
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12">
+                                <div class="card-body col-lg-6 float-left">
+                                    <div class="form-group">
+                                        <label for="name">Tên tài khoản</label>
+                                        <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
+                                        @error('txtName')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Mật Khẩu</label>
+                                        <input id="txtPassword" type="password" class="form-control @error('txtPassword') is-invalid @enderror" name="txtPassword" value=""  autocomplete="number" required>
+                                        @error('txtPassword')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">First Name</label>
+                                        <input id="fName" type="text" class="form-control @error('txtFName') is-invalid @enderror" name="txtFName" value=""  autocomplete="number" required>
+                                        @error('txtFName')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Last Name</label>
+                                        <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value=""  autocomplete="number" required>
+                                        @error('txtLName')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Email</label>
+                                        <input id="email" type="text" class="form-control @error('txtEmail') is-invalid @enderror" name="txtEmail" value=""  autocomplete="number" required>
+                                        @error('txtEmail')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Phone</label>
+                                        <input id="email" type="text" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
+                                        @error('txtPhone')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Ngày Sinh</label>
+                                        <input id="email" type="date" class="form-control @error('txtDob') is-invalid @enderror" name="txtDob" value=""  autocomplete="number" required>
+                                        @error('txtDob')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="card-body col-lg-6 float-left">
+                                    <div class="form-group">
+                                        <label for="name">Địa Chỉ</label>
+                                        <input id="email" type="text" class="form-control @error('txtDob') is-invalid @enderror" name="txtDob" value=""  autocomplete="number" required>
+                                        @error('txtDob')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Giới Tính</label>
+                                        <div class="form-check">
+                                            <input id="male" type="radio" class="form-check-input" name="txtGender" value="male"  autocomplete="number" required>
+                                            <label class="form-check-label " for="male">
+                                                Male
+                                            </label>
+                                            <input id="female" type="radio" class="form-check-input ml-4" name="txtGender" value="Female"  autocomplete="number" required>
+                                            <label class="form-check-label ml-5 " for="female">
+                                                Female
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mt-4">
+                                        <label class="pt-1"for="name">Cửa hàng</label>
+                                        <div class="col-sm-10 p-0">
+                                            <select id="type" name = "type" class="form-control select2"  value="{{ old('type') }}" autocomplete="type" style="width: 100%;">
+                                                {{--                                                @foreach ($roles as $role)--}}
+                                                {{--                                                    <option value="{{$role['id']}}">{{$role['role']}}</option>--}}
+                                                {{--                                                @endforeach--}}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Chức Vụ</label>
+                                        <div class="col-sm-10 p-0 ">
+                                            <select id="type" name = "type" class="form-control select2"  value="{{ old('type') }}" autocomplete="type" style="width: 100%;">
+                                                {{--                                                @foreach ($roles as $role)--}}
+                                                {{--                                                    <option value="{{$role['id']}}">{{$role['role']}}</option>--}}
+                                                {{--                                                @endforeach--}}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Hợp Đồng</label>
+                                        <div class="col-sm-10 p-0">
+                                            <select id="type" name = "type" class="form-control select2"  value="{{ old('type') }}" autocomplete="type" style="width: 100%;">
+                                                {{--                                                @foreach ($roles as $role)--}}
+                                                {{--                                                    <option value="{{$role['id']}}">{{$role['role']}}</option>--}}
+                                                {{--                                                @endforeach--}}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Ngày bắt đầu</label>
+                                        <input id="email" type="date" class="form-control @error('txtDob') is-invalid @enderror" name="txtDob" value=""  autocomplete="number" required>
+                                        @error('txtDob')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Ngày kết thúc</label>
+                                        <input id="email" type="date" class="form-control @error('txtDob') is-invalid @enderror" name="txtDob" value=""  autocomplete="number" required>
+                                        @error('txtDob')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="create_member" type="submit" class="btn btn-primary">Save changers</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+{{--     modal --}}
 @stop
 
 @section('css')
@@ -268,6 +374,32 @@
             $("#example1").parent().css({"overflow": "auto"});
         });
 
+    </script>
+
+    <script>
+        $(document).ready(function(){
+
+            $('#upload_form').on('submit', function(event){
+                event.preventDefault();
+                $.ajax({
+                    url:"{{ route('upload_file_image') }}",
+                    method:"POST",
+                    data:new FormData(this),
+                    dataType:'JSON',
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success:function(data)
+                    {
+                        $('#message').css('display', 'block');
+                        $('#message').html(data.message);
+                        $('#message').addClass(data.class_name);
+                        $('#uploaded_image').html(data.uploaded_image);
+                    }
+                })
+            });
+
+        });
     </script>
 @stop
 

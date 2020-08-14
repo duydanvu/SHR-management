@@ -34,4 +34,7 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     //timesheets
     Route::get('/timekeeping/timekeeping_for_staff','RequestController@logsTimesheets')->name('show_log_time_sheets');
     Route::get('/timekeeping/request_timekeeping','RequestController@checkRequest')->name('show_request_staff');
+
+    //route upload file
+    Route::post('file/upload_file','FileImageController@doUpdload')->name('upload_file_image');
 });

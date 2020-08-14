@@ -23,7 +23,7 @@
         <div class="card-header">
             <div class="button-group-card-header">
 {{--                @if($role_use_number == 1)--}}
-                    <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Create Account </button>
+                    <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-store"><i class="fas fa-plus-circle"></i> Create Account </button>
 {{--                @endif--}}
                 <button id = "" type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-file-download"></i> Export </button>
             </div>
@@ -112,81 +112,73 @@
 {{--    </div>--}}
 
 {{--    --}}{{-- modal --}}
-{{--    <div class="modal fade" id="modal-create-member">--}}
-{{--        <div class="modal-dialog">--}}
-{{--            <div class="modal-content">--}}
-{{--                <div class="modal-header">--}}
-{{--                    <h4 class="modal-title">Create Member</h4>--}}
-{{--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-{{--                        <span aria-hidden="true">&times;</span>--}}
-{{--                    </button>--}}
-{{--                </div>--}}
-{{--                <form class="form-horizontal" action="{{ route('register_process') }}" method="post">--}}
-{{--                    <div class="modal-body">--}}
-{{--                        @csrf--}}
-{{--                        <div class="row">--}}
-{{--                            <div class="col-sm-12">--}}
-{{--                                <div class="card-body">--}}
+    <div class="modal fade" id="modal-create-store">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Create Store</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form class="form-horizontal" action="#" method="post">
+                    <div class="modal-body">
+                        @csrf
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card-body">
 
-{{--                                    <div class="form-group">--}}
-{{--                                        <label for="name">Tên tài khoản</label>--}}
-{{--                                        <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>--}}
-{{--                                        @error('txtName')--}}
-{{--                                        <span class="invalid-feedback" role="alert">--}}
-{{--                                            <strong>{{ $message }}</strong>--}}
-{{--                                        </span>--}}
-{{--                                        @enderror--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        <label for="name">Mật Khẩu</label>--}}
-{{--                                        <input id="txtPassword" type="password" class="form-control @error('txtPassword') is-invalid @enderror" name="txtPassword" value=""  autocomplete="number" required>--}}
-{{--                                        @error('txtPassword')--}}
-{{--                                        <span class="invalid-feedback" role="alert">--}}
-{{--                                            <strong>{{ $message }}</strong>--}}
-{{--                                        </span>--}}
-{{--                                        @enderror--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        <label for="name">First Name</label>--}}
-{{--                                        <input id="fName" type="text" class="form-control @error('txtFName') is-invalid @enderror" name="txtFName" value=""  autocomplete="number" required>--}}
-{{--                                        @error('txtFName')--}}
-{{--                                        <span class="invalid-feedback" role="alert">--}}
-{{--                                            <strong>{{ $message }}</strong>--}}
-{{--                                        </span>--}}
-{{--                                        @enderror--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        <label for="name">Last Name</label>--}}
-{{--                                        <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value=""  autocomplete="number" required>--}}
-{{--                                        @error('txtLName')--}}
-{{--                                        <span class="invalid-feedback" role="alert">--}}
-{{--                                            <strong>{{ $message }}</strong>--}}
-{{--                                        </span>--}}
-{{--                                        @enderror--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        <label for="name">Email</label>--}}
-{{--                                        <input id="email" type="text" class="form-control @error('txtEmail') is-invalid @enderror" name="txtEmail" value=""  autocomplete="number" required>--}}
-{{--                                        @error('txtEmail')--}}
-{{--                                        <span class="invalid-feedback" role="alert">--}}
-{{--                                            <strong>{{ $message }}</strong>--}}
-{{--                                        </span>--}}
-{{--                                        @enderror--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <div class="modal-footer justify-content-between">--}}
-{{--                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>--}}
-{{--                        <button id="create_member" type="submit" class="btn btn-primary">Save changers</button>--}}
-{{--                    </div>--}}
-{{--                </form>--}}
-{{--            </div>--}}
-{{--            <!-- /.modal-content -->--}}
-{{--        </div>--}}
-{{--        <!-- /.modal-dialog -->--}}
-{{--    </div>--}}
+                                    <div class="form-group">
+                                        <label for="name">Tên Cửa Hàng</label>
+                                        <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
+                                        @error('txtName')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Địa Chỉ Cửa Hàng</label>
+                                        <input id="fName" type="text" class="form-control @error('txtAddress') is-invalid @enderror" name="txtAddress" value=""  autocomplete="number" required>
+                                        @error('txtAddress')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Phone</label>
+                                        <input id="lName" type="text" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
+                                        @error('txtPhone')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Khu vực</label>
+                                        <div class="col-sm-10">
+                                            <select id="type" name = "type" class="form-control select2"  value="{{ old('type') }}" autocomplete="type" style="width: 100%;">
+{{--                                                @foreach ($roles as $role)--}}
+{{--                                                    <option value="{{$role['id']}}">{{$role['role']}}</option>--}}
+{{--                                                @endforeach--}}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="create_member" type="submit" class="btn btn-primary">Save changers</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 {{--    --}}{{-- modal --}}
 @stop
 
