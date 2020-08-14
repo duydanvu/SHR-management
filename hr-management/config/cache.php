@@ -22,7 +22,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Cache Stores
+    | Cache StoresController
     |--------------------------------------------------------------------------
     |
     | Here you may define all of the cache "stores" for your application as

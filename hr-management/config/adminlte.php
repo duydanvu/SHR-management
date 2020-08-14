@@ -243,149 +243,70 @@ return [
 //
 //            ],
         ],
-//        [
-//           'text'    => 'Project',
-//           'icon'    => 'far fa-list-alt',
-//           'submenu' => [
-//               [
-//                   'text' => 'Project List',
-//                   'url'  => 'project/list',
-//               ],
-//               [
-//                   'text' => 'Create Project',
-//                   'url'  => 'project/create',
-//               ],
-//           ],
-//        ],
+//
         [
             'text'    => 'Admin User',
             'icon'    => 'fas fa-users',
             'submenu' => [
                 [
-                    'text' => 'Admintrator',
-                    'url'  => 'admin/list_use',
+                    'text' => 'Store',
+                    'url'  => 'admin/store',
                 ],
                 [
-                    'text' => 'Phân Quyền',
-                    'url'  => 'admin/list_role/view',
+                    'text' => 'User',
+                    'url'  => 'admin/user',
                 ],
-//                [
-//                    'text' => 'Cấu Hình',
-//                    'url'  => '#',
-//                ],
             ],
         ],
-//        [
-//            'text'    => 'SMS',
-//            'icon'    => 'fas fa-sms',
-//            'submenu' => [
-//                [
-//                    'text' => 'SMS 1',
-//                    'url'  => 'pool/listMember',
-//                ],
-//                [
-//                    'text' => 'SMS 2',
-//                    'url'  => 'pool/pool_action',
-//                ],
-//            ],
-//        ],
-//        [
-//            'text'    => 'HỆ THỐNG',
-//            'icon'    => 'fab fa-affiliatetheme',
-//            'submenu' => [
-//                [
-//                    'text' => 'Hệ Thống 1',
-//                    'url'  => 'request/listRequest',
-//                ],
-//                [
-//                    'text' => 'Hệ Thống 2',
-//                    'url'  => 'request/create_request',
-//                ],
-//            ],
-//        ],
+//
         [
             'text'    => 'THỐNG KÊ BÁO CÁO',
             'icon'    => 'fas fa-clipboard-list',
             'submenu' => [
-//                [
-//                    'text' => 'Sản Lượng Thời Gian Bất Kỳ',
-//                    'url'  => 'report/report_bk',
-//                ],
-//                [
-//                    'text' => 'Sản Lượng Ngày',
-//                    'url'  => 'report/report_day',
-//                ],
                 [
-                    'text' => 'Sản Lượng Theo Thời Gian',
-                    'url'  => 'report/report_week',
+                    'text' => 'Báo Cáo Theo Thời Gian',
+                    'url'  => 'report/report_with_time',
                 ],
-//                [
-//                    'text' => 'Sản Lượng Tháng',
-//                    'url'  => 'report/report_month',
-//                ],
-//                [
-//                    'text' => 'Sản Lượng Năm',
-//                    'url'  => 'report/report_year',
-//                ],
+                [
+                    'text' => 'Báo Cáo Theo Nhân Viên',
+                    'url'  => 'report/report_with_user',
+                ],
             ],
         ],
         [
-            'text'    => 'CHĂM SÓC KHÁCH HÀNG',
+            'text'    => 'QUẢN LÝ CHẤM CÔNG',
             'icon'    => 'fas fa-blender-phone',
             'submenu' => [
+
                 [
-                    'text' => 'Giao dịch đăng ký',
-                    'url'  => 'cussv/reg_tran',
+                    'text' => '	Chấm Công',
+                    'url'  => 'timekeeping/timekeeping_for_staff',
                 ],
                 [
-                    'text' => 'Giao dịch hủy',
-                    'url'  => 'cussv/unreg_tran',
+                    'text' => '	Request',
+                    'url'  => 'timekeeping/request_timekeeping',
                 ],
                 [
-                    'text' => 'Tra cứu MO/MT',
-                    'url'  => 'cussv/momt',
-                ],
-                [
-                    'text' => '	Tra cứu lịch sử trừ cước',
-                    'url'  => 'cussv/his_acc',
-                ],
-                [
-                    'text' => '	Đăng ký/Hủy DV',
-                    'url'  => 'cussv/sub_unsub_acc',
-                ],
-                [
-                    'text' => '	Thông tin thuê bao',
-                    'url'  => 'cussv/information_acc',
-                ],
-                [
-                    'text' => '	Đăng ký/Hủy theo danh sách',
-                    'url'  => 'cussv/upload_sub',
-                ],
-                [
-                    'text' => '	Lịch sử sử dụng',
-                    'url'  => 'cussv/his_acc_use',
-                ],
-                [
-                    'text' => '	Lịch sử tác động',
-                    'url'  => 'cussv/history_log',
-                ],
-                [
-                    'text' => '	Lịch sử gia hạn',
-                    'url'  => 'cussv/exten_acc',
+                    'text' => '	Request Timesheets',
+                    'url'  => 'timekeeping/request_timesheets_staff',
                 ],
 
             ],
         ],
-//        [
-//            'text'    => 'KPI',
-//            'icon'    => 'fas fa-clipboard-list',
-//            'submenu' => [
-//                [
-//                    'text' => 'KPI Đồng bộ thuê bao',
-//                    'url'  => 'kpi/infor',
-//                ],
-//            ],
-//        ],
+        [
+            'text'    => 'KPI',
+            'icon'    => 'fas fa-clipboard-list',
+            'submenu' => [
+                [
+                    'text' => 'KPI Cửa Hàng Trưởng',
+                    'url'  => 'kpi/kpi_cht',
+                ],
+                [
+                    'text' => 'KPI Nhân Viên',
+                    'url'  => 'kpi/kpi_nv',
+                ],
+            ],
+        ],
         // ['header' => 'labels'],
     ],
 
