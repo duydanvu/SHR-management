@@ -24,10 +24,37 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     // route area
     Route::get('/admin/area','AreaController@listArea')->name('show_list_area');
     Route::post('/admin/area/addnew','AreaController@addNewArea')->name('add_new_area');
-    Route::get('/admin/area/view_update','AreaController@viewUpdateArea')->name('admin_list_update_area');
+    Route::get('/admin/area/view_update/{id}','AreaController@viewUpdateArea')->name('admin_list_update_area');
+    Route::post('/admin/area/update','AreaController@updateInforArea')->name('update_information_area');
+    Route::get('/admin/area/delete/{id}','AreaController@deleteArea')->name('delete_information_area');
 
     //route store
     Route::get('/admin/store','StoresController@index')->name('show_list_store');
+    Route::post('/admin/store/addnew','StoresController@store')->name('add_new_store');
+    Route::get('/admin/store/view_update/{id}','StoresController@edit')->name('view_update_store');
+    Route::post('/admin/store/update','StoresController@update')->name('update_information_store');
+    Route::get('/admin/store/delete/{id}','StoresController@destroy')->name('delete_information_store');
+
+    //route contract
+    Route::get('/admin/contract','ContractController@index')->name('show_list_contract');
+    Route::post('/admin/contract/addnew','ContractController@store')->name('add_new_contract');
+    Route::get('/admin/contract/view_update/{id}','ContractController@edit')->name('view_update_contract');
+    Route::post('/admin/contract/update','ContractController@update')->name('update_information_contract');
+    Route::get('/admin/contract/delete/{id}','ContractController@destroy')->name('delete_information_contract');
+
+    //route departments
+    Route::get('/admin/department','DepartmentController@index')->name('show_list_department');
+    Route::post('/admin/department/addnew','DepartmentController@store')->name('add_new_department');
+    Route::get('/admin/department/view_update/{id}','DepartmentController@edit')->name('view_update_department');
+    Route::post('/admin/department/update','DepartmentController@update')->name('update_information_department');
+    Route::get('/admin/department/delete/{id}','DepartmentController@destroy')->name('delete_information_department');
+
+    //route Services
+    Route::get('/admin/service','ServicesController@index')->name('show_list_service');
+    Route::post('/admin/service/addnew','ServicesController@store')->name('add_new_service');
+    Route::get('/admin/service/view_update/{id}','ServicesController@edit')->name('view_update_service');
+    Route::post('/admin/service/update','ServicesController@update')->name('update_information_service');
+    Route::get('/admin/service/delete/{id}','ServicesController@destroy')->name('delete_information_service');
 
     //route user
     Route::get('/admin/user','UserController@index')->name('show_list_user');

@@ -50,7 +50,65 @@ class AreaController extends Controller
     }
 
     public function viewUpdateArea($id){
-        $data = DB::table('area')->find($id);
+        $data = Area::find($id);
         return view('area.view_area_update')->with('data',$data);
+    }
+
+    public function updateInforArea(Request $request){
+        $validator = \Validator::make($request->all(),[
+            'txtName' => 'required|max:50',
+            'txtDescription' => 'required|max:250',
+        ]);
+        $noti= array(
+            'message' => ' Cập nhật lỗi! Hãy kiểm tra lại thông tin tài khoản và nhập lại !',
+            'alert-type' => 'error'
+        );
+        if ($validator->fails()) {
+            return Redirect::back()
+                ->with($noti)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $data_area_update =DB::table('area')->where('id','=',$request->area_id)
+            ->update([
+                'area_name'=>$request->txtName,
+                'area_description'=>$request->txtDescription
+            ]);
+        if($data_area_update = 1){
+            $notification = array(
+                'message' => 'Cập nhật thông tin thành công!',
+                'alert-type' => 'success'
+            );
+        }else{
+            $notification = array(
+                'message' => 'Cập nhật thông tin không thành công!',
+                'alert-type' => 'success'
+            );
+        }
+        return Redirect::back()->with($notification);
+    }
+
+    public function deleteArea($id){
+        $update_store = DB::table('stores')->select('store_id')
+            ->where('area_id','=',$id)
+            ->get();
+        foreach ($update_store as $value){
+            $update_id_area = DB::table('stores')->where('store_id','=',$value->store_id)
+                ->update(['area_id'=>1]);
+        }
+        $data = DB::table('area')
+            ->delete($id);
+        if($data = 1){
+            $notification = array(
+                'message' => 'Xoá thông tin thành công!',
+                'alert-type' => 'success'
+            );
+        }else{
+            $notification = array(
+                'message' => 'Xóa thông tin không thành công!',
+                'alert-type' => 'success'
+            );
+        }
+        return Redirect::back()->with($notification);
     }
 }

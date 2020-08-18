@@ -262,19 +262,19 @@ return [
                 ],
                 [
                     'text' => 'Position',
-                    'url'  => 'admin/user',
+                    'url'  => 'admin/position',
                 ],
                 [
                     'text' => 'Department',
-                    'url'  => 'admin/user',
+                    'url'  => 'admin/department',
                 ],
                 [
                     'text' => 'Service',
-                    'url'  => 'admin/user',
+                    'url'  => 'admin/service',
                 ],
                 [
                     'text' => 'Contract',
-                    'url'  => 'admin/user',
+                    'url'  => 'admin/contract',
                 ],
             ],
         ],

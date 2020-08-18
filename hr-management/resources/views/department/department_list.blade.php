@@ -5,13 +5,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Stores</h1>
+                <h1>Department</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item "><a href="/home">Home</a></li>
                     <li class="breadcrumb-item "><a href="#">Admin User</a></li>
-                    <li class="breadcrumb-item active">Stores</li>
+                    <li class="breadcrumb-item active">Department</li>
                 </ol>
             </div>
         </div>
@@ -38,20 +38,20 @@
                 <thead>
                 <tr>
                     <th style="width:5%">#</th>
-                    <th style="width:10%">Tên Cửa Hàng</th>
-                    <th style="width:15%">Địa Chỉ Cửa Hàng</th>
-                    <th style="width:15%">Số Điện Thoại</th>
+                    <th style="width:10%">Tên Bộ Phận</th>
+                    <th style="width:15%">Thông tin Bộ Phận</th>
+                    <th style="width:15%">Số Nhân Viên</th>
                     <th style="width:5%" class="noSort">Action</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
-                @if(count($stores) > 0)
-                    @foreach($stores as $key => $value)
+                @if(count($department) > 0)
+                    @foreach($department as $key => $value)
                         <tr>
                             <td>{{$key+1}}</td>
-                            <td>{{$value->store_name}}</td>
-                            <td>{{$value->store_address}}</td>
-                            <td>{{$value->phone}}</td>
+                            <td>{{$value->name}}</td>
+                            <td>{{$value->description}}</td>
+                            <td>---</td>
                             <td class="text-center">
 {{--                                @if($role_use_number == 1)--}}
                                     <div class="btn-group">
@@ -60,11 +60,11 @@
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <div class="dropdown-menu" role="menu">
-                                            <a href="{{route('view_update_store',['id'=>$value->store_id])}}" data-remote="false"
+                                            <a href="{{route('view_update_department',['id'=>$value->id])}}" data-remote="false"
                                                data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
                                                 <i class="fas fa-edit"> Edit</i>
                                             </a>
-                                            <a href="{{route('delete_information_store',['id'=>$value->store_id])}}"  class="btn dropdown-item">
+                                            <a href="{{route('delete_information_department',['id'=>$value->id])}}"  class="btn dropdown-item">
                                                 <i class="fas fa-users"> Delete</i>
                                             </a>
                                         </div>
@@ -95,7 +95,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form action="{{route('update_information_store')}}" method="post">
+                <form action="{{route('update_information_department')}}" method="post">
                     <div class="modal-body">
                         @csrf
 
@@ -116,12 +116,12 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Create Store</h4>
+                    <h4 class="modal-title">Create Department</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-horizontal" action="{{route('add_new_store')}}" method="post">
+                <form class="form-horizontal" action="{{route('add_new_department')}}" method="post">
                     <div class="modal-body">
                         @csrf
                         <div class="row">
@@ -129,7 +129,7 @@
                                 <div class="card-body">
 
                                     <div class="form-group">
-                                        <label for="name">Tên Cửa Hàng</label>
+                                        <label for="name">Tên Bộ Phận</label>
                                         <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
                                         @error('txtName')
                                         <span class="invalid-feedback" role="alert">
@@ -138,32 +138,13 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label for="name">Địa Chỉ Cửa Hàng</label>
-                                        <input id="fName" type="text" class="form-control @error('txtAddress') is-invalid @enderror" name="txtAddress" value=""  autocomplete="number" required>
-                                        @error('txtAddress')
+                                        <label for="name">Thông tin Bộ Phận</label>
+                                        <input id="fName" type="text" class="form-control @error('txtDescription') is-invalid @enderror" name="txtDescription" value=""  autocomplete="number" required>
+                                        @error('txtDescription')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Phone</label>
-                                        <input id="lName" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
-                                        @error('txtPhone')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Khu vực</label>
-                                        <div class="col-sm-10">
-                                            <select id="area_id" name = "area_id" class="form-control select2"  value="{{ old('area') }}" autocomplete="type" style="width: 100%;">
-                                                @foreach ($area as $area)
-                                                    <option value="{{$area['id']}}">{{$area['area_name']}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

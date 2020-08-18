@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Area;
-use App\Store;
-use Doctrine\DBAL\Query\QueryException;
+use App\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
-class StoresController extends Controller
+class DepartmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-        $stores = Store::all();
-        $area = Area::all();
-        return view('store.stores_list')->with(['stores'=>$stores,'area'=>$area]);
+        $department = Department::all();
+        return view('department.department_list')->with(['department'=>$department]);
     }
 
     /**
@@ -43,9 +40,7 @@ class StoresController extends Controller
     {
         $validator = \Validator::make($request->all(),[
             'txtName' => 'required|max:50',
-            'txtAddress' => 'required|max:250',
-            'txtPhone' => 'required|max:12',
-            'area_id' => 'required|integer'
+            'txtDescription' => 'required|max:250'
         ]);
         $notification= array(
             'message' => ' Đăng ký cửa hàng lỗi! Hãy chọn phần tạo tài khoản và nhập lại thông tin!',
@@ -58,11 +53,9 @@ class StoresController extends Controller
                 ->withInput();
         }
         try{
-            $create_area = DB::table('stores')->insert([
-                'store_name'=> $request['txtName'],
-                'store_address' => $request['txtAddress'],
-                'area_id' => $request['area_id'],
-                'phone' => $request['txtPhone']
+            $create_area = DB::table('departments')->insert([
+                'name'=> $request['txtName'],
+                'description' => $request['txtDescription']
             ]);
         }catch (QueryException $ex){
             $notification = array(
@@ -97,9 +90,8 @@ class StoresController extends Controller
      */
     public function edit($id)
     {
-        $data = Store::find($id);
-        $area = Area::all();
-        return  view('store.stores_update')->with(['data'=>$data,'area'=>$area]);
+        $data = Department::find($id);
+        return  view('department.department_update')->with(['data'=>$data]);
     }
 
     /**
@@ -113,9 +105,7 @@ class StoresController extends Controller
     {
         $validator = \Validator::make($request->all(),[
             'txtName'=> 'required|max:50',
-            'txtAddress' => 'required|max:250',
-            'area_id' => 'required',
-            'txtPhone' => 'required|max:12',
+            'txtDescription' => 'required|max:250',
         ]);
         $noti= array(
             'message' => ' Cập nhật lỗi! Hãy kiểm tra lại thông tin tài khoản và nhập lại !',
@@ -127,17 +117,15 @@ class StoresController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-        $data_area_update =DB::table('stores')->where('store_id','=',$request->store_id)
+        $data_area_update =DB::table('departments')->where('id','=',$request->depart_id)
             ->update([
-                'store_name'=>$request->txtName,
-                'store_address'=>$request->txtAddress,
-                'area_id'=>$request->area_id,
-                'phone'=>$request->txtPhone
+                'name'=>$request->txtName,
+                'description'=>$request->txtDescription
 
             ]);
-        if($data_area_update = 1){
+        if($data_area_update = true){
             $notification = array(
-                'message' => 'Cập nhật thông tin thành công!',
+                'message' => 'Cập nhật  thông tin thành công!',
                 'alert-type' => 'success'
             );
         }else{
@@ -157,8 +145,8 @@ class StoresController extends Controller
      */
     public function destroy($id)
     {
-        $data = Store::find($id)
-                ->delete();
+        $data = Department::find($id)
+            ->delete();
         if($data = true){
             $notification = array(
                 'message' => 'Xoá thông tin thành công!',

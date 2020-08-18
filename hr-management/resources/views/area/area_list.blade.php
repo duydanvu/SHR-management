@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Stores</h1>
+                <h1>Quản lý khu vực</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -59,10 +59,10 @@
                                     </button>
                                     <div class="dropdown-menu" role="menu">
                                         <a href="{{route('admin_list_update_area',['id'=> $value->id])}}" data-remote="false"
-                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                           data-toggle="modal" data-target="#modal-area-action-update" class="btn dropdown-item">
                                             <i class="fas fa-edit"> Edit</i>
                                         </a>
-                                        <a href="#"  class="btn dropdown-item">
+                                        <a href="{{route('delete_information_area',['id'=> $value->id])}}"  class="btn dropdown-item">
                                             <i class="fas fa-users"> Delete</i>
                                         </a>
                                     </div>
@@ -85,7 +85,7 @@
     </div>
 
 {{--         modal--}}
-        <div class="modal fade" id="modal-admin-action-update">
+        <div class="modal fade" id="modal-area-action-update">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -93,7 +93,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
-                    <form action="#" method="post">
+                    <form action="{{route('update_information_area')}}" method="post">
                         <div class="modal-body">
                             @csrf
 
@@ -171,7 +171,7 @@
 
     <script>
 
-        $("#modal-admin-action-update").on("show.bs.modal", function(e) {
+        $("#modal-area-action-update").on("show.bs.modal", function(e) {
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });
