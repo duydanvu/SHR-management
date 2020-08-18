@@ -8,7 +8,7 @@ class Store extends Model
 {
     protected $table = "stores";
     protected $primaryKey = "store_id";
-    protected $fillable = ['store_name','store_address','phone'];
+    protected $fillable = ['store_name','area_id','store_address','phone'];
 
     public function users(){
         return $this->hasMany('App\User');

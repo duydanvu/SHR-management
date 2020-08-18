@@ -249,11 +249,31 @@ return [
             'icon'    => 'fas fa-users',
             'submenu' => [
                 [
+                    'text' => 'User',
+                    'url'  => 'admin/user',
+                ],
+                [
+                    'text' => 'Area',
+                    'url'  => 'admin/area',
+                ],
+                [
                     'text' => 'Store',
                     'url'  => 'admin/store',
                 ],
                 [
-                    'text' => 'User',
+                    'text' => 'Position',
+                    'url'  => 'admin/user',
+                ],
+                [
+                    'text' => 'Department',
+                    'url'  => 'admin/user',
+                ],
+                [
+                    'text' => 'Service',
+                    'url'  => 'admin/user',
+                ],
+                [
+                    'text' => 'Contract',
                     'url'  => 'admin/user',
                 ],
             ],

@@ -21,6 +21,11 @@ Route::post('/logout','Auth\CustomAuthController@logout')->name('logout');
 Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/home', 'HomeController@index')->name('dashboard');
 
+    // route area
+    Route::get('/admin/area','AreaController@listArea')->name('show_list_area');
+    Route::post('/admin/area/addnew','AreaController@addNewArea')->name('add_new_area');
+    Route::get('/admin/area/view_update','AreaController@viewUpdateArea')->name('admin_list_update_area');
+
     //route store
     Route::get('/admin/store','StoresController@index')->name('show_list_store');
 
@@ -36,5 +41,5 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/timekeeping/request_timekeeping','RequestController@checkRequest')->name('show_request_staff');
 
     //route upload file
-    Route::post('file/upload_file','FileImageController@doUpdload')->name('upload_file_image');
+    Route::post('/file/upload_file','FileImageController@doUpdload')->name('upload_file_image');
 });

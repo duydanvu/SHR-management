@@ -30,17 +30,30 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <label for="exampleInputEmail1" style="font-size: 20px; margin-left: 1%">List of Stores</label>
-                <div class="col-md-8"  style="float: left">
-                    <div class="form-group col-4" style="float: left;font-size: 20px">
-                        <select class="mdb-select md-form colorful-select dropdown-primary col-12">
-                            <option value="1">Stores 1</option>
-                            <option value="2">Stores 2</option>
-                            <option value="3">Stores 3</option>
-                        </select>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Search by Area</label>
+                            <select class="browser-default custom-select">
+                                <option selected>Open this select menu</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
                     </div>
-                    <div style="float: left">
-                        <button type="submit" id="fillter_date" class="btn btn-primary" style="float: left"><i class="fas fa-search-minus">Search</i></button>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Search by Store</label>
+                            <select class="browser-default custom-select">
+                                <option selected>Open this select menu</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="pt-4" style="float: left">
+                        <button type="submit" id="fillter_date" class="btn btn-primary mt-2" style="float: left"><i class="fas fa-search-minus">Search</i></button>
                     </div>
                 </div>
             </div>
@@ -170,16 +183,17 @@
                 <form>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="card-body col-lg-2 float-left">
-                                <span id="uploaded_image"><img src="{{URL::to('/')}}/upload/shih_tzu_beds.jpg" style="max-width: 150px;max-height: 200px; width: 150px;height: 200px"></span>
-                                <div class="form-group">
+                            <div class="card-body col-lg-6 float-left">
+                                <span id="uploaded_image"><img id="img_prv" src="{{URL::to('/')}}/upload/man.png" style="max-width: 150px;max-height: 200px; width: 150px;height: 200px"></span>
+                                <div class="form-group col-8 float-right">
                                     <label for="name">Upload Ảnh</label>
-                                    <form action="#" id="upload_form" enctype="multipart/form-data" method="POST">
-                                        {{ csrf_field() }}
-                                        <input id="select_file" type="file" name="select_file" required="true">
-                                    </form>
+{{--                                    <form id="upload_form" enctype="multipart/form-data" method="post">--}}
+                                        <meta name="csrf-token1" content="{{ csrf_token() }}">
+                                        <input id="select_file" type="file" name="select_file" required="true" class="pb-3">
+{{--                                        <input type="submit" name="upload" id="upload" class="btn btn-primary" value="Upload Image">--}}
+{{--                                    </form>--}}
+                                        <span id="mgs_ta"></span>
                                 </div>
-                                <span id="uploaded_image"></span>
                             </div>
                         </div>
                     </div>
@@ -379,24 +393,49 @@
     <script>
         $(document).ready(function(){
 
-            $('#upload_form').on('submit', function(event){
-                event.preventDefault();
-                $.ajax({
-                    url:"{{ route('upload_file_image') }}",
-                    method:"POST",
-                    data:new FormData(this),
-                    dataType:'JSON',
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    success:function(data)
-                    {
-                        $('#message').css('display', 'block');
-                        $('#message').html(data.message);
-                        $('#message').addClass(data.class_name);
-                        $('#uploaded_image').html(data.uploaded_image);
+            $('#select_file').on('change',function(event){
+                console.log("da vao day");
+                var reader = new FileReader();
+
+                var filedata = this.files[0];
+                var imgtype = filedata.type;
+
+                var match = ['image/jpeg','image/jpg','image/png']
+
+                if(!(imgtype == match[0])||(imgtype == match[1])||(imgtype == match[2])){
+                    $('#mgs_ta').html('<p style = "color:red">Chọn đúng kiểu cho ảnh ... chỉ có jpeg, jpg và png</p>');
+                }
+                else {
+                    $('#mgs_ta').empty();
+                    //preview image
+                    reader.onload = function (event) {
+                        $('#img_prv').attr('src', event.target.result).css('width', '150').css('height', '200');
                     }
-                })
+                    reader.readAsDataURL(this.files[0]);
+                    //end preview
+
+                    // upload file
+                    var postData = new FormData();
+                    postData.append('file',this.files[0]);
+
+                    var url = "{{url('file/upload_file')}}";
+
+                    $.ajax({
+                        headers:{'X-CSRF-Token':$('meta[name="csrf-token1"]').attr('content')},
+                        url:url,
+                        type:"post",
+                        async:true,
+                        contentType: false,
+                        data: postData,
+                        processData: false,
+                        success:function(dataresult)
+                        {
+                            console.log(dataresult);
+                        }
+                    })
+
+                }
+
             });
 
         });
