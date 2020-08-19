@@ -44,11 +44,10 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Search by Store</label>
-                            <select class="browser-default custom-select">
-                                <option selected>Open this select menu</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <select id="store_search" name = "store_search" class="form-control select2"  value="{{ old('store_search') }}" autocomplete="store_search" style="width: 100%;">
+                                @foreach ($store as $store1)
+                                    <option value="{{$store1['store_id']}}">{{$store1['store_name']}}-{{$store1['store_address']}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -88,13 +87,17 @@
                 <tr>
                     <th style="width:5%">#</th>
                     <th style="width:20%">Image</th>
-                    <th style="width:10%">Tên Đăng Nhập</th>
                     <th style="width:10%">Họ Tên</th>
                     <th style="width:10%">Email</th>
                     <th style="width:10%">Phone</th>
                     <th style="width:10%">DOB</th>
                     <th style="width:10%">Gender</th>
-                    <th style="width:10%">Address</th>
+                    <th style="width:10%">Chuyên Môn</th>
+                    <th style="width:10%">Cửa Hàng</th>
+                    <th style="width:10%">Chức Danh</th>
+                    <th style="width:10%">Bộ Phận</th>
+                    <th style="width:10%">Dịch Vụ</th>
+                    <th style="width:10%">Hợp Đồng</th>
                     <th style="width:5%" class="noSort">Action</th>
                 </tr>
                 </thead>
@@ -104,13 +107,17 @@
                         <tr>
                             <td>{{$key+1}}</td>
                             <td></td>
-                            <td>{{$value->login}}</td>
                             <td>{{$value->first_name}} {{$value->last_name}}</td>
                             <td>{{$value->email}}</td>
                             <td>{{$value->phone}}</td>
                             <td>{{$value->dob}}</td>
                             <td>{{$value->gender}}</td>
-                            <td>{{$value->address}}</td>
+                            <td>{{$value->line}}</td>
+                            <td>{{$value->store_name}}</td>
+                            <td>{{$value->position_name}}</td>
+                            <td>{{$value->dp_name}}</td>
+                            <td>{{$value->sv_name}}</td>
+                            <td>{{$value->ct_name}}</td>
                             <td class="text-center">
 {{--                                @if($role_use_number == 1)--}}
                                     <div class="btn-group">
@@ -125,6 +132,9 @@
                                             </a>
                                             <a href="#"  class="btn dropdown-item">
                                                 <i class="fas fa-users"> Delete</i>
+                                            </a>
+                                            <a href="#"  class="btn dropdown-item">
+                                                <i class="fas fa-users"> View detail</i>
                                             </a>
                                         </div>
 
@@ -198,7 +208,7 @@
                         </div>
                     </div>
                 </form>
-                <form class="form-horizontal" action="#" method="post">
+                <form class="form-horizontal" action="{{route('add_new_user')}}" method="post">
                     <div class="modal-body">
                         @csrf
                         <div class="row">
@@ -251,7 +261,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Phone</label>
-                                        <input id="email" type="text" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
+                                        <input id="phone" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
                                         @error('txtPhone')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -260,8 +270,26 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Ngày Sinh</label>
-                                        <input id="email" type="date" class="form-control @error('txtDob') is-invalid @enderror" name="txtDob" value=""  autocomplete="number" required>
+                                        <input id="bod" type="date" class="form-control @error('txtDob') is-invalid @enderror" name="txtDob" value=""  autocomplete="number" required>
                                         @error('txtDob')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Chuyên ngành</label>
+                                        <input id="line" type="text" class="form-control @error('txtLine') is-invalid @enderror" name="txtLine" value=""  autocomplete="number" required>
+                                        @error('txtLine')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Số Hợp Đồng</label>
+                                        <input id="NContract" type="text" class="form-control @error('txtNContract') is-invalid @enderror" name="txtNContract" value=""  autocomplete="number" required>
+                                        @error('txtNContract')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -269,15 +297,6 @@
                                     </div>
                                 </div>
                                 <div class="card-body col-lg-6 float-left">
-                                    <div class="form-group">
-                                        <label for="name">Địa Chỉ</label>
-                                        <input id="email" type="text" class="form-control @error('txtDob') is-invalid @enderror" name="txtDob" value=""  autocomplete="number" required>
-                                        @error('txtDob')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
                                     <div class="form-group">
                                         <label for="name">Giới Tính</label>
                                         <div class="form-check">
@@ -294,37 +313,57 @@
                                     <div class="form-group mt-4">
                                         <label class="pt-1"for="name">Cửa hàng</label>
                                         <div class="col-sm-10 p-0">
-                                            <select id="type" name = "type" class="form-control select2"  value="{{ old('type') }}" autocomplete="type" style="width: 100%;">
-                                                {{--                                                @foreach ($roles as $role)--}}
-                                                {{--                                                    <option value="{{$role['id']}}">{{$role['role']}}</option>--}}
-                                                {{--                                                @endforeach--}}
+                                            <select id="store" name = "store" class="form-control select2"  value="{{ old('store') }}" autocomplete="store" style="width: 100%;">
+                                                @foreach ($store as $store)
+                                                    <option value="{{$store['store_id']}}">{{$store['store_name']}}-{{$store['store_address']}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Chức Vụ</label>
                                         <div class="col-sm-10 p-0 ">
-                                            <select id="type" name = "type" class="form-control select2"  value="{{ old('type') }}" autocomplete="type" style="width: 100%;">
-                                                {{--                                                @foreach ($roles as $role)--}}
-                                                {{--                                                    <option value="{{$role['id']}}">{{$role['role']}}</option>--}}
-                                                {{--                                                @endforeach--}}
+                                            <select id="position" name = "position" class="form-control select2"  value="{{ old('position') }}" autocomplete="position" style="width: 100%;">
+                                                @foreach ($position as $position)
+                                                    <option value="{{$position['position_id']}}">{{$position['position_name']}}-{{$position['description']}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Hợp Đồng</label>
                                         <div class="col-sm-10 p-0">
-                                            <select id="type" name = "type" class="form-control select2"  value="{{ old('type') }}" autocomplete="type" style="width: 100%;">
-                                                {{--                                                @foreach ($roles as $role)--}}
-                                                {{--                                                    <option value="{{$role['id']}}">{{$role['role']}}</option>--}}
-                                                {{--                                                @endforeach--}}
+                                            <select id="contract" name = "contract" class="form-control select2"  value="{{ old('contract') }}" autocomplete="contract" style="width: 100%;">
+                                                @foreach ($contract as $contract)
+                                                    <option value="{{$contract['contract_id']}}">{{$contract['name']}}-{{$contract['description']}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Bộ Phận</label>
+                                        <div class="col-sm-10 p-0">
+                                            <select id="department" name = "department" class="form-control select2"  value="{{ old('department') }}" autocomplete="department" style="width: 100%;">
+                                                @foreach ($department as $department)
+                                                    <option value="{{$department['id']}}">{{$department['name']}}-{{$department['description']}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Dịch Vụ</label>
+                                        <div class="col-sm-10 p-0">
+                                            <select id="service" name = "service" class="form-control select2"  value="{{ old('service') }}" autocomplete="service" style="width: 100%;">
+                                                @foreach ($service as $service)
+                                                    <option value="{{$service['id']}}">{{$service['name']}}-{{$service['description']}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Ngày bắt đầu</label>
-                                        <input id="email" type="date" class="form-control @error('txtDob') is-invalid @enderror" name="txtDob" value=""  autocomplete="number" required>
-                                        @error('txtDob')
+                                        <input id="txtStart" type="date" class="form-control @error('txtStart') is-invalid @enderror" name="txtStart" value=""  autocomplete="number" required>
+                                        @error('txtStart')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -332,8 +371,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Ngày kết thúc</label>
-                                        <input id="email" type="date" class="form-control @error('txtDob') is-invalid @enderror" name="txtDob" value=""  autocomplete="number" required>
-                                        @error('txtDob')
+                                        <input id="txtEnd" type="date" class="form-control @error('txtEnd') is-invalid @enderror" name="txtEnd" value=""  autocomplete="number" required>
+                                        @error('txtEnd')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

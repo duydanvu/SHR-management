@@ -202,14 +202,14 @@
         });
 
         $(function () {
-            // $("#example1").DataTable({
-            //     aoColumnDefs: [
-            //         {
-            //             bSortable: false,
-            //             aTargets: ['noSort']
-            //         } // Disable sorting on columns marked as so
-            //     ]
-            // });
+            $("#example1").DataTable({
+                aoColumnDefs: [
+                    {
+                        bSortable: false,
+                        aTargets: ['noSort']
+                    } // Disable sorting on columns marked as so
+                ]
+            });
             // fix table
             $("#example1").parent().css({"overflow": "auto"});
         });

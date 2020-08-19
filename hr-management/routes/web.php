@@ -56,8 +56,16 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::post('/admin/service/update','ServicesController@update')->name('update_information_service');
     Route::get('/admin/service/delete/{id}','ServicesController@destroy')->name('delete_information_service');
 
+    //route Position
+    Route::get('/admin/position','PositionController@index')->name('show_list_position');
+    Route::post('/admin/position/addnew','PositionController@store')->name('add_new_position');
+    Route::get('/admin/position/view_update/{id}','PositionController@edit')->name('view_update_position');
+    Route::post('/admin/position/update','PositionController@update')->name('update_information_position');
+    Route::get('/admin/position/delete/{id}','PositionController@destroy')->name('delete_information_position');
+
     //route user
     Route::get('/admin/user','UserController@index')->name('show_list_user');
+    Route::post('/admin/user/addnew','UserController@store')->name('add_new_user');
 
     //route report
     Route::get('/report/report_with_time','ReportController@showReportTime')->name('show_report_time');
