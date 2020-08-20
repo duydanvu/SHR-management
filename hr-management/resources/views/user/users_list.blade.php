@@ -33,11 +33,10 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Search by Area</label>
-                            <select class="browser-default custom-select">
-                                <option selected>Open this select menu</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
+                                @foreach ($area as $area)
+                                    <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -106,7 +105,7 @@
                     @foreach($user as $key => $value)
                         <tr>
                             <td>{{$key+1}}</td>
-                            <td></td>
+                            <td><img id="img_prv" src="{{URL::to('/')}}{{$value->url_image}}" style="max-width: 50px;max-height: 50px; width: 50px;height: 50px"></td>
                             <td>{{$value->first_name}} {{$value->last_name}}</td>
                             <td>{{$value->email}}</td>
                             <td>{{$value->phone}}</td>
@@ -121,19 +120,20 @@
                             <td class="text-center">
 {{--                                @if($role_use_number == 1)--}}
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-primary">Action</button>
+{{--                                        <button type="button" class="btn btn-primary">Action</button>--}}
                                         <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <div class="dropdown-menu" role="menu">
-                                            <a href="#" data-remote="false"
+                                            <a href="{{route('view_update_user',['id'=>$value->id])}}" data-remote="false"
                                                data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
                                                 <i class="fas fa-edit"> Edit</i>
                                             </a>
-                                            <a href="#"  class="btn dropdown-item">
+                                            <a href="{{route('delete_information_user',['id'=>$value->id])}}"  class="btn dropdown-item">
                                                 <i class="fas fa-users"> Delete</i>
                                             </a>
-                                            <a href="#"  class="btn dropdown-item">
+                                            <a href="{{route('view_update_user_detail',['id'=>$value->id])}}" data-remote="false"
+                                               data-toggle="modal" data-target="#modal-admin-action-update-detail" class="btn dropdown-item">
                                                 <i class="fas fa-users"> View detail</i>
                                             </a>
                                         </div>
@@ -156,32 +156,59 @@
     </div>
 
 {{--    --}}{{-- modal --}}
-{{--    <div class="modal fade" id="modal-admin-action-update">--}}
-{{--        <div class="modal-dialog">--}}
-{{--            <div class="modal-content">--}}
-{{--                <div class="modal-header">--}}
-{{--                    <h4 class="modal-title">Update Action</h4>--}}
-{{--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-{{--                    </button>--}}
-{{--                </div>--}}
-{{--                <form action="{{route('admin_list_update_post_user')}}" method="post">--}}
-{{--                    <div class="modal-body">--}}
-{{--                        @csrf--}}
+    <div class="modal fade" id="modal-admin-action-update">
+        <div class="modal-dialog" style="max-width: 1000px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Update Action</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form action="{{route('update_information_user')}}" method="post">
+                    <div class="modal-body">
+                        @csrf
 
-{{--                    </div>--}}
-{{--                    <div class="modal-footer justify-content-between">--}}
-{{--                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>--}}
-{{--                        <button type="submit" class="btn btn-primary">Save changes</button>--}}
-{{--                    </div>--}}
-{{--                </form>--}}
-{{--            </div>--}}
-{{--            <!-- /.modal-content -->--}}
-{{--        </div>--}}
-{{--        <!-- /.modal-dialog -->--}}
-{{--    </div>--}}
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 
 {{--     modal --}}
-    <div class="modal fade" id="modal-create-member">
+
+    {{--    --}}{{-- modal --}}
+    <div class="modal fade" id="modal-admin-action-update-detail">
+        <div class="modal-dialog" style="max-width: 1000px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Update Action</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form action="{{route('update_information_user')}}" method="post">
+                    <div class="modal-body">
+                        @csrf
+
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    {{--     modal --}}
+    <div class="modal fade"  id="modal-create-member" >
         <div class="modal-dialog col-lg-8" style="max-width: 1200px">
             <div class="modal-content col-lg-12 ">
                 <div class="modal-header">
@@ -212,6 +239,7 @@
                     <div class="modal-body">
                         @csrf
                         <div class="row">
+                            <div id = "url_image1"></div>
                             <div class="col-lg-12 col-sm-12">
                                 <div class="card-body col-lg-6 float-left">
                                     <div class="form-group">
@@ -304,7 +332,7 @@
                                             <label class="form-check-label " for="male">
                                                 Male
                                             </label>
-                                            <input id="female" type="radio" class="form-check-input ml-4" name="txtGender" value="Female"  autocomplete="number" required>
+                                            <input id="female" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>
                                             <label class="form-check-label ml-5 " for="female">
                                                 Female
                                             </label>
@@ -380,11 +408,109 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-lg-12 col-sm-12">
+                                <h3 class="ml-5">Detail</h3>
+                                <hr style="width: 90%">
+                                <div class="card-body col-lg-6 float-left">
+                                    <div class="form-group">
+                                        <label for="name">Số CMT</label>
+                                        <input id="cmt" type="number" class="form-control @error('txtIdentity') is-invalid @enderror" name="txtIdentity" value=""  autocomplete="number" required>
+                                        @error('txtIdentity')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Mã Số Thuế Cá Nhân</label>
+                                        <input id="MST" type="number" class="form-control @error('txtTIN') is-invalid @enderror" name="txtTIN" value=""  autocomplete="number">
+                                        @error('txtTIN')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Ngày Cấp CMT</label>
+                                        <input id="date_CMT" type="date" class="form-control @error('txtIdndate') is-invalid @enderror" name="txtIdndate" value=""  autocomplete="number" required>
+                                        @error('txtIdndate')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Nơi Cấp CMT</label>
+                                        <input id="address_CMT" type="text" class="form-control @error('txtIdnAdd') is-invalid @enderror" name="txtIdnAdd" value=""  autocomplete="number" required>
+                                        @error('txtIdnAdd')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Chỗ ở hiện tại</label>
+                                        <input id="txtAddr_Now" type="text" class="form-control @error('txtAddr_Now') is-invalid @enderror" name="txtAddr_Now" value=""  autocomplete="number" required>
+                                        @error('txtAddr_Now')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="card-body col-lg-6 float-left">
+                                    <div class="form-group">
+                                        <label for="name">Số Bảo Hiểm Xã Hội</label>
+                                        <input id="txtSSC" type="number" class="form-control @error('txtNssc') is-invalid @enderror" name="txtNssc" value=""  autocomplete="number" >
+                                        @error('txtNssc')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Nơi Đăng ký Khám chữa bệnh</label>
+                                        <input id="txtHospital" type="text" class="form-control @error('txtHospital') is-invalid @enderror" name="txtHospital" value=""  autocomplete="number" >
+                                        @error('txtHospital')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Số Tài Khoản Ngân Hàng</label>
+                                        <input id="txtBan" type="number" class="form-control @error('txtBan') is-invalid @enderror" name="txtBan" value=""  autocomplete="number" >
+                                        @error('txtBan')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Tên Ngân Hàng</label>
+                                        <input id="txtBank" type="text" class="form-control @error('txtBank') is-invalid @enderror" name="txtBank" value=""  autocomplete="number" >
+                                        @error('txtBank')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Nơi đăng ký Hộ Khẩu</label>
+                                        <input id="txtAdd_Noi" type="text" class="form-control @error('txtAdd_Noi') is-invalid @enderror" name="txtAdd_Noi" value=""  autocomplete="number" >
+                                        @error('txtAdd_Noi')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button id="create_member" type="submit" class="btn btn-primary">Save changers</button>
+                        <button id="create_member" type="submit" class="btn btn-primary" >Save changers</button>
                     </div>
                 </form>
             </div>
@@ -393,6 +519,9 @@
         <!-- /.modal-dialog -->
     </div>
 {{--     modal --}}
+
+{{--    modal--}}
+{{--    modal--}}
 @stop
 
 @section('css')
@@ -409,6 +538,11 @@
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });
+        $("#modal-admin-action-update-detail").on("show.bs.modal", function(e) {
+            var link = $(e.relatedTarget);
+            $(this).find(".modal-body").load(link.attr("href"));
+        });
+
         $("#modal-member-project").on("show.bs.modal", function(e) {
             var link = $(e.relatedTarget);
             $(this).find(".modal-content").load(link.attr("href"));
@@ -469,7 +603,7 @@
                         processData: false,
                         success:function(dataresult)
                         {
-                            console.log(dataresult);
+                            $("#url_image1").html(dataresult['url']);
                         }
                     })
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Validator;
 
 class FileImageController extends Controller
@@ -15,14 +16,16 @@ class FileImageController extends Controller
 
             $path = public_path("upload");
 
-            $usersImage = public_path("\upload\{$filename}");
+            $url = "/upload/".$filename;
+            $usersImage = public_path($url);
 
             $upload_success = $data->move($path,$filename);
 
             return response()->json([
                 'success' => 'done',
                 'valueimg' => $path,
-                'link'=> $data
+                'link'=> $data,
+                'url'=> '<input id="url_image" name="url_image" value="'.$url.'" hidden/>',
             ]);
         }else{
             return 1;
