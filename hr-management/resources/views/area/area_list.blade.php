@@ -40,6 +40,7 @@
                     <th style="width:5%">#</th>
                     <th style="width:10%">Tên Khu Vực</th>
                     <th style="width:15%">Thông tin Chi tiết</th>
+                    <th style="width:15%">Tổng số cửa hàng</th>
                     <th style="width:5%" class="noSort">Action</th>
                 </tr>
                 </thead>
@@ -50,6 +51,7 @@
                             <td>{{$key+1}}</td>
                             <td>{{$value->area_name}}</td>
                             <td>{{$value->area_description}}</td>
+                            <td>{{$value->sum}}</td>
                             <td class="text-center">
 {{--                                @if($role_use_number == 1)--}}
                                 <div class="btn-group">

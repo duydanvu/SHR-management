@@ -32,6 +32,7 @@
             <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
+                            <meta name="csrf-token2" content="{{ csrf_token() }}">
                             <label for="exampleInputEmail1">Search by Area</label>
                             <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
                                 @foreach ($area as $area)
@@ -134,7 +135,11 @@
                                             </a>
                                             <a href="{{route('view_update_user_detail',['id'=>$value->id])}}" data-remote="false"
                                                data-toggle="modal" data-target="#modal-admin-action-update-detail" class="btn dropdown-item">
-                                                <i class="fas fa-users"> View detail</i>
+                                                <i class="fas fa-info-circle"> View detail</i>
+                                            </a>
+                                            <a href="{{route('view_update_user_image',['id'=>$value->id])}}" data-remote="false"
+                                               data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">
+                                                <i class="fas fa-image"> View Image</i>
                                             </a>
                                         </div>
 
@@ -191,7 +196,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form action="{{route('update_information_user')}}" method="post">
+                <form action="{{route('update_information_user_detail')}}" method="post">
                     <div class="modal-body">
                         @csrf
 
@@ -519,7 +524,29 @@
         <!-- /.modal-dialog -->
     </div>
 {{--     modal --}}
+    <div class="modal fade" id="modal-admin-action-update-image">
+        <div class="modal-dialog" style="max-width: 1000px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Update Action</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form action="{{route('update_information_user_image')}}" method="post">
+                    <div class="modal-body">
+                        @csrf
 
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 {{--    modal--}}
 {{--    modal--}}
 @stop
@@ -535,6 +562,10 @@
     <script>
 
         $("#modal-admin-action-update").on("show.bs.modal", function(e) {
+            var link = $(e.relatedTarget);
+            $(this).find(".modal-body").load(link.attr("href"));
+        });
+        $("#modal-admin-action-update-image").on("show.bs.modal", function(e) {
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });
@@ -563,6 +594,30 @@
 
     </script>
 
+    <script>
+        $(document).ready(function () {
+            $("#area_search").change(function () {
+                   var area = $("#area_search").val();
+                   $.ajax({
+                       headers:{'X-CSRF-Token':$('meta[name="csrf-token2"]').attr('content')},
+                       url:"{{url('admin/user/area_store')}}",
+                       type:"POST",
+                       data: {
+                           area : area
+                       },
+                       success:function (data) {
+
+                           $('#store_search').empty();
+                           $.each(data.stores,function(index,store){
+                               // console.log(index);
+                               // console.log(store);
+                               $('#store_search').append('<option value="'+store.store_id+'">'+store.store_name+'-'+store.store_address+'</option>');
+                           })
+                       }
+                   })
+            })
+        })
+    </script>
     <script>
         $(document).ready(function(){
 

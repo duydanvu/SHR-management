@@ -4,6 +4,7 @@
     <div class="row">
         <div class="col-lg-12 col-sm-12">
             <div class="card-body col-lg-6 float-left">
+                <input name="user_id" value="{{$user_detail->id}}" hidden/>
                 <div class="form-group">
                     <label for="name">Số CMT</label>
                     <input id="cmt" type="number" class="form-control @error('txtIdentity') is-invalid @enderror" name="txtIdentity" value="{{$user_detail->identity_number}}"  autocomplete="number" required>

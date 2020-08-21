@@ -2,8 +2,8 @@
 @csrf
     <div class="row">
         <div class="col-lg-12 col-sm-12">
-
             <div class="card-body col-lg-6 float-left">
+                <input name="user_id" value="{{$user->id}}" hidden/>
                 <div class="form-group">
                     <label for="name">Tên tài khoản</label>
                     <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName"  value="{{$user->login}}"  autocomplete="number" required>

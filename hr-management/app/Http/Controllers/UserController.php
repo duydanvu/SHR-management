@@ -207,7 +207,9 @@ class UserController extends Controller
     }
 
     public function edit_detail($id){
-        $user_detail = UserDetail::find($id);
+//        dd($id);
+        $user_detail = UserDetail::where('id_user','=',$id)->first();
+//        dd($user_detail);
         return view('user.user_update_detail')->with(['user_detail'=>$user_detail]);
     }
 
@@ -216,21 +218,181 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request)
     {
-        //
+        $validator = \Validator::make($request->all(),[
+            'txtName' => 'required|max:50',
+            'txtPassword' => 'required|min:7|max:100',
+            'txtFName' => 'required|max:50',
+            'txtLName' => 'required|max:50',
+            'txtEmail' => 'required|max:100|email',
+            'txtPhone' => 'required|integer',
+            'txtDob'   => 'required|date',
+            'txtLine'  => 'required|max:50',
+            'txtNContract' => 'required|max:50',
+            'txtGender' => 'required|max:6',
+            'store'=> 'required|integer',
+            'position'=> 'required|integer',
+            'contract'=> 'required|integer',
+            'department'=> 'required|integer',
+            'service'=> 'required|integer',
+            'txtStart'=> 'required|date',
+            'txtEnd'=> 'required|date',
+        ]);
+        $noti= array(
+            'message' => ' Cập nhật lỗi! Hãy kiểm tra lại thông tin tài khoản và nhập lại !',
+            'alert-type' => 'error'
+        );
+        if ($validator->fails()) {
+            return Redirect::back()
+                ->with($noti)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $data_area_update =DB::table('users')->where('id','=',$request->user_id)
+            ->update([
+                'login'=>$request->txtName,
+                'password'=>$request->txtPassword,
+                'first_name'=>$request->txtFName,
+                'last_name'=>$request->txtLName,
+                'email'=>$request->txtEmail,
+                'phone'=>$request->txtPhone,
+                'dob'=>$request->txtDob,
+                'gender'=>$request->txtGender,
+                'line'=>$request->txtLine,
+                'store_id'=>$request->store,
+                'department_id'=>$request->department,
+                'service_id'=>$request->service,
+                'position_id'=>$request->position,
+                'contract_id'=>$request->contract,
+                'contract_number'=>$request->txtNContract,
+                'start_time'=>$request->txtStart,
+                'end_time'=>$request->txtEnd,
+            ]);
+        if($data_area_update = 1){
+            $notification = array(
+                'message' => 'Cập nhật thông tin thành công!',
+                'alert-type' => 'success'
+            );
+        }else{
+            $notification = array(
+                'message' => 'Cập nhật thông tin không thành công!',
+                'alert-type' => 'success'
+            );
+        }
+        return Redirect::back()->with($notification);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        $user_detail = UserDetail::where('id_user','=',$id)->select('id as id_dt')->first();
+        $data_detail = UserDetail::find($user_detail->id_dt)
+                        ->delete();
+        $data = User::find($id)
+            ->delete();
+        if($data == true && $data_detail == true){
+            $notification = array(
+                'message' => 'Xoá thông tin thành công!',
+                'alert-type' => 'success'
+            );
+        }else{
+            $notification = array(
+                'message' => 'Xóa thông tin không thành công!',
+                'alert-type' => 'success'
+            );
+        }
+        return Redirect::back()->with($notification);
+    }
+
+    public function update_detail(Request $request){
+        $validator = \Validator::make($request->all(),[
+            'txtIdentity'=>'required|integer',
+            'txtIdndate'=>'required',
+            'txtTIN'=>'integer',
+            'txtIdnAdd'=>'required',
+            'txtAddr_Now'=>'min:4',
+            'txtNssc'=>'integer',
+            'txtHospital'=>'max:50',
+            'txtBan'=> 'integer',
+            'txtBank' => 'max:50',
+            'txtAdd_Noi' => 'min:4'
+        ]);
+        $noti= array(
+            'message' => ' Cập nhật chi tiết lỗi! Hãy kiểm tra lại thông tin tài khoản và nhập lại !',
+            'alert-type' => 'error'
+        );
+        if ($validator->fails()) {
+            return Redirect::back()
+                ->with($noti)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $data_area_update =DB::table('user_details')->where('id','=',$request->user_id)
+            ->update([
+                'identity_number'=>$request->txtIdentity,
+                'tin'=>$request->txtTIN,
+                'idn_date'=>$request->txtIdndate,
+                'idn_address'=>$request->txtIdnAdd,
+                'ssc_number'=>$request->txtNssc,
+                'hospital'=>$request->txtHospital,
+                'ban'=>$request->txtBan,
+                'bank'=>$request->txtBank,
+                'noi_address'=>$request->txtAdd_Noi,
+                'address_now'=>$request->txtAddr_Now,
+            ]);
+        if($data_area_update = 1){
+            $notification = array(
+                'message' => 'Cập nhật chi tiết thông tin thành công!',
+                'alert-type' => 'success'
+            );
+        }else{
+            $notification = array(
+                'message' => 'Cập nhật chi tiết thông tin không thành công!',
+                'alert-type' => 'error'
+            );
+        }
+        return Redirect::back()->with($notification);
+    }
+
+
+    public function store_area(Request $request){
+        $area_id = $request->area;
+        $stores = Store::where('area_id',$area_id)
+            ->get();
+
+        return response()->json([
+            'stores' => $stores
+        ]);
+    }
+
+    public function viewImage($id){
+        $user = User::find($id);
+        return view('user.user_update_image')->with(['user'=>$user]);
+    }
+    public function updateImage(Request $request){
+        $data_image_update =DB::table('users')->where('id','=',$request->user_id)
+            ->update([
+                'url_image'=>$request->url_image,
+            ]);
+        if($data_image_update = 1){
+            $notification = array(
+                'message' => 'Cập nhật thông tin thành công!',
+                'alert-type' => 'success'
+            );
+        }else{
+            $notification = array(
+                'message' => 'Cập nhật thông tin không thành công!',
+                'alert-type' => 'success'
+            );
+        }
+        return Redirect::back()->with($notification);
     }
 }

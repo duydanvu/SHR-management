@@ -11,7 +11,15 @@ use Illuminate\Support\Facades\Redirect;
 class AreaController extends Controller
 {
     public function listArea(){
-        $area = Area::all();
+
+        $area = Area::leftJoin('stores','area.id','=','stores.area_id')
+                        ->select('area.id','area.area_name','area.area_description', DB::raw('COUNT(stores.area_id) AS sum'))
+                        ->groupBy('stores.area_id')
+                        ->groupBy('area.id')
+                        ->groupBy('area.area_name')
+                        ->groupBy('area.area_description')
+                        ->orderBy('area.area_name')
+                        ->get();
         return view('area.area_list',compact('area'));
     }
 
