@@ -45,8 +45,8 @@
                         <div class="form-group">
                             <label for="exampleInputEmail1">Search by Store</label>
                             <select id="store_search" name = "store_search" class="form-control select2"  value="{{ old('store_search') }}" autocomplete="store_search" style="width: 100%;">
-                                @foreach ($store as $store1)
-                                    <option value="{{$store1['store_id']}}">{{$store1['store_name']}}-{{$store1['store_address']}}</option>
+                                @foreach ($store as $store2)
+                                    <option value="{{$store2['store_id']}}">{{$store2['store_name']}}-{{$store2['store_address']}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -72,6 +72,7 @@
             <div class="button-group-card-header">
 {{--                @if($role_use_number == 1)--}}
                     <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Create Account </button>
+                    <button id = "import_user" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-admin-import-user"><i class="fas fa-plus-circle"></i> Import User </button>
 {{--                @endif--}}
                 {{--<a href="{{route('export_to_file_csv')}}" class="btn btn-success btn-xs offset-lg-10" style="float: right;">export</a>--}}
             </div>
@@ -347,9 +348,11 @@
                                         <label class="pt-1"for="name">Cửa hàng</label>
                                         <div class="col-sm-10 p-0">
                                             <select id="store" name = "store" class="form-control select2"  value="{{ old('store') }}" autocomplete="store" style="width: 100%;">
+                                                @if(count($store) > 0)
                                                 @foreach ($store as $store)
                                                     <option value="{{$store['store_id']}}">{{$store['store_name']}}-{{$store['store_address']}}</option>
                                                 @endforeach
+                                                    @endif
                                             </select>
                                         </div>
                                     </div>
@@ -548,6 +551,102 @@
         <!-- /.modal-dialog -->
     </div>
 {{--    modal--}}
+    <div class="modal fade" id="modal-admin-import-user">
+        <div class="modal-dialog col-lg-8" style="max-width: 800px">
+            <div class="modal-content col-lg-12 ">
+                <div class="modal-header">
+                    <h4 class="modal-title">Import User</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form class="form-horizontal" action="{{route('import')}}" enctype="multipart/form-data" method="post">
+                    <div class="modal-body">
+                        @csrf
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12">
+                                <div class="card-body col-lg-6 float-left">
+                                    <div class="form-group">
+                                        <label for="name">Giới Tính</label>
+                                        <div class="form-check">
+                                            <input id="male_import" type="radio" class="form-check-input" name="txtGender" value="male"  autocomplete="number" required>
+                                            <label class="form-check-label " for="male">
+                                                Male
+                                            </label>
+                                            <input id="female_import" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>
+                                            <label class="form-check-label ml-5 " for="female">
+                                                Female
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mt-4">
+                                        <label class="pt-1"for="name">Cửa hàng</label>
+                                        <div class="col-sm-10 p-0">
+                                            <select id="store_import" name = "store_import" class="form-control select2"  value="{{ old('store') }}" autocomplete="store_import" style="width: 100%;">
+                                                    @foreach ($store1 as $store)
+                                                        <option value="{{$store['store_id']}}">{{$store['store_name']}}-{{$store['store_address']}}</option>
+                                                    @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Chức Vụ</label>
+                                        <div class="col-sm-10 p-0 ">
+                                            <select id="position_import" name = "position_import" class="form-control select2"  value="{{ old('position') }}" autocomplete="position_import" style="width: 100%;">
+                                                @foreach ($position1 as $position)
+                                                    <option value="{{$position['position_id']}}">{{$position['position_name']}}-{{$position['description']}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Hợp Đồng</label>
+                                        <div class="col-sm-10 p-0">
+                                            <select id="contract_import" name = "contract_import" class="form-control select2"  value="{{ old('contract') }}" autocomplete="contract_import" style="width: 100%;">
+                                                @foreach ($contract1 as $contract)
+                                                    <option value="{{$contract['contract_id']}}">{{$contract['name']}}-{{$contract['description']}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Bộ Phận</label>
+                                        <div class="col-sm-10 p-0">
+                                            <select id="department_import" name = "department_import" class="form-control select2"  value="{{ old('department') }}" autocomplete="department_import" style="width: 100%;">
+                                                @foreach ($department1 as $department)
+                                                    <option value="{{$department['id']}}">{{$department['name']}}-{{$department['description']}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Dịch Vụ</label>
+                                        <div class="col-sm-10 p-0">
+                                            <select id="service_import" name = "service_import" class="form-control select2"  value="{{ old('service') }}" autocomplete="service_import" style="width: 100%;">
+                                                @foreach ($service1 as $service)
+                                                    <option value="{{$service['id']}}">{{$service['name']}}-{{$service['description']}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-10 p-0">
+                                            <input type="file" name="file" required="true">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="import_member" type="submit" class="btn btn-primary" >Import</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+    </div>
 {{--    modal--}}
 @stop
 
@@ -572,11 +671,6 @@
         $("#modal-admin-action-update-detail").on("show.bs.modal", function(e) {
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
-        });
-
-        $("#modal-member-project").on("show.bs.modal", function(e) {
-            var link = $(e.relatedTarget);
-            $(this).find(".modal-content").load(link.attr("href"));
         });
 
         $(function () {

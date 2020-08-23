@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Area;
 use App\Contract;
 use App\Department;
+use App\Imports\UsersImport;
 use App\Position;
 use App\Services;
 use App\Store;
@@ -14,6 +15,7 @@ use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -29,6 +31,11 @@ class UserController extends Controller
         $contract = Contract::all();
         $department = Department::all();
         $service = Services::all();
+        $store1 = Store::all();
+        $position1 = Position::all();
+        $contract1 = Contract::all();
+        $department1 = Department::all();
+        $service1 = Services::all();
         $area = Area::all();
         $user = User::join('stores','users.store_id','=','stores.store_id')
             ->join('positions','users.position_id','=','positions.position_id')
@@ -44,6 +51,11 @@ class UserController extends Controller
             'contract'=>$contract,
             'department'=>$department,
             'service' =>$service,
+            'store1'=>$store1,
+            'position1'=>$position1,
+            'contract1'=>$contract1,
+            'department1'=>$department1,
+            'service1' =>$service1,
             'area' => $area]);
     }
 
@@ -394,5 +406,44 @@ class UserController extends Controller
             );
         }
         return Redirect::back()->with($notification);
+    }
+
+
+    public function import(Request $request){
+        $path1 = $request->file('file')->store('temp');
+        $path=storage_path('app').'/'.$path1;
+        $data = \Excel::toArray(new UsersImport,$path);
+        if(count($data[0]) > 0){
+            foreach ($data as $key =>$value){
+                foreach ($value as $row){
+                    $insert_data[] = array(
+                        'login'=>$row[24],
+                        'password'=>$row[23],
+                        'first_name'=>'',
+                        'last_name' => $row[4],
+                        'email' => $row[24],
+                        'phone' => $row[23],
+                        'dob' => $row[6],
+                        'address' => '',
+                        'gender' => $request->txtGender,
+                        'url_image' => '',
+                        'line' => $row[19],
+                        'store_id' => $request->store_import,
+                        'department_id' => $request->department_import,
+                        'service_id' => $request->service_import,
+                        'position_id' => $request->position_import,
+                        'contract_id' => $request->contract_import,
+                        'contract_number' => $row[38],
+                        'start_time' => $row[39],
+                        'end_time' => $row[40],
+                    );
+                }
+            }
+            if(!empty($insert_data))
+            {
+                DB::table('users')->insert($insert_data);
+            }
+        }
+        return back()->with('success','Excel Data Import Successfully');
     }
 }
