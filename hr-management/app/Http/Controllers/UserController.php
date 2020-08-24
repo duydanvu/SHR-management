@@ -11,6 +11,7 @@ use App\Services;
 use App\Store;
 use App\User;
 use App\UserDetail;
+use Carbon\Carbon;
 use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -147,17 +148,6 @@ class UserController extends Controller
                 'contract_number' => $request['txtNContract'],
                 'start_time' => $request['txtStart'],
                 'end_time' => $request['txtEnd'],
-            ]);
-        }catch (QueryException $ex){
-            $notification = array(
-                'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',
-                'alert-type' => 'error'
-            );
-            return Redirect::back()->with($notification);
-        }
-        try{
-            $create_user_detail = DB::table('user_details')->insert([
-                'id_user'=> $create_user_id,
                 'identity_number'=> $request['txtIdentity'],
                 'tin'=> $request['txtTIN'],
                 'idn_date'=> $request['txtIdndate'],
@@ -171,7 +161,7 @@ class UserController extends Controller
             ]);
         }catch (QueryException $ex){
             $notification = array(
-                'message' => 'Thông tin Chi tiết không chính xác! Vui lòng nhập lại ',
+                'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',
                 'alert-type' => 'error'
             );
             return Redirect::back()->with($notification);
@@ -220,7 +210,7 @@ class UserController extends Controller
 
     public function edit_detail($id){
 //        dd($id);
-        $user_detail = UserDetail::where('id_user','=',$id)->first();
+        $user_detail = User::find($id);
 //        dd($user_detail);
         return view('user.user_update_detail')->with(['user_detail'=>$user_detail]);
     }
@@ -305,12 +295,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user_detail = UserDetail::where('id_user','=',$id)->select('id as id_dt')->first();
-        $data_detail = UserDetail::find($user_detail->id_dt)
-                        ->delete();
         $data = User::find($id)
             ->delete();
-        if($data == true && $data_detail == true){
+        if($data == true ){
             $notification = array(
                 'message' => 'Xoá thông tin thành công!',
                 'alert-type' => 'success'
@@ -347,7 +334,7 @@ class UserController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-        $data_area_update =DB::table('user_details')->where('id','=',$request->user_id)
+        $data_area_update =DB::table('users')->where('id','=',$request->user_id)
             ->update([
                 'identity_number'=>$request->txtIdentity,
                 'tin'=>$request->txtTIN,
@@ -409,34 +396,58 @@ class UserController extends Controller
     }
 
 
+
+
     public function import(Request $request){
         $path1 = $request->file('file')->store('temp');
         $path=storage_path('app').'/'.$path1;
         $data = \Excel::toArray(new UsersImport,$path);
         if(count($data[0]) > 0){
             foreach ($data as $key =>$value){
-                foreach ($value as $row){
-                    $insert_data[] = array(
-                        'login'=>$row[24],
-                        'password'=>$row[23],
-                        'first_name'=>'',
-                        'last_name' => $row[4],
-                        'email' => $row[24],
-                        'phone' => $row[23],
-                        'dob' => $row[6],
-                        'address' => '',
-                        'gender' => $request->txtGender,
-                        'url_image' => '',
-                        'line' => $row[19],
-                        'store_id' => $request->store_import,
-                        'department_id' => $request->department_import,
-                        'service_id' => $request->service_import,
-                        'position_id' => $request->position_import,
-                        'contract_id' => $request->contract_import,
-                        'contract_number' => $row[38],
-                        'start_time' => $row[39],
-                        'end_time' => $row[40],
-                    );
+                foreach ($value as $key1 => $row) {
+                    if($key1 > 0) {
+                        if ($row[24] == null) {
+                            continue;
+                        }
+                        if ($row[23] == null) {
+                            continue;
+                        }
+                        if(is_string($row[28])==true){
+                            continue;
+                        }
+//                        if(strlen(strstr($row[23],'/'))>0)
+                        $insert_data[] = array(
+                            'login' => $row[24],
+                            'password' => $row[23],
+                            'first_name' => '',
+                            'last_name' => $row[4],
+                            'email' => $row[24],
+                            'phone' => $row[23],
+                            'dob' => date("Y-m-d", strtotime(str_replace("/", ".", $row[6]))),
+                            'address' => '',
+                            'gender' => $request->txtGender,
+                            'url_image' => '',
+                            'line' => $row[19],
+                            'store_id' => $request->store_import,
+                            'department_id' => $request->department_import,
+                            'service_id' => $request->service_import,
+                            'position_id' => $request->position_import,
+                            'contract_id' => $request->contract_import,
+                            'contract_number' => $row[37],
+                            'start_time' => date("Y-m-d", strtotime(str_replace("/", ".", $row[39]))),
+                            'end_time' => date("Y-m-d", strtotime(str_replace("/", ".", $row[40]))),
+                            'identity_number' => $row[10],
+                            'tin' => $row[16],
+                            'idn_date' => date("Y-m-d", strtotime(str_replace("/", ".", $row[11]))),
+                            'idn_address' => $row[12],
+                            'ssc_number' => $row[13],
+                            'hospital' => $row[14],
+                            'ban' => $row[28],
+                            'bank' => $row[29],
+                            'noi_address' => $row[17],
+                            'address_now' => $row[18],
+                        );
+                    }
                 }
             }
             if(!empty($insert_data))
