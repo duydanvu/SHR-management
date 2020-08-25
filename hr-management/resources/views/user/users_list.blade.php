@@ -227,7 +227,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="card-body col-lg-6 float-left">
-                                <span id="uploaded_image"><img id="img_prv" src="{{URL::to('/')}}/upload/man.png" style="max-width: 150px;max-height: 200px; width: 150px;height: 200px"></span>
+                                <span id="uploaded_image"><img id="img_prv1" src="{{URL::to('/')}}/upload/man.png" style="max-width: 150px;max-height: 200px; width: 150px;height: 200px"></span>
                                 <div class="form-group col-8 float-right">
                                     <label for="name">Upload Ảnh</label>
 {{--                                    <form id="upload_form" enctype="multipart/form-data" method="post">--}}
@@ -731,7 +731,7 @@
                     $('#mgs_ta').empty();
                     //preview image
                     reader.onload = function (event) {
-                        $('#img_prv').attr('src', event.target.result).css('width', '150').css('height', '200');
+                        $('#img_prv1').attr('src', event.target.result).css('width', '150').css('height', '200');
                     }
                     reader.readAsDataURL(this.files[0]);
                     //end preview
@@ -752,6 +752,7 @@
                         processData: false,
                         success:function(dataresult)
                         {
+                            console.log(dataresult);
                             $("#url_image1").html(dataresult['url']);
                         }
                     })

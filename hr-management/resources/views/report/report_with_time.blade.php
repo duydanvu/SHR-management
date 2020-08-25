@@ -30,20 +30,21 @@
         </div>
         <div class="card-body">
             <div class="row">
+                <meta name="csrf-token-2" content="{{ csrf_token() }}">
+{{--                <div class="col-md-4">--}}
+{{--                    <div class="form-group">--}}
+{{--                        <label class="col-12" for="exampleInputEmail1">Search by Time</label>--}}
+{{--                        <input  type="month" id="date_month"  value="" name="idear_date_month">--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="col-12" for="exampleInputEmail1">Search by Time</label>
-                        <input  type="month" id="date_month"  value="" name="idear_date_month">
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <meta name="csrf-token2" content="{{ csrf_token() }}">
                         <label for="exampleInputEmail1">Search by Area</label>
                         <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
                             @foreach ($area as $area)
                                 <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>
                             @endforeach
+                                <option value="all">All</option>
                         </select>
                     </div>
                 </div>
@@ -54,46 +55,51 @@
                             @foreach ($store as $store2)
                                 <option value="{{$store2['store_id']}}">{{$store2['store_name']}}-{{$store2['store_address']}}</option>
                             @endforeach
+                                <option value="all">All</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Search by Position</label>
                         <select id="position_search" name = "position_search" class="form-control select2"  value="{{ old('position_search') }}" autocomplete="position_search" style="width: 100%;">
                             @foreach ($position as $position)
                                 <option value="{{$position['position_id']}}">{{$position['position_name']}}-{{$position['description']}}</option>
                             @endforeach
+                                <option value="all">All</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Search by Department</label>
                         <select id="department_search" name = "department_search" class="form-control select2"  value="{{ old('department_search') }}" autocomplete="department_search" style="width: 100%;">
                             @foreach ($department as $department)
                                 <option value="{{$department['id']}}">{{$department['name']}}-{{$department['description']}}</option>
                             @endforeach
+                                <option value="all">All</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Search by Service</label>
                         <select id="service_search" name = "service_search" class="form-control select2"  value="{{ old('service_search') }}" autocomplete="service_search" style="width: 100%;">
                             @foreach ($service as $service)
                                 <option value="{{$service['id']}}">{{$service['name']}}-{{$service['description']}}</option>
                             @endforeach
+                                <option value="all">All</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Search by Contract</label>
                         <select id="contract_search" name = "contract_search" class="form-control select2"  value="{{ old('contract_search') }}" autocomplete="contract_search" style="width: 100%;">
                             @foreach ($contract as $contract)
                                 <option value="{{$contract['contract_id']}}">{{$contract['name']}}-{{$contract['description']}}</option>
                             @endforeach
+                                <option value="all">All</option>
                         </select>
                     </div>
                 </div>
@@ -103,6 +109,8 @@
             <div class="row">
                 <div class="col-12 col-md-12 col-sm-12">
                     <a href=" " type="submit" class="btn btn-default" >Refresh</a>
+                    <button id = "import_user" type="button" class="btn btn-success" data-toggle="modal"
+                            data-target="#modal-admin-export-user"><i class="fas fa-plus-circle"></i> Export User </button>
                     <button type="submit" id="fillter_date" class="btn btn-primary" style="float: right;">Filter</button>
                 </div>
             </div>
@@ -111,10 +119,6 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">List</h3>
-            <div class="button-group-card-header">
-                <button id = "import_user" type="button" class="btn btn-success" data-toggle="modal"
-                        data-target="#modal-admin-export-user"><i class="fas fa-plus-circle"></i> Export User </button>
-            </div>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                     <i class="fas fa-minus"></i></button>
@@ -125,19 +129,19 @@
             <table id="example1" class="table table-bordered table-striped " style="width: 100%">
                 <thead>
                 <tr>
-                    <th style="width:3%" >#</th>
+                    <th style="width:60%" >#</th>
                     <th style="width:10%" >Tên Cửa Hàng</th>
-                    <th style="text-align: center">Tên Nhân Viên</th>
-                    <th style="text-align: center">Email</th>
-                    <th style="text-align: center">Phone</th>
-                    <th style="text-align: center">Ngày Sinh</th>
-                    <th style="text-align: center">Trình Độ Chuyên Môn</th>
-                    <th style="text-align: center">Chức Danh</th>
-                    <th style="text-align: center">Bộ Phận</th>
-                    <th style="text-align: center">Dịch Vụ</th>
-                    <th style="text-align: center">Hợp Đồng</th>
-                    <th style="text-align: center">Số Hợp Đồng</th>
-                    <th style="text-align: center">View Detail</th>
+                    <th style="text-align: center;width: 10%">Tên Nhân Viên</th>
+                    <th style="text-align: center;width: 10%">Email</th>
+                    <th style="text-align: center;width: 10%">Phone</th>
+                    <th style="text-align: center;width: 5%">Ngày Sinh</th>
+                    <th style="text-align: center;width: 10%">Trình Độ Chuyên Môn</th>
+                    <th style="text-align: center;width: 5%">Chức Danh</th>
+                    <th style="text-align: center;width: 5%">Bộ Phận</th>
+                    <th style="text-align: center;width: 5%">Dịch Vụ</th>
+                    <th style="text-align: center;width: 5%">Hợp Đồng</th>
+                    <th style="text-align: center;width: 5%">Số Hợp Đồng</th>
+                    <th style="text-align: center;width: 10%">View Detail</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
@@ -147,8 +151,8 @@
                             <td>{{$key+1}}</td>
                             <td>{{$value->store_name}}</td>
                             <td>{{$value->first_name}} {{$value->last_name}}</td>
-                            <td>{{$value->email}}</td>
-                            <td>{{$value->phone}}</td>
+                            <td style="width:10%">{{$value->email}}</td>
+                            <td>{{str_replace("/","-",$value->phone)}}</td>
                             <td>{{$value->dob}}</td>
                             <td>{{$value->line}}</td>
                             <td>{{$value->position_name}}</td>
@@ -160,7 +164,7 @@
                                 {{--                                @if($role_use_number == 1)--}}
                                 <a href="{{route('view_user_detail_report',['id'=>$value->id])}}" data-remote="false"
                                    data-toggle="modal" data-target="#modal-admin-action-update-detail" class="btn dropdown-item">
-                                    <i class="fas fa-info-circle"> View detail</i>
+                                    <i class="fas fa-info-circle">detail</i>
                                 </a>
                                 {{--                                @endif--}}
                             </td>
@@ -434,40 +438,41 @@
             }
         });
 
-        {{--$('#export_data').click(function () {--}}
-        {{--    var datetimes = $('#date_range').val();--}}
-        {{--    datetimes = datetimes.split('/').join('.');--}}
-        {{--    datetimes = datetimes.split(' ').join('');--}}
-        {{--    console.log(datetimes);--}}
-        {{--    var url = "{{ route ('export_to_file_csv',['datetime' => ":datetime"])}}";--}}
-        {{--    url = url.replace(':datetime', datetimes);--}}
-        {{--    console.log(url);--}}
-        {{--    window.location.href = url;--}}
-        {{--})--}}
-
-        {{--$(document).ready(function(){--}}
-        {{--    $('#import_member').click(function () {--}}
-        {{--        let date_range = $('#date_range').val();--}}
-        {{--        let _token = $('meta[name="csrf-token"]').val();--}}
-        {{--        var startEnd = $("#date_range").val();--}}
-        {{--        var dt = {_token, startEnd};--}}
-        {{--        $.ajaxSetup({--}}
-        {{--            headers: {--}}
-        {{--                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
-        {{--            }--}}
-        {{--        });--}}
-        {{--        $.ajax({--}}
-        {{--            type:'POST',--}}
-        {{--            url:'{{route('search_date_time')}}',--}}
-        {{--            data:dt,--}}
-        {{--            success:function(resultData){--}}
-        {{--                // // $('.effort').val(resultData);--}}
-        {{--                $('#table_body').html(resultData);--}}
-        {{--                // console.log(resultData);--}}
-        {{--            }--}}
-        {{--        });--}}
-        {{--    });--}}
-        {{--});--}}
+        $(document).ready(function(){
+            $('#fillter_date').click(function () {
+                // let date_range = $('#date_month').val();
+                let store_search = $('#store_search').val();
+                let area_search = $('#area_search').val();
+                let position_search = $('#position_search').val();
+                let department_search = $('#position_search').val();
+                let service_search = $('#service_search').val();
+                let contract_search = $('#contract_search').val();
+                let _token = $('meta[name="csrf-token-2"]').attr('content');
+                // console.log(date_range);
+                // console.log(store_seach);
+                // console.log(position_search);
+                // console.log(department_search);
+                // console.log(service_search);
+                // console.log(contract_search);
+                var dt = {_token,area_search,store_search,position_search,department_search,service_search,contract_search};
+                console.log(dt);
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token-2"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type:'POST',
+                    url:'{{route('search_date_time')}}',
+                    data:dt,
+                    success:function(resultData){
+                        // // $('.effort').val(resultData);
+                        $('#table_body').html(resultData);
+                        // console.log(resultData);
+                    }
+                });
+            });
+        });
         // Datatable
         $(function () {
             // $("#example1").DataTable({

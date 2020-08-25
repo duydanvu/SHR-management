@@ -82,6 +82,7 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/report/view_detail/{id}','ReportController@view_detail')->name('view_user_detail_report');
     Route::post('/report/export/user','ReportController@export_users')->name('export_report_user');
     Route::get('/report/report_with_user','ReportController@showDetailTime')->name('show_report_detail');
+    Route::post('/report/report_search','ReportController@searchReport')->name('search_date_time');
 
     //timesheets
     Route::get('/timekeeping/timekeeping_for_staff','RequestController@logsTimesheets')->name('show_log_time_sheets');
