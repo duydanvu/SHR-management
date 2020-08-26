@@ -42,36 +42,37 @@
                 <tr>
                     <th style="width:5%" >#</th>
                     <th style="width:25%" >Tên Nhân Viên</th>
-                    <th style="width:30%">Email</th>
+                    <th style="width:25%">Email</th>
                     <th style="width:15%">Ngày Sinh</th>
                     <th style="width:10%">Giới tính</th>
                     <th style="text-align: center;width:15%">Action</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
-                {{--                @if ( count($total) > 0)--}}
-                {{--                    @foreach($total as $key => $value)--}}
-                {{--                        <tr>--}}
-                {{--                            <td>{{$key+1}}</td>--}}
-                {{--                            <td>{{$value->date}}</td>--}}
-                {{--                            <td>{{$value->acc_sub}}</td>--}}
-                {{--                            <td>{{$value->acc_unsub_pp}}</td>--}}
-                {{--                            <td>{{$value->acc_unsub_stm}}</td>--}}
-                {{--                            <td>{{$value->acc_psc}}</td>--}}
-                {{--                            <td>{{$value->acc_active}}</td>--}}
-                {{--                            <td>{{round( ($value->acc_gh/$sum)*100 ,3) }} %</td>--}}
-                {{--                            <td>{{$value->acc_dk_sms}}</td>--}}
-                {{--                            <td>{{$value->acc_dk_vasgate}}</td>--}}
-                {{--                            <td>{{$value->acc_dk_wap}}</td>--}}
-                {{--                            <td>{{$value->acc_dk_sms + $value->acc_dk_vasgate + $value->acc_dk_wap}}</td>--}}
-                {{--                            <td>{{$value->revenue_day}}</td>--}}
-                {{--                        </tr>--}}
-                {{--                    @endforeach--}}
-                {{--                @else--}}
-                {{--                    <td colspan="8" style="text-align: center">--}}
-                {{--                        <h3>Empty Data</h3>--}}
-                {{--                    </td>--}}
-                {{--                @endif--}}
+                @if ( count($staff) > 0)
+                  @foreach($staff as $key => $value)
+                      <tr>
+                          <td>{{$key+1}}</td>
+                          <td>{{$value->first_name}} {{$value->last_name}}</td>
+                          <td>{{$value->email}}</td>
+                          <td>{{$value->dob}}</td>
+                          <td>{{$value->gender}}</td>
+                          <td><a href="{{route('show_view_add_time_sheet',['id'=>$value->id])}}" data-remote="false"
+                                 data-toggle="modal" data-target="#modal-admin-action-add-timesheet" class="btn dropdown-item">
+                                  <i class="fas fa-info-circle">detail</i>
+                              </a>
+                              <a href="{{route('show_view_update_time_sheet',['id'=>$value->id_timesheet])}}" data-remote="false"
+                                 data-toggle="modal" data-target="#modal-admin-action-add-timesheet" class="btn dropdown-item">
+                                  <i class="fas fa-info-circle">update</i>
+                              </a>
+                          </td>
+                      </tr>
+                  @endforeach
+                @else
+                    <td colspan="8" style="text-align: center">
+                        <h3>Empty Data</h3>
+                    </td>
+                @endif
 
                 </tbody>
             </table>
@@ -79,6 +80,31 @@
         <!-- /.card-body -->
     </div>
 
+    {{-- modal --}}
+    <div class="modal fade" id="modal-admin-action-add-timesheet">
+        <div class="modal-dialog" style="max-width: 600px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">View User and Add Timesheet</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form action="{{route('add_time_sheet_for_staff')}}" method="post">
+                    <div class="modal-body">
+                        @csrf
+
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    {{--     modal --}}
 @stop
 
 @section('css')
@@ -89,6 +115,11 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script>
+        $("#modal-admin-action-add-timesheet").on("show.bs.modal", function(e) {
+            var link = $(e.relatedTarget);
+            $(this).find(".modal-body").load(link.attr("href"));
+        });
+
         $('.date_range').daterangepicker({
             timePicker: true,
             startDate: moment().startOf('month'),
@@ -100,41 +131,6 @@
 
         var today = moment().format('YYYY-MM-DD');
         $('#datePicker').val(today);
-
-        {{--$('#export_data').click(function () {--}}
-        {{--    var datetimes = $('#date_range').val();--}}
-        {{--    datetimes = datetimes.split('/').join('.');--}}
-        {{--    datetimes = datetimes.split(' ').join('');--}}
-        {{--    console.log(datetimes);--}}
-        {{--    var url = "{{ route ('export_to_file_csv',['datetime' => ":datetime"])}}";--}}
-        {{--    url = url.replace(':datetime', datetimes);--}}
-        {{--    console.log(url);--}}
-        {{--    window.location.href = url;--}}
-        {{--})--}}
-
-        {{--$(document).ready(function(){--}}
-        {{--    $('#fillter_date').click(function () {--}}
-        {{--        let date_range = $('#date_range').val();--}}
-        {{--        let _token = $('meta[name="csrf-token"]').val();--}}
-        {{--        var startEnd = $("#date_range").val();--}}
-        {{--        var dt = {_token, startEnd};--}}
-        {{--        $.ajaxSetup({--}}
-        {{--            headers: {--}}
-        {{--                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
-        {{--            }--}}
-        {{--        });--}}
-        {{--        $.ajax({--}}
-        {{--            type:'POST',--}}
-        {{--            url:'{{route('search_date_time')}}',--}}
-        {{--            data:dt,--}}
-        {{--            success:function(resultData){--}}
-        {{--                // // $('.effort').val(resultData);--}}
-        {{--                $('#table_body').html(resultData);--}}
-        {{--                // console.log(resultData);--}}
-        {{--            }--}}
-        {{--        });--}}
-        {{--    });--}}
-        {{--});--}}
         // Datatable
         $(function () {
             $("#example1").DataTable({

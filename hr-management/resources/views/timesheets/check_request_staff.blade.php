@@ -43,37 +43,55 @@
                     <th style="width:5%" >#</th>
                     <th style="width:20%" >Tên Nhân Viên</th>
                     <th style="width:20%">Email</th>
-                    <th style="width:15%">Ngày Sinh</th>
+                    <th style="width:15%">Ngày</th>
+                    <th style="width:10%">Cửa hàng</th>
+                    <th style="width:10%">Chức vụ</th>
+                    <th style="width:10%">Phòng ban</th>
                     <th style="width:20%">Request</th>
                     <th style="width:10%">Status</th>
                     <th style="text-align: center;width:10%">Action</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
-                {{--                @if ( count($total) > 0)--}}
-                {{--                    @foreach($total as $key => $value)--}}
-                {{--                        <tr>--}}
-                {{--                            <td>{{$key+1}}</td>--}}
-                {{--                            <td>{{$value->date}}</td>--}}
-                {{--                            <td>{{$value->acc_sub}}</td>--}}
-                {{--                            <td>{{$value->acc_unsub_pp}}</td>--}}
-                {{--                            <td>{{$value->acc_unsub_stm}}</td>--}}
-                {{--                            <td>{{$value->acc_psc}}</td>--}}
-                {{--                            <td>{{$value->acc_active}}</td>--}}
-                {{--                            <td>{{round( ($value->acc_gh/$sum)*100 ,3) }} %</td>--}}
-                {{--                            <td>{{$value->acc_dk_sms}}</td>--}}
-                {{--                            <td>{{$value->acc_dk_vasgate}}</td>--}}
-                {{--                            <td>{{$value->acc_dk_wap}}</td>--}}
-                {{--                            <td>{{$value->acc_dk_sms + $value->acc_dk_vasgate + $value->acc_dk_wap}}</td>--}}
-                {{--                            <td>{{$value->revenue_day}}</td>--}}
-                {{--                        </tr>--}}
-                {{--                    @endforeach--}}
-                {{--                @else--}}
-                {{--                    <td colspan="8" style="text-align: center">--}}
-                {{--                        <h3>Empty Data</h3>--}}
-                {{--                    </td>--}}
-                {{--                @endif--}}
+                @if ( count($staff) > 0)
+                    @foreach($staff as $key => $value)
+                        <tr>
+                            <td>{{$key+1}}</td>
+                            <td>{{$value->first_name}} {{$value->last_name}}</td>
+                            <td>{{$value->email}}</td>
+                            <td>{{$value->date_timesheet}}</td>
+                            <td>{{$value->store_name}}</td>
+                            <td>{{$value->position_name}}</td>
+                            <td>{{$value->dp_name}}</td>
+                            <td>{{$value->request_timesheet}}</td>
+                            <td>{{$value->status_timesheet}}</td>
+                            <td class="text-center">
+                                {{--                                @if($role_use_number == 1)--}}
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary">Action</button>
+                                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a href="{{route('view_update_contract',['id'=>$value->contract_id])}}" data-remote="false"
+                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                            <i class="fas fa-edit"> Edit</i>
+                                        </a>
+                                        <a href="{{route('delete_information_contract',['id'=>$value->contract_id])}}"  class="btn dropdown-item">
+                                            <i class="fas fa-users"> Delete</i>
+                                        </a>
+                                    </div>
 
+                                </div>
+                                {{--                                @endif--}}
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <td colspan="8" style="text-align: center">
+                        <h3>Empty Data</h3>
+                    </td>
+                @endif
                 </tbody>
             </table>
         </div>
