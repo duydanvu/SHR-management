@@ -22,15 +22,18 @@ class RequestController extends Controller
             $staff = DB::table('users')->join('timesheets','timesheets.user_id','=','users.id')
                 ->where('position_id','=',2)
                 ->where('status','=','pendding')
-                ->select('users.*','timesheets.id as id_timesheet');
+                ->select('users.*','timesheets.id as id_timesheet','timesheets.date as date_timesheet')
+                ->get();
         }elseif ($roles->position_id == 2){
-            $staff = User::all()->where('position_id','=',1)
+            $staff = User::all()->where('position_id','=',3)
                                 ->where('store_id','=',$roles->store_id);
-            foreach ($timesheet as $value){
-                $staff = $staff->where('id','!=',$value->user_id);
+            if(count($timesheet) > 0) {
+                foreach ($timesheet as $value) {
+                    $staff = $staff->where('id', '!=', $value->user_id);
+                }
             }
         }
-        return view('timesheets.log_timesheets')->with(['staff'=>$staff->get()]);
+        return view('timesheets.log_timesheets')->with(['staff'=>$staff,'roles'=>$roles]);
     }
 
     public function addViewTimesheet($id){
@@ -41,6 +44,33 @@ class RequestController extends Controller
     public function updateTimesheet($id){
         $timesheet = Timesheet::find($id);
         return view('timesheets.update_time_sheet')->with(['user_timesheet'=>$timesheet]);
+    }
+
+    public function updaeTimeSheetStoreManage(Request $request){
+        if(strcmp($request->status_timesheet,'done') == 0 || strcmp($request->status_timesheet,'reject') == 0) {
+            $data_request_update = DB::table('timesheets')->where('id', '=', $request->user_id)
+                ->update([
+                    'status' => $request->status_timesheet
+                ]);
+            if ($data_area_update = 1) {
+                $notification = array(
+                    'message' => 'Cập nhật thông tin thành công!',
+                    'alert-type' => 'success'
+                );
+            } else {
+                $notification = array(
+                    'message' => 'Cập nhật thông tin không thành công!',
+                    'alert-type' => 'error'
+                );
+            }
+            return Redirect::back()->with($notification);
+        }else{
+            $notification = array(
+                'message' => 'Update time sheet chỉ có thể là Done hoặc Reject!',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
     }
 
     public function addTimeSheet(Request $request){
@@ -59,11 +89,10 @@ class RequestController extends Controller
         $validator = \Validator::make($request->all(),[
             'user_id' => 'required|max:11',
             'txtdate' => 'required|date',
-            'status_timesheet' => 'required|max:8',
-            'txtComment' => 'required'
+            'status_timesheet' => 'required|max:8'
         ]);
         $notification= array(
-            'message' => ' Đăng ký cửa hàng lỗi! Hãy chọn phần tạo tài khoản và nhập lại thông tin!',
+            'message' => 'Thêm chấm công lỗi! Hãy chọn phần tạo tài khoản và nhập lại thông tin!',
             'alert-type' => 'error'
         );
         if ($validator ->fails()) {
@@ -76,12 +105,13 @@ class RequestController extends Controller
             $add_time_sheet = DB::table('timesheets')->insert([
                 'user_id'=> $request['user_id'],
                 'date' => $request['txtdate'],
-                'status' => $request['status_timesheet'],
+                'logtime' => $request['status_timesheet'],
+                'status' => 'done',
                 'comment' => $request['txtComment']
             ]);
         }catch (QueryException $ex){
             $notification = array(
-                'message' => 'Thêm thông tin không chính xác! Vui lòng nhập lại ',
+                'message' => 'Thêm chấm công không chính xác! Vui lòng nhập lại ',
                 'alert-type' => 'error'
             );
             return Redirect::back()->with($notification);
@@ -93,30 +123,147 @@ class RequestController extends Controller
         return Redirect::back()->with($notification);
     }
 
+    public function addTimesheetCht(Request $request){
+        $date = date("Y-m-d");
+        $user_id = Auth::id();
+        $roles = User::find($user_id);
+        if (strcmp($date,$request['txtdate']) != 0 ){
+            $notification= array(
+                'message' => ' Nhập đúng ngày hiện tại để điểm danh !!',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()
+                ->with($notification)
+                ->withInput();
+        }
+        $validator = \Validator::make($request->all(),[
+            'txtIDCht' => 'required|max:11',
+            'txtdate' => 'required|date',
+            'status_timesheet' => 'required|max:8'
+        ]);
+        $notification= array(
+            'message' => ' Chấm công lỗi! Kiểm tra thông tin và nhập lại thông tin!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $check_request_cht = DB::table('timesheets')->select('id')
+                            ->where('user_id','=',$request['txtIDCht'])
+                            ->where('date','=',$request['txtdate'])
+                            ->get();
+        foreach ($check_request_cht as $value_check){
+            $id_check = $value_check->id;
+        }
+        if(count($check_request_cht) == 0) {
+            try {
+                $add_time_sheet = DB::table('timesheets')->insert([
+                    'user_id' => $request['txtIDCht'],
+                    'date' => $request['txtdate'],
+                    'logtime' => $request['status_timesheet'],
+                    'comment' => $request['txtDescription']
+                ]);
+            } catch (QueryException $ex) {
+                $notification = array(
+                    'message' => 'Chấm công nhân viên lỗi! Vui lòng nhập lại ',
+                    'alert-type' => 'error'
+                );
+                return Redirect::back()->with($notification);
+            }
+        }else{
+            try {
+                $update_time_sheet = DB::table('timesheets')->where('id','=',$id_check)
+                    ->update([
+                    'user_id' => $request['txtIDCht'],
+                    'date' => $request['txtdate'],
+                    'logtime' => $request['status_timesheet'],
+                    'comment' => $request['txtDescription']
+                ]);
+            } catch (QueryException $ex) {
+                $notification = array(
+                    'message' => 'Chấm công nhân viên lỗi! Vui lòng nhập lại ',
+                    'alert-type' => 'error'
+                );
+                return Redirect::back()->with($notification);
+            }
+        }
+        $notification = array(
+            'message' => 'Chấm công nhân viên thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+
     public function checkRequest(){
         $user_id = Auth::id();
         $roles = User::find($user_id);
         if($roles->position_id == 1){
-            $staff = DB::table('users')->join('timesheets','timesheets.user_id','=','users.id')
+            $staff = DB::table('timesheets')->join('users','timesheets.user_id','=','users.id')
                 ->join('stores','users.store_id','=','stores.store_id')
                 ->join('positions','users.position_id','=','positions.position_id')
                 ->join('departments','users.department_id','=','departments.id')
                 ->select('users.*','timesheets.id as id_timesheet','stores.store_name',
-                    'positions.position_name','departments.name as dp_name','timesheets.status as status_timesheet',
+                    'positions.position_name','departments.name as dp_name','timesheets.status as status_timesheet','timesheets.logtime as logs_timesheet',
                     'timesheets.comment as comment_timesheet','timesheets.request as request_timesheet','timesheets.date as date_timesheet')
                 ->get();
         }elseif ($roles->position_id == 2){
-            $staff = DB::table('users')->join('timesheets','timesheets.user_id','=','users.id')
+            $staff = DB::table('timesheets')
+                ->leftJoin('users','timesheets.user_id','=','users.id')
                 ->join('stores','users.store_id','=','stores.store_id')
                 ->join('positions','users.position_id','=','positions.position_id')
                 ->join('departments','users.department_id','=','departments.id')
-                ->where('position_id','=',1)
-                ->where('store_id','=',$roles->store_id)
+                ->where('users.position_id','=',3)
+                ->where('users.store_id','=',$roles->store_id)
+                ->where('timesheets.status','=','done')
                 ->select('users.*','timesheets.id as id_timesheet','stores.store_name',
-                    'positions.position_name','departments.name as dp_name','timesheets.status as status_timesheet',
+                    'positions.position_name','departments.name as dp_name','timesheets.status as status_timesheet','timesheets.logtime as logs_timesheet',
                     'timesheets.comment as comment_timesheet','timesheets.request as request_timesheet','timesheets.date as date_timesheet')
                 ->get();
         }
-        return view('timesheets.check_request_staff')->with(['staff'=>$staff]);
+        return view('timesheets.check_request_staff')->with(['staff'=>$staff,'auth'=>$roles]);
+    }
+
+    public function viewRequestStaff($id){
+        $time_sheet = Timesheet::find($id);
+//        dd($time_sheet->id);
+        return view('timesheets.view_request_timesheet')->with(['time_request'=>$time_sheet]);
+    }
+
+    public function updateWithRequest(Request $request){
+        $validator = \Validator::make($request->all(),[
+            'txtComment'=> 'required',
+            'txtRequest' => 'required'
+        ]);
+        $noti= array(
+            'message' => ' Cập nhật lỗi! Hãy kiểm tra lại thông tin và nhập lại !',
+            'alert-type' => 'error'
+        );
+        if ($validator->fails()) {
+            return Redirect::back()
+                ->with($noti)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $data_request_update =DB::table('timesheets')->where('id','=',$request->user_id)
+            ->update([
+                'reason_request'=>$request->txtComment,
+                'request'=>$request->txtRequest,
+                'status'=>"pendding"
+            ]);
+        if($data_area_update = 1){
+            $notification = array(
+                'message' => 'Thêm thông tin thành công!',
+                'alert-type' => 'success'
+            );
+        }else{
+            $notification = array(
+                'message' => 'Thêm thông tin không thành công!',
+                'alert-type' => 'success'
+            );
+        }
+        return Redirect::back()->with($notification);
     }
 }

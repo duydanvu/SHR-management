@@ -30,12 +30,21 @@
         <!-- /.card-header -->
         <div class="card-body">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-6">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Today : </label>
                         <input  type="text" id="datePicker"  value="" name="date_now" readonly>
                     </div>
                 </div>
+                @if($roles->position_id == 2)
+                <div class="col-2 offset-4">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1"></label>
+                        <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-time-sheet-cht">
+                            <i class="fas fa-plus-circle"></i> Add Time Sheet </button>
+                    </div>
+                </div>
+                @endif
             </div>
             <table id="example1" class="table table-bordered table-striped " style="width: 100%">
                 <thead>
@@ -45,6 +54,7 @@
                     <th style="width:25%">Email</th>
                     <th style="width:15%">Ngày Sinh</th>
                     <th style="width:10%">Giới tính</th>
+                    @if($roles->position_id == 1)<th style="width:10%">Date Timesheet</th>@endif
                     <th style="text-align: center;width:15%">Action</th>
                 </tr>
                 </thead>
@@ -57,14 +67,19 @@
                           <td>{{$value->email}}</td>
                           <td>{{$value->dob}}</td>
                           <td>{{$value->gender}}</td>
-                          <td><a href="{{route('show_view_add_time_sheet',['id'=>$value->id])}}" data-remote="false"
+                          @if($roles->position_id == 1)<td>{{$value->date_timesheet}}</td>@endif
+                          <td>@if($roles->position_id == 2)
+                              <a href="{{route('show_view_add_time_sheet',['id'=>$value->id])}}" data-remote="false"
                                  data-toggle="modal" data-target="#modal-admin-action-add-timesheet" class="btn dropdown-item">
-                                  <i class="fas fa-info-circle">detail</i>
+                                  <i class="fas fa-plus-circle"> Log Timesheet</i>
                               </a>
+                              @endif
+                              @if($roles->position_id == 1)
                               <a href="{{route('show_view_update_time_sheet',['id'=>$value->id_timesheet])}}" data-remote="false"
-                                 data-toggle="modal" data-target="#modal-admin-action-add-timesheet" class="btn dropdown-item">
+                                 data-toggle="modal" data-target="#modal-admin-action-update-timesheet-staff" class="btn dropdown-item">
                                   <i class="fas fa-info-circle">update</i>
                               </a>
+                              @endif
                           </td>
                       </tr>
                   @endforeach
@@ -105,6 +120,100 @@
         <!-- /.modal-dialog -->
     </div>
     {{--     modal --}}
+
+    {{-- modal --}}
+    <div class="modal fade" id="modal-admin-action-update-timesheet-staff">
+        <div class="modal-dialog" style="max-width: 600px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">View User and Add Timesheet</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form action="{{route('update_time_sheet_for_store_manage')}}" method="post">
+                    <div class="modal-body">
+                        @csrf
+
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    {{--     modal --}}
+
+    {{--     modal --}}
+    <div class="modal fade" id="modal-create-time-sheet-cht">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Create Time Sheet</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form class="form-horizontal" action="{{route('add_logtime_cht')}}" method="post">
+                    <div class="modal-body">
+                        @csrf
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card-body">
+
+                                    <div class="form-group">
+                                        <input name="txtIDCht" value="{{$roles->id}}" hidden>
+                                        <label for="name">Tên Nhân Viên</label>
+                                        <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value="{{$roles->first_name}}{{$roles->last_name}}"  autocomplete="number" required readonly>
+                                        @error('txtName')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Ngày</label>
+                                        <input id="date_logtime" type="date" class="form-control @error('txtdate') is-invalid @enderror" name="txtdate" value=""  autocomplete="number" required >
+                                        @error('txtdate')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Time sheet</label>
+                                        <select id="status_timesheet" name = "status_timesheet" class="form-control select2"  value="{{ old('status_timesheet') }}" autocomplete="status_timesheet" style="width: 100%;">
+                                            <option value="present">Present</option>
+                                            <option value="absent">Absent</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Comment</label>
+                                        <input id="fName" type="text" class="form-control @error('txtDescription') is-invalid @enderror" name="txtDescription" value=""  autocomplete="number">
+                                        @error('txtDescription')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="create_member" type="submit" class="btn btn-primary">Save changers</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    {{--    --}}{{-- modal --}}
 @stop
 
 @section('css')
@@ -116,6 +225,10 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script>
         $("#modal-admin-action-add-timesheet").on("show.bs.modal", function(e) {
+            var link = $(e.relatedTarget);
+            $(this).find(".modal-body").load(link.attr("href"));
+        });
+        $("#modal-admin-action-update-timesheet-staff").on("show.bs.modal", function(e) {
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });
