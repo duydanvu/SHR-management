@@ -56,7 +56,7 @@
                 <tbody id="table_body">
                 @if ( count($staff) > 0)
                     @foreach($staff as $key => $value)
-                        <tr @if($value->logs_timesheet == "absent") style="background-color: #ff9999" @endif>
+                        <tr >
                             <td>{{$key+1}}</td>
                             <td>{{$value->first_name}} {{$value->last_name}}</td>
                             <td>{{$value->email}}</td>
@@ -64,26 +64,30 @@
                             <td>{{$value->store_name}}</td>
                             <td>{{$value->position_name}}</td>
                             <td>{{$value->dp_name}}</td>
-                            <td>{{$value->logs_timesheet}}</td>
+                            <td  @if($value->logs_timesheet == "absent") style="background-color: #ff9999" @endif>{{$value->logs_timesheet}}</td>
                             <td>{{$value->request_timesheet}}</td>
                             <td>{{$value->status_timesheet}}</td>
                             <td class="text-center">
                                 @if($value->request_timesheet == null && $value->status_timesheet == "pendding")
-                                    <a href="{{route('view_request_staff',['id'=>$value->id_timesheet])}}" data-remote="false"
-                                       data-toggle="modal" data-target="#modal-admin-view-request-timesheet" class="btn dropdown-item">
-                                        <i class="fas fa-info-circle">Add Timesheet</i>
+                                    <a href="{{route('show_view_update_time_sheet',['id'=>$value->id_timesheet])}}" data-remote="false"
+                                       data-toggle="modal" data-target="#modal-admin-action-update-timesheet-staff" class="btn dropdown-item">
+                                        <i class="fas fa-info-circle">  Add Timesheet</i>
                                     </a>
                                 @endif
-                                @if($value->request_timesheet != null)
-                                    <a href="{{route('view_request_staff',['id'=>$value->id_timesheet])}}" data-remote="false"
-                                       data-toggle="modal" data-target="#modal-admin-view-request-timesheet" class="btn dropdown-item">
-                                        <i class="fas fa-info-circle">Update Request</i>
+                                @if($value->request_timesheet != null && $value->status_timesheet != "done")
+                                    <a href="{{route('update_timesheet_with_request_staff',['id'=>$value->id_timesheet])}}" data-remote="false"
+                                       data-toggle="modal" data-target="#modal-admin-update-request-timesheet" class="btn dropdown-item">
+                                        <i class="fas fa-info-circle">  Update Request</i>
                                     </a>
+                                        <a href="{{route('dismiss_timesheet_with_request_staff',['id'=>$value->id_timesheet])}}" data-remote="false"
+                                           data-toggle="modal" class="btn dropdown-item">
+                                            <i class="fas fa-info-circle">  Dismiss Request</i>
+                                        </a>
                                 @endif
                                 @if($auth->position_id == 2)
                                 <a href="{{route('view_request_staff',['id'=>$value->id_timesheet])}}" data-remote="false"
                                    data-toggle="modal" data-target="#modal-admin-view-request-timesheet" class="btn dropdown-item">
-                                    <i class="fas fa-info-circle">Add Request</i>
+                                    <i class="fas fa-info-circle">  Add Request</i>
                                 </a>
                                 @endif
                             </td>
@@ -126,6 +130,58 @@
     </div>
     {{--     modal --}}
 
+    {{-- modal --}}
+    <div class="modal fade" id="modal-admin-update-request-timesheet">
+        <div class="modal-dialog" style="max-width: 600px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Update Request</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form action="{{route('update_request_with_log_time_sheet')}}" method="post">
+                    <div class="modal-body">
+                        @csrf
+
+                    </div>
+                    <input name="id_submit" hidden/>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="btn_accept" type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    {{--     modal --}}
+    {{-- modal --}}
+    <div class="modal fade" id="modal-admin-action-update-timesheet-staff">
+        <div class="modal-dialog" style="max-width: 600px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">View User and Add Timesheet</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form action="{{route('update_time_sheet_for_store_manage')}}" method="post">
+                    <div class="modal-body">
+                        @csrf
+
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    {{--     modal --}}
+
 @stop
 
 @section('css')
@@ -149,6 +205,14 @@
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });
+        $("#modal-admin-action-update-timesheet-staff").on("show.bs.modal", function(e) {
+            var link = $(e.relatedTarget);
+            $(this).find(".modal-body").load(link.attr("href"));
+        });
+        $("#modal-admin-update-request-timesheet").on("show.bs.modal", function(e) {
+            var link = $(e.relatedTarget);
+            $(this).find(".modal-body").load(link.attr("href"));
+        });
         // Datatable
         $(function () {
             $("#example1").DataTable({
@@ -164,6 +228,9 @@
         });
 
 
+    </script>
+
+    <script>
     </script>
 
 @stop

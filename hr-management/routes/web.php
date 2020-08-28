@@ -94,6 +94,11 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/timekeeping/view_request_logtime/{id}','RequestController@viewRequestStaff')->name('view_request_staff');
     Route::post('/timekeeping/request/update_with_request','RequestController@updateWithRequest')->name('add_request_with_log_time_sheet');
     Route::post('/timekeeping/time_sheet/update_time_sheet','RequestController@updaeTimeSheetStoreManage')->name('update_time_sheet_for_store_manage');
+    Route::get('/request/timesheet/update_request/{id}','RequestController@updateTimesheetWithTime')->name('update_timesheet_with_request_staff');
+    Route::post('/request/timesheet/update_request/update_status','RequestController@updateStatusTimesheetWithTime')->name('update_request_with_log_time_sheet');
+    Route::get('/request/timesheet/dismiss_request/{id}','RequestController@dismissTimesheetWithTime')->name('dismiss_timesheet_with_request_staff');
+
+    Route::get('/request/report_view','RequestController@viewReportTimesheet')->name('view_request_report');
 
     //route upload file
     Route::post('/file/upload_file','FileImageController@doUpdload')->name('upload_file_image');

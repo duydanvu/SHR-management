@@ -119,8 +119,23 @@ class ReportController extends Controller
         }else{
             $user_service = $user_department->where('users.service_id','=',$request->service_search);
         }
+        if($request->start_date == null && $request->end_date == null){
+                $user_time = $user_service;
+        }elseif ($request->start_date == null && $request->end_date != null){
+                $user_time = $user_service->where('users.end_time','<=',$request->end_date);
+        }elseif ($request->start_date != null && $request->end_date == null){
+                $user_time = $user_service->where('users.start_time','>',$request->start_date);
+        }else{
+            if(strtotime($request->start_date) < strtotime($request->end_date)){
+                $user_time = $user_service->whereBetween('users.end_time',[$request->start_date,$request->end_date]);
+            } else if (strtotime($request->start_date) == strtotime($request->end_date)){
+                $user_time = $user_service->whereBetween('users.end_time',[$request->start_date,$request->end_date]);
+            }else{
+                $user_time = $user_service;
+            }
+        }
 
-        foreach ($user_service->get() as $key => $value){
+        foreach ($user_time->get() as $key => $value){
             $result .= '<tr>';
             $result .= '<td>'.($key+1).'</td>';
             $result .= '<td>'.($value->store_name).'</td>';
@@ -134,6 +149,8 @@ class ReportController extends Controller
             $result .= '<td>'.($value->sv_name).'</td>';
             $result .= '<td>'.($value->ct_name).'</td>';
             $result .= '<td>'.($value->contract_number).'</td>';
+            $result .= '<td>'.($value->start_time).'</td>';
+            $result .= '<td>'.($value->end_time).'</td>';
             $result .= '<td class="text-center">
                                 <a href="'.route('view_user_detail_report',['id'=>$value->id]).'" data-remote="false"
                                    data-toggle="modal" data-target="#modal-admin-action-update-detail" class="btn dropdown-item">

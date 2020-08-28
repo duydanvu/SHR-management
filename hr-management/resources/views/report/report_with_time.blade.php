@@ -37,7 +37,7 @@
 {{--                        <input  type="month" id="date_month"  value="" name="idear_date_month">--}}
 {{--                    </div>--}}
 {{--                </div>--}}
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Search by Area</label>
                         <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
@@ -48,7 +48,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Search by Store</label>
                         <select id="store_search" name = "store_search" class="form-control select2"  value="{{ old('store_search') }}" autocomplete="store_search" style="width: 100%;">
@@ -59,7 +59,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Search by Position</label>
                         <select id="position_search" name = "position_search" class="form-control select2"  value="{{ old('position_search') }}" autocomplete="position_search" style="width: 100%;">
@@ -70,7 +70,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Search by Department</label>
                         <select id="department_search" name = "department_search" class="form-control select2"  value="{{ old('department_search') }}" autocomplete="department_search" style="width: 100%;">
@@ -81,7 +81,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Search by Service</label>
                         <select id="service_search" name = "service_search" class="form-control select2"  value="{{ old('service_search') }}" autocomplete="service_search" style="width: 100%;">
@@ -92,7 +92,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Search by Contract</label>
                         <select id="contract_search" name = "contract_search" class="form-control select2"  value="{{ old('contract_search') }}" autocomplete="contract_search" style="width: 100%;">
@@ -101,6 +101,28 @@
                             @endforeach
                                 <option value="all">All</option>
                         </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Start Time</label>
+                        <input id="start_date" type="date" class="form-control @error('txtComment') is-invalid @enderror"  name="txtStartDate"  autocomplete="number" required >
+                        @error('txtComment')
+                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">End Time</label>
+                        <input id="end_date" type="date" class="form-control @error('txtComment') is-invalid @enderror"  name="txtEndDate"  autocomplete="number" required >
+                        @error('txtComment')
+                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                        @enderror
                     </div>
                 </div>
             </div>
@@ -129,11 +151,11 @@
             <table id="example1" class="table table-bordered table-striped " style="width: 100%">
                 <thead>
                 <tr>
-                    <th style="width:60%" >#</th>
+                    <th style="width:5%" >#</th>
                     <th style="width:10%" >Tên Cửa Hàng</th>
                     <th style="text-align: center;width: 10%">Tên Nhân Viên</th>
                     <th style="text-align: center;width: 10%">Email</th>
-                    <th style="text-align: center;width: 10%">Phone</th>
+                    <th style="text-align: center;width: 5%">Phone</th>
                     <th style="text-align: center;width: 5%">Ngày Sinh</th>
                     <th style="text-align: center;width: 10%">Trình Độ Chuyên Môn</th>
                     <th style="text-align: center;width: 5%">Chức Danh</th>
@@ -141,6 +163,8 @@
                     <th style="text-align: center;width: 5%">Dịch Vụ</th>
                     <th style="text-align: center;width: 5%">Hợp Đồng</th>
                     <th style="text-align: center;width: 5%">Số Hợp Đồng</th>
+                    <th style="text-align: center;width: 5%">Ngày Ký Hợp Đồng</th>
+                    <th style="text-align: center;width: 5%">Ngày Hết Hạn Hợp Đồng</th>
                     <th style="text-align: center;width: 10%">View Detail</th>
                 </tr>
                 </thead>
@@ -160,6 +184,8 @@
                             <td>{{$value->sv_name}}</td>
                             <td>{{$value->ct_name}}</td>
                             <td>{{$value->contract_number}}</td>
+                            <td>{{$value->start_time}}</td>
+                            <td>{{$value->end_time}}</td>
                             <td class="text-center">
                                 {{--                                @if($role_use_number == 1)--}}
                                 <a href="{{route('view_user_detail_report',['id'=>$value->id])}}" data-remote="false"
@@ -447,6 +473,8 @@
                 let department_search = $('#position_search').val();
                 let service_search = $('#service_search').val();
                 let contract_search = $('#contract_search').val();
+                let start_date = $('#start_date').val();
+                let end_date = $('#end_date').val()
                 let _token = $('meta[name="csrf-token-2"]').attr('content');
                 // console.log(date_range);
                 // console.log(store_seach);
@@ -454,7 +482,7 @@
                 // console.log(department_search);
                 // console.log(service_search);
                 // console.log(contract_search);
-                var dt = {_token,area_search,store_search,position_search,department_search,service_search,contract_search};
+                var dt = {_token,area_search,store_search,position_search,department_search,service_search,contract_search,start_date,end_date};
                 console.log(dt);
                 $.ajaxSetup({
                     headers: {

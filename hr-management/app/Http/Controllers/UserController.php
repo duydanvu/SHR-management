@@ -412,10 +412,9 @@ class UserController extends Controller
                         if ($row[23] == null) {
                             continue;
                         }
-                        if(is_string($row[28])==true){
-                            continue;
-                        }
-//                        if(strlen(strstr($row[23],'/'))>0)
+//                        if(is_string($row[28])==true){
+//                            continue;
+//                        }
                         $insert_data[] = array(
                             'login' => $row[24],
                             'password' => $row[23],
@@ -450,11 +449,25 @@ class UserController extends Controller
                     }
                 }
             }
+//            dd($insert_data);
             if(!empty($insert_data))
             {
-                DB::table('users')->insert($insert_data);
+//                try {
+                    DB::table('users')->insert($insert_data);
+//                }catch ( \Illuminate\Database\QueryException $exception){
+//                    $notification = array(
+//                        'message' => 'Import not success!',
+//                        'alert-type' => 'error'
+//                    );
+//                    return back()->with($notification);
+//                }
+                $notification = array(
+                    'message' => 'Import not success!',
+                    'alert-type' => 'success'
+                );
+
             }
         }
-        return back()->with('success','Excel Data Import Successfully');
+        return back()->with($notification);
     }
 }

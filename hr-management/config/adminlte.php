@@ -308,7 +308,7 @@ return [
                 ],
                 [
                     'text' => '	Request Timesheets',
-                    'url'  => 'timekeeping/request_timesheets_staff',
+                    'url'  => 'request/report_view',
                 ],
 
             ],

@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Area;
+use App\Contract;
+use App\Department;
+use App\Position;
+use App\Services;
+use App\Store;
 use App\Timesheet;
 use App\User;
 use Doctrine\DBAL\Query\QueryException;
@@ -34,6 +40,22 @@ class RequestController extends Controller
             }
         }
         return view('timesheets.log_timesheets')->with(['staff'=>$staff,'roles'=>$roles]);
+    }
+
+    public function viewReportTimesheet(){
+        $area = Area::all();
+        $store = Store::all();
+        $position = Position::all();
+        $department = Department::all();
+        $service = Services::all();
+        $contract = Contract::all();
+        return view('timesheets.view_report_request')->with([
+            'area'=>$area,
+            'store'=>$store,
+            'position'=> $position,
+            'department' => $department,
+            'service'=>$service,
+            'contract'=>$contract]);
     }
 
     public function addViewTimesheet($id){
@@ -253,7 +275,7 @@ class RequestController extends Controller
                 'request'=>$request->txtRequest,
                 'status'=>"pendding"
             ]);
-        if($data_area_update = 1){
+        if($data_request_update = 1){
             $notification = array(
                 'message' => 'Thêm thông tin thành công!',
                 'alert-type' => 'success'
@@ -266,4 +288,53 @@ class RequestController extends Controller
         }
         return Redirect::back()->with($notification);
     }
+
+    public function updateTimesheetWithTime($id){
+        $time_request = Timesheet::find($id);
+        $use_infor = User::find($time_request->user_id);
+        return view('timesheets.view_request_to_update')->with(['time_request'=>$time_request,'user_infor'=>$use_infor]);
+    }
+
+    public function updateStatusTimesheetWithTime(Request $request){
+        $data_request_dimiss =DB::table('timesheets')->where('id','=',$request->timesheet_id)
+            ->update([
+                'logtime' =>$request->status_timesheet,
+                'comment'=>$request->txtReason,
+                'status'=>"done",
+                'request'=>"done"
+            ]);
+        if($data_area_update = 1){
+            $notification = array(
+                'message' => 'thành công!',
+                'alert-type' => 'success'
+            );
+        }else{
+            $notification = array(
+                'message' => 'không thành công!',
+                'alert-type' => 'success'
+            );
+        }
+        return Redirect::back()->with($notification);
+    }
+
+    public function dismissTimesheetWithTime($id){
+        $data_request_dimiss =DB::table('timesheets')->where('id','=',$id)
+            ->update([
+                'status'=>"done",
+                'request'=>'reject'
+            ]);
+        if($data_area_update = 1){
+            $notification = array(
+                'message' => 'thành công!',
+                'alert-type' => 'success'
+            );
+        }else{
+            $notification = array(
+                'message' => 'không thành công!',
+                'alert-type' => 'success'
+            );
+        }
+        return Redirect::back()->with($notification);
+    }
+
 }
