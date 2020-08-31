@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -44,7 +45,8 @@ class UserController extends Controller
             ->join('departments','users.department_id','=','departments.id')
             ->join('services','users.service_id','=','services.id')
             ->select('users.*','stores.store_name','positions.position_name','contracts.name as ct_name','departments.name as dp_name','services.name as sv_name')
-            ->get();
+//            ->get()
+            ->paginate(25);
         return view('user.users_list')->with([
             'user'=>$user,
             'store'=>$store,
@@ -58,6 +60,61 @@ class UserController extends Controller
             'department1'=>$department1,
             'service1' =>$service1,
             'area' => $area]);
+    }
+
+    public function search_user_with_store(Request $request){
+        $result = null;
+        $user = User::join('stores','users.store_id','=','stores.store_id')
+            ->join('positions','users.position_id','=','positions.position_id')
+            ->join('contracts','users.contract_id','=','contracts.contract_id')
+            ->join('departments','users.department_id','=','departments.id')
+            ->join('services','users.service_id','=','services.id')
+            ->select('users.*','stores.store_name','positions.position_name','contracts.name as ct_name','departments.name as dp_name','services.name as sv_name')
+            ->where('users.store_id','=',$request->store_search)
+            ->paginate(25);
+        foreach ($user as $key=>$value){
+            $result .= '<tr>';
+            $result .= '<td>'.($key+1).'</td>';
+            $result .= '<td><img id="img_prv" src="" style="max-width: 50px;max-height: 50px; width: 50px;height: 50px"></td>';
+            $result .= '<td>'.($value->first_name).' '.($value->last_name).'</td>';
+            $result .= '<td>'.($value->email).'</td>';
+            $result .= '<td>'.(str_replace("/","-",$value->phone)).'</td>';
+            $result .= '<td>'.($value->dob).'</td>';
+            $result .= '<td>'.($value->gender).'</td>';
+            $result .= '<td>'.($value->line).'</td>';
+            $result .= '<td>'.($value->store_name).'</td>';
+            $result .= '<td>'.($value->position_name).'</td>';
+            $result .= '<td>'.($value->dp_name).'</td>';
+            $result .= '<td>'.($value->sv_name).'</td>';
+            $result .= '<td>'.($value->ct_name).'</td>';
+            $result .= '<td class="text-center">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a href="'.route('view_update_user',['id'=>$value->id]).'" data-remote="false"
+                                               data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                                <i class="fas fa-edit"> Edit</i>
+                                            </a>
+                                            <a href="'.route('delete_information_user',['id'=>$value->id]).'"  class="btn dropdown-item">
+                                                <i class="fas fa-users"> Delete</i>
+                                            </a>
+                                            <a href="'.route('view_update_user_detail',['id'=>$value->id]).'" data-remote="false"
+                                               data-toggle="modal" data-target="#modal-admin-action-update-detail" class="btn dropdown-item">
+                                                <i class="fas fa-info-circle"> View detail</i>
+                                            </a>
+                                            <a href="'.route('view_update_user_image',['id'=>$value->id]).'" data-remote="false"
+                                               data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">
+                                                <i class="fas fa-image"> View Image</i>
+                                            </a>
+                                        </div>
+
+                                    </div>
+                            </td>
+                        </tr>';
+        }
+        return $result;
     }
 
     /**
@@ -395,7 +452,36 @@ class UserController extends Controller
         return Redirect::back()->with($notification);
     }
 
+    public function convert_name($str){
+        $str = preg_replace("/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/", 'a', $str);
+        $str = preg_replace("/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/", 'e', $str);
+        $str = preg_replace("/(ì|í|ị|ỉ|ĩ)/", 'i', $str);
+        $str = preg_replace("/(ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ)/", 'o', $str);
+        $str = preg_replace("/(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)/", 'u', $str);
+        $str = preg_replace("/(ỳ|ý|ỵ|ỷ|ỹ)/", 'y', $str);
+        $str = preg_replace("/(đ)/", 'd', $str);
+        $str = preg_replace("/(À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ)/", 'A', $str);
+        $str = preg_replace("/(È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ)/", 'E', $str);
+        $str = preg_replace("/(Ì|Í|Ị|Ỉ|Ĩ)/", 'I', $str);
+        $str = preg_replace("/(Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ)/", 'O', $str);
+        $str = preg_replace("/(Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ)/", 'U', $str);
+        $str = preg_replace("/(Ỳ|Ý|Ỵ|Ỷ|Ỹ)/", 'Y', $str);
+        $str = preg_replace("/(Đ)/", 'D', $str);
+        return $str;
+    }
 
+    public function createUserLogin($stringname){
+        $arr = explode(" ",$stringname);
+        $name = "";
+        for($i = 0; $i < count($arr); $i++){
+            if($i != count($arr)-1){
+                $name = $name . substr($arr[$i],0,1);
+            }else{
+                $name = $arr[$i].$name;
+            }
+        }
+        return $name;
+    }
 
 
     public function import(Request $request){
@@ -407,17 +493,34 @@ class UserController extends Controller
                 foreach ($value as $key1 => $row) {
                     if($key1 > 0) {
                         if ($row[24] == null) {
-                            continue;
+                            $convert_name = $this->convert_name($row[4]);
+                            $login = $this->createUserLogin($convert_name).substr($row[10],-1);
+                        }elseif ($row[24] != null){
+                            $login = $row[24];
                         }
                         if ($row[23] == null) {
-                            continue;
+                            $password = Hash::make('11111111');
+                        }elseif ($row[23] != null){
+                            $password = Hash::make($row[23]);
                         }
-//                        if(is_string($row[28])==true){
-//                            continue;
-//                        }
+                        if(is_numeric($row[28]) == 1){
+                            $ban = $row[28];
+                        }elseif (is_numeric($row[28]) !=1){
+                            $ban = null;
+                        }
+                        if($row[16] == '' || $row[16] == ' '){
+                           $tin = 0;
+                        }else{
+                            $tin = $row[16];
+                        }
+                        if(is_numeric($row[13]) == 1){
+                            $ssc_number = $row[13];
+                        }else{
+                            $ssc_number = 0;
+                        }
                         $insert_data[] = array(
-                            'login' => $row[24],
-                            'password' => $row[23],
+                            'login' => $login,
+                            'password' => $password,
                             'first_name' => '',
                             'last_name' => $row[4],
                             'email' => $row[24],
@@ -436,12 +539,12 @@ class UserController extends Controller
                             'start_time' => date("Y-m-d", strtotime(str_replace("/", ".", $row[39]))),
                             'end_time' => date("Y-m-d", strtotime(str_replace("/", ".", $row[40]))),
                             'identity_number' => $row[10],
-                            'tin' => $row[16],
+                            'tin' => $tin,
                             'idn_date' => date("Y-m-d", strtotime(str_replace("/", ".", $row[11]))),
                             'idn_address' => $row[12],
-                            'ssc_number' => $row[13],
+                            'ssc_number' => $ssc_number,
                             'hospital' => $row[14],
-                            'ban' => $row[28],
+                            'ban' => $ban,
                             'bank' => $row[29],
                             'noi_address' => $row[17],
                             'address_now' => $row[18],

@@ -75,6 +75,7 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/admin/user/view_update_image/{id}','UserController@viewImage')->name('view_update_user_image');
     Route::post('/admin/user/update_image','UserController@updateImage')->name('update_information_user_image');
     Route::post('/admin/user/import_view','UserController@import')->name('import');
+    Route::post('/admin/user/search_user_with_store','UserController@search_user_with_store')->name('search_user_with_store');
 
 
     //route report

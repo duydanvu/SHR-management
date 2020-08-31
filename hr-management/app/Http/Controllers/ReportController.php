@@ -11,6 +11,7 @@ use App\Store;
 use App\User;
 use App\UserDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
@@ -28,6 +29,7 @@ class ReportController extends Controller
         $department1 = Department::all();
         $service1 = Services::all();
         $area1 = Area::all();
+        $auth_position = Auth::user()->position_id;
         $user = User::join('stores','users.store_id','=','stores.store_id')
             ->join('positions','users.position_id','=','positions.position_id')
             ->join('contracts','users.contract_id','=','contracts.contract_id')
@@ -36,7 +38,7 @@ class ReportController extends Controller
             ->join('area','stores.area_id','=','area.id')
             ->select('users.*','stores.store_name','positions.position_name','contracts.name as ct_name',
                 'departments.name as dp_name','services.name as sv_name','area.area_description')
-            ->get();
+            ->paginate(25);
         return view('report.report_with_time')->with([
             'user'=>$user,
             'store'=>$store,
@@ -50,7 +52,8 @@ class ReportController extends Controller
             'contract1'=>$contract1,
             'department1'=>$department1,
             'service1' =>$service1,
-            'area1' => $area1]);
+            'area1' => $area1,
+            'auth_position' => $auth_position]);
     }
 
     public function view_detail($id){

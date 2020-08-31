@@ -287,10 +287,10 @@ return [
                     'text' => 'Báo Cáo Theo Thời Gian',
                     'url'  => 'report/report_with_time',
                 ],
-                [
-                    'text' => 'Báo Cáo Theo Nhân Viên',
-                    'url'  => 'report/report_with_user',
-                ],
+//                [
+//                    'text' => 'Báo Cáo Theo Nhân Viên',
+//                    'url'  => 'report/report_with_user',
+//                ],
             ],
         ],
         [

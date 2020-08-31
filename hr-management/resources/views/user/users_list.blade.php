@@ -20,7 +20,7 @@
 
 @section('content')
     <div class="card card-outline card-primary-dashboard">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="csrf-token-2" content="{{ csrf_token() }}">
         <div class="card-header">
             <h3 class="card-title">Search</h3>
             <div class="card-tools">
@@ -86,7 +86,7 @@
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th style="width:5%">#</th>
+                    <th style="width:70%">#</th>
                     <th style="width:20%">Image</th>
                     <th style="width:10%">Họ Tên</th>
                     <th style="width:10%">Email</th>
@@ -110,7 +110,7 @@
                             <td><img id="img_prv" src="{{URL::to('/')}}{{$value->url_image}}" style="max-width: 50px;max-height: 50px; width: 50px;height: 50px"></td>
                             <td>{{$value->first_name}} {{$value->last_name}}</td>
                             <td>{{$value->email}}</td>
-                            <td>{{$value->phone}}</td>
+                            <td>{{str_replace('/','-',$value->phone)}}</td>
                             <td>{{$value->dob}}</td>
                             <td>{{$value->gender}}</td>
                             <td>{{$value->line}}</td>
@@ -157,6 +157,7 @@
 
                 </tbody>
             </table>
+            {{ $user->links() }}
         </div>
         <!-- /.card-body -->
     </div>
@@ -686,6 +687,32 @@
             $("#example1").parent().css({"overflow": "auto"});
         });
 
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $('#fillter_date').click(function () {
+                let store_search = $('#store_search').val();
+                let _token = $('meta[name="csrf-token-2"]').attr('content');
+                var dt = {_token,store_search};
+                console.log(dt);
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token-2"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type:'POST',
+                    url:'{{route('search_user_with_store')}}',
+                    data:dt,
+                    success:function(resultData){
+                        // // $('.effort').val(resultData);
+                        $('#table_body').html(resultData);
+                        // console.log(resultData);
+                    }
+                });
+            });
+        });
     </script>
 
     <script>

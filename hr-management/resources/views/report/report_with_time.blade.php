@@ -204,6 +204,7 @@
 
                 </tbody>
             </table>
+            {{ $user->links() }}
         </div>
         <!-- /.card-body -->
     </div>
