@@ -49,6 +49,15 @@ class RequestController extends Controller
         $department = Department::all();
         $service = Services::all();
         $contract = Contract::all();
+        $user = User::join('stores','users.store_id','=','stores.store_id')
+            ->join('positions','users.position_id','=','positions.position_id')
+            ->join('contracts','users.contract_id','=','contracts.contract_id')
+            ->join('departments','users.department_id','=','departments.id')
+            ->join('services','users.service_id','=','services.id')
+            ->join('timesheets','users.id','=','timesheets.user_id')
+            ->select('users.*','stores.store_name','positions.position_name','contracts.name as ct_name'
+                ,'departments.name as dp_name','services.name as sv_name')
+            ->paginate(30);
         return view('timesheets.view_report_request')->with([
             'area'=>$area,
             'store'=>$store,

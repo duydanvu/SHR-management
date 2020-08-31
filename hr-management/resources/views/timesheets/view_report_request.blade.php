@@ -98,12 +98,23 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Start time</label>
+                        <input id="start_date" type="date" class="form-control @error('txtComment') is-invalid @enderror"  name="txtStartDate"  autocomplete="number" required >
+                        @error('txtComment')
+                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                        @enderror
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="exampleInputEmail1">End time</label>
-
+                        <input id="end_date" type="date" class="form-control @error('txtComment') is-invalid @enderror"  name="txtEndDate"  autocomplete="number" required >
+                        @error('txtComment')
+                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                        @enderror
                     </div>
                 </div>
             </div>
@@ -112,31 +123,17 @@
                     <div class="col-12 col-md-12 col-sm-12">
                         <a href=" " type="submit" class="btn btn-default" >Refresh</a>
                         <button id = "import_user" type="button" class="btn btn-success" data-toggle="modal"
-                                data-target="#modal-admin-export-user"><i class="fas fa-plus-circle"></i> Export User </button>
+                                data-target="#modal"><i class="fas fa-plus-circle"></i> Export Report</button>
                         <button type="submit" id="fillter_date" class="btn btn-primary" style="float: right;">Filter</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    {{--        <div class="card-footer" style="background: transparent;">--}}
-    {{--            <div class="row">--}}
-    {{--                <div class="col-12 col-md-12 col-sm-12">--}}
-    {{--                    <a href=" " type="submit" class="btn btn-default" >Refresh</a>--}}
-    {{--                    <a type="submit" id="export_data"  class="btn btn-success btn-xs offset-lg-10" style="margin: auto" >Export</a>--}}
-    {{--                    <button type="submit" id="fillter_date" class="btn btn-primary" style="float: right;">Filter</button>--}}
-    {{--                </div>--}}
-    {{--            </div>--}}
-    {{--        </div>--}}
-    </div>
+
     <div class="card">
         <div class="card-header">
             <div class="button-group-card-header">
-                {{--                @if($role_use_number == 1)--}}
-                <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Create Account </button>
-                <button id = "import_user" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-admin-import-user"><i class="fas fa-plus-circle"></i> Import User </button>
-                {{--                @endif--}}
-                {{--<a href="{{route('export_to_file_csv')}}" class="btn btn-success btn-xs offset-lg-10" style="float: right;">export</a>--}}
             </div>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -147,21 +144,21 @@
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
+                <tr style="text-align: center">
+                    <th style="width:5%" rowspan="2">#</th>
+                    <th style="width:10%" rowspan="2">Image</th>
+                    <th style="width:15%" rowspan="2">Họ Tên</th>
+                    <th style="width:15%" rowspan="2">Email</th>
+                    <th style="width:10%" rowspan="2">Cửa Hàng</th>
+                    <th style="width:10%" rowspan="2">Chức Danh</th>
+                    <th style="width:10%" rowspan="2">Bộ Phận</th>
+                    <th style="width:10%" rowspan="2">Dịch Vụ</th>
+                    <th style="width:5%" rowspan="2">Số Ngày Làm</th>
+                    <th style="width:10%" class="noSort" colspan="2">Số Ngày Nghỉ</th>
+                </tr>
                 <tr>
-                    <th style="width:5%">#</th>
-                    <th style="width:20%">Image</th>
-                    <th style="width:10%">Họ Tên</th>
-                    <th style="width:10%">Email</th>
-                    <th style="width:10%">Phone</th>
-                    <th style="width:10%">DOB</th>
-                    <th style="width:10%">Gender</th>
-                    <th style="width:10%">Chuyên Môn</th>
-                    <th style="width:10%">Cửa Hàng</th>
-                    <th style="width:10%">Chức Danh</th>
-                    <th style="width:10%">Bộ Phận</th>
-                    <th style="width:10%">Dịch Vụ</th>
-                    <th style="width:10%">Hợp Đồng</th>
-                    <th style="width:5%" class="noSort">Action</th>
+                    <th>Có phép</th>
+                    <th>Không Phép</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
