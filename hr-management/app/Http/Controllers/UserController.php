@@ -62,6 +62,115 @@ class UserController extends Controller
             'area' => $area]);
     }
 
+    public function view_user_of_store($id){
+        $store = Store::all();
+        $position = Position::all();
+        $contract = Contract::all();
+        $department = Department::all();
+        $service = Services::all();
+        $store1 = Store::all();
+        $position1 = Position::all();
+        $contract1 = Contract::all();
+        $department1 = Department::all();
+        $service1 = Services::all();
+        $area = Area::all();
+        $user = User::join('stores','users.store_id','=','stores.store_id')
+            ->join('positions','users.position_id','=','positions.position_id')
+            ->join('contracts','users.contract_id','=','contracts.contract_id')
+            ->join('departments','users.department_id','=','departments.id')
+            ->join('services','users.service_id','=','services.id')
+            ->select('users.*','stores.store_name','positions.position_name','contracts.name as ct_name','departments.name as dp_name','services.name as sv_name')
+            ->where('stores.store_id','=',$id)
+            ->get();
+        $store_name = Store::find($id)->store_name;
+        return view('user.user_of_store')->with([
+            'user'=>$user,
+            'store'=>$store,
+            'position'=>$position,
+            'contract'=>$contract,
+            'department'=>$department,
+            'service' =>$service,
+            'store_name'=>'Store - '.$store_name,
+            'store1'=>$store1,
+            'position1'=>$position1,
+            'contract1'=>$contract1,
+            'department1'=>$department1,
+            'service1' =>$service1,
+            'area' => $area]);
+    }
+    public function view_user_of_position($id){
+        $store = Store::all();
+        $position = Position::all();
+        $contract = Contract::all();
+        $department = Department::all();
+        $service = Services::all();
+        $store1 = Store::all();
+        $position1 = Position::all();
+        $contract1 = Contract::all();
+        $department1 = Department::all();
+        $service1 = Services::all();
+        $area = Area::all();
+        $user = User::join('stores','users.store_id','=','stores.store_id')
+            ->join('positions','users.position_id','=','positions.position_id')
+            ->join('contracts','users.contract_id','=','contracts.contract_id')
+            ->join('departments','users.department_id','=','departments.id')
+            ->join('services','users.service_id','=','services.id')
+            ->select('users.*','stores.store_name','positions.position_name','contracts.name as ct_name','departments.name as dp_name','services.name as sv_name')
+            ->where('positions.position_id','=',$id)
+            ->get();
+        $store_name = Position::find($id)->position_name;
+        return view('user.user_of_store')->with([
+            'user'=>$user,
+            'store'=>$store,
+            'position'=>$position,
+            'contract'=>$contract,
+            'department'=>$department,
+            'service' =>$service,
+            'store_name'=>'Position - '.$store_name,
+            'store1'=>$store1,
+            'position1'=>$position1,
+            'contract1'=>$contract1,
+            'department1'=>$department1,
+            'service1' =>$service1,
+            'area' => $area]);
+    }
+    public function view_user_of_contract($id){
+        $store = Store::all();
+        $position = Position::all();
+        $contract = Contract::all();
+        $department = Department::all();
+        $service = Services::all();
+        $store1 = Store::all();
+        $position1 = Position::all();
+        $contract1 = Contract::all();
+        $department1 = Department::all();
+        $service1 = Services::all();
+        $area = Area::all();
+        $user = User::join('stores','users.store_id','=','stores.store_id')
+            ->join('positions','users.position_id','=','positions.position_id')
+            ->join('contracts','users.contract_id','=','contracts.contract_id')
+            ->join('departments','users.department_id','=','departments.id')
+            ->join('services','users.service_id','=','services.id')
+            ->select('users.*','stores.store_name','positions.position_name','contracts.name as ct_name','departments.name as dp_name','services.name as sv_name')
+            ->where('contracts.contract_id','=',$id)
+            ->get();
+        $store_name = Contract::find($id)->position_name;
+        return view('user.user_of_store')->with([
+            'user'=>$user,
+            'store'=>$store,
+            'position'=>$position,
+            'contract'=>$contract,
+            'department'=>$department,
+            'service' =>$service,
+            'store_name'=>'Contract - '.$store_name,
+            'store1'=>$store1,
+            'position1'=>$position1,
+            'contract1'=>$contract1,
+            'department1'=>$department1,
+            'service1' =>$service1,
+            'area' => $area]);
+    }
+
     public function search_user_with_store(Request $request){
         $result = null;
         $user = User::join('stores','users.store_id','=','stores.store_id')
@@ -75,18 +184,19 @@ class UserController extends Controller
         foreach ($user as $key=>$value){
             $result .= '<tr>';
             $result .= '<td>'.($key+1).'</td>';
-            $result .= '<td><img id="img_prv" src="" style="max-width: 50px;max-height: 50px; width: 50px;height: 50px"></td>';
             $result .= '<td>'.($value->first_name).' '.($value->last_name).'</td>';
-            $result .= '<td>'.($value->email).'</td>';
+            $result .= '<td>'.(str_replace('@','@ ',$value->email)).'</td>';
             $result .= '<td>'.(str_replace("/","-",$value->phone)).'</td>';
             $result .= '<td>'.($value->dob).'</td>';
             $result .= '<td>'.($value->gender).'</td>';
-            $result .= '<td>'.($value->line).'</td>';
+//            $result .= '<td>'.($value->line).'</td>';
             $result .= '<td>'.($value->store_name).'</td>';
             $result .= '<td>'.($value->position_name).'</td>';
             $result .= '<td>'.($value->dp_name).'</td>';
             $result .= '<td>'.($value->sv_name).'</td>';
             $result .= '<td>'.($value->ct_name).'</td>';
+            $result .= '<td>'.($value->start_time).'</td>';
+            $result .= '<td>'.($value->end_time).'</td>';
             $result .= '<td class="text-center">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
@@ -283,7 +393,7 @@ class UserController extends Controller
     {
         $validator = \Validator::make($request->all(),[
             'txtName' => 'required|max:50',
-            'txtPassword' => 'required|min:7|max:100',
+//            'txtPassword' => 'required|min:7|max:100',
             'txtFName' => 'required|max:50',
             'txtLName' => 'required|max:50',
             'txtEmail' => 'required|max:100|email',
@@ -313,7 +423,7 @@ class UserController extends Controller
         $data_area_update =DB::table('users')->where('id','=',$request->user_id)
             ->update([
                 'login'=>$request->txtName,
-                'password'=>$request->txtPassword,
+//                'password'=>$request->txtPassword,
                 'first_name'=>$request->txtFName,
                 'last_name'=>$request->txtLName,
                 'email'=>$request->txtEmail,

@@ -34,6 +34,7 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/admin/store/view_update/{id}','StoresController@edit')->name('view_update_store');
     Route::post('/admin/store/update','StoresController@update')->name('update_information_store');
     Route::get('/admin/store/delete/{id}','StoresController@destroy')->name('delete_information_store');
+    Route::get('/admin/store/view_store_area/{id}','StoresController@view_all_store_of_area')->name('view_store_of_area');
 
     //route contract
     Route::get('/admin/contract','ContractController@index')->name('show_list_contract');
@@ -76,7 +77,9 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::post('/admin/user/update_image','UserController@updateImage')->name('update_information_user_image');
     Route::post('/admin/user/import_view','UserController@import')->name('import');
     Route::post('/admin/user/search_user_with_store','UserController@search_user_with_store')->name('search_user_with_store');
-
+    Route::get('/admin/user/view_user_of_store/{id}','UserController@view_user_of_store')->name('view_user_of_store');
+    Route::get('/admin/user/view_user_of_position/{id}','UserController@view_user_of_position')->name('view_user_of_position');
+    Route::get('/admin/user/view_user_of_contract/{id}','UserController@view_user_of_contract')->name('view_user_of_contract');
 
     //route report
     Route::get('/report/report_with_time','ReportController@showReportTime')->name('show_report_time');

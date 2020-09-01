@@ -18,9 +18,25 @@ class StoresController extends Controller
      */
     public function index()
     {
-        $stores = Store::all();
+        $stores = Store::join('area','area.id','=','stores.area_id')
+                ->select('stores.*','area.area_name')
+                ->get();
         $area = Area::all();
         return view('store.stores_list')->with(['stores'=>$stores,'area'=>$area]);
+    }
+
+    public function view_all_store_of_area($id){
+        $area_name =Area::find($id)->area_name;
+        $stores = Store::leftJoin('users','users.store_id','=','stores.store_id')
+                ->select('stores.store_id','stores.store_name','stores.store_address','stores.area_id',DB::raw('COUNT(users.store_id) AS sum'))
+                ->where('area_id','=',$id)
+                ->groupBy('stores.store_id')
+                ->groupBy('stores.store_name')
+                ->groupBy('stores.store_address')
+                ->groupBy('stores.area_id')
+                ->get();
+        $area = Area::all();
+        return view('area.view_store_of_area')->with(['stores'=>$stores,'area'=>$area,'area_name'=>$area_name]);
     }
 
     /**

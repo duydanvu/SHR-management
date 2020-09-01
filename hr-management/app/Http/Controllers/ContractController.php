@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contract;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -16,7 +17,19 @@ class ContractController extends Controller
      */
     public function index()
     {
-        $contract = Contract::all();
+        $contract = DB::table('contracts')
+            ->select('contracts.*')
+            ->addSelect(DB::raw("'0' as sum_user"))
+            ->get();
+        $contract_ct = User::where('contract_id','=',1)->get();
+        $contract_tv = User::where('contract_id','=',2)->get();
+        foreach ($contract as $value){
+            if($value->contract_id == 1){
+                $value->sum_user = count($contract_ct);
+            }elseif ($value->contract_id == 2){
+                $value->sum_user = count($contract_tv);
+            }
+        }
         return view('contract.contract_list')->with(['contract'=>$contract]);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Position;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -16,7 +17,22 @@ class PositionController extends Controller
      */
     public function index()
     {
-        $position = Position::all();
+        $position = DB::table('positions')
+            ->select('positions.*')
+            ->addSelect(DB::raw("'0' as sum_user"))
+            ->get();
+        $position_admin = User::where('position_id','=',1)->get();
+        $position_sm = User::where('position_id','=',2)->get();
+        $position_staff = User::where('position_id','=',3)->get();
+        foreach ($position as $value){
+            if($value->position_id == 1){
+                $value->sum_user = count($position_admin);
+            }elseif ($value->position_id == 2){
+                $value->sum_user = count($position_sm);
+            }elseif ($value->position_id == 3){
+                $value->sum_user = count($position_staff);
+            }
+        }
         return view('position.position_list')->with(['position'=>$position]);
     }
 

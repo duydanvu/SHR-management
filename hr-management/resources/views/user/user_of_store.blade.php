@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>User</h1>
+                <h1>{{$store_name}}</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -19,51 +19,13 @@
 @stop
 
 @section('content')
-    <div class="card card-outline card-primary-dashboard">
-        <meta name="csrf-token-2" content="{{ csrf_token() }}">
-        <div class="card-header">
-            <h3 class="card-title">Search</h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                    <i class="fas fa-minus"></i></button>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <meta name="csrf-token2" content="{{ csrf_token() }}">
-                            <label for="exampleInputEmail1">Search by Area</label>
-                            <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
-                                @foreach ($area as $area)
-                                    <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Search by Store</label>
-                            <select id="store_search" name = "store_search" class="form-control select2"  value="{{ old('store_search') }}" autocomplete="store_search" style="width: 100%;">
-                                @foreach ($store as $store2)
-                                    <option value="{{$store2['store_id']}}">{{$store2['store_name']}}-{{$store2['store_address']}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="pt-4" style="float: left">
-                        <button type="submit" id="fillter_date" class="btn btn-primary mt-2" style="float: left"><i class="fas fa-search-minus">Search</i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
     <div class="card">
         <div class="card-header">
             <div class="button-group-card-header">
-{{--                @if($role_use_number == 1)--}}
-                    <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Create Account </button>
-                    <button id = "import_user" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-admin-import-user"><i class="fas fa-plus-circle"></i> Import User </button>
-{{--                @endif--}}
+                {{--                @if($role_use_number == 1)--}}
+                <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Create Account </button>
+{{--                <button id = "import_user" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-admin-import-user"><i class="fas fa-plus-circle"></i> Import User </button>--}}
+                {{--                @endif--}}
                 {{--<a href="{{route('export_to_file_csv')}}" class="btn btn-success btn-xs offset-lg-10" style="float: right;">export</a>--}}
             </div>
             <div class="card-tools">
@@ -79,15 +41,15 @@
                     <th style="width:5%">#</th>
 {{--                    <th style="width:20%">Image</th>--}}
                     <th style="width:10%">Họ Tên</th>
-                    <th style="width:10%">Email</th>
+                    <th style="width:10%; text-overflow: ellipsis; overflow: hidden;white-space: nowrap">Email</th>
                     <th style="width:10%">Phone</th>
                     <th style="width:10%">DOB</th>
                     <th style="width:10%">Gender</th>
 {{--                    <th style="width:10%">Chuyên Môn</th>--}}
                     <th style="width:10%">Cửa Hàng</th>
                     <th style="width:10%">Chức Danh</th>
-                    <th style="width:10%">Bộ Phận</th>
-                    <th style="width:10%">Dịch Vụ</th>
+{{--                    <th style="width:10%">Bộ Phận</th>--}}
+{{--                    <th style="width:10%">Dịch Vụ</th>--}}
                     <th style="width:5%">Hợp Đồng</th>
                     <th style="width:10%">Ngày bắt đầu</th>
                     <th style="width:10%">Ngày kết thúc</th>
@@ -108,38 +70,38 @@
 {{--                            <td>{{$value->line}}</td>--}}
                             <td>{{$value->store_name}}</td>
                             <td>{{$value->position_name}}</td>
-                            <td>{{$value->dp_name}}</td>
-                            <td>{{$value->sv_name}}</td>
+{{--                            <td>{{$value->dp_name}}</td>--}}
+{{--                            <td>{{$value->sv_name}}</td>--}}
                             <td>{{$value->ct_name}}</td>
                             <td>{{$value->start_time}}</td>
                             <td>{{$value->end_time}}</td>
                             <td class="text-center">
-{{--                                @if($role_use_number == 1)--}}
-                                    <div class="btn-group">
-{{--                                        <button type="button" class="btn btn-primary">Action</button>--}}
-                                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <div class="dropdown-menu" role="menu">
-                                            <a href="{{route('view_update_user',['id'=>$value->id])}}" data-remote="false"
-                                               data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
-                                                <i class="fas fa-edit"> Edit</i>
-                                            </a>
-                                            <a href="{{route('delete_information_user',['id'=>$value->id])}}"  class="btn dropdown-item">
-                                                <i class="fas fa-users"> Delete</i>
-                                            </a>
-                                            <a href="{{route('view_update_user_detail',['id'=>$value->id])}}" data-remote="false"
-                                               data-toggle="modal" data-target="#modal-admin-action-update-detail" class="btn dropdown-item">
-                                                <i class="fas fa-info-circle"> View detail</i>
-                                            </a>
-                                            <a href="{{route('view_update_user_image',['id'=>$value->id])}}" data-remote="false"
-                                               data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">
-                                                <i class="fas fa-image"> View Image</i>
-                                            </a>
-                                        </div>
-
+                                {{--                                @if($role_use_number == 1)--}}
+                                <div class="btn-group">
+                                    {{--                                        <button type="button" class="btn btn-primary">Action</button>--}}
+                                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a href="{{route('view_update_user',['id'=>$value->id])}}" data-remote="false"
+                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                            <i class="fas fa-edit"> Edit</i>
+                                        </a>
+                                        <a href="{{route('delete_information_user',['id'=>$value->id])}}"  class="btn dropdown-item">
+                                            <i class="fas fa-users"> Delete</i>
+                                        </a>
+                                        <a href="{{route('view_update_user_detail',['id'=>$value->id])}}" data-remote="false"
+                                           data-toggle="modal" data-target="#modal-admin-action-update-detail" class="btn dropdown-item">
+                                            <i class="fas fa-info-circle"> View detail</i>
+                                        </a>
+                                        <a href="{{route('view_update_user_image',['id'=>$value->id])}}" data-remote="false"
+                                           data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">
+                                            <i class="fas fa-image"> View Image</i>
+                                        </a>
                                     </div>
-{{--                                @endif--}}
+
+                                </div>
+                                {{--                                @endif--}}
                             </td>
                         </tr>
                     @endforeach
@@ -151,12 +113,11 @@
 
                 </tbody>
             </table>
-            {{ $user->links() }}
         </div>
         <!-- /.card-body -->
     </div>
 
-{{--    --}}{{-- modal --}}
+    {{--    --}}{{-- modal --}}
     <div class="modal fade" id="modal-admin-action-update">
         <div class="modal-dialog" style="max-width: 1000px">
             <div class="modal-content">
@@ -181,7 +142,7 @@
         <!-- /.modal-dialog -->
     </div>
 
-{{--     modal --}}
+    {{--     modal --}}
 
     {{--    --}}{{-- modal --}}
     <div class="modal fade" id="modal-admin-action-update-detail">
@@ -225,12 +186,12 @@
                                 <span id="uploaded_image"><img id="img_prv1" src="{{URL::to('/')}}/upload/man.png" style="max-width: 150px;max-height: 200px; width: 150px;height: 200px"></span>
                                 <div class="form-group col-8 float-right">
                                     <label for="name">Upload Ảnh</label>
-{{--                                    <form id="upload_form" enctype="multipart/form-data" method="post">--}}
-                                        <meta name="csrf-token1" content="{{ csrf_token() }}">
-                                        <input id="select_file" type="file" name="select_file" required="true" class="pb-3">
-{{--                                        <input type="submit" name="upload" id="upload" class="btn btn-primary" value="Upload Image">--}}
-{{--                                    </form>--}}
-                                        <span id="mgs_ta"></span>
+                                    {{--                                    <form id="upload_form" enctype="multipart/form-data" method="post">--}}
+                                    <meta name="csrf-token1" content="{{ csrf_token() }}">
+                                    <input id="select_file" type="file" name="select_file" required="true" class="pb-3">
+                                    {{--                                        <input type="submit" name="upload" id="upload" class="btn btn-primary" value="Upload Image">--}}
+                                    {{--                                    </form>--}}
+                                    <span id="mgs_ta"></span>
                                 </div>
                             </div>
                         </div>
@@ -344,10 +305,10 @@
                                         <div class="col-sm-10 p-0">
                                             <select id="store" name = "store" class="form-control select2"  value="{{ old('store') }}" autocomplete="store" style="width: 100%;">
                                                 @if(count($store) > 0)
-                                                @foreach ($store as $store)
-                                                    <option value="{{$store['store_id']}}">{{$store['store_name']}}-{{$store['store_address']}}</option>
-                                                @endforeach
-                                                    @endif
+                                                    @foreach ($store as $store)
+                                                        <option value="{{$store['store_id']}}">{{$store['store_name']}}-{{$store['store_address']}}</option>
+                                                    @endforeach
+                                                @endif
                                             </select>
                                         </div>
                                     </div>
@@ -521,7 +482,7 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-{{--     modal --}}
+    {{--     modal --}}
     <div class="modal fade" id="modal-admin-action-update-image">
         <div class="modal-dialog" style="max-width: 1000px">
             <div class="modal-content">
@@ -545,7 +506,7 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-{{--    modal--}}
+    {{--    modal--}}
     <div class="modal fade" id="modal-admin-import-user">
         <div class="modal-dialog col-lg-8" style="max-width: 800px">
             <div class="modal-content col-lg-12 ">
@@ -578,9 +539,9 @@
                                         <label class="pt-1"for="name">Cửa hàng</label>
                                         <div class="col-sm-10 p-0">
                                             <select id="store_import" name = "store_import" class="form-control select2"  value="{{ old('store') }}" autocomplete="store_import" style="width: 100%;">
-                                                    @foreach ($store1 as $store)
-                                                        <option value="{{$store['store_id']}}">{{$store['store_name']}}-{{$store['store_address']}}</option>
-                                                    @endforeach
+                                                @foreach ($store1 as $store)
+                                                    <option value="{{$store['store_id']}}">{{$store['store_name']}}-{{$store['store_address']}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -642,7 +603,7 @@
             <!-- /.modal-content -->
         </div>
     </div>
-{{--    modal--}}
+    {{--    modal--}}
 @stop
 
 @section('css')
@@ -712,24 +673,24 @@
     <script>
         $(document).ready(function () {
             $("#area_search").change(function () {
-                   var area = $("#area_search").val();
-                   $.ajax({
-                       headers:{'X-CSRF-Token':$('meta[name="csrf-token2"]').attr('content')},
-                       url:"{{url('admin/user/area_store')}}",
-                       type:"POST",
-                       data: {
-                           area : area
-                       },
-                       success:function (data) {
+                var area = $("#area_search").val();
+                $.ajax({
+                    headers:{'X-CSRF-Token':$('meta[name="csrf-token2"]').attr('content')},
+                    url:"{{url('admin/user/area_store')}}",
+                    type:"POST",
+                    data: {
+                        area : area
+                    },
+                    success:function (data) {
 
-                           $('#store_search').empty();
-                           $.each(data.stores,function(index,store){
-                               // console.log(index);
-                               // console.log(store);
-                               $('#store_search').append('<option value="'+store.store_id+'">'+store.store_name+'-'+store.store_address+'</option>');
-                           })
-                       }
-                   })
+                        $('#store_search').empty();
+                        $.each(data.stores,function(index,store){
+                            // console.log(index);
+                            // console.log(store);
+                            $('#store_search').append('<option value="'+store.store_id+'">'+store.store_name+'-'+store.store_address+'</option>');
+                        })
+                    }
+                })
             })
         })
     </script>
@@ -785,4 +746,5 @@
         });
     </script>
 @stop
+
 

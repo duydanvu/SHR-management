@@ -25,7 +25,7 @@
                 </div>
                 <div class="form-group">
                     <label for="name">Ngày Cấp CMT</label>
-                    <input id="date_CMT" type="date" class="form-control @error('txtIdndate') is-invalid @enderror" name="txtIdndate" value=""  autocomplete="number" required>
+                    <input id="date_CMT" type="date" class="form-control @error('txtIdndate') is-invalid @enderror" name="txtIdndate" value="{{$user_detail->idn_date}}"  autocomplete="number" required>
                     @error('txtIdndate')
                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>

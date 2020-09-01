@@ -51,7 +51,7 @@
                             <td>{{$key+1}}</td>
                             <td>{{$value->name}}</td>
                             <td>{{$value->description}}</td>
-                            <td>--</td>
+                            <td><a href="{{route('view_user_of_contract',['id'=>$value->contract_id])}}">{{$value->sum_user}}</a></td>
                             <td class="text-center">
 {{--                                @if($role_use_number == 1)--}}
                                     <div class="btn-group">

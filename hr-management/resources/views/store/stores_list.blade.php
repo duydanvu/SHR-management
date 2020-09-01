@@ -40,7 +40,7 @@
                     <th style="width:5%">#</th>
                     <th style="width:10%">Tên Cửa Hàng</th>
                     <th style="width:15%">Địa Chỉ Cửa Hàng</th>
-                    <th style="width:15%">Số Điện Thoại</th>
+                    <th style="width:15%">Khu Vực</th>
                     <th style="width:5%" class="noSort">Action</th>
                 </tr>
                 </thead>
@@ -51,7 +51,7 @@
                             <td>{{$key+1}}</td>
                             <td>{{$value->store_name}}</td>
                             <td>{{$value->store_address}}</td>
-                            <td>{{$value->phone}}</td>
+                            <td><a href="{{route('view_store_of_area',['id'=>$value->area_id])}}">{{$value->area_name}}</a></td>
                             <td class="text-center">
 {{--                                @if($role_use_number == 1)--}}
                                     <div class="btn-group">

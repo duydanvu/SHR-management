@@ -15,7 +15,7 @@
                 </div>
                 <div class="form-group">
                     <label for="name">Mật Khẩu</label>
-                    <input id="txtPassword" type="password" class="form-control @error('txtPassword') is-invalid @enderror" name="txtPassword" value="{{$user->password}}"  autocomplete="number" required>
+                    <input id="txtPassword" type="password" class="form-control @error('txtPassword') is-invalid @enderror" name="txtPassword" value="{{substr($user->password,0,8)}}"  autocomplete="number" required readonly>
                     @error('txtPassword')
                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -24,7 +24,7 @@
                 </div>
                 <div class="form-group">
                     <label for="name">First Name</label>
-                    <input id="fName" type="text" class="form-control @error('txtFName') is-invalid @enderror" name="txtFName" value="{{$user->first_name}}"  autocomplete="number" required>
+                    <input id="fName" type="text" class="form-control @error('txtFName') is-invalid @enderror" name="txtFName" value="{{$user->first_name}}"  autocomplete="number" >
                     @error('txtFName')
                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -60,7 +60,7 @@
                 </div>
                 <div class="form-group">
                     <label for="name">Ngày Sinh</label>
-                    <input id="bod" type="date" class="form-control @error('txtDob') is-invalid @enderror" name="txtDob" value=""  autocomplete="number" required>
+                    <input id="bod" type="date" class="form-control @error('txtDob') is-invalid @enderror" name="txtDob" value="{{$user->dob}}"  autocomplete="number" required>
                     @error('txtDob')
                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -90,11 +90,11 @@
                 <div class="form-group">
                     <label for="name">Giới Tính</label>
                     <div class="form-check">
-                        <input id="male" type="radio" class="form-check-input" name="txtGender" value="male"  autocomplete="number" required>
+                        <input id="male" type="radio" @if(strcmp($user->gender,"male")== 0)checked @endif class="form-check-input" name="txtGender" value="male"  autocomplete="number" required>
                         <label class="form-check-label " for="male">
                             Male
                         </label>
-                        <input id="female" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>
+                        <input id="female" type="radio" @if(strcmp($user->gender,"male")!= 0)checked @endif class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>
                         <label class="form-check-label ml-5 " for="female">
                             Female
                         </label>
@@ -152,7 +152,7 @@
                 </div>
                 <div class="form-group">
                     <label for="name">Ngày bắt đầu</label>
-                    <input id="txtStart" type="date" class="form-control @error('txtStart') is-invalid @enderror" name="txtStart" value=""  autocomplete="number" required>
+                    <input id="txtStart" type="date" class="form-control @error('txtStart') is-invalid @enderror" name="txtStart" value="{{$user->start_time}}"  autocomplete="number" required>
                     @error('txtStart')
                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -161,7 +161,7 @@
                 </div>
                 <div class="form-group">
                     <label for="name">Ngày kết thúc</label>
-                    <input id="txtEnd" type="date" class="form-control @error('txtEnd') is-invalid @enderror" name="txtEnd" value=""  autocomplete="number" required>
+                    <input id="txtEnd" type="date" class="form-control @error('txtEnd') is-invalid @enderror" name="txtEnd" value="{{$user->end_time}}"  autocomplete="number" required>
                     @error('txtEnd')
                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
