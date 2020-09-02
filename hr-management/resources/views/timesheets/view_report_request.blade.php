@@ -29,7 +29,9 @@
             </div>
         </div>
         <div class="card-body">
+            <form action="{{route('export_report_timesheet')}}" method="post">
             <div class="row">
+                @csrf
                 <div class="col-md-3">
                     <div class="form-group">
                         <meta name="csrf-token2" content="{{ csrf_token() }}">
@@ -124,12 +126,13 @@
                 <div class="row">
                     <div class="col-12 col-md-12 col-sm-12">
                         <a href=" " type="submit" class="btn btn-default" >Refresh</a>
-                        <button id = "import_user" type="button" class="btn btn-success" data-toggle="modal"
+                        <button id = "import_user" type="submit" class="btn btn-success" data-toggle="modal"
                                 data-target="#modal"><i class="fas fa-plus-circle"></i> Export Report</button>
-                        <button type="submit" id="fillter_date" class="btn btn-primary" style="float: right;">Filter</button>
+                        <button type="button" id="fillter_date" class="btn btn-primary" style="float: right;">Filter</button>
                     </div>
                 </div>
             </div>
+            </form>
         </div>
     </div>
 

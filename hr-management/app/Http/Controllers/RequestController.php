@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
 use Ramsey\Uuid\Type\Time;
 
 class RequestController extends Controller
@@ -542,4 +543,8 @@ class RequestController extends Controller
         return Redirect::back()->with($notification);
     }
 
+
+    public function export_timesheet(Request $request){
+        return Excel::download(new ExportTimesheetController($request),'Timesheets.xlsx');
+    }
 }

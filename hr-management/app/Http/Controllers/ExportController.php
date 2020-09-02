@@ -38,6 +38,7 @@ class ExportController extends Controller implements FromCollection,WithHeadings
             $users = $users->addSelect('users.first_name','users.last_name');
             array_push($arr,'first_name','last_name');
         }
+        dd($users->get());
         if($this->request->email_ex != null){
             $users = $users->addSelect('users.email');
             array_push($arr,'email');
