@@ -103,6 +103,7 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/request/timesheet/dismiss_request/{id}','RequestController@dismissTimesheetWithTime')->name('dismiss_timesheet_with_request_staff');
 
     Route::get('/request/report_view','RequestController@viewReportTimesheet')->name('view_request_report');
+    Route::post('/request/timesheet_search','RequestController@searchTimesheet')->name('search_date_timesheet');
 
     //route upload file
     Route::post('/file/upload_file','FileImageController@doUpdload')->name('upload_file_image');

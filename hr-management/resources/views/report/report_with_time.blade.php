@@ -456,6 +456,30 @@
         });
     </script>
     <script>
+        $(document).ready(function () {
+            $("#area_search").change(function () {
+                var area = $("#area_search").val();
+                $.ajax({
+                    headers:{'X-CSRF-Token':$('meta[name="csrf-token-2"]').attr('content')},
+                    url:"{{url('admin/user/area_store')}}",
+                    type:"POST",
+                    data: {
+                        area : area
+                    },
+                    success:function (data) {
+
+                        $('#store_search').empty();
+                        $.each(data.stores,function(index,store){
+                            // console.log(index);
+                            // console.log(store);
+                            $('#store_search').append('<option value="'+store.store_id+'">'+store.store_name+'-'+store.store_address+'</option>');
+                        })
+                    }
+                })
+            })
+        })
+    </script>
+    <script>
         $('.date_range').daterangepicker({
             timePicker: true,
             startDate: moment().startOf('month'),

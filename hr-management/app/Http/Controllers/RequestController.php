@@ -55,16 +55,212 @@ class RequestController extends Controller
             ->join('departments','users.department_id','=','departments.id')
             ->join('services','users.service_id','=','services.id')
             ->join('timesheets','users.id','=','timesheets.user_id')
-            ->select('users.*','stores.store_name','positions.position_name','contracts.name as ct_name'
+            ->select(DB::raw('DISTINCT users.id as id'),'users.first_name','users.last_name','users.email','stores.store_name',
+                'positions.position_name','contracts.name as ct_name'
                 ,'departments.name as dp_name','services.name as sv_name')
-            ->paginate(30);
+            -> addSelect(DB::raw("'0' as present"))
+            -> addSelect(DB::raw("'0' as absent_yes"))
+            -> addSelect(DB::raw("'0' as absent_no"))
+            ->get();
+        $user_present = Timesheet::where('logtime','=','present')
+                        ->select(DB::raw('DISTINCT user_id'),DB::raw('COUNT(logtime) as present'))
+                        ->groupBy('logtime','user_id')
+                        ->get();
+        $user_absent_yes = Timesheet::where('logtime','=','absent')
+            ->where('comment','<>',null)
+            ->where('status','=','done')
+            ->select(DB::raw('DISTINCT user_id'),DB::raw('COUNT(logtime) as absent_yes'))
+            ->groupBy('logtime','user_id')
+            ->get();
+        $user_absent_no = Timesheet::where('logtime','=','absent')
+            ->where('comment','=',null)
+            ->where('status','=','done')
+            ->select(DB::raw('DISTINCT user_id'),DB::raw('COUNT(logtime) as absent_no'))
+            ->groupBy('logtime','user_id')
+            ->get();
+        foreach ($user as $value_user){
+            foreach ($user_present as $value_present){
+                if($value_present->user_id === $value_user->id){
+                    $value_user->present = $value_present->present;
+                }
+            }
+        }
+        foreach ($user as $value_user){
+            foreach ($user_absent_yes as $value_ab_yes){
+                if($value_ab_yes->user_id === $value_user->id){
+                    $value_user->absent_yes = $value_ab_yes->absent_yes;
+                }
+            }
+        }
+        foreach ($user as $value_user){
+            foreach ($user_absent_no as $value_ab_no){
+                if($value_ab_no->user_id === $value_user->id){
+                    $value_user->absent_no = $value_ab_no->absent_no;
+                }
+            }
+        }
         return view('timesheets.view_report_request')->with([
             'area'=>$area,
             'store'=>$store,
             'position'=> $position,
             'department' => $department,
             'service'=>$service,
-            'contract'=>$contract]);
+            'contract'=>$contract,
+            'user'=>$user]);
+    }
+
+    public function searchTimesheet(Request $request){
+        $result = null;
+        $user = User::join('stores','users.store_id','=','stores.store_id')
+            ->join('positions','users.position_id','=','positions.position_id')
+            ->join('contracts','users.contract_id','=','contracts.contract_id')
+            ->join('departments','users.department_id','=','departments.id')
+            ->join('services','users.service_id','=','services.id')
+            ->join('timesheets','users.id','=','timesheets.user_id')
+            ->select(DB::raw('DISTINCT users.id as id'),'users.first_name','users.last_name'
+                ,'users.email','stores.store_name',
+                'positions.position_name','contracts.name as ct_name'
+                ,'departments.name as dp_name','services.name as sv_name')
+            -> addSelect(DB::raw("'0' as present"))
+            -> addSelect(DB::raw("'0' as absent_yes"))
+            -> addSelect(DB::raw("'0' as absent_no"));
+
+        if($request->area_search === 'all'){
+            $user_area = $user;
+        }else{
+            $user_area = $user->where('stores.area_id','=',$request->area_search);
+        }
+
+        if($request->store_search === 'all'){
+            $user_store = $user_area;
+        }else{
+            $user_store = $user_area->where('users.store_id','=',$request->store_search);
+        }
+
+        if($request->position_search === 'all'){
+            $user_position = $user_store;
+        }else{
+            $user_position = $user_store->where('users.position_id','=',$request->position_search);
+        }
+
+        if($request->contract_search === 'all'){
+            $user_contract = $user_position;
+        }else{
+            $user_contract = $user_position->where('users.contract_id','=',$request->contract_search);
+        }
+
+        if($request->department_search === 'all'){
+            $user_department = $user_contract;
+        }else{
+            $user_department = $user_contract->where('users.department_id','=',$request->department_search);
+        }
+        if($request->service_search === 'all'){
+            $user_service = $user_department;
+        }else{
+            $user_service = $user_department->where('users.service_id','=',$request->service_search);
+        }
+        if($request->start_date != null && $request->end_date != null){
+            if(strtotime($request->start_date) > strtotime($request->end_date)){
+                $user_time = $user_service;
+                $user_present = Timesheet::where('logtime','=','present')
+                    ->select(DB::raw('DISTINCT user_id'),DB::raw('COUNT(logtime) as present'))
+                    ->groupBy('logtime','user_id')
+                    ->get();
+                $user_absent_yes = Timesheet::where('logtime','=','absent')
+                    ->where('comment','<>',null)
+                    ->where('status','=','done')
+                    ->select(DB::raw('DISTINCT user_id'),DB::raw('COUNT(logtime) as absent_yes'))
+                    ->groupBy('logtime','user_id')
+                    ->get();
+                $user_absent_no = Timesheet::where('logtime','=','absent')
+                    ->where('comment','=',null)
+                    ->where('status','=','done')
+                    ->select(DB::raw('DISTINCT user_id'),DB::raw('COUNT(logtime) as absent_no'))
+                    ->groupBy('logtime','user_id')
+                    ->get();
+            } else if (strtotime($request->start_date) == strtotime($request->end_date)){
+                $user_time = $user_service->where('timesheets.date','=',$request->end_date);
+                $user_present = Timesheet::where('logtime','=','present')
+                    ->whereBetween('date','=',$request->end_date)
+                    ->select(DB::raw('DISTINCT user_id'),DB::raw('COUNT(logtime) as present'))
+                    ->groupBy('logtime','user_id')
+                    ->get();
+                $user_absent_yes = Timesheet::where('logtime','=','absent')
+                    ->whereBetween('date','=',$request->end_date)
+                    ->where('comment','<>',null)
+                    ->where('status','=','done')
+                    ->select(DB::raw('DISTINCT user_id'),DB::raw('COUNT(logtime) as absent_yes'))
+                    ->groupBy('logtime','user_id')
+                    ->get();
+                $user_absent_no = Timesheet::where('logtime','=','absent')
+                    ->whereBetween('date','=',$request->end_date)
+                    ->where('comment','=',null)
+                    ->where('status','=','done')
+                    ->select(DB::raw('DISTINCT user_id'),DB::raw('COUNT(logtime) as absent_no'))
+                    ->groupBy('logtime','user_id')
+                    ->get();
+            }else{
+                $user_time = $user_service->whereBetween('timesheets.date',[$request->start_date,$request->end_date]);
+                $user_present = Timesheet::where('logtime','=','present')
+                    ->whereBetween('date',[$request->start_date,$request->end_date])
+                    ->select(DB::raw('DISTINCT user_id'),DB::raw('COUNT(logtime) as present'))
+                    ->groupBy('logtime','user_id')
+                    ->get();
+                $user_absent_yes = Timesheet::where('logtime','=','absent')
+                    ->whereBetween('date',[$request->start_date,$request->end_date])
+                    ->where('comment','<>',null)
+                    ->where('status','=','done')
+                    ->select(DB::raw('DISTINCT user_id'),DB::raw('COUNT(logtime) as absent_yes'))
+                    ->groupBy('logtime','user_id')
+                    ->get();
+                $user_absent_no = Timesheet::where('logtime','=','absent')
+                    ->whereBetween('date',[$request->start_date,$request->end_date])
+                    ->where('comment','=',null)
+                    ->where('status','=','done')
+                    ->select(DB::raw('DISTINCT user_id'),DB::raw('COUNT(logtime) as absent_no'))
+                    ->groupBy('logtime','user_id')
+                    ->get();
+            }
+        }else{
+            $user_time = $user_service;
+        }
+        $user_rs = $user_time->get();
+        foreach ($user_rs as $value_user){
+            foreach ($user_present as $value_present){
+                if($value_present->user_id === $value_user->id){
+                    $value_user->present = $value_present->present;
+                }
+            }
+        }
+        foreach ($user_rs as $value_user){
+            foreach ($user_absent_yes as $value_ab_yes){
+                if($value_ab_yes->user_id === $value_user->id){
+                    $value_user->absent_yes = $value_ab_yes->absent_yes;
+                }
+            }
+        }
+        foreach ($user_rs as $value_user){
+            foreach ($user_absent_no as $value_ab_no){
+                if($value_ab_no->user_id === $value_user->id){
+                    $value_user->absent_no = $value_ab_no->absent_no;
+                }
+            }
+        }
+        foreach ($user_rs as $key=>$value){
+            $result .= '<tr>';
+            $result .= '<td>'.($key+1).'</td>';
+            $result .= '<td>'.$value->first_name.' '.$value->last_name.'</td>';
+            $result .= '<td>'.$value->email.'</td>';
+            $result .= '<td>'.$value->store_name.'</td>';
+            $result .= '<td>'.$value->position_name.'</td>';
+            $result .= '<td>'.$value->dp_name.'</td>';
+            $result .= '<td>'.$value->sv_name.'</td>';
+            $result .= '<td>'.$value->present.'</td>';
+            $result .= '<td>'.$value->absent_yes.'</td>';
+            $result .= '<td>'.$value->absent_no.'</td>';
+            $result .= '</tr>';
+        }
+        return $result;
     }
 
     public function addViewTimesheet($id){
