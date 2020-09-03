@@ -16,7 +16,10 @@ class ServicesController extends Controller
      */
     public function index()
     {
-        $service = Services::all();
+        $service = Services::leftJoin('users','users.service_id','=','services.id')
+            ->select('services.id','services.name','services.description', DB::raw('COUNT(users.service_id) AS sum'))
+            ->groupBy('services.id','services.name','services.description')
+            ->get();
         return view('service.service_list')->with(['service'=>$service]);
     }
 

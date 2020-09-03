@@ -175,7 +175,7 @@
                             <td>{{$key+1}}</td>
                             <td>{{$value->store_name}}</td>
                             <td>{{$value->first_name}} {{$value->last_name}}</td>
-                            <td style="width:10%">{{$value->email}}</td>
+                            <td style="width:10%">{{str_replace("@","@ ",$value->email)}}</td>
                             <td>{{str_replace("/","-",$value->phone)}}</td>
                             <td>{{$value->dob}}</td>
                             <td>{{$value->line}}</td>

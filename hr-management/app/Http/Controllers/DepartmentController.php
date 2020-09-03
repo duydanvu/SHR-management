@@ -16,7 +16,10 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $department = Department::all();
+        $department = Department::leftJoin('users','users.department_id','=','departments.id')
+            ->select('departments.id','departments.name','departments.description', DB::raw('COUNT(users.department_id) AS sum'))
+            ->groupBy('departments.id','departments.name','departments.description')
+            ->get();
         return view('department.department_list')->with(['department'=>$department]);
     }
 

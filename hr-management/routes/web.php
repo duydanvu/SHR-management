@@ -80,6 +80,8 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/admin/user/view_user_of_store/{id}','UserController@view_user_of_store')->name('view_user_of_store');
     Route::get('/admin/user/view_user_of_position/{id}','UserController@view_user_of_position')->name('view_user_of_position');
     Route::get('/admin/user/view_user_of_contract/{id}','UserController@view_user_of_contract')->name('view_user_of_contract');
+    Route::get('/admin/user/view_user_of_department/{id}','UserController@view_user_of_department')->name('view_user_of_department');
+    Route::get('/admin/user/view_user_of_service/{id}','UserController@view_user_of_service')->name('view_user_of_service');
 
     //route report
     Route::get('/report/report_with_time','ReportController@showReportTime')->name('show_report_time');

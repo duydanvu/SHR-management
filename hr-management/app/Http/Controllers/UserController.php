@@ -170,6 +170,78 @@ class UserController extends Controller
             'service1' =>$service1,
             'area' => $area]);
     }
+    public function view_user_of_department($id){
+        $store = Store::all();
+        $position = Position::all();
+        $contract = Contract::all();
+        $department = Department::all();
+        $service = Services::all();
+        $store1 = Store::all();
+        $position1 = Position::all();
+        $contract1 = Contract::all();
+        $department1 = Department::all();
+        $service1 = Services::all();
+        $area = Area::all();
+        $user = User::join('stores','users.store_id','=','stores.store_id')
+            ->join('positions','users.position_id','=','positions.position_id')
+            ->join('contracts','users.contract_id','=','contracts.contract_id')
+            ->join('departments','users.department_id','=','departments.id')
+            ->join('services','users.service_id','=','services.id')
+            ->select('users.*','stores.store_name','positions.position_name','contracts.name as ct_name','departments.name as dp_name','services.name as sv_name')
+            ->where('departments.id','=',$id)
+            ->get();
+        $store_name = Department::find($id)->name;
+        return view('user.user_of_store')->with([
+            'user'=>$user,
+            'store'=>$store,
+            'position'=>$position,
+            'contract'=>$contract,
+            'department'=>$department,
+            'service' =>$service,
+            'store_name'=>'Departments - '.$store_name,
+            'store1'=>$store1,
+            'position1'=>$position1,
+            'contract1'=>$contract1,
+            'department1'=>$department1,
+            'service1' =>$service1,
+            'area' => $area]);
+    }
+    public function view_user_of_service($id){
+        $store = Store::all();
+        $position = Position::all();
+        $contract = Contract::all();
+        $department = Department::all();
+        $service = Services::all();
+        $store1 = Store::all();
+        $position1 = Position::all();
+        $contract1 = Contract::all();
+        $department1 = Department::all();
+        $service1 = Services::all();
+        $area = Area::all();
+        $user = User::join('stores','users.store_id','=','stores.store_id')
+            ->join('positions','users.position_id','=','positions.position_id')
+            ->join('contracts','users.contract_id','=','contracts.contract_id')
+            ->join('departments','users.department_id','=','departments.id')
+            ->join('services','users.service_id','=','services.id')
+            ->select('users.*','stores.store_name','positions.position_name','contracts.name as ct_name','departments.name as dp_name','services.name as sv_name')
+            ->where('services.id','=',$id)
+            ->get();
+        $store_name = Services::find($id)->name;
+        return view('user.user_of_store')->with([
+            'user'=>$user,
+            'store'=>$store,
+            'position'=>$position,
+            'contract'=>$contract,
+            'department'=>$department,
+            'service' =>$service,
+            'store_name'=>'Services - '.$store_name,
+            'store1'=>$store1,
+            'position1'=>$position1,
+            'contract1'=>$contract1,
+            'department1'=>$department1,
+            'service1' =>$service1,
+            'area' => $area]);
+    }
 
     public function search_user_with_store(Request $request){
         $result = null;
