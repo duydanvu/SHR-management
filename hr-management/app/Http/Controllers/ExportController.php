@@ -38,7 +38,6 @@ class ExportController extends Controller implements FromCollection,WithHeadings
             $users = $users->addSelect('users.first_name','users.last_name');
             array_push($arr,'first_name','last_name');
         }
-        dd($users->get());
         if($this->request->email_ex != null){
             $users = $users->addSelect('users.email');
             array_push($arr,'email');
@@ -111,14 +110,16 @@ class ExportController extends Controller implements FromCollection,WithHeadings
             $users = $users->addSelect('users.address_now');
             array_push($arr,'address_now');
         };
+        $users_arr = [];
+        $export =[];
         foreach ($users->get() as $item => $row) {
-            foreach ($arr as $key => $value) {
-                $order[] = array(
-                     $key => $row->$value,
-                );
+            foreach ($arr as $value) {
+                array_push($users_arr,$row->$value);
             }
+            $export[$item]=$users_arr;
+            $users_arr=[];
         }
-        return (collect($order));
+        return (collect($export));
     }
 
     public function headings(): array

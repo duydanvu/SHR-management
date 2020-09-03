@@ -50,7 +50,8 @@ class RequestController extends Controller
         $department = Department::all();
         $service = Services::all();
         $contract = Contract::all();
-        $user = User::join('stores','users.store_id','=','stores.store_id')
+        $auth = Auth::user();
+        $user1 = User::join('stores','users.store_id','=','stores.store_id')
             ->join('positions','users.position_id','=','positions.position_id')
             ->join('contracts','users.contract_id','=','contracts.contract_id')
             ->join('departments','users.department_id','=','departments.id')
@@ -61,8 +62,12 @@ class RequestController extends Controller
                 ,'departments.name as dp_name','services.name as sv_name')
             -> addSelect(DB::raw("'0' as present"))
             -> addSelect(DB::raw("'0' as absent_yes"))
-            -> addSelect(DB::raw("'0' as absent_no"))
-            ->get();
+            -> addSelect(DB::raw("'0' as absent_no"));
+        if($auth->position_id == 1){
+            $user = $user1->get();
+        }elseif ($auth->position_id == 2){
+            $user = $user1->where('users.store_id','=',$auth->store_id)->get();
+        };
         $user_present = Timesheet::where('logtime','=','present')
                         ->select(DB::raw('DISTINCT user_id'),DB::raw('COUNT(logtime) as present'))
                         ->groupBy('logtime','user_id')
@@ -104,6 +109,7 @@ class RequestController extends Controller
             'area'=>$area,
             'store'=>$store,
             'position'=> $position,
+            'position_auth'=>$auth->position_id,
             'department' => $department,
             'service'=>$service,
             'contract'=>$contract,
@@ -112,50 +118,68 @@ class RequestController extends Controller
 
     public function searchTimesheet(Request $request){
         $result = null;
-        $user = User::join('stores','users.store_id','=','stores.store_id')
-            ->join('positions','users.position_id','=','positions.position_id')
-            ->join('contracts','users.contract_id','=','contracts.contract_id')
-            ->join('departments','users.department_id','=','departments.id')
-            ->join('services','users.service_id','=','services.id')
-            ->join('timesheets','users.id','=','timesheets.user_id')
-            ->select(DB::raw('DISTINCT users.id as id'),'users.first_name','users.last_name'
-                ,'users.email','stores.store_name',
-                'positions.position_name','contracts.name as ct_name'
-                ,'departments.name as dp_name','services.name as sv_name')
-            -> addSelect(DB::raw("'0' as present"))
-            -> addSelect(DB::raw("'0' as absent_yes"))
-            -> addSelect(DB::raw("'0' as absent_no"));
-
-        if($request->area_search === 'all'){
+        $auth = Auth::user();
+//        dd($auth->position_id);
+        if ($auth->position_id == 1){
+            $user = User::join('stores','users.store_id','=','stores.store_id')
+                ->join('positions','users.position_id','=','positions.position_id')
+                ->join('contracts','users.contract_id','=','contracts.contract_id')
+                ->join('departments','users.department_id','=','departments.id')
+                ->join('services','users.service_id','=','services.id')
+                ->join('timesheets','users.id','=','timesheets.user_id')
+                ->select(DB::raw('DISTINCT users.id as id'),'users.first_name','users.last_name'
+                    ,'users.email','stores.store_name',
+                    'positions.position_name','contracts.name as ct_name'
+                    ,'departments.name as dp_name','services.name as sv_name')
+                -> addSelect(DB::raw("'0' as present"))
+                -> addSelect(DB::raw("'0' as absent_yes"))
+                -> addSelect(DB::raw("'0' as absent_no"));
+        }elseif ($auth->position_id == 2){
+            $user = User::join('stores','users.store_id','=','stores.store_id')
+                ->join('positions','users.position_id','=','positions.position_id')
+                ->join('contracts','users.contract_id','=','contracts.contract_id')
+                ->join('departments','users.department_id','=','departments.id')
+                ->join('services','users.service_id','=','services.id')
+                ->join('timesheets','users.id','=','timesheets.user_id')
+                ->select(DB::raw('DISTINCT users.id as id'),'users.first_name','users.last_name'
+                    ,'users.email','stores.store_name',
+                    'positions.position_name','contracts.name as ct_name'
+                    ,'departments.name as dp_name','services.name as sv_name')
+                ->where('users.store_id','=',$auth->store_id)
+                -> addSelect(DB::raw("'0' as present"))
+                -> addSelect(DB::raw("'0' as absent_yes"))
+                -> addSelect(DB::raw("'0' as absent_no"));
+        }
+        if($request->area_search === 'all' || $request->area_search == null){
             $user_area = $user;
         }else{
             $user_area = $user->where('stores.area_id','=',$request->area_search);
         }
 
-        if($request->store_search === 'all'){
+        if($request->store_search === 'all' || $request->store_search == null){
             $user_store = $user_area;
         }else{
             $user_store = $user_area->where('users.store_id','=',$request->store_search);
         }
 
-        if($request->position_search === 'all'){
+        if($request->position_search === 'all' || $request->position_search == null){
             $user_position = $user_store;
         }else{
             $user_position = $user_store->where('users.position_id','=',$request->position_search);
         }
 
-        if($request->contract_search === 'all'){
+        if($request->contract_search === 'all' || $request->contract_search == null){
             $user_contract = $user_position;
         }else{
             $user_contract = $user_position->where('users.contract_id','=',$request->contract_search);
         }
 
-        if($request->department_search === 'all'){
+        if($request->department_search === 'all' || $request->department_search == null){
             $user_department = $user_contract;
         }else{
             $user_department = $user_contract->where('users.department_id','=',$request->department_search);
         }
-        if($request->service_search === 'all'){
+        if($request->service_search === 'all' || $request->service_search == null){
             $user_service = $user_department;
         }else{
             $user_service = $user_department->where('users.service_id','=',$request->service_search);

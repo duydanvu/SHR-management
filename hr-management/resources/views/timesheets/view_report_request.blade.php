@@ -32,9 +32,10 @@
             <form action="{{route('export_report_timesheet')}}" method="post">
             <div class="row">
                 @csrf
+                <meta name="csrf-token2" content="{{ csrf_token() }}">
+                @if($position_auth == 1)
                 <div class="col-md-3">
                     <div class="form-group">
-                        <meta name="csrf-token2" content="{{ csrf_token() }}">
                         <label for="exampleInputEmail1">Search by Area</label>
                         <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
                             @foreach ($area as $area)
@@ -99,6 +100,7 @@
                         </select>
                     </div>
                 </div>
+                @endif
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Start time</label>
