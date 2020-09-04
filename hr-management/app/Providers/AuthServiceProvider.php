@@ -25,5 +25,13 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        Gate::define('view_menu',function ($user){
+           if($user->position_id == 1){
+               return true;
+           }else{
+               return false;
+           }
+
+        });
     }
 }

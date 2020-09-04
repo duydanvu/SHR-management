@@ -8,6 +8,7 @@ use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StoresController extends Controller
 {
@@ -187,5 +188,9 @@ class StoresController extends Controller
             );
         }
         return Redirect::back()->with($notification);
+    }
+
+    public function export_stores(){
+        return Excel::download(new ExportStoresController(),'Stores.xlsx');
     }
 }

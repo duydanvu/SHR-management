@@ -7,6 +7,7 @@ use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AreaController extends Controller
 {
@@ -118,5 +119,9 @@ class AreaController extends Controller
             );
         }
         return Redirect::back()->with($notification);
+    }
+
+    public function export_Area(){
+        return Excel::download(new ExportAreaController(),'Area.xlsx');
     }
 }

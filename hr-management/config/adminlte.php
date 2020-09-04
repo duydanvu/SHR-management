@@ -247,6 +247,7 @@ return [
         [
             'text'    => 'Admin User',
             'icon'    => 'fas fa-users',
+            'can' => 'view_menu',
             'submenu' => [
                 [
                     'text' => 'User',
@@ -282,6 +283,7 @@ return [
         [
             'text'    => 'THỐNG KÊ BÁO CÁO',
             'icon'    => 'fas fa-clipboard-list',
+            'can' => 'view_menu',
             'submenu' => [
                 [
                     'text' => 'Báo Cáo Theo Thời Gian',

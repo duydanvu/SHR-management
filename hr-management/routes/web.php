@@ -27,6 +27,7 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/admin/area/view_update/{id}','AreaController@viewUpdateArea')->name('admin_list_update_area');
     Route::post('/admin/area/update','AreaController@updateInforArea')->name('update_information_area');
     Route::get('/admin/area/delete/{id}','AreaController@deleteArea')->name('delete_information_area');
+    Route::get('/admin/area/export','AreaController@export_area')->name('export_report_area');
 
     //route store
     Route::get('/admin/store','StoresController@index')->name('show_list_store');
@@ -35,6 +36,7 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::post('/admin/store/update','StoresController@update')->name('update_information_store');
     Route::get('/admin/store/delete/{id}','StoresController@destroy')->name('delete_information_store');
     Route::get('/admin/store/view_store_area/{id}','StoresController@view_all_store_of_area')->name('view_store_of_area');
+    Route::get('/admin/store/export','StoresController@export_stores')->name('export_report_stores');
 
     //route contract
     Route::get('/admin/contract','ContractController@index')->name('show_list_contract');
