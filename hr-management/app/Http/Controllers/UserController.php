@@ -44,8 +44,11 @@ class UserController extends Controller
             ->join('contracts','users.contract_id','=','contracts.contract_id')
             ->join('departments','users.department_id','=','departments.id')
             ->join('services','users.service_id','=','services.id')
-            ->select('users.*','stores.store_name','positions.position_name','contracts.name as ct_name','departments.name as dp_name','services.name as sv_name')
-//            ->get()
+            ->join('area','area.id','=','stores.area_id')
+            ->select('users.*','stores.store_name','positions.position_name',
+                'contracts.name as ct_name','departments.name as dp_name',
+                'services.name as sv_name','area.area_name')
+//            ->get();
             ->paginate(25);
         return view('user.users_list')->with([
             'user'=>$user,
@@ -245,27 +248,46 @@ class UserController extends Controller
 
     public function search_user_with_store(Request $request){
         $result = null;
-        $user = User::join('stores','users.store_id','=','stores.store_id')
-            ->join('positions','users.position_id','=','positions.position_id')
-            ->join('contracts','users.contract_id','=','contracts.contract_id')
-            ->join('departments','users.department_id','=','departments.id')
-            ->join('services','users.service_id','=','services.id')
-            ->select('users.*','stores.store_name','positions.position_name','contracts.name as ct_name','departments.name as dp_name','services.name as sv_name')
-            ->where('users.store_id','=',$request->store_search)
-            ->paginate(25);
+        if($request->name_user != null){
+            $user = User::join('stores','users.store_id','=','stores.store_id')
+                ->join('positions','users.position_id','=','positions.position_id')
+                ->join('contracts','users.contract_id','=','contracts.contract_id')
+                ->join('departments','users.department_id','=','departments.id')
+                ->join('services','users.service_id','=','services.id')
+                ->join('area','area.id','=','stores.area_id')
+                ->select('users.*','stores.store_name','positions.position_name',
+                    'contracts.name as ct_name','departments.name as dp_name',
+                    'services.name as sv_name','area.area_name')
+                ->where('users.store_id','=',$request->store_search)
+                ->where('users.last_name','like','%'.$request->name_user.'%')
+                ->paginate(25);
+        }else{
+            $user = User::join('stores','users.store_id','=','stores.store_id')
+                ->join('positions','users.position_id','=','positions.position_id')
+                ->join('contracts','users.contract_id','=','contracts.contract_id')
+                ->join('departments','users.department_id','=','departments.id')
+                ->join('services','users.service_id','=','services.id')
+                ->join('area','area.id','=','stores.area_id')
+                ->select('users.*','stores.store_name','positions.position_name',
+                    'contracts.name as ct_name','departments.name as dp_name',
+                    'services.name as sv_name','area.area_name')
+                ->where('users.store_id','=',$request->store_search)
+                ->paginate(25);
+        }
         foreach ($user as $key=>$value){
             $result .= '<tr>';
             $result .= '<td>'.($key+1).'</td>';
             $result .= '<td>'.($value->first_name).' '.($value->last_name).'</td>';
-            $result .= '<td>'.(str_replace('@','@ ',$value->email)).'</td>';
-            $result .= '<td>'.(str_replace("/","-",$value->phone)).'</td>';
+//            $result .= '<td>'.(str_replace('@','@ ',$value->email)).'</td>';
+//            $result .= '<td>'.(str_replace("/","-",$value->phone)).'</td>';
             $result .= '<td>'.($value->dob).'</td>';
-            $result .= '<td>'.($value->gender).'</td>';
+//            $result .= '<td>'.($value->gender).'</td>';
 //            $result .= '<td>'.($value->line).'</td>';
             $result .= '<td>'.($value->store_name).'</td>';
+            $result .= '<td>'.($value->area_name).'</td>';
             $result .= '<td>'.($value->position_name).'</td>';
-            $result .= '<td>'.($value->dp_name).'</td>';
-            $result .= '<td>'.($value->sv_name).'</td>';
+//            $result .= '<td>'.($value->dp_name).'</td>';
+//            $result .= '<td>'.($value->sv_name).'</td>';
             $result .= '<td>'.($value->ct_name).'</td>';
             $result .= '<td>'.($value->start_time).'</td>';
             $result .= '<td>'.($value->end_time).'</td>';
@@ -330,7 +352,7 @@ class UserController extends Controller
         $validator = \Validator::make($request->all(),[
             'txtName' => 'required|max:50',
             'txtPassword' => 'required|min:7|max:100',
-            'txtFName' => 'required|max:50',
+//            'txtFName' => 'required|max:50',
             'txtLName' => 'required|max:50',
             'txtEmail' => 'required|max:100|email',
             'txtPhone' => 'required|integer',
@@ -370,7 +392,7 @@ class UserController extends Controller
             $create_user_id = DB::table('users')->insertGetId([
                 'login'=> $request['txtName'],
                 'password' => $request['txtPassword'],
-                'first_name' => $request['txtFName'],
+//                'first_name' => $request['txtFName'],
                 'last_name' => $request['txtLName'],
                 'email' => $request['txtEmail'],
                 'phone' => $request['txtPhone'],
@@ -466,7 +488,7 @@ class UserController extends Controller
         $validator = \Validator::make($request->all(),[
             'txtName' => 'required|max:50',
 //            'txtPassword' => 'required|min:7|max:100',
-            'txtFName' => 'required|max:50',
+//            'txtFName' => 'required|max:50',
             'txtLName' => 'required|max:50',
             'txtEmail' => 'required|max:100|email',
             'txtPhone' => 'required|integer',
@@ -496,7 +518,7 @@ class UserController extends Controller
             ->update([
                 'login'=>$request->txtName,
 //                'password'=>$request->txtPassword,
-                'first_name'=>$request->txtFName,
+//                'first_name'=>$request->txtFName,
                 'last_name'=>$request->txtLName,
                 'email'=>$request->txtEmail,
                 'phone'=>$request->txtPhone,

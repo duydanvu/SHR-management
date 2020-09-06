@@ -9,9 +9,9 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item "><a href="/home">Home</a></li>
-                    <li class="breadcrumb-item "><a href="#">Admin User</a></li>
-                    <li class="breadcrumb-item active">User</li>
+                    <li class="breadcrumb-item "><a href="/home">Trang Trủ</a></li>
+                    <li class="breadcrumb-item "><a href="#">Quản Lý Nhân Sự</a></li>
+                    <li class="breadcrumb-item active">Nhân Sự</li>
                 </ol>
             </div>
         </div>
@@ -22,7 +22,7 @@
     <div class="card card-outline card-primary-dashboard">
         <meta name="csrf-token-2" content="{{ csrf_token() }}">
         <div class="card-header">
-            <h3 class="card-title">Search</h3>
+            <h3 class="card-title">Tìm Kiếm</h3>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                     <i class="fas fa-minus"></i></button>
@@ -33,7 +33,7 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <meta name="csrf-token2" content="{{ csrf_token() }}">
-                            <label for="exampleInputEmail1">Search by Area</label>
+                            <label for="exampleInputEmail1">Tìm Kiếm Theo Khu Vực</label>
                             <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
                                 @foreach ($area as $area)
                                     <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>
@@ -43,7 +43,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Search by Store</label>
+                            <label for="exampleInputEmail1">Tìm Kiếm Theo Cửa Hàng</label>
                             <select id="store_search" name = "store_search" class="form-control select2"  value="{{ old('store_search') }}" autocomplete="store_search" style="width: 100%;">
                                 @foreach ($store as $store2)
                                     <option value="{{$store2['store_id']}}">{{$store2['store_name']}}-{{$store2['store_address']}}</option>
@@ -51,8 +51,19 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Tìm Kiếm Tên Nhân Sự</label>
+                            <input id="name_user" type="text" class="form-control @error('txtNameUser') is-invalid @enderror" name="txtFName" value=""  autocomplete="number" required>
+                            @error('txtNameUser')
+                            <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                            @enderror
+                        </div>
+                    </div>
                     <div class="pt-4" style="float: left">
-                        <button type="submit" id="fillter_date" class="btn btn-primary mt-2" style="float: left"><i class="fas fa-search-minus">Search</i></button>
+                        <button type="submit" id="fillter_date" class="btn btn-primary mt-2" style="float: left"><i class="fas fa-search-minus">Tìm Kiếm</i></button>
                     </div>
                 </div>
             </div>
@@ -61,8 +72,8 @@
         <div class="card-header">
             <div class="button-group-card-header">
 {{--                @if($role_use_number == 1)--}}
-                    <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Create Account </button>
-                    <button id = "import_user" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-admin-import-user"><i class="fas fa-plus-circle"></i> Import User </button>
+                    <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Thêm Nhân Sự </button>
+                    <button id = "import_user" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-admin-import-user"><i class="fas fa-plus-circle"></i> Nhập Nhân Sự</button>
 {{--                @endif--}}
                 {{--<a href="{{route('export_to_file_csv')}}" class="btn btn-success btn-xs offset-lg-10" style="float: right;">export</a>--}}
             </div>
@@ -79,15 +90,16 @@
                     <th style="width:5%">#</th>
 {{--                    <th style="width:20%">Image</th>--}}
                     <th style="width:10%">Họ Tên</th>
-                    <th style="width:10%">Email</th>
-                    <th style="width:10%">Phone</th>
+{{--                    <th style="width:10%">Email</th>--}}
+{{--                    <th style="width:10%">Phone</th>--}}
                     <th style="width:10%">DOB</th>
-                    <th style="width:10%">Gender</th>
+{{--                    <th style="width:10%">Gender</th>--}}
 {{--                    <th style="width:10%">Chuyên Môn</th>--}}
                     <th style="width:10%">Cửa Hàng</th>
+                    <th style="width:10%">Khu Vực</th>
                     <th style="width:10%">Chức Danh</th>
-                    <th style="width:10%">Bộ Phận</th>
-                    <th style="width:10%">Dịch Vụ</th>
+{{--                    <th style="width:10%">Bộ Phận</th>--}}
+{{--                    <th style="width:10%">Dịch Vụ</th>--}}
                     <th style="width:5%">Hợp Đồng</th>
                     <th style="width:10%">Ngày bắt đầu</th>
                     <th style="width:10%">Ngày kết thúc</th>
@@ -101,15 +113,16 @@
                             <td>{{$key+1}}</td>
 {{--                            <td><img id="img_prv" src="{{URL::to('/')}}{{$value->url_image}}" style="max-width: 50px;max-height: 50px; width: 50px;height: 50px"></td>--}}
                             <td>{{$value->first_name}} {{$value->last_name}}</td>
-                            <td>{{str_replace('@','@ ',$value->email)}}</td>
-                            <td>{{str_replace('/','-',$value->phone)}}</td>
+{{--                            <td>{{str_replace('@','@ ',$value->email)}}</td>--}}
+{{--                            <td>{{str_replace('/','-',$value->phone)}}</td>--}}
                             <td>{{$value->dob}}</td>
-                            <td>{{$value->gender}}</td>
+{{--                            <td>{{$value->gender}}</td>--}}
 {{--                            <td>{{$value->line}}</td>--}}
                             <td>{{$value->store_name}}</td>
+                            <td>{{$value->area_name}}</td>
                             <td>{{$value->position_name}}</td>
-                            <td>{{$value->dp_name}}</td>
-                            <td>{{$value->sv_name}}</td>
+{{--                            <td>{{$value->dp_name}}</td>--}}
+{{--                            <td>{{$value->sv_name}}</td>--}}
                             <td>{{$value->ct_name}}</td>
                             <td>{{$value->start_time}}</td>
                             <td>{{$value->end_time}}</td>
@@ -123,18 +136,18 @@
                                         <div class="dropdown-menu" role="menu">
                                             <a href="{{route('view_update_user',['id'=>$value->id])}}" data-remote="false"
                                                data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
-                                                <i class="fas fa-edit"> Edit</i>
+                                                <i class="fas fa-edit"> Sửa</i>
                                             </a>
                                             <a href="{{route('delete_information_user',['id'=>$value->id])}}"  class="btn dropdown-item">
-                                                <i class="fas fa-users"> Delete</i>
+                                                <i class="fas fa-users"> Xóa</i>
                                             </a>
                                             <a href="{{route('view_update_user_detail',['id'=>$value->id])}}" data-remote="false"
                                                data-toggle="modal" data-target="#modal-admin-action-update-detail" class="btn dropdown-item">
-                                                <i class="fas fa-info-circle"> View detail</i>
+                                                <i class="fas fa-info-circle"> Xem Chi Tiết</i>
                                             </a>
                                             <a href="{{route('view_update_user_image',['id'=>$value->id])}}" data-remote="false"
                                                data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">
-                                                <i class="fas fa-image"> View Image</i>
+                                                <i class="fas fa-image"> Sửa Ảnh</i>
                                             </a>
                                         </div>
 
@@ -161,7 +174,7 @@
         <div class="modal-dialog" style="max-width: 1000px">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Update Action</h4>
+                    <h4 class="modal-title">Cập nhật thông tin</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
@@ -172,7 +185,7 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
                     </div>
                 </form>
             </div>
@@ -188,7 +201,7 @@
         <div class="modal-dialog" style="max-width: 1000px">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Update Action</h4>
+                    <h4 class="modal-title">Cập nhật thông tin</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
@@ -199,7 +212,7 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
                     </div>
                 </form>
             </div>
@@ -213,7 +226,7 @@
         <div class="modal-dialog col-lg-8" style="max-width: 1200px">
             <div class="modal-content col-lg-12 ">
                 <div class="modal-header">
-                    <h4 class="modal-title">Create Member</h4>
+                    <h4 class="modal-title">Tạo nhân sự</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -261,17 +274,17 @@
                                         </span>
                                         @enderror
                                     </div>
+{{--                                    <div class="form-group">--}}
+{{--                                        <label for="name">First Name</label>--}}
+{{--                                        <input id="fName" type="text" class="form-control @error('txtFName') is-invalid @enderror" name="txtFName" value=""  autocomplete="number" required>--}}
+{{--                                        @error('txtFName')--}}
+{{--                                        <span class="invalid-feedback" role="alert">--}}
+{{--                                            <strong>{{ $message }}</strong>--}}
+{{--                                        </span>--}}
+{{--                                        @enderror--}}
+{{--                                    </div>--}}
                                     <div class="form-group">
-                                        <label for="name">First Name</label>
-                                        <input id="fName" type="text" class="form-control @error('txtFName') is-invalid @enderror" name="txtFName" value=""  autocomplete="number" required>
-                                        @error('txtFName')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Last Name</label>
+                                        <label for="name">Tên</label>
                                         <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value=""  autocomplete="number" required>
                                         @error('txtLName')
                                         <span class="invalid-feedback" role="alert">
@@ -513,7 +526,7 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button id="create_member" type="submit" class="btn btn-primary" >Save changers</button>
+                        <button id="create_member" type="submit" class="btn btn-primary" >Lưu Thay</button>
                     </div>
                 </form>
             </div>
@@ -550,7 +563,7 @@
         <div class="modal-dialog col-lg-8" style="max-width: 800px">
             <div class="modal-content col-lg-12 ">
                 <div class="modal-header">
-                    <h4 class="modal-title">Import User</h4>
+                    <h4 class="modal-title">Import Nhân Sự</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -687,8 +700,9 @@
         $(document).ready(function(){
             $('#fillter_date').click(function () {
                 let store_search = $('#store_search').val();
+                let name_user = $('#name_user').val();
                 let _token = $('meta[name="csrf-token-2"]').attr('content');
-                var dt = {_token,store_search};
+                var dt = {_token,store_search,name_user};
                 console.log(dt);
                 $.ajaxSetup({
                     headers: {

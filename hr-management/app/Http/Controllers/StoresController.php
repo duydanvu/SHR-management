@@ -20,8 +20,10 @@ class StoresController extends Controller
     public function index()
     {
         $stores = Store::join('area','area.id','=','stores.area_id')
-                ->select('stores.*','area.area_name')
-                ->get();
+                ->leftJoin('users','stores.store_id','=','users.store_id')
+                ->select('stores.store_id','stores.store_address','area.id','stores.store_name','area.area_name',DB::raw('COUNT(users.store_id) AS sum'))
+            ->groupBy('stores.store_id','stores.store_address','stores.store_name','area.id','area.area_name')
+            ->get();
         $area = Area::all();
         return view('store.stores_list')->with(['stores'=>$stores,'area'=>$area]);
     }

@@ -9,9 +9,9 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item "><a href="/home">Home</a></li>
-                    <li class="breadcrumb-item "><a href="#">Thống kê báo cáo</a></li>
-                    <li class="breadcrumb-item active">Report Time</li>
+                    <li class="breadcrumb-item "><a href="/home">Trang chủ</a></li>
+                    <li class="breadcrumb-item "><a href="#">Quản Lý Nhân Sự</a></li>
+                    <li class="breadcrumb-item active">Chi tiết Nhân Sự</li>
                 </ol>
             </div>
         </div>
@@ -22,7 +22,7 @@
     <div class="card card-outline card-primary-dashboard">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <div class="card-header">
-            <h3 class="card-title">Search</h3>
+            <h3 class="card-title">Tìm Kiếm</h3>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                     <i class="fas fa-minus"></i></button>
@@ -37,75 +37,75 @@
 {{--                        <input  type="month" id="date_month"  value="" name="idear_date_month">--}}
 {{--                    </div>--}}
 {{--                </div>--}}
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Search by Area</label>
+                        <label for="exampleInputEmail1">Khu vực</label>
                         <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
                             @foreach ($area as $area)
                                 <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>
                             @endforeach
-                                <option value="all">All</option>
+                                <option value="all" selected>All</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Search by Store</label>
+                        <label for="exampleInputEmail1">Cửa Hàng</label>
                         <select id="store_search" name = "store_search" class="form-control select2"  value="{{ old('store_search') }}" autocomplete="store_search" style="width: 100%;">
                             @foreach ($store as $store2)
                                 <option value="{{$store2['store_id']}}">{{$store2['store_name']}}-{{$store2['store_address']}}</option>
                             @endforeach
-                                <option value="all">All</option>
+                                <option value="all" selected>All</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Search by Position</label>
+                        <label for="exampleInputEmail1">Chức Vụ</label>
                         <select id="position_search" name = "position_search" class="form-control select2"  value="{{ old('position_search') }}" autocomplete="position_search" style="width: 100%;">
                             @foreach ($position as $position)
                                 <option value="{{$position['position_id']}}">{{$position['position_name']}}-{{$position['description']}}</option>
                             @endforeach
-                                <option value="all">All</option>
+                                <option value="all" selected>All</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Search by Department</label>
+                        <label for="exampleInputEmail1">Phòng Ban</label>
                         <select id="department_search" name = "department_search" class="form-control select2"  value="{{ old('department_search') }}" autocomplete="department_search" style="width: 100%;">
                             @foreach ($department as $department)
                                 <option value="{{$department['id']}}">{{$department['name']}}-{{$department['description']}}</option>
                             @endforeach
-                                <option value="all">All</option>
+                                <option value="all" selected>All</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Search by Service</label>
+                        <label for="exampleInputEmail1">Dịch Vụ</label>
                         <select id="service_search" name = "service_search" class="form-control select2"  value="{{ old('service_search') }}" autocomplete="service_search" style="width: 100%;">
                             @foreach ($service as $service)
                                 <option value="{{$service['id']}}">{{$service['name']}}-{{$service['description']}}</option>
                             @endforeach
-                                <option value="all">All</option>
+                                <option value="all" selected>All</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Search by Contract</label>
+                        <label for="exampleInputEmail1" >Hợp Đồng</label>
                         <select id="contract_search" name = "contract_search" class="form-control select2"  value="{{ old('contract_search') }}" autocomplete="contract_search" style="width: 100%;">
                             @foreach ($contract as $contract)
                                 <option value="{{$contract['contract_id']}}">{{$contract['name']}}-{{$contract['description']}}</option>
                             @endforeach
-                                <option value="all">All</option>
+                                <option value="all" selected>All</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Start Time</label>
+                        <label for="exampleInputEmail1">Thời Gian Bắt đầu</label>
                         <input id="start_date" type="date" class="form-control @error('txtComment') is-invalid @enderror"  name="txtStartDate"  autocomplete="number" required >
                         @error('txtComment')
                         <span class="invalid-feedback" role="alert">
@@ -114,9 +114,9 @@
                         @enderror
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">End Time</label>
+                        <label for="exampleInputEmail1">Thời Gian Kết Thúc</label>
                         <input id="end_date" type="date" class="form-control @error('txtComment') is-invalid @enderror"  name="txtEndDate"  autocomplete="number" required >
                         @error('txtComment')
                         <span class="invalid-feedback" role="alert">
@@ -130,17 +130,17 @@
         <div class="card-footer" style="background: transparent;">
             <div class="row">
                 <div class="col-12 col-md-12 col-sm-12">
-                    <a href=" " type="submit" class="btn btn-default" >Refresh</a>
+                    <a href=" " type="submit" class="btn btn-default" >Làm Mới</a>
                     <button id = "import_user" type="button" class="btn btn-success" data-toggle="modal"
-                            data-target="#modal-admin-export-user"><i class="fas fa-plus-circle"></i> Export User </button>
-                    <button type="submit" id="fillter_date" class="btn btn-primary" style="float: right;">Filter</button>
+                            data-target="#modal-admin-export-user"><i class="fas fa-plus-circle"></i> Xuất File </button>
+                    <button type="submit" id="fillter_date" class="btn btn-primary" style="float: right;">Tìm Kiếm</button>
                 </div>
             </div>
         </div>
     </div>
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">List</h3>
+            <h3 class="card-title">Danh Sách</h3>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                     <i class="fas fa-minus"></i></button>
@@ -154,17 +154,17 @@
                     <th style="width:5%" >#</th>
                     <th style="width:10%" >Tên Cửa Hàng</th>
                     <th style="text-align: center;width: 10%">Tên Nhân Viên</th>
-                    <th style="text-align: center;width: 10%">Email</th>
-                    <th style="text-align: center;width: 5%">Phone</th>
-                    <th style="text-align: center;width: 5%">Ngày Sinh</th>
-                    <th style="text-align: center;width: 10%">Trình Độ Chuyên Môn</th>
+{{--                    <th style="text-align: center;width: 10%">Email</th>--}}
+{{--                    <th style="text-align: center;width: 5%">Phone</th>--}}
+                    <th style="text-align: center;width: 10%">Ngày Sinh</th>
+{{--                    <th style="text-align: center;width: 10%">Trình Độ Chuyên Môn</th>--}}
                     <th style="text-align: center;width: 5%">Chức Danh</th>
-                    <th style="text-align: center;width: 5%">Bộ Phận</th>
-                    <th style="text-align: center;width: 5%">Dịch Vụ</th>
+{{--                    <th style="text-align: center;width: 5%">Bộ Phận</th>--}}
+{{--                    <th style="text-align: center;width: 5%">Dịch Vụ</th>--}}
                     <th style="text-align: center;width: 5%">Hợp Đồng</th>
-                    <th style="text-align: center;width: 5%">Số Hợp Đồng</th>
-                    <th style="text-align: center;width: 5%">Ngày Ký Hợp Đồng</th>
-                    <th style="text-align: center;width: 5%">Ngày Hết Hạn Hợp Đồng</th>
+                    <th style="text-align: center;width: 10%">Số Hợp Đồng</th>
+                    <th style="text-align: center;width: 10%">Ngày Ký Hợp Đồng</th>
+                    <th style="text-align: center;width: 10%">Ngày Hết Hạn Hợp Đồng</th>
                     <th style="text-align: center;width: 10%">View Detail</th>
                 </tr>
                 </thead>
@@ -175,13 +175,13 @@
                             <td>{{$key+1}}</td>
                             <td>{{$value->store_name}}</td>
                             <td>{{$value->first_name}} {{$value->last_name}}</td>
-                            <td style="width:10%">{{str_replace("@","@ ",$value->email)}}</td>
-                            <td>{{str_replace("/","-",$value->phone)}}</td>
+{{--                            <td style="width:10%">{{str_replace("@","@ ",$value->email)}}</td>--}}
+{{--                            <td>{{str_replace("/","-",$value->phone)}}</td>--}}
                             <td>{{$value->dob}}</td>
-                            <td>{{$value->line}}</td>
+{{--                            <td>{{$value->line}}</td>--}}
                             <td>{{$value->position_name}}</td>
-                            <td>{{$value->dp_name}}</td>
-                            <td>{{$value->sv_name}}</td>
+{{--                            <td>{{$value->dp_name}}</td>--}}
+{{--                            <td>{{$value->sv_name}}</td>--}}
                             <td>{{$value->ct_name}}</td>
                             <td>{{$value->contract_number}}</td>
                             <td>{{$value->start_time}}</td>

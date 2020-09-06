@@ -22,17 +22,17 @@
                                         </span>
                     @enderror
                 </div>
+{{--                <div class="form-group">--}}
+{{--                    <label for="name">First Name</label>--}}
+{{--                    <input id="fName" type="text" class="form-control @error('txtFName') is-invalid @enderror" name="txtFName" value="{{$user->first_name}}"  autocomplete="number" >--}}
+{{--                    @error('txtFName')--}}
+{{--                    <span class="invalid-feedback" role="alert">--}}
+{{--                                            <strong>{{ $message }}</strong>--}}
+{{--                                        </span>--}}
+{{--                    @enderror--}}
+{{--                </div>--}}
                 <div class="form-group">
-                    <label for="name">First Name</label>
-                    <input id="fName" type="text" class="form-control @error('txtFName') is-invalid @enderror" name="txtFName" value="{{$user->first_name}}"  autocomplete="number" >
-                    @error('txtFName')
-                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <label for="name">Last Name</label>
+                    <label for="name">Tên</label>
                     <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value="{{$user->last_name}}"  autocomplete="number" required>
                     @error('txtLName')
                     <span class="invalid-feedback" role="alert">

@@ -22,6 +22,24 @@
                     @enderror
                 </div>
                 <div class="form-group">
+                    <label for="name">Email</label>
+                    <input id="email" type="text" class="form-control @error('txtEmail') is-invalid @enderror" name="txtTIN" value="{{$user_detail->email}}"  autocomplete="number">
+                    @error('txtEmail')
+                    <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="name">Phone</label>
+                    <input id="phone" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value="{{$user_detail->phone}}"  autocomplete="number">
+                    @error('txtPhone')
+                    <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                    @enderror
+                </div>
+                <div class="form-group">
                     <label for="name">Ngày Cấp CMT</label>
                     <input id="date_CMT" type="date" class="form-control @error('txtIdndate') is-invalid @enderror" name="txtIdndate" value=""  autocomplete="number" required>
                     @error('txtIdndate')

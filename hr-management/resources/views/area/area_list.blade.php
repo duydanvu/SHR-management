@@ -9,9 +9,9 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item "><a href="/home">Home</a></li>
-                    <li class="breadcrumb-item "><a href="#">Admin User</a></li>
-                    <li class="breadcrumb-item active">Area</li>
+                    <li class="breadcrumb-item "><a href="/home">Trang Chủ</a></li>
+                    <li class="breadcrumb-item "><a href="#">Quản Lý Nhân Sự</a></li>
+                    <li class="breadcrumb-item active">Khu Vực</li>
                 </ol>
             </div>
         </div>
@@ -41,8 +41,14 @@
                     <th style="width:5%">#</th>
                     <th style="width:10%">Tên Khu Vực</th>
                     <th style="width:15%">Thông tin Chi tiết</th>
-                    <th style="width:15%">Tổng số cửa hàng</th>
-                    <th style="width:5%" class="noSort">Action</th>
+                    <th style="width:10%">Tổng số cửa hàng</th>
+                    <th style="width:10%">GDV</th>
+                    <th style="width:10%">AM</th>
+                    <th style="width:10%">KAM</th>
+                    <th style="width:10%">Chính Thức</th>
+                    <th style="width:10%">Thử Việc</th>
+                    <th style="width:10%">Tổng số Nhân Viên</th>
+                    <th style="width:5%" class="noSort">Sửa Thông tin Khu Vực</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
@@ -53,6 +59,12 @@
                             <td>{{$value->area_name}}</td>
                             <td>{{$value->area_description}}</td>
                             <td><a href="{{route('view_store_of_area',['id'=>$value->id])}}">{{$value->sum}}</a></td>
+                            <td>{{$value->GDV}}</td>
+                            <td>{{$value->AM}}</td>
+                            <td>{{$value->KAM}}</td>
+                            <td>{{$value->CT}}</td>
+                            <td>{{$value->TV}}</td>
+                            <td>{{($value->CT)+($value->TV)}}</td>
                             <td class="text-center">
 {{--                                @if($role_use_number == 1)--}}
                                 <div class="btn-group">

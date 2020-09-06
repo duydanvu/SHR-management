@@ -6,6 +6,15 @@
             <div class="card-body col-lg-6 float-left">
                 <input name="user_id" value="{{$user_detail->id}}" hidden/>
                 <div class="form-group">
+                    <label for="name">Email</label>
+                    <input id="email" type="text" class="form-control @error('txtIdentity') is-invalid @enderror" name="txtEmail" value="{{$user_detail->email}}"  autocomplete="number" required>
+                    @error('txtIdentity')
+                    <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                    @enderror
+                </div>
+                <div class="form-group">
                     <label for="name">Số CMT</label>
                     <input id="cmt" type="number" class="form-control @error('txtIdentity') is-invalid @enderror" name="txtIdentity" value="{{$user_detail->identity_number}}"  autocomplete="number" required>
                     @error('txtIdentity')
@@ -52,6 +61,15 @@
                 </div>
             </div>
             <div class="card-body col-lg-6 float-left">
+                <div class="form-group">
+                    <label for="name">Số Điện Thoại</label>
+                    <input id="phone" type="number" class="form-control @error('txtIdentity') is-invalid @enderror" name="txtPhone" value="{{$user_detail->phone}}"  autocomplete="number" required>
+                    @error('txtIdentity')
+                    <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                    @enderror
+                </div>
                 <div class="form-group">
                     <label for="name">Số Bảo Hiểm Xã Hội</label>
                     <input id="txtSSC" type="number" class="form-control @error('txtNssc') is-invalid @enderror" name="txtNssc" value="{{$user_detail->ssc_number}}"  autocomplete="number" >

@@ -232,7 +232,7 @@ return [
 
     'menu' => [
         [
-            'text'        => 'Dashboard',
+            'text'        => 'Trang Chủ',
             'url'         => '/home',
             'icon'        => 'fas fa-tachometer-alt',
 //            'submenu' => [
@@ -245,54 +245,59 @@ return [
         ],
 //
         [
-            'text'    => 'Admin User',
+            'text'    => 'Quản Lý Nhân Sự',
             'icon'    => 'fas fa-users',
             'can' => 'view_menu',
             'submenu' => [
                 [
-                    'text' => 'User',
+                    'text' => 'Nhân sự',
                     'url'  => 'admin/user',
                 ],
                 [
-                    'text' => 'Area',
+                    'text' => 'Chi Tiết Nhân Sự',
+                    'url'  => 'report/report_with_time',
+                ],
+                [
+                    'text' => 'Khu Vực',
                     'url'  => 'admin/area',
                 ],
-                [
-                    'text' => 'Store',
-                    'url'  => 'admin/store',
-                ],
-                [
-                    'text' => 'Position',
-                    'url'  => 'admin/position',
-                ],
-                [
-                    'text' => 'Department',
-                    'url'  => 'admin/department',
-                ],
-                [
-                    'text' => 'Service',
-                    'url'  => 'admin/service',
-                ],
-                [
-                    'text' => 'Contract',
-                    'url'  => 'admin/contract',
-                ],
+//                [
+//                    'text' => 'Position',
+//                    'url'  => 'admin/position',
+//                ],
+//                [
+//                    'text' => 'Department',
+//                    'url'  => 'admin/department',
+//                ],
+//                [
+//                    'text' => 'Service',
+//                    'url'  => 'admin/service',
+//                ],
+
             ],
         ],
 //
         [
-            'text'    => 'THỐNG KÊ BÁO CÁO',
+            'text'    => 'THỐNG KÊ ',
             'icon'    => 'fas fa-clipboard-list',
             'can' => 'view_menu',
             'submenu' => [
-                [
-                    'text' => 'Báo Cáo Theo Thời Gian',
-                    'url'  => 'report/report_with_time',
-                ],
+//                [
+//                    'text' => 'Báo Cáo Theo Thời Gian',
+//                    'url'  => 'report/report_with_time',
+//                ],
 //                [
 //                    'text' => 'Báo Cáo Theo Nhân Viên',
 //                    'url'  => 'report/report_with_user',
 //                ],
+                [
+                    'text' => '	Thống Kê Chấm Công',
+                    'url'  => 'request/report_view',
+                ],
+                [
+                    'text' => 'Thống Kê Hợp Đồng',
+                    'url'  => 'admin/contract',
+                ],
             ],
         ],
         [
@@ -305,30 +310,31 @@ return [
                     'url'  => 'timekeeping/timekeeping_for_staff',
                 ],
                 [
-                    'text' => '	Request',
+                    'text' => '	Cập Nhật Chấm Công Tháng',
                     'url'  => 'timekeeping/request_timekeeping',
                 ],
                 [
-                    'text' => '	Request Timesheets',
-                    'url'  => 'request/report_view',
+                    'text' => '	Quản Lý Chấm Công ',
+                    'url'  => 'timekeeping/request_timekeeping',
                 ],
+
 
             ],
         ],
-        [
-            'text'    => 'KPI',
-            'icon'    => 'fas fa-clipboard-list',
-            'submenu' => [
-                [
-                    'text' => 'KPI Cửa Hàng Trưởng',
-                    'url'  => 'kpi/kpi_cht',
-                ],
-                [
-                    'text' => 'KPI Nhân Viên',
-                    'url'  => 'kpi/kpi_nv',
-                ],
-            ],
-        ],
+//        [
+//            'text'    => 'KPI',
+//            'icon'    => 'fas fa-clipboard-list',
+//            'submenu' => [
+//                [
+//                    'text' => 'KPI Cửa Hàng Trưởng',
+//                    'url'  => 'kpi/kpi_cht',
+//                ],
+//                [
+//                    'text' => 'KPI Nhân Viên',
+//                    'url'  => 'kpi/kpi_nv',
+//                ],
+//            ],
+//        ],
         // ['header' => 'labels'],
     ],
 
