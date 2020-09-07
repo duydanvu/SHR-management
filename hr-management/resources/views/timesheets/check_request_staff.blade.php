@@ -41,58 +41,27 @@
                 <thead>
                 <tr>
                     <th style="width:5%" >#</th>
-                    <th style="width:20%" >Tên Nhân Viên</th>
-                    <th style="width:20%">Email</th>
-                    <th style="width:15%">Ngày</th>
-                    <th style="width:10%">Cửa hàng</th>
-                    <th style="width:10%">Chức vụ</th>
-                    <th style="width:10%">Phòng ban</th>
-                    <th style="width:10%">Time Sheet</th>
-                    <th style="width:20%">Request</th>
-                    <th style="width:10%">Status</th>
-                    <th style="text-align: center;width:10%">Action</th>
+                    <th style="width:20%" >Tên </th>
+                    @for($i = 1;$i <= $date_now;$i++)
+                    <th style="width:2%">{{$i}}</th>
+                    @endfor
                 </tr>
                 </thead>
                 <tbody id="table_body">
                 @if ( count($staff) > 0)
                     @foreach($staff as $key => $value)
                         <tr >
-                            <td>{{$key+1}}</td>
-                            <td>{{$value->first_name}} {{$value->last_name}}</td>
-                            <td>{{$value->email}}</td>
-                            <td>{{$value->date_timesheet}}</td>
-                            <td>{{$value->store_name}}</td>
-                            <td>{{$value->position_name}}</td>
-                            <td>{{$value->dp_name}}</td>
-                            <td  @if($value->logs_timesheet == "absent") style="background-color: #ff9999" @endif>{{$value->logs_timesheet}}</td>
-                            <td>{{$value->request_timesheet}}</td>
-                            <td>{{$value->status_timesheet}}</td>
-                            <td class="text-center">
-                                @if($value->request_timesheet == null && $value->status_timesheet == "pendding")
-                                    <a href="{{route('show_view_update_time_sheet',['id'=>$value->id_timesheet])}}" data-remote="false"
-                                       data-toggle="modal" data-target="#modal-admin-action-update-timesheet-staff" class="btn dropdown-item">
-                                        <i class="fas fa-info-circle">  Add Timesheet</i>
-                                    </a>
+                            <td>{{$key}}</td>
+                            <td>{{$value->last_name}}</td>
+                            @for($i = 1;$i <= $date_now;$i++)
+                                @if($i <10 )@php($item = 'D0'.$i)
+                                @else @php($item = 'D'.$i)
                                 @endif
-                                @if($value->request_timesheet != null && $value->status_timesheet != "done")
-                                    <a href="{{route('update_timesheet_with_request_staff',['id'=>$value->id_timesheet])}}" data-remote="false"
-                                       data-toggle="modal" data-target="#modal-admin-update-request-timesheet" class="btn dropdown-item">
-                                        <i class="fas fa-info-circle">  Update Request</i>
-                                    </a>
-                                        <a href="{{route('dismiss_timesheet_with_request_staff',['id'=>$value->id_timesheet])}}" data-remote="false"
-                                           data-toggle="modal" class="btn dropdown-item">
-                                            <i class="fas fa-info-circle">  Dismiss Request</i>
-                                        </a>
-                                @endif
-                                @if($auth->position_id == 2)
-                                <a href="{{route('view_request_staff',['id'=>$value->id_timesheet])}}" data-remote="false"
-                                   data-toggle="modal" data-target="#modal-admin-view-request-timesheet" class="btn dropdown-item">
-                                    <i class="fas fa-info-circle">  Add Request</i>
-                                </a>
-                                @endif
-                            </td>
+                                <td ><button style="width: 100%;height: 40px;@if($value->$item != 1) background-color: #ff9999 @endif"></button></td>
+                            @endfor
                         </tr>
                     @endforeach
+
                 @else
                     <td colspan="8" style="text-align: center">
                         <h3>Empty Data</h3>
@@ -215,14 +184,14 @@
         });
         // Datatable
         $(function () {
-            $("#example1").DataTable({
-                aoColumnDefs: [
-                    {
-                        bSortable: false,
-                        aTargets: ['noSort']
-                    } // Disable sorting on columns marked as so
-                ]
-            });
+            // $("#example1").DataTable({
+            //     aoColumnDefs: [
+            //         {
+            //             bSortable: false,
+            //             aTargets: ['noSort']
+            //         } // Disable sorting on columns marked as so
+            //     ]
+            // });
             // fix table
             $("#example1").parent().css({"overflow": "auto"});
         });

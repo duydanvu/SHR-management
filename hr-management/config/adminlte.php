@@ -294,10 +294,10 @@ return [
                     'text' => '	Thống Kê Chấm Công',
                     'url'  => 'request/report_view',
                 ],
-                [
-                    'text' => 'Thống Kê Hợp Đồng',
-                    'url'  => 'admin/contract',
-                ],
+//                [
+//                    'text' => 'Thống Kê Hợp Đồng',
+//                    'url'  => 'admin/contract',
+//                ],
             ],
         ],
         [

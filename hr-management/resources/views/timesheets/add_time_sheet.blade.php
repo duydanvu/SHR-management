@@ -25,15 +25,6 @@
                     @enderror
                 </div>
                 <div class="form-group">
-                    <label for="name">Ngày</label>
-                    <input id="date_CMT" type="date" class="form-control @error('txtdate') is-invalid @enderror" name="txtdate" value=""  autocomplete="number" required >
-                    @error('txtdate')
-                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                    @enderror
-                </div>
-                <div class="form-group">
                     <label for="name">Status</label>
                     <select id="status_timesheet" name = "status_timesheet" class="form-control select2"  value="{{ old('status_timesheet') }}" autocomplete="status_timesheet" style="width: 100%;">
                         <option value="present">Present</option>

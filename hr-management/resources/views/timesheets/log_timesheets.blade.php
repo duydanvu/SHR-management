@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Report</h1>
+                <h1>Chấm Công</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -21,7 +21,7 @@
 @section('content')
     <div class="card card-outline card-primary-dashboard">
         <div class="card-header">
-            <h3 class="card-title">List</h3>
+            <h3 class="card-title">Danh sách Chấm Công</h3>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                     <i class="fas fa-minus"></i></button>
@@ -29,56 +29,64 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
+            <form>
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Today : </label>
-                        <input  type="text" id="datePicker"  value="" name="date_now" readonly>
+                        <label for="exampleInputEmail1">Thời Gian : </label>
+                        <input  type="date" id="datePicker"  value="" name="date_now" >
                     </div>
                 </div>
-                @if($roles->position_id == 2)
-                <div class="col-2 offset-4">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1"></label>
-                        <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-time-sheet-cht">
-                            <i class="fas fa-plus-circle"></i> Add Time Sheet </button>
-                    </div>
-                </div>
-                @endif
+{{--                @if($roles->position_id == 2)--}}
+{{--                <div class="col-2 offset-4">--}}
+{{--                    <div class="form-group">--}}
+{{--                        <label for="exampleInputEmail1"></label>--}}
+{{--                        <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-time-sheet-cht">--}}
+{{--                            <i class="fas fa-plus-circle"></i> Add Time Sheet </button>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                @endif--}}
+{{--                <div class="col-2 offset-4">--}}
+{{--                    <div class="form-group">--}}
+{{--                        <label for="exampleInputEmail1"></label>--}}
+{{--                        <button id = "" type="submit" class="btn btn-info" >--}}
+{{--                            <i class="fas fa-plus-circle"></i> Thêm Chấm Công</button>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
             </div>
             <table id="example1" class="table table-bordered table-striped " style="width: 100%">
                 <thead>
                 <tr>
                     <th style="width:5%" >#</th>
+{{--                    <th style="width:5%" >STT</th>--}}
                     <th style="width:25%" >Tên Nhân Viên</th>
                     <th style="width:25%">Email</th>
                     <th style="width:15%">Ngày Sinh</th>
                     <th style="width:10%">Giới tính</th>
-                    @if($roles->position_id == 1)<th style="width:10%">Date Timesheet</th>@endif
                     <th style="text-align: center;width:15%">Action</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
                 @if ( count($staff) > 0)
-                  @foreach($staff as $key => $value)
+                    @php($i = 1)
+                  @foreach($staff as $value)
                       <tr>
-                          <td>{{$key+1}}</td>
+{{--                          <td><input type="checkbox" id="{{$value->id}}"></td>--}}
+                          <td>{{$i++}}</td>
                           <td>{{$value->first_name}} {{$value->last_name}}</td>
                           <td>{{$value->email}}</td>
                           <td>{{$value->dob}}</td>
                           <td>{{$value->gender}}</td>
-                          @if($roles->position_id == 1)<td>{{$value->date_timesheet}}</td>@endif
-                          <td>@if($roles->position_id == 2)
-                              <a href="{{route('show_view_add_time_sheet',['id'=>$value->id])}}" data-remote="false"
+                          <td>
+                              <a type="button" href="{{route('show_view_add_time_sheet',['id'=>$value->id])}}" data-remote="false"
                                  data-toggle="modal" data-target="#modal-admin-action-add-timesheet" class="btn dropdown-item">
-                                  <i class="fas fa-plus-circle"> Log Timesheet</i>
+                                  <i class="fas fa-plus-circle"> Chấm Công</i>
                               </a>
-                              @endif
                               @if($roles->position_id == 1)
-                              <a href="{{route('show_view_update_time_sheet',['id'=>$value->id_timesheet])}}" data-remote="false"
-                                 data-toggle="modal" data-target="#modal-admin-action-update-timesheet-staff" class="btn dropdown-item">
-                                  <i class="fas fa-info-circle">update</i>
-                              </a>
+{{--                              <a href="{{route('show_view_update_time_sheet',['id'=>$value->id_timesheet])}}" data-remote="false"--}}
+{{--                                 data-toggle="modal" data-target="#modal-admin-action-update-timesheet-staff" class="btn dropdown-item">--}}
+{{--                                  <i class="fas fa-info-circle">update</i>--}}
+{{--                              </a>--}}
                               @endif
                           </td>
                       </tr>
@@ -91,6 +99,7 @@
 
                 </tbody>
             </table>
+            </form>
         </div>
         <!-- /.card-body -->
     </div>

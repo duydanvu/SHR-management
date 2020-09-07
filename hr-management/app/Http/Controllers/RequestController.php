@@ -26,11 +26,16 @@ class RequestController extends Controller
         $date = date("Y-m-d");
         $timesheet = Timesheet::where('date','=',$date)->select('user_id')->get();
         if($roles->position_id == 1){
-            $staff = DB::table('users')->join('timesheets','timesheets.user_id','=','users.id')
-                ->where('position_id','=',2)
-                ->where('status','=','pendding')
-                ->select('users.*','timesheets.id as id_timesheet','timesheets.date as date_timesheet')
-                ->get();
+//            $staff = DB::table('users')->join('timesheets','timesheets.user_id','=','users.id')
+//                ->where('position_id','=',2)
+//                ->select('users.*','timesheets.id as id_timesheet','timesheets.date as date_timesheet')
+//                ->get();
+            $staff = User::all()->where('position_id','=',2);
+            if(count($timesheet) > 0) {
+                foreach ($timesheet as $value) {
+                    $staff = $staff->where('id', '!=', $value->user_id);
+                }
+            }
         }elseif ($roles->position_id == 2){
             $staff = User::all()->where('position_id','=',3)
                                 ->where('store_id','=',$roles->store_id);
@@ -329,18 +334,8 @@ class RequestController extends Controller
         $date = date("Y-m-d");
         $user_id = Auth::id();
         $roles = User::find($user_id);
-        if (strcmp($date,$request['txtdate']) != 0 ){
-            $notification= array(
-                'message' => ' Nhập đúng ngày hiện tại để điểm danh !!',
-                'alert-type' => 'error'
-            );
-            return Redirect::back()
-                ->with($notification)
-                ->withInput();
-        }
         $validator = \Validator::make($request->all(),[
             'user_id' => 'required|max:11',
-            'txtdate' => 'required|date',
             'status_timesheet' => 'required|max:8'
         ]);
         $notification= array(
@@ -356,7 +351,7 @@ class RequestController extends Controller
         try{
             $add_time_sheet = DB::table('timesheets')->insert([
                 'user_id'=> $request['user_id'],
-                'date' => $request['txtdate'],
+                'date' => $date,
                 'logtime' => $request['status_timesheet'],
                 'status' => 'done',
                 'comment' => $request['txtComment']
@@ -375,92 +370,67 @@ class RequestController extends Controller
         return Redirect::back()->with($notification);
     }
 
-    public function addTimesheetCht(Request $request){
-        $date = date("Y-m-d");
-        $user_id = Auth::id();
-        $roles = User::find($user_id);
-        if (strcmp($date,$request['txtdate']) != 0 ){
-            $notification= array(
-                'message' => ' Nhập đúng ngày hiện tại để điểm danh !!',
-                'alert-type' => 'error'
-            );
-            return Redirect::back()
-                ->with($notification)
-                ->withInput();
-        }
-        $validator = \Validator::make($request->all(),[
-            'txtIDCht' => 'required|max:11',
-            'txtdate' => 'required|date',
-            'status_timesheet' => 'required|max:8'
-        ]);
-        $notification= array(
-            'message' => ' Chấm công lỗi! Kiểm tra thông tin và nhập lại thông tin!',
-            'alert-type' => 'error'
-        );
-        if ($validator ->fails()) {
-            return Redirect::back()
-                ->with($notification)
-                ->withErrors($validator)
-                ->withInput();
-        }
-        $check_request_cht = DB::table('timesheets')->select('id')
-                            ->where('user_id','=',$request['txtIDCht'])
-                            ->where('date','=',$request['txtdate'])
-                            ->get();
-        foreach ($check_request_cht as $value_check){
-            $id_check = $value_check->id;
-        }
-        if(count($check_request_cht) == 0) {
-            try {
-                $add_time_sheet = DB::table('timesheets')->insert([
-                    'user_id' => $request['txtIDCht'],
-                    'date' => $request['txtdate'],
-                    'logtime' => $request['status_timesheet'],
-                    'comment' => $request['txtDescription']
-                ]);
-            } catch (QueryException $ex) {
-                $notification = array(
-                    'message' => 'Chấm công nhân viên lỗi! Vui lòng nhập lại ',
-                    'alert-type' => 'error'
-                );
-                return Redirect::back()->with($notification);
-            }
-        }else{
-            try {
-                $update_time_sheet = DB::table('timesheets')->where('id','=',$id_check)
-                    ->update([
-                    'user_id' => $request['txtIDCht'],
-                    'date' => $request['txtdate'],
-                    'logtime' => $request['status_timesheet'],
-                    'comment' => $request['txtDescription']
-                ]);
-            } catch (QueryException $ex) {
-                $notification = array(
-                    'message' => 'Chấm công nhân viên lỗi! Vui lòng nhập lại ',
-                    'alert-type' => 'error'
-                );
-                return Redirect::back()->with($notification);
-            }
-        }
-        $notification = array(
-            'message' => 'Chấm công nhân viên thành công!',
-            'alert-type' => 'success'
-        );
-        return Redirect::back()->with($notification);
-    }
 
     public function checkRequest(){
         $user_id = Auth::id();
         $roles = User::find($user_id);
+        $date = date("Y-m-d");
+        $date_now = substr($date,-2,2);
         if($roles->position_id == 1){
-            $staff = DB::table('timesheets')->join('users','timesheets.user_id','=','users.id')
-                ->join('stores','users.store_id','=','stores.store_id')
-                ->join('positions','users.position_id','=','positions.position_id')
-                ->join('departments','users.department_id','=','departments.id')
-                ->select('users.*','timesheets.id as id_timesheet','stores.store_name',
-                    'positions.position_name','departments.name as dp_name','timesheets.status as status_timesheet','timesheets.logtime as logs_timesheet',
-                    'timesheets.comment as comment_timesheet','timesheets.request as request_timesheet','timesheets.date as date_timesheet')
+            $staff = DB::table('timesheets')
+                ->join('users','timesheets.user_id','=','users.id')
+                ->select(DB::raw('DISTINCT(users.last_name)')
+                    ,DB::raw("'0' as D01")
+                    ,DB::raw("'0' as D02")
+                    ,DB::raw("'0' as D03")
+                    ,DB::raw("'0' as D04")
+                    ,DB::raw("'0' as D05")
+                    ,DB::raw("'0' as D06")
+                    ,DB::raw("'0' as D07")
+                    ,DB::raw("'0' as D08")
+                    ,DB::raw("'0' as D09")
+                    ,DB::raw("'0' as D10")
+                    ,DB::raw("'0' as D11")
+                    ,DB::raw("'0' as D12")
+                    ,DB::raw("'0' as D13")
+                    ,DB::raw("'0' as D14")
+                    ,DB::raw("'0' as D15")
+                    ,DB::raw("'0' as D16")
+                    ,DB::raw("'0' as D17")
+                    ,DB::raw("'0' as D18")
+                    ,DB::raw("'0' as D19")
+                    ,DB::raw("'0' as D20")
+                    ,DB::raw("'0' as D21")
+                    ,DB::raw("'0' as D22")
+                    ,DB::raw("'0' as D23")
+                    ,DB::raw("'0' as D24")
+                    ,DB::raw("'0' as D25")
+                    ,DB::raw("'0' as D26")
+                    ,DB::raw("'0' as D27")
+                    ,DB::raw("'0' as D28")
+                    ,DB::raw("'0' as D29")
+                    ,DB::raw("'0' as D30")
+                    ,DB::raw("'0' as D31")
+                    ,'users.id')
+                ->where('position_id','=','2')
                 ->get();
+            $arr = [];
+            for($i = 1; $i <=31; $i++) {
+                foreach ($staff as $values) {
+                    if($i <10){
+                        $i = '0'.$i;
+                    }
+                    $item = 'D'.$i;
+                    $check_time_01 = Timesheet::all()
+                        ->where('user_id', '=', $values->id)
+                        ->where('date', '=', substr($date, 0, 8) . $i);
+                    if (count($check_time_01) == 0) {
+                        $values->$item = '0';
+                    } else {
+                        $values->$item = '1';
+                    }
+                }
+            }
         }elseif ($roles->position_id == 2){
             $staff = DB::table('timesheets')
                 ->leftJoin('users','timesheets.user_id','=','users.id')
@@ -475,7 +445,7 @@ class RequestController extends Controller
                     'timesheets.comment as comment_timesheet','timesheets.request as request_timesheet','timesheets.date as date_timesheet')
                 ->get();
         }
-        return view('timesheets.check_request_staff')->with(['staff'=>$staff,'auth'=>$roles]);
+        return view('timesheets.check_request_staff')->with(['staff'=>$staff,'auth'=>$roles,'arr'=>$arr,'date_now'=>$date_now]);
     }
 
     public function viewRequestStaff($id){
