@@ -95,9 +95,10 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     //timesheets
     Route::get('/timekeeping/timekeeping_for_staff','RequestController@logsTimesheets')->name('show_log_time_sheets');
     Route::get('/timekeeping/request_timekeeping','RequestController@checkRequest')->name('show_request_staff');
+    Route::get('/timekeeping/request_timekeeping/request_month','RequestController@checkTimesheetMonth')->name('show_timesheet_staff');
     Route::get('/timekeeping/add_view_time_sheet/{id}','RequestController@addViewTimesheet')->name('show_view_add_time_sheet');
     Route::post('/timerkeeping/add_time_sheets','RequestController@addTimeSheet')->name('add_time_sheet_for_staff');
-    Route::get('/timekeeping/view_update_request_time/{id}','RequestController@updateTimesheet')->name('show_view_update_time_sheet');
+    Route::get('/timekeeping/view_update_request_time/{id}/{date}','RequestController@updateTimesheet')->name('show_view_update_time_sheet');
     Route::post('/timekeeping/add_time_sheets_cht','RequestController@addTimesheetCht')->name('add_logtime_cht');
     Route::get('/timekeeping/view_request_logtime/{id}','RequestController@viewRequestStaff')->name('view_request_staff');
     Route::post('/timekeeping/request/update_with_request','RequestController@updateWithRequest')->name('add_request_with_log_time_sheet');
@@ -105,6 +106,8 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/request/timesheet/update_request/{id}','RequestController@updateTimesheetWithTime')->name('update_timesheet_with_request_staff');
     Route::post('/request/timesheet/update_request/update_status','RequestController@updateStatusTimesheetWithTime')->name('update_request_with_log_time_sheet');
     Route::get('/request/timesheet/dismiss_request/{id}','RequestController@dismissTimesheetWithTime')->name('dismiss_timesheet_with_request_staff');
+    Route::post('/request/timesheet/search_user_with_time','RequestController@search_user_with_time')->name('search_user_with_time');
+
 
     Route::get('/request/report_view','RequestController@viewReportTimesheet')->name('view_request_report');
     Route::post('/request/timesheet_search','RequestController@searchTimesheet')->name('search_date_timesheet');

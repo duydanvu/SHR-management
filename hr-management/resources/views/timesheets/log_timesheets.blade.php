@@ -109,7 +109,7 @@
         <div class="modal-dialog" style="max-width: 600px">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">View User and Add Timesheet</h4>
+                    <h4 class="modal-title">Chấm Công</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>

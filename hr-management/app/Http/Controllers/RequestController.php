@@ -298,9 +298,36 @@ class RequestController extends Controller
         return view('timesheets.add_time_sheet')->with(['user'=>$user]);
     }
 
-    public function updateTimesheet($id){
-        $timesheet = Timesheet::find($id);
+    public function updateTimesheet($id,$date){
+        $date1 = date("Y-m-d");
+        if($date <10){$date = '0'.$date;}
+        $date_search = substr($date1, 0, 8).$date;
+        $id_time = Timesheet::where('user_id','=',$id)
+                    ->where('date','=',$date_search)
+                    ->select('id')->get();
+        if(count($id_time)>0) {
+            foreach ($id_time as $value) {
+                $timesheet = Timesheet::where('id','=',$value->id)->get();
+            }
+        }else{
+            $timesheet = collect([
+                (object)[
+                    "id" => null,
+                    "user_id" => $id,
+                    "date" => null,
+                    "logtime" => null,
+                    "status" => null,
+                    "comment" => null,
+                    "start_time" => null,
+                    "end_time" => null,
+                    "created_at" => null,
+                    "updated_at" => null
+                ]
+            ]);
+        }
+//        dd($timesheet);
         return view('timesheets.update_time_sheet')->with(['user_timesheet'=>$timesheet]);
+
     }
 
     public function updaeTimeSheetStoreManage(Request $request){
@@ -354,7 +381,9 @@ class RequestController extends Controller
                 'date' => $date,
                 'logtime' => $request['status_timesheet'],
                 'status' => 'done',
-                'comment' => $request['txtComment']
+                'comment' => $request['txtComment'],
+                'start_time'=>$request['txtTimeStart'],
+                'end_time' =>$request['txtTimeEnd']
             ]);
         }catch (QueryException $ex){
             $notification = array(
@@ -413,21 +442,30 @@ class RequestController extends Controller
                     ,DB::raw("'0' as D31")
                     ,'users.id')
                 ->where('position_id','=','2')
+                ->whereBetween('date',[substr($date, 0, 8).'01',substr($date, 0, 8).'31'])
                 ->get();
-            $arr = [];
-            for($i = 1; $i <=31; $i++) {
+
                 foreach ($staff as $values) {
+                    for($i = 1; $i <=31; $i++) {
                     if($i <10){
                         $i = '0'.$i;
+                    }else{
+                        $i = $i;
                     }
                     $item = 'D'.$i;
                     $check_time_01 = Timesheet::all()
                         ->where('user_id', '=', $values->id)
                         ->where('date', '=', substr($date, 0, 8) . $i);
-                    if (count($check_time_01) == 0) {
-                        $values->$item = '0';
-                    } else {
-                        $values->$item = '1';
+                    if (count($check_time_01) > 0) {
+                        foreach ($check_time_01 as $check_time){
+                            if($check_time->logtime == 'present'){
+                                $values->$item = '1';
+                            }else{
+                                if($check_time->comment != null){
+                                    $values->$item = '2';
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -445,7 +483,185 @@ class RequestController extends Controller
                     'timesheets.comment as comment_timesheet','timesheets.request as request_timesheet','timesheets.date as date_timesheet')
                 ->get();
         }
-        return view('timesheets.check_request_staff')->with(['staff'=>$staff,'auth'=>$roles,'arr'=>$arr,'date_now'=>$date_now]);
+        return view('timesheets.check_request_staff')->with(['staff'=>$staff,'auth'=>$roles,'date_now'=>$date_now]);
+    }
+    public function checkTimesheetMonth(){
+        $user_id = Auth::id();
+        $roles = User::find($user_id);
+        $date = date("Y-m-d");
+        $date_now = substr($date,-2,2);
+        if($roles->position_id == 1){
+            $staff = DB::table('timesheets')
+                ->join('users','timesheets.user_id','=','users.id')
+                ->select(DB::raw('DISTINCT(users.last_name)')
+                    ,DB::raw("'0' as D01")
+                    ,DB::raw("'0' as D02")
+                    ,DB::raw("'0' as D03")
+                    ,DB::raw("'0' as D04")
+                    ,DB::raw("'0' as D05")
+                    ,DB::raw("'0' as D06")
+                    ,DB::raw("'0' as D07")
+                    ,DB::raw("'0' as D08")
+                    ,DB::raw("'0' as D09")
+                    ,DB::raw("'0' as D10")
+                    ,DB::raw("'0' as D11")
+                    ,DB::raw("'0' as D12")
+                    ,DB::raw("'0' as D13")
+                    ,DB::raw("'0' as D14")
+                    ,DB::raw("'0' as D15")
+                    ,DB::raw("'0' as D16")
+                    ,DB::raw("'0' as D17")
+                    ,DB::raw("'0' as D18")
+                    ,DB::raw("'0' as D19")
+                    ,DB::raw("'0' as D20")
+                    ,DB::raw("'0' as D21")
+                    ,DB::raw("'0' as D22")
+                    ,DB::raw("'0' as D23")
+                    ,DB::raw("'0' as D24")
+                    ,DB::raw("'0' as D25")
+                    ,DB::raw("'0' as D26")
+                    ,DB::raw("'0' as D27")
+                    ,DB::raw("'0' as D28")
+                    ,DB::raw("'0' as D29")
+                    ,DB::raw("'0' as D30")
+                    ,DB::raw("'0' as D31")
+                    ,'users.id')
+                ->where('position_id','=','2')
+                ->whereBetween('date',[substr($date, 0, 8).'01',substr($date, 0, 8).'31'])
+                ->get();
+
+                foreach ($staff as $values) {
+                    for($i = 1; $i <=31; $i++) {
+                    if($i <10){
+                        $i = '0'.$i;
+                    }else{
+                        $i = $i;
+                    }
+                    $item = 'D'.$i;
+                    $check_time_01 = Timesheet::all()
+                        ->where('user_id', '=', $values->id)
+                        ->where('date', '=', substr($date, 0, 8) . $i);
+                    if (count($check_time_01) > 0) {
+                        foreach ($check_time_01 as $check_time){
+                            if($check_time->logtime == 'present'){
+                                $values->$item = '1';
+                            }else{
+                                if($check_time->comment != null){
+                                    $values->$item = '2';
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }elseif ($roles->position_id == 2){
+            $staff = DB::table('timesheets')
+                ->leftJoin('users','timesheets.user_id','=','users.id')
+                ->join('stores','users.store_id','=','stores.store_id')
+                ->join('positions','users.position_id','=','positions.position_id')
+                ->join('departments','users.department_id','=','departments.id')
+                ->where('users.position_id','=',3)
+                ->where('users.store_id','=',$roles->store_id)
+                ->where('timesheets.status','=','done')
+                ->select('users.*','timesheets.id as id_timesheet','stores.store_name',
+                    'positions.position_name','departments.name as dp_name','timesheets.status as status_timesheet','timesheets.logtime as logs_timesheet',
+                    'timesheets.comment as comment_timesheet','timesheets.request as request_timesheet','timesheets.date as date_timesheet')
+                ->get();
+        }
+        return view('timesheets.quan_ly_cham_cong')->with(['staff'=>$staff,'auth'=>$roles,'date_now'=>$date_now]);
+    }
+    public function search_user_with_time(Request  $request){
+        $user_id = Auth::id();
+        $roles = User::find($user_id);
+        $date = date("Y-m-d");
+        $date_now = substr($date,-2,2);
+        if($roles->position_id == 1){
+            $staff = DB::table('timesheets')
+                ->join('users','timesheets.user_id','=','users.id')
+                ->select(DB::raw('DISTINCT(users.last_name)')
+                    ,DB::raw("'0' as D01")
+                    ,DB::raw("'0' as D02")
+                    ,DB::raw("'0' as D03")
+                    ,DB::raw("'0' as D04")
+                    ,DB::raw("'0' as D05")
+                    ,DB::raw("'0' as D06")
+                    ,DB::raw("'0' as D07")
+                    ,DB::raw("'0' as D08")
+                    ,DB::raw("'0' as D09")
+                    ,DB::raw("'0' as D10")
+                    ,DB::raw("'0' as D11")
+                    ,DB::raw("'0' as D12")
+                    ,DB::raw("'0' as D13")
+                    ,DB::raw("'0' as D14")
+                    ,DB::raw("'0' as D15")
+                    ,DB::raw("'0' as D16")
+                    ,DB::raw("'0' as D17")
+                    ,DB::raw("'0' as D18")
+                    ,DB::raw("'0' as D19")
+                    ,DB::raw("'0' as D20")
+                    ,DB::raw("'0' as D21")
+                    ,DB::raw("'0' as D22")
+                    ,DB::raw("'0' as D23")
+                    ,DB::raw("'0' as D24")
+                    ,DB::raw("'0' as D25")
+                    ,DB::raw("'0' as D26")
+                    ,DB::raw("'0' as D27")
+                    ,DB::raw("'0' as D28")
+                    ,DB::raw("'0' as D29")
+                    ,DB::raw("'0' as D30")
+                    ,DB::raw("'0' as D31")
+                    ,'users.id')
+                ->where('position_id','=','2')
+                ->where('date','like','%'.$request->month.'%')
+                ->get();
+                foreach ($staff as $values) {
+                    for($i = 1; $i <=31; $i++) {
+                    if($i <10){
+                        $i = '0'.$i;
+                    }else{
+                        $i = $i;
+                    }
+                    $item = 'D'.$i;
+                    $check_time_01 = Timesheet::all()
+                        ->where('user_id', '=', $values->id)
+                        ->where('date', '=', $request->month .'-'. $i);
+                    if (count($check_time_01) > 0) {
+                        foreach ($check_time_01 as $check_time){
+                            if($check_time->logtime == 'present'){
+                                $values->$item = '1';
+                            }else{
+                                if($check_time->comment != null){
+                                    $values->$item = '2';
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        $result = null;
+        foreach ($staff as $key=>$value){
+            $result .= '<tr >';
+            $result .= '<td>'.$key.'</td>';
+            $result .= '<td>'.$value->last_name.'</td>';
+            for($i = 1;$i <= 31;$i++)
+            {
+                if ($i < 10) {
+                    $item = 'D0' . $i;
+                } else {
+                    $item = 'D' . $i;
+                }
+                if($value->$item == 0){
+                    $result .= '<td ><a type = "button" style = "width: 40px;height: 40px;background-color: #ff9999;"></a ></td >';
+                }elseif ($value->$item == 2){
+                    $result .= '<td ><a type = "button" style = "width: 40px;height: 40px;background-color: #fd9a47;"></a ></td >';
+                }else{
+                    $result .= '<td ><a type = "button" style = "width: 40px;height: 40px;background-color: #00c054;"></a ></td >';
+                }
+            }
+        }
+        $result .= '</tr>';
+        return $result;
     }
 
     public function viewRequestStaff($id){
@@ -496,13 +712,25 @@ class RequestController extends Controller
     }
 
     public function updateStatusTimesheetWithTime(Request $request){
-        $data_request_dimiss =DB::table('timesheets')->where('id','=',$request->timesheet_id)
-            ->update([
-                'logtime' =>$request->status_timesheet,
-                'comment'=>$request->txtReason,
-                'status'=>"done",
-                'request'=>"done"
+        if($request->user_id == null){
+            $add_time_sheet = DB::table('timesheets')->insert([
+                'user_id'=> $request->user_id_logtime,
+                'date' => $request->date_ts,
+                'logtime' => $request->status_timesheet,
+                'status' => 'done',
+                'comment' => $request->txtComment,
+                'start_time'=>$request->txtTimeStart,
+                'end_time' =>$request->txtTimeEnd
             ]);
+        }else {
+            $data_request_dimiss = DB::table('timesheets')->where('id', '=', $request->user_id)
+                ->update([
+                    'logtime' => $request->status_timesheet,
+                    'comment' => $request->txtComment,
+                    'start_time' => $request->txtTimeStart,
+                    'end_time' => $request->txtTimeEnd
+                ]);
+        }
         if($data_area_update = 1){
             $notification = array(
                 'message' => 'thành công!',

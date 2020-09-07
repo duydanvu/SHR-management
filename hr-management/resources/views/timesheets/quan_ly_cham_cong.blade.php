@@ -5,13 +5,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Chấm Công</h1>
+                <h1>Quản Lý Chấm Công</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item "><a href="/home">Home</a></li>
                     <li class="breadcrumb-item "><a href="#">Quản lý chấm công</a></li>
-                    <li class="breadcrumb-item active">Chấm Công</li>
+                    <li class="breadcrumb-item active">Quản Lý Chấm Công</li>
                 </ol>
             </div>
         </div>
@@ -21,28 +21,46 @@
 @section('content')
     <div class="card card-outline card-primary-dashboard">
         <div class="card-header">
-            <h3 class="card-title">Danh Sách Chấm Công Tháng</h3>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                     <i class="fas fa-minus"></i></button>
             </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <meta name="csrf-token2" content="{{ csrf_token() }}">
+                            <label for="exampleInputEmail1">Thời Gian</label>
+                            <input class="form-control" type="month" name="txtMonth" id="txtMonth">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Tên Nhân Sự</label>
+                            <input id="name_user" type="text" class="form-control @error('txtNameUser') is-invalid @enderror" name="txtFName" value=""  autocomplete="number" required>
+                            @error('txtNameUser')
+                            <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="pt-4" style="float: left">
+                        <button type="submit" id="fillter_date" class="btn btn-primary mt-2" style="float: left"><i class="fas fa-search-minus">Tìm Kiếm</i></button>
+                    </div>
+                </div>
+            </div>
         </div>
+
         <!-- /.card-header -->
+
         <div class="card-body">
-{{--            <div class="row">--}}
-{{--                <div class="col-md-3">--}}
-{{--                    <div class="form-group">--}}
-{{--                        <label for="exampleInputEmail1"></label>--}}
-{{--                        <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Add New Request </button>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
             <table id="example1" class="table table-bordered table-striped " style="width: 100%">
                 <thead>
                 <tr>
                     <th style="width:5%" >#</th>
                     <th style="width:15%" >Tên </th>
-                    @for($i = 1;$i <= $date_now;$i++)
+                    @for($i = 1;$i <= 31;$i++)
                     <th style="width:2%">{{$i}}</th>
                     @endfor
                 </tr>
@@ -206,6 +224,30 @@
     </script>
 
     <script>
+        $(document).ready(function(){
+            $('#fillter_date').click(function () {
+                let month = $('#txtMonth').val();
+                let name_user = $('#name_user').val();
+                let _token = $('meta[name="csrf-token2"]').attr('content');
+                var dt = {_token,month,name_user};
+                console.log(dt);
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token-2"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type:'POST',
+                    url:'{{route('search_user_with_time')}}',
+                    data:dt,
+                    success:function(resultData){
+                        // // $('.effort').val(resultData);
+                        $('#table_body').html(resultData);
+                        console.log(resultData);
+                    }
+                });
+            });
+        });
     </script>
 
 @stop

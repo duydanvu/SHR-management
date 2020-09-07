@@ -254,25 +254,32 @@ return [
                     'url'  => 'admin/user',
                 ],
                 [
-                    'text' => 'Chi Tiết Nhân Sự',
-                    'url'  => 'report/report_with_time',
-                ],
-                [
                     'text' => 'Khu Vực',
                     'url'  => 'admin/area',
                 ],
-//                [
-//                    'text' => 'Position',
-//                    'url'  => 'admin/position',
-//                ],
-//                [
-//                    'text' => 'Department',
-//                    'url'  => 'admin/department',
-//                ],
-//                [
-//                    'text' => 'Service',
-//                    'url'  => 'admin/service',
-//                ],
+                [
+                    'text'    => 'Quản Lý Nhân Sự',
+                    'icon'    => 'fas fa-users',
+                    'submenu' =>[
+                        [
+                            'text' => 'Chi Tiết Nhân Sự',
+                            'url'  => 'report/report_with_time',
+                        ],
+                        [
+                            'text' => 'Position',
+                            'url'  => 'admin/position',
+                        ],
+                        [
+                            'text' => 'Department',
+                            'url'  => 'admin/department',
+                        ],
+                        [
+                            'text' => 'Service',
+                            'url'  => 'admin/service',
+                        ],
+                    ]
+                ]
+
 
             ],
         ],
@@ -315,7 +322,7 @@ return [
                 ],
                 [
                     'text' => '	Quản Lý Chấm Công ',
-                    'url'  => 'timekeeping/request_timekeeping',
+                    'url'  => 'timekeeping/request_timekeeping/request_month',
                 ],
 
 

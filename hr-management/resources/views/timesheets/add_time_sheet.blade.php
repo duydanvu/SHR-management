@@ -25,6 +25,24 @@
                     @enderror
                 </div>
                 <div class="form-group">
+                    <label for="name">Thời Gian Bắt Đầu</label>
+                    <input id="timeStart" type="time" class="form-control @error('txtTimeStart') is-invalid @enderror" name="txtTimeStart"  autocomplete="number" >
+                    @error('txtTimeStart')
+                    <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="name">Thời Gian Kết Thúc</label>
+                    <input id="timeEnd" type="time" class="form-control @error('txtTimeEnd') is-invalid @enderror" name="txtTimeEnd"  autocomplete="number" >
+                    @error('txtTimeEnd')
+                    <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                    @enderror
+                </div>
+                <div class="form-group">
                     <label for="name">Status</label>
                     <select id="status_timesheet" name = "status_timesheet" class="form-control select2"  value="{{ old('status_timesheet') }}" autocomplete="status_timesheet" style="width: 100%;">
                         <option value="present">Present</option>
