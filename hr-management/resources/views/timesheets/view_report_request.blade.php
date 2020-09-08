@@ -41,7 +41,7 @@
                             @foreach ($area as $area)
                                 <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>
                             @endforeach
-                                <option value="all">All</option>
+                                <option value="all" selected>All</option>
                         </select>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                             @foreach ($store as $store2)
                                 <option value="{{$store2['store_id']}}">{{$store2['store_name']}}-{{$store2['store_address']}}</option>
                             @endforeach
-                                <option value="all">All</option>
+                                <option value="all" selected>All</option>
                         </select>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                             @foreach ($position as $position)
                                 <option value="{{$position['position_id']}}">{{$position['position_name']}}-{{$position['description']}}</option>
                             @endforeach
-                            <option value="all">All</option>
+                            <option value="all" selected>All</option>
                         </select>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                             @foreach ($department as $department)
                                 <option value="{{$department['id']}}">{{$department['name']}}-{{$department['description']}}</option>
                             @endforeach
-                            <option value="all">All</option>
+                            <option value="all" selected>All</option>
                         </select>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
                             @foreach ($service as $service)
                                 <option value="{{$service['id']}}">{{$service['name']}}-{{$service['description']}}</option>
                             @endforeach
-                            <option value="all">All</option>
+                            <option value="all" selected>All</option>
                         </select>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                             @foreach ($contract as $contract)
                                 <option value="{{$contract['contract_id']}}">{{$contract['name']}}-{{$contract['description']}}</option>
                             @endforeach
-                            <option value="all">All</option>
+                            <option value="all" selected>All</option>
                         </select>
                     </div>
                 </div>

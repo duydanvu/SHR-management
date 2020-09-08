@@ -258,7 +258,7 @@ return [
                     'url'  => 'admin/area',
                 ],
                 [
-                    'text'    => 'Quản Lý Nhân Sự',
+                    'text'    => 'Quản Lý',
                     'icon'    => 'fas fa-users',
                     'submenu' =>[
                         [
@@ -287,7 +287,6 @@ return [
         [
             'text'    => 'THỐNG KÊ ',
             'icon'    => 'fas fa-clipboard-list',
-            'can' => 'view_menu',
             'submenu' => [
 //                [
 //                    'text' => 'Báo Cáo Theo Thời Gian',

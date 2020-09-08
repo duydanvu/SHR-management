@@ -49,6 +49,20 @@
                         <button type="submit" id="fillter_date" class="btn btn-primary mt-2" style="float: left"><i class="fas fa-search-minus">Tìm Kiếm</i></button>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-3">
+                        <button style="height: 15px;width: 5px; background-color: #ff9999"></button>
+                        <a>Nghỉ Không Phép</a>
+                    </div>
+                    <div class="col-3">
+                        <button style="height: 15px;width: 5px; background-color: #fd9a47"></button>
+                        <a>Nghỉ Có Phép</a>
+                    </div>
+                    <div class="col-3">
+                        <button style="height: 15px;width: 5px; background-color: #00c054"></button>
+                        <a>Đi Làm</a>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -128,7 +142,7 @@
         <div class="modal-dialog" style="max-width: 600px">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Update Request</h4>
+                    <h4 class="modal-title">Cập Nhật Chấm Công</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>

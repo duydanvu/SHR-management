@@ -27,6 +27,20 @@
                     <i class="fas fa-minus"></i></button>
             </div>
         </div>
+        <div class="row">
+            <div class="col-3">
+                <button style="height: 15px;width: 5px; background-color: #ff9999; margin-left: 30px; margin-top: 20px"></button>
+                <a>Nghỉ Không Phép</a>
+            </div>
+            <div class="col-3">
+                <button style="height: 15px;width: 5px; background-color: #fd9a47;margin-top: 20px"></button>
+                <a>Nghỉ Có Phép</a>
+            </div>
+            <div class="col-3">
+                <button style="height: 15px;width: 5px; background-color: #00c054;margin-top: 20px"></button>
+                <a>Đi Làm</a>
+            </div>
+        </div>
         <!-- /.card-header -->
         <div class="card-body">
 {{--            <div class="row">--}}

@@ -69,7 +69,7 @@ class RequestController extends Controller
             -> addSelect(DB::raw("'0' as absent_yes"))
             -> addSelect(DB::raw("'0' as absent_no"));
         if($auth->position_id == 1){
-            $user = $user1->get();
+            $user = $user1->where('users.position_id','=','2')->get();
         }elseif ($auth->position_id == 2){
             $user = $user1->where('users.store_id','=',$auth->store_id)->get();
         };
@@ -136,6 +136,7 @@ class RequestController extends Controller
                     ,'users.email','stores.store_name',
                     'positions.position_name','contracts.name as ct_name'
                     ,'departments.name as dp_name','services.name as sv_name')
+                ->where('users.position_id','=','2')
                 -> addSelect(DB::raw("'0' as present"))
                 -> addSelect(DB::raw("'0' as absent_yes"))
                 -> addSelect(DB::raw("'0' as absent_no"));
@@ -471,17 +472,70 @@ class RequestController extends Controller
             }
         }elseif ($roles->position_id == 2){
             $staff = DB::table('timesheets')
-                ->leftJoin('users','timesheets.user_id','=','users.id')
-                ->join('stores','users.store_id','=','stores.store_id')
-                ->join('positions','users.position_id','=','positions.position_id')
-                ->join('departments','users.department_id','=','departments.id')
-                ->where('users.position_id','=',3)
+                ->rightJoin('users','timesheets.user_id','=','users.id')
+                ->select(DB::raw('DISTINCT(users.last_name)')
+                    ,DB::raw("'0' as D01")
+                    ,DB::raw("'0' as D02")
+                    ,DB::raw("'0' as D03")
+                    ,DB::raw("'0' as D04")
+                    ,DB::raw("'0' as D05")
+                    ,DB::raw("'0' as D06")
+                    ,DB::raw("'0' as D07")
+                    ,DB::raw("'0' as D08")
+                    ,DB::raw("'0' as D09")
+                    ,DB::raw("'0' as D10")
+                    ,DB::raw("'0' as D11")
+                    ,DB::raw("'0' as D12")
+                    ,DB::raw("'0' as D13")
+                    ,DB::raw("'0' as D14")
+                    ,DB::raw("'0' as D15")
+                    ,DB::raw("'0' as D16")
+                    ,DB::raw("'0' as D17")
+                    ,DB::raw("'0' as D18")
+                    ,DB::raw("'0' as D19")
+                    ,DB::raw("'0' as D20")
+                    ,DB::raw("'0' as D21")
+                    ,DB::raw("'0' as D22")
+                    ,DB::raw("'0' as D23")
+                    ,DB::raw("'0' as D24")
+                    ,DB::raw("'0' as D25")
+                    ,DB::raw("'0' as D26")
+                    ,DB::raw("'0' as D27")
+                    ,DB::raw("'0' as D28")
+                    ,DB::raw("'0' as D29")
+                    ,DB::raw("'0' as D30")
+                    ,DB::raw("'0' as D31")
+                    ,'users.id')
+                ->where('position_id','<>','1')
+                ->where('position_id','<>','2')
                 ->where('users.store_id','=',$roles->store_id)
-                ->where('timesheets.status','=','done')
-                ->select('users.*','timesheets.id as id_timesheet','stores.store_name',
-                    'positions.position_name','departments.name as dp_name','timesheets.status as status_timesheet','timesheets.logtime as logs_timesheet',
-                    'timesheets.comment as comment_timesheet','timesheets.request as request_timesheet','timesheets.date as date_timesheet')
+                ->whereBetween('date',[substr($date, 0, 8).'01',substr($date, 0, 8).'31'])
                 ->get();
+
+            foreach ($staff as $values) {
+                for($i = 1; $i <=31; $i++) {
+                    if($i <10){
+                        $i = '0'.$i;
+                    }else{
+                        $i = $i;
+                    }
+                    $item = 'D'.$i;
+                    $check_time_01 = Timesheet::all()
+                        ->where('user_id', '=', $values->id)
+                        ->where('date', '=', substr($date, 0, 8) . $i);
+                    if (count($check_time_01) > 0) {
+                        foreach ($check_time_01 as $check_time){
+                            if($check_time->logtime == 'present'){
+                                $values->$item = '1';
+                            }else{
+                                if($check_time->comment != null){
+                                    $values->$item = '2';
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         return view('timesheets.check_request_staff')->with(['staff'=>$staff,'auth'=>$roles,'date_now'=>$date_now]);
     }
@@ -556,17 +610,70 @@ class RequestController extends Controller
             }
         }elseif ($roles->position_id == 2){
             $staff = DB::table('timesheets')
-                ->leftJoin('users','timesheets.user_id','=','users.id')
-                ->join('stores','users.store_id','=','stores.store_id')
-                ->join('positions','users.position_id','=','positions.position_id')
-                ->join('departments','users.department_id','=','departments.id')
-                ->where('users.position_id','=',3)
+                ->rightJoin('users','timesheets.user_id','=','users.id')
+                ->select(DB::raw('DISTINCT(users.last_name)')
+                    ,DB::raw("'0' as D01")
+                    ,DB::raw("'0' as D02")
+                    ,DB::raw("'0' as D03")
+                    ,DB::raw("'0' as D04")
+                    ,DB::raw("'0' as D05")
+                    ,DB::raw("'0' as D06")
+                    ,DB::raw("'0' as D07")
+                    ,DB::raw("'0' as D08")
+                    ,DB::raw("'0' as D09")
+                    ,DB::raw("'0' as D10")
+                    ,DB::raw("'0' as D11")
+                    ,DB::raw("'0' as D12")
+                    ,DB::raw("'0' as D13")
+                    ,DB::raw("'0' as D14")
+                    ,DB::raw("'0' as D15")
+                    ,DB::raw("'0' as D16")
+                    ,DB::raw("'0' as D17")
+                    ,DB::raw("'0' as D18")
+                    ,DB::raw("'0' as D19")
+                    ,DB::raw("'0' as D20")
+                    ,DB::raw("'0' as D21")
+                    ,DB::raw("'0' as D22")
+                    ,DB::raw("'0' as D23")
+                    ,DB::raw("'0' as D24")
+                    ,DB::raw("'0' as D25")
+                    ,DB::raw("'0' as D26")
+                    ,DB::raw("'0' as D27")
+                    ,DB::raw("'0' as D28")
+                    ,DB::raw("'0' as D29")
+                    ,DB::raw("'0' as D30")
+                    ,DB::raw("'0' as D31")
+                    ,'users.id')
+                ->where('position_id','<>','1')
+                ->where('position_id','<>','2')
                 ->where('users.store_id','=',$roles->store_id)
-                ->where('timesheets.status','=','done')
-                ->select('users.*','timesheets.id as id_timesheet','stores.store_name',
-                    'positions.position_name','departments.name as dp_name','timesheets.status as status_timesheet','timesheets.logtime as logs_timesheet',
-                    'timesheets.comment as comment_timesheet','timesheets.request as request_timesheet','timesheets.date as date_timesheet')
+                ->whereBetween('date',[substr($date, 0, 8).'01',substr($date, 0, 8).'31'])
                 ->get();
+
+            foreach ($staff as $values) {
+                for($i = 1; $i <=31; $i++) {
+                    if($i <10){
+                        $i = '0'.$i;
+                    }else{
+                        $i = $i;
+                    }
+                    $item = 'D'.$i;
+                    $check_time_01 = Timesheet::all()
+                        ->where('user_id', '=', $values->id)
+                        ->where('date', '=', substr($date, 0, 8) . $i);
+                    if (count($check_time_01) > 0) {
+                        foreach ($check_time_01 as $check_time){
+                            if($check_time->logtime == 'present'){
+                                $values->$item = '1';
+                            }else{
+                                if($check_time->comment != null){
+                                    $values->$item = '2';
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         return view('timesheets.quan_ly_cham_cong')->with(['staff'=>$staff,'auth'=>$roles,'date_now'=>$date_now]);
     }
@@ -613,6 +720,7 @@ class RequestController extends Controller
                     ,'users.id')
                 ->where('position_id','=','2')
                 ->where('date','like','%'.$request->month.'%')
+                ->where('users.last_name','like','%'.$request->name_user.'%')
                 ->get();
                 foreach ($staff as $values) {
                     for($i = 1; $i <=31; $i++) {
@@ -625,6 +733,72 @@ class RequestController extends Controller
                     $check_time_01 = Timesheet::all()
                         ->where('user_id', '=', $values->id)
                         ->where('date', '=', $request->month .'-'. $i);
+                    if (count($check_time_01) > 0) {
+                        foreach ($check_time_01 as $check_time){
+                            if($check_time->logtime == 'present'){
+                                $values->$item = '1';
+                            }else{
+                                if($check_time->comment != null){
+                                    $values->$item = '2';
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }elseif ($roles->position_id == 2){
+            $staff = DB::table('timesheets')
+                ->rightJoin('users','timesheets.user_id','=','users.id')
+                ->select(DB::raw('DISTINCT(users.last_name)')
+                    ,DB::raw("'0' as D01")
+                    ,DB::raw("'0' as D02")
+                    ,DB::raw("'0' as D03")
+                    ,DB::raw("'0' as D04")
+                    ,DB::raw("'0' as D05")
+                    ,DB::raw("'0' as D06")
+                    ,DB::raw("'0' as D07")
+                    ,DB::raw("'0' as D08")
+                    ,DB::raw("'0' as D09")
+                    ,DB::raw("'0' as D10")
+                    ,DB::raw("'0' as D11")
+                    ,DB::raw("'0' as D12")
+                    ,DB::raw("'0' as D13")
+                    ,DB::raw("'0' as D14")
+                    ,DB::raw("'0' as D15")
+                    ,DB::raw("'0' as D16")
+                    ,DB::raw("'0' as D17")
+                    ,DB::raw("'0' as D18")
+                    ,DB::raw("'0' as D19")
+                    ,DB::raw("'0' as D20")
+                    ,DB::raw("'0' as D21")
+                    ,DB::raw("'0' as D22")
+                    ,DB::raw("'0' as D23")
+                    ,DB::raw("'0' as D24")
+                    ,DB::raw("'0' as D25")
+                    ,DB::raw("'0' as D26")
+                    ,DB::raw("'0' as D27")
+                    ,DB::raw("'0' as D28")
+                    ,DB::raw("'0' as D29")
+                    ,DB::raw("'0' as D30")
+                    ,DB::raw("'0' as D31")
+                    ,'users.id')
+                ->where('position_id','<>','1')
+                ->where('position_id','<>','2')
+                ->where('users.store_id','=',$roles->store_id)
+                ->where('date','like','%'.$request->month.'%')
+                ->where('users.last_name','like','%'.$request->name_user.'%')
+                ->get();
+            foreach ($staff as $values) {
+                for($i = 1; $i <=31; $i++) {
+                    if($i <10){
+                        $i = '0'.$i;
+                    }else{
+                        $i = $i;
+                    }
+                    $item = 'D'.$i;
+                    $check_time_01 = Timesheet::all()
+                        ->where('user_id', '=', $values->id)
+                        ->where('date', '=', substr($date, 0, 8) . $i);
                     if (count($check_time_01) > 0) {
                         foreach ($check_time_01 as $check_time){
                             if($check_time->logtime == 'present'){
