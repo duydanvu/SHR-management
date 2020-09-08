@@ -499,7 +499,7 @@
                 let service_search = $('#service_search').val();
                 let contract_search = $('#contract_search').val();
                 let start_date = $('#start_date').val();
-                let end_date = $('#end_date').val()
+                let end_date = $('#end_date').val();
                 let _token = $('meta[name="csrf-token-2"]').attr('content');
                 // console.log(date_range);
                 // console.log(store_seach);

@@ -257,32 +257,32 @@ return [
                     'text' => 'Khu Vực',
                     'url'  => 'admin/area',
                 ],
-                [
-                    'text'    => 'Quản Lý',
-                    'icon'    => 'fas fa-users',
-                    'submenu' =>[
-                        [
-                            'text' => 'Chi Tiết Nhân Sự',
-                            'url'  => 'report/report_with_time',
-                        ],
-                        [
-                            'text' => 'Position',
-                            'url'  => 'admin/position',
-                        ],
-                        [
-                            'text' => 'Store',
-                            'url'  => 'admin/store',
-                        ],
-                        [
-                            'text' => 'Department',
-                            'url'  => 'admin/department',
-                        ],
-                        [
-                            'text' => 'Service',
-                            'url'  => 'admin/service',
-                        ],
-                    ]
-                ]
+//                [
+//                    'text'    => 'Quản Lý',
+//                    'icon'    => 'fas fa-users',
+//                    'submenu' =>[
+//                        [
+//                            'text' => 'Chi Tiết Nhân Sự',
+//                            'url'  => 'report/report_with_time',
+//                        ],
+//                        [
+//                            'text' => 'Position',
+//                            'url'  => 'admin/position',
+//                        ],
+//                        [
+//                            'text' => 'Store',
+//                            'url'  => 'admin/store',
+//                        ],
+//                        [
+//                            'text' => 'Department',
+//                            'url'  => 'admin/department',
+//                        ],
+//                        [
+//                            'text' => 'Service',
+//                            'url'  => 'admin/service',
+//                        ],
+//                    ]
+//                ]
 
 
             ],
@@ -315,10 +315,10 @@ return [
             'icon'    => 'fas fa-blender-phone',
             'submenu' => [
 
-                [
-                    'text' => '	Chấm Công',
-                    'url'  => 'timekeeping/timekeeping_for_staff',
-                ],
+//                [
+//                    'text' => '	Chấm Công',
+//                    'url'  => 'timekeeping/timekeeping_for_staff',
+//                ],
                 [
                     'text' => '	Cập Nhật Chấm Công Tháng',
                     'url'  => 'timekeeping/request_timekeeping',

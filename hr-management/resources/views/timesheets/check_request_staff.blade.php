@@ -21,24 +21,28 @@
 @section('content')
     <div class="card card-outline card-primary-dashboard">
         <div class="card-header">
-            <h3 class="card-title">Danh Sách Chấm Công Tháng</h3>
+            <h3 class="card-title">Tháng {{$month_now}}</h3>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                     <i class="fas fa-minus"></i></button>
             </div>
         </div>
         <div class="row">
-            <div class="col-3">
-                <button style="height: 15px;width: 5px; background-color: #ff9999; margin-left: 30px; margin-top: 20px"></button>
+            <div class="col-2">
+                <button style="height: 15px;width: 5px; background-color: red; margin-left: 30px; margin-top: 20px"></button>
                 <a>Nghỉ Không Phép</a>
             </div>
-            <div class="col-3">
-                <button style="height: 15px;width: 5px; background-color: #fd9a47;margin-top: 20px"></button>
+            <div class="col-2">
+                <button style="height: 15px;width: 5px; background-color: orange;margin-top: 20px"></button>
                 <a>Nghỉ Có Phép</a>
             </div>
-            <div class="col-3">
-                <button style="height: 15px;width: 5px; background-color: #00c054;margin-top: 20px"></button>
+            <div class="col-2">
+                <button style="height: 15px;width: 5px; background-color: green;margin-top: 20px"></button>
                 <a>Đi Làm</a>
+            </div>
+            <div class="col-2">
+                <button style="height: 15px;width: 5px; background-color: gray;margin-top: 20px"></button>
+                <a>Chưa Chấm Công</a>
             </div>
         </div>
         <!-- /.card-header -->
@@ -56,9 +60,9 @@
                 <tr>
                     <th style="width:5%" >#</th>
                     <th style="width:15%" >Tên </th>
-                    @for($i = 1;$i <= $date_now;$i++)
-                    <th style="width:2%">{{$i}}</th>
-                    @endfor
+                    @foreach($date_of_week as $key=>$value)
+                    <th style="width:2%">{{$value}} ({{$key}})</th>
+                    @endforeach
                 </tr>
                 </thead>
                 <tbody id="table_body">
@@ -67,16 +71,17 @@
                         <tr >
                             <td>{{$key}}</td>
                             <td>{{$value->last_name}}</td>
-                            @for($i = 1;$i <= $date_now;$i++)
+                            @for($i = $date_now;$i >0;$i--)
                                 @if($i <10 )@php($item = 'D0'.$i)
                                 @else @php($item = 'D'.$i)
                                 @endif
                                 <td ><a href="{{route('show_view_update_time_sheet',['id'=>$value->id,'date'=>$i])}}"
                                         data-toggle="modal" data-target="#modal-admin-update-request-timesheet" type="button"
                                         style="width: 40px;height: 40px;
-                                    @if($value->$item == 0) background-color: #ff9999;
-                                    @elseif($value->$item == 2) background-color: #fd9a47;
-                                        @else background-color: #00c054;
+                                    @if($value->$item == 3) background-color: red;
+                                    @elseif($value->$item == 2) background-color: orange;
+                                        @elseif($value->$item == 1) background-color: green;
+                                        @else background-color: gray;
                                     @endif"></a></td>
                             @endfor
                         </tr>

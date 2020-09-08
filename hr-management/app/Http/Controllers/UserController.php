@@ -50,6 +50,17 @@ class UserController extends Controller
                 'services.name as sv_name','area.area_name')
 //            ->get();
             ->paginate(25);
+        $user2 = User::join('stores','users.store_id','=','stores.store_id')
+            ->join('positions','users.position_id','=','positions.position_id')
+            ->join('contracts','users.contract_id','=','contracts.contract_id')
+            ->join('departments','users.department_id','=','departments.id')
+            ->join('services','users.service_id','=','services.id')
+            ->join('area','area.id','=','stores.area_id')
+            ->select('users.*','stores.store_name','positions.position_name',
+                'contracts.name as ct_name','departments.name as dp_name',
+                'services.name as sv_name','area.area_name')
+            ->get();
+        $sum = count($user2);
         return view('user.users_list')->with([
             'user'=>$user,
             'store'=>$store,
@@ -62,7 +73,9 @@ class UserController extends Controller
             'contract1'=>$contract1,
             'department1'=>$department1,
             'service1' =>$service1,
-            'area' => $area]);
+            'area' => $area,
+            'area1' => $area,
+            'sum'=>$sum]);
     }
 
     public function view_user_of_store($id){
@@ -248,7 +261,7 @@ class UserController extends Controller
 
     public function search_user_with_store(Request $request){
         $result = null;
-        if($request->name_user != null){
+        if($request->store_search == null){
             $user = User::join('stores','users.store_id','=','stores.store_id')
                 ->join('positions','users.position_id','=','positions.position_id')
                 ->join('contracts','users.contract_id','=','contracts.contract_id')
@@ -258,9 +271,7 @@ class UserController extends Controller
                 ->select('users.*','stores.store_name','positions.position_name',
                     'contracts.name as ct_name','departments.name as dp_name',
                     'services.name as sv_name','area.area_name')
-                ->where('users.store_id','=',$request->store_search)
-                ->where('users.last_name','like','%'.$request->name_user.'%')
-                ->paginate(25);
+                ;
         }else{
             $user = User::join('stores','users.store_id','=','stores.store_id')
                 ->join('positions','users.position_id','=','positions.position_id')
@@ -271,26 +282,55 @@ class UserController extends Controller
                 ->select('users.*','stores.store_name','positions.position_name',
                     'contracts.name as ct_name','departments.name as dp_name',
                     'services.name as sv_name','area.area_name')
-                ->where('users.store_id','=',$request->store_search)
-                ->paginate(25);
+                ->where('users.store_id','=',$request->store_search);
         }
-        foreach ($user as $key=>$value){
+        if ($request->name_user != null){
+           $user_name = $user ->where('users.last_name','like','%'.$request->name_user.'%');
+        }else{
+            $user_name = $user;
+        }
+        if($request->position_search === 'all'){
+            $user_position = $user_name;
+        }else{
+            $user_position = $user_name->where('users.position_id','=',$request->position_search);
+        }
+
+        if($request->contract_search === 'all'){
+            $user_contract = $user_position;
+        }else{
+            $user_contract = $user_position->where('users.contract_id','=',$request->contract_search);
+        }
+
+        if($request->department_search === 'all'){
+            $user_department = $user_contract;
+        }else{
+            $user_department = $user_contract->where('users.department_id','=',$request->department_search);
+        }
+
+        if($request->service_search === 'all'){
+            $user_service = $user_department;
+        }else{
+            $user_service = $user_department->where('users.service_id','=',$request->service_search);
+        }
+        if($request->start_date == null && $request->end_date == null){
+            $user_time = $user_service;
+        }elseif ($request->start_date == null && $request->end_date != null){
+            $user_time = $user_service->where('users.end_time','<=',$request->end_date);
+        }elseif ($request->start_date != null && $request->end_date == null){
+            $user_time = $user_service->where('users.start_time','>',$request->start_date);
+        }else{
+            if(strtotime($request->start_date) < strtotime($request->end_date)){
+                $user_time = $user_service->whereBetween('users.end_time',[$request->start_date,$request->end_date]);
+            } else if (strtotime($request->start_date) == strtotime($request->end_date)){
+                $user_time = $user_service->whereBetween('users.end_time',[$request->start_date,$request->end_date]);
+            }else{
+                $user_time = $user_service;
+            }
+        }
+        $sum = count($user_time->get());
+        foreach ($user_time->get() as $key=>$value){
             $result .= '<tr>';
             $result .= '<td>'.($key+1).'</td>';
-            $result .= '<td>'.($value->first_name).' '.($value->last_name).'</td>';
-//            $result .= '<td>'.(str_replace('@','@ ',$value->email)).'</td>';
-//            $result .= '<td>'.(str_replace("/","-",$value->phone)).'</td>';
-            $result .= '<td>'.($value->dob).'</td>';
-//            $result .= '<td>'.($value->gender).'</td>';
-//            $result .= '<td>'.($value->line).'</td>';
-            $result .= '<td>'.($value->store_name).'</td>';
-            $result .= '<td>'.($value->area_name).'</td>';
-            $result .= '<td>'.($value->position_name).'</td>';
-//            $result .= '<td>'.($value->dp_name).'</td>';
-//            $result .= '<td>'.($value->sv_name).'</td>';
-            $result .= '<td>'.($value->ct_name).'</td>';
-            $result .= '<td>'.($value->start_time).'</td>';
-            $result .= '<td>'.($value->end_time).'</td>';
             $result .= '<td class="text-center">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
@@ -304,10 +344,7 @@ class UserController extends Controller
                                             <a href="'.route('delete_information_user',['id'=>$value->id]).'"  class="btn dropdown-item">
                                                 <i class="fas fa-users"> Delete</i>
                                             </a>
-                                            <a href="'.route('view_update_user_detail',['id'=>$value->id]).'" data-remote="false"
-                                               data-toggle="modal" data-target="#modal-admin-action-update-detail" class="btn dropdown-item">
-                                                <i class="fas fa-info-circle"> View detail</i>
-                                            </a>
+
                                             <a href="'.route('view_update_user_image',['id'=>$value->id]).'" data-remote="false"
                                                data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">
                                                 <i class="fas fa-image"> View Image</i>
@@ -315,10 +352,27 @@ class UserController extends Controller
                                         </div>
 
                                     </div>
-                            </td>
-                        </tr>';
+                            </td>';
+            $result .= '<td><a href="'.route('view_update_user_detail',['id'=>$value->id]).'" data-remote="false"
+                                   data-toggle="modal" data-target="#modal-admin-action-update-detail" class=" dropdown-item">
+                                    <i class="fas fa-info-circle"></i>'.($value->first_name).' '. ($value->last_name).'
+                                </a></td>';
+//            $result .= '<td>'.(str_replace('@','@ ',$value->email)).'</td>';
+//            $result .= '<td>'.(str_replace("/","-",$value->phone)).'</td>';
+            $result .= '<td>'.($value->dob).'</td>';
+//            $result .= '<td>'.($value->gender).'</td>';
+//            $result .= '<td>'.($value->line).'</td>';
+            $result .= '<td>'.($value->store_name).'</td>';
+            $result .= '<td>'.($value->area_name).'</td>';
+            $result .= '<td>'.($value->position_name).'</td>';
+//            $result .= '<td>'.($value->dp_name).'</td>';
+//            $result .= '<td>'.($value->sv_name).'</td>';
+            $result .= '<td>'.($value->ct_name).'</td>';
+            $result .= '<td>'.($value->start_time).'</td>';
+            $result .= '<td>'.($value->end_time).'</td>';
+            $result .= '</tr>';
         }
-        return $result;
+        return ['result'=>$result,'sum'=>$sum];
     }
 
     /**
@@ -490,8 +544,8 @@ class UserController extends Controller
 //            'txtPassword' => 'required|min:7|max:100',
 //            'txtFName' => 'required|max:50',
             'txtLName' => 'required|max:50',
-            'txtEmail' => 'required|max:100',
-            'txtPhone' => 'required',
+            'txtEmail' => 'required|max:100|email',
+            'txtPhone' => 'required|integer',
             'txtDob'   => 'required|date',
             'txtLine'  => 'required|max:50',
             'txtNContract' => 'required|max:50',
@@ -713,7 +767,7 @@ class UserController extends Controller
                             $ban = null;
                         }
                         if($row[16] == '' || $row[16] == ' '){
-                           $tin = 0;
+                            $tin = 0;
                         }else{
                             $tin = $row[16];
                         }
@@ -760,7 +814,7 @@ class UserController extends Controller
             if(!empty($insert_data))
             {
 //                try {
-                    DB::table('users')->insert($insert_data);
+                DB::table('users')->insert($insert_data);
 //                }catch ( \Illuminate\Database\QueryException $exception){
 //                    $notification = array(
 //                        'message' => 'Import not success!',

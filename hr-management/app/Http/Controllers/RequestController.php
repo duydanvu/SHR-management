@@ -315,7 +315,7 @@ class RequestController extends Controller
                 (object)[
                     "id" => null,
                     "user_id" => $id,
-                    "date" => null,
+                    "date" => $date_search,
                     "logtime" => null,
                     "status" => null,
                     "comment" => null,
@@ -415,6 +415,7 @@ class RequestController extends Controller
         $roles = User::find($user_id);
         $date = date("Y-m-d");
         $date_now = substr($date,-2,2);
+        $month_now = substr($date,-5,2);
         if($roles->position_id == 1){
             $staff = DB::table('timesheets')
                 ->join('users','timesheets.user_id','=','users.id')
@@ -471,8 +472,10 @@ class RequestController extends Controller
                             if($check_time->logtime == 'present'){
                                 $values->$item = '1';
                             }else{
-                                if($check_time->comment != null){
+                                if($check_time->logtime == 'absent'){
                                     $values->$item = '2';
+                                }else{
+                                    $values->$item = '3';
                                 }
                             }
                         }
@@ -537,8 +540,10 @@ class RequestController extends Controller
                             if($check_time->logtime == 'present'){
                                 $values->$item = '1';
                             }else{
-                                if($check_time->comment != null){
+                                if($check_time->logtime == 'absent'){
                                     $values->$item = '2';
+                                }else{
+                                    $values->$item = '3';
                                 }
                             }
                         }
@@ -546,7 +551,25 @@ class RequestController extends Controller
                 }
             }
         }
-        return view('timesheets.check_request_staff')->with(['staff'=>$staff,'auth'=>$roles,'date_now'=>$date_now]);
+        if($date_now < 10){
+            $date_now = substr($date_now,1,1);
+        }
+        $date_of_week = [];
+        $day_with_week = [];
+
+        for ($i = (int)$date_now; $i >0;$i--){
+            if($i < 10){
+                $date_1 = substr($date, 0, 8).'0'.$i;
+                $dayOfWeek = date("l", strtotime($date_1));
+                $date_of_week[substr($date_1,5,5)] = $dayOfWeek;
+            }else{
+                $date_1 = substr($date, 0, 8).$i;
+                $dayOfWeek = date("l", strtotime($date_1));
+                $date_of_week[substr($date_1,5,5)] = $dayOfWeek;
+            }
+        }
+        return view('timesheets.check_request_staff')->with(['staff'=>$staff,'auth'=>$roles,
+            'date_now'=>$date_now,'month_now'=>$month_now,'date_of_week'=>$date_of_week]);
     }
     public function checkTimesheetMonth(){
         $user_id = Auth::id();
@@ -609,8 +632,10 @@ class RequestController extends Controller
                             if($check_time->logtime == 'present'){
                                 $values->$item = '1';
                             }else{
-                                if($check_time->comment != null){
+                                if($check_time->logtime == 'absent'){
                                     $values->$item = '2';
+                                }else{
+                                    $values->$item = '3';
                                 }
                             }
                         }
@@ -675,8 +700,10 @@ class RequestController extends Controller
                             if($check_time->logtime == 'present'){
                                 $values->$item = '1';
                             }else{
-                                if($check_time->comment != null){
+                                if($check_time->logtime == 'absent'){
                                     $values->$item = '2';
+                                }else{
+                                    $values->$item = '3';
                                 }
                             }
                         }
@@ -747,8 +774,10 @@ class RequestController extends Controller
                             if($check_time->logtime == 'present'){
                                 $values->$item = '1';
                             }else{
-                                if($check_time->comment != null){
+                                if($check_time->logtime == 'absent'){
                                     $values->$item = '2';
+                                }else{
+                                    $values->$item = '3';
                                 }
                             }
                         }
@@ -813,8 +842,10 @@ class RequestController extends Controller
                             if($check_time->logtime == 'present'){
                                 $values->$item = '1';
                             }else{
-                                if($check_time->comment != null){
+                                if($check_time->logtime == 'absent'){
                                     $values->$item = '2';
+                                }else{
+                                    $values->$item = '3';
                                 }
                             }
                         }
