@@ -362,6 +362,15 @@ class RequestController extends Controller
         $date = date("Y-m-d");
         $user_id = Auth::id();
         $roles = User::find($user_id);
+        if($request['txtTimeStart'] > $request['txtTimeEnd']){
+            $notification= array(
+                'message' => 'Thời gian bị lỗi, kiểm tra thông tin thời gian!',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()
+                ->with($notification)
+                ->withInput();
+        }
         $validator = \Validator::make($request->all(),[
             'user_id' => 'required|max:11',
             'status_timesheet' => 'required|max:8'

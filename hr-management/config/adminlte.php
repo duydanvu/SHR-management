@@ -270,6 +270,10 @@ return [
                             'url'  => 'admin/position',
                         ],
                         [
+                            'text' => 'Store',
+                            'url'  => 'admin/store',
+                        ],
+                        [
                             'text' => 'Department',
                             'url'  => 'admin/department',
                         ],
