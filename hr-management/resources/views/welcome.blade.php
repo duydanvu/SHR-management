@@ -329,78 +329,78 @@
 @section('js')
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.5/js/swiper.min.js"></script>
-    <script>
-        var mychart = document.getElementById("canvas").getContext("2d");
+{{--    <script>--}}
+{{--        var mychart = document.getElementById("canvas").getContext("2d");--}}
 
-        new Chart(mychart, {
-            type: 'bar',
-            data: {
-                labels: ["Member1", "Member2", "Member3", "Member4", "Member5"],
-                {{--labels: [{% for item in labels %}--}}
-                {{--            "{{item}}",--}}
-                {{--            {% endfor %}],--}}
-                datasets: [{
-                    label:"KPI Tháng",
-                    data: [13, 20, 60, 40, 80,100],
-                    {{--data: [{% for item in values %}--}}
-                    {{--    {{item}},--}}
-                    {{--    {% endfor %}],--}}
-                    backgroundColor: 'rgba(63,25,209,1)',
-                    borderColor: 'rgba(63,25,205,6)',
-                    pointBackgroundColor: 'rgba(63,255,139,1)'
-                }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        stepSize: 10
-                    }
-                }]
-            }
-        }
-        });
-    </script>
-    <script>
-        var mychart = document.getElementById("kpi-chart").getContext("2d");
+{{--        new Chart(mychart, {--}}
+{{--            type: 'bar',--}}
+{{--            data: {--}}
+{{--                labels: ["Member1", "Member2", "Member3", "Member4", "Member5"],--}}
+{{--                --}}{{--labels: [{% for item in labels %}--}}
+{{--                --}}{{--            "{{item}}",--}}
+{{--                --}}{{--            {% endfor %}],--}}
+{{--                datasets: [{--}}
+{{--                    label:"KPI Tháng",--}}
+{{--                    data: [13, 20, 60, 40, 80,100],--}}
+{{--                    --}}{{--data: [{% for item in values %}--}}
+{{--                    --}}{{--    {{item}},--}}
+{{--                    --}}{{--    {% endfor %}],--}}
+{{--                    backgroundColor: 'rgba(63,25,209,1)',--}}
+{{--                    borderColor: 'rgba(63,25,205,6)',--}}
+{{--                    pointBackgroundColor: 'rgba(63,255,139,1)'--}}
+{{--                }]--}}
+{{--        },--}}
+{{--        options: {--}}
+{{--            scales: {--}}
+{{--                yAxes: [{--}}
+{{--                    ticks: {--}}
+{{--                        beginAtZero: true,--}}
+{{--                        stepSize: 10--}}
+{{--                    }--}}
+{{--                }]--}}
+{{--            }--}}
+{{--        }--}}
+{{--        });--}}
+{{--    </script>--}}
+{{--    <script>--}}
+{{--        var mychart = document.getElementById("kpi-chart").getContext("2d");--}}
 
-        new Chart(mychart, {
-            type: 'line',
-            data: {
-                labels: ["01", "02", "03", "04", "05","06","07","08","09","10","11","12"],
-                {{--labels: [{% for item in labels %}--}}
-                    {{--            "{{item}}",--}}
-                    {{--            {% endfor %}],--}}
-                datasets: [{
-                    data: [80,85,70,77,60,70,75,80,85,90,95,95],
-                    label: "Store1",
-                    borderColor: "#3e95cd",
-                    fill: false
-                }, {
-                    data: [60, 65, 70, 77, 80, 80, 75, 70, 85, 80, 75, 85],
-                    label: "Store2",
-                    borderColor: "#3cba9f",
-                    fill: false
-                },{
-                    data: [70, 75, 70, 67, 60, 70, 75, 80, 75, 80, 85, 75],
-                    label: "Store3",
-                    borderColor: "#c45850",
-                    fill: false
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                            stepSize: 10
-                        }
-                    }]
-                }
-            }
-        });
-    </script>
+{{--        new Chart(mychart, {--}}
+{{--            type: 'line',--}}
+{{--            data: {--}}
+{{--                labels: ["01", "02", "03", "04", "05","06","07","08","09","10","11","12"],--}}
+{{--                --}}{{--labels: [{% for item in labels %}--}}
+{{--                    --}}{{--            "{{item}}",--}}
+{{--                    --}}{{--            {% endfor %}],--}}
+{{--                datasets: [{--}}
+{{--                    data: [80,85,70,77,60,70,75,80,85,90,95,95],--}}
+{{--                    label: "Store1",--}}
+{{--                    borderColor: "#3e95cd",--}}
+{{--                    fill: false--}}
+{{--                }, {--}}
+{{--                    data: [60, 65, 70, 77, 80, 80, 75, 70, 85, 80, 75, 85],--}}
+{{--                    label: "Store2",--}}
+{{--                    borderColor: "#3cba9f",--}}
+{{--                    fill: false--}}
+{{--                },{--}}
+{{--                    data: [70, 75, 70, 67, 60, 70, 75, 80, 75, 80, 85, 75],--}}
+{{--                    label: "Store3",--}}
+{{--                    borderColor: "#c45850",--}}
+{{--                    fill: false--}}
+{{--                }]--}}
+{{--            },--}}
+{{--            options: {--}}
+{{--                scales: {--}}
+{{--                    yAxes: [{--}}
+{{--                        ticks: {--}}
+{{--                            beginAtZero: true,--}}
+{{--                            stepSize: 10--}}
+{{--                        }--}}
+{{--                    }]--}}
+{{--                }--}}
+{{--            }--}}
+{{--        });--}}
+{{--    </script>--}}
     <script>
         var swiper = new Swiper('.swiper-container', {
             effect: 'coverflow',

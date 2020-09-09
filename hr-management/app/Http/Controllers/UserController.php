@@ -545,7 +545,7 @@ class UserController extends Controller
 //            'txtFName' => 'required|max:50',
             'txtLName' => 'required|max:50',
             'txtEmail' => 'required|max:100|email',
-            'txtPhone' => 'required|integer',
+            'txtPhone' => 'required',
             'txtDob'   => 'required|date',
             'txtLine'  => 'required|max:50',
             'txtNContract' => 'required|max:50',

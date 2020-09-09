@@ -105,7 +105,7 @@
                     <div class="col-sm-10 p-0">
                         <select id="store" name = "store" class="form-control select2"  value="{{ old('store') }}" autocomplete="store" style="width: 100%;">
                             @foreach ($store as $store)
-                                <option value="{{$store['store_id']}}">{{$store['store_name']}}-{{$store['store_address']}}</option>
+                                <option value="{{$store['store_id']}}" @if($store['store_id'] == $user->store_id)selected @endif>{{$store['store_name']}}-{{$store['store_address']}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -115,7 +115,7 @@
                     <div class="col-sm-10 p-0 ">
                         <select id="position" name = "position" class="form-control select2"  value="{{ old('position') }}" autocomplete="position" style="width: 100%;">
                             @foreach ($position as $position)
-                                <option value="{{$position['position_id']}}">{{$position['position_name']}}-{{$position['description']}}</option>
+                                <option value="{{$position['position_id']}}" @if($position['position_id'] == $user->position_id)selected @endif>{{$position['position_name']}}-{{$position['description']}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -125,7 +125,7 @@
                     <div class="col-sm-10 p-0">
                         <select id="contract" name = "contract" class="form-control select2"  value="{{ old('contract') }}" autocomplete="contract" style="width: 100%;">
                             @foreach ($contract as $contract)
-                                <option value="{{$contract['contract_id']}}">{{$contract['name']}}-{{$contract['description']}}</option>
+                                <option value="{{$contract['contract_id']}}" @if($contract['contract_id'] == $user->contract_id)selected @endif>{{$contract['name']}}-{{$contract['description']}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -135,7 +135,7 @@
                     <div class="col-sm-10 p-0">
                         <select id="department" name = "department" class="form-control select2"  value="{{ old('department') }}" autocomplete="department" style="width: 100%;">
                             @foreach ($department as $department)
-                                <option value="{{$department['id']}}">{{$department['name']}}-{{$department['description']}}</option>
+                                <option value="{{$department['id']}}" @if($department['id'] == $user->department_id)selected @endif>{{$department['name']}}-{{$department['description']}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -145,7 +145,7 @@
                     <div class="col-sm-10 p-0">
                         <select id="service" name = "service" class="form-control select2"  value="{{ old('service') }}" autocomplete="service" style="width: 100%;">
                             @foreach ($service as $service)
-                                <option value="{{$service['id']}}">{{$service['name']}}-{{$service['description']}}</option>
+                                <option value="{{$service['id']}}" @if($service['id'] == $user->service_id)selected @endif>{{$service['name']}}-{{$service['description']}}</option>
                             @endforeach
                         </select>
                     </div>
