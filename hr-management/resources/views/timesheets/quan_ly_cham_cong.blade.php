@@ -31,7 +31,7 @@
                         <div class="form-group">
                             <meta name="csrf-token2" content="{{ csrf_token() }}">
                             <label for="exampleInputEmail1">Thời Gian</label>
-                            <input class="form-control" type="month" name="txtMonth" id="txtMonth">
+                            <input class="form-control" type="month" name="txtMonth" id="txtMonth" value="{{$month}}">
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -76,10 +76,10 @@
             <table id="example1" class="table table-bordered table-striped " style="width: 100%">
                 <thead>
                 <tr>
-                    <th style="width:5%" >#</th>
-                    <th style="width:15%" >Tên </th>
+                    <th style="width:15%;text-align: center" >Tên </th>
+                    <th style="width:5%; text-align: center" >Tổng </th>
                     @for($i = 1;$i <= 31;$i++)
-                    <th style="width:2%">Ngày {{$i}}</th>
+                    <th style="width:2%;text-align: center">Ngày {{$i}}</th>
                     @endfor
                 </tr>
                 </thead>
@@ -87,8 +87,10 @@
                 @if ( count($staff) > 0)
                     @foreach($staff as $key => $value)
                         <tr >
-                            <td>{{$key}}</td>
-                            <td>{{$value->last_name}}</td>
+                            <td>{{$value->last_name}} ({{$value->email}})</td>
+                            <td><button style="height: 15px;width: 5px; background-color: green"></button><a>: {{$value->sum_ps}}</a>
+                                <button style="height: 15px;width: 5px; background-color: orange"></button><a>: {{$value->sum_as_y}}</a>
+                                <button style="height: 15px;width: 5px; background-color: red"></button><a>: {{$value->sum_as_n}}</a></td>
                             @for($i = 1;$i <= $date_now;$i++)
                                 @if($i <10 )@php($item = 'D0'.$i)
                                 @else @php($item = 'D'.$i)

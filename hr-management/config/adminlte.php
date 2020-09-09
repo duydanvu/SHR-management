@@ -320,7 +320,7 @@ return [
 //                    'url'  => 'timekeeping/timekeeping_for_staff',
 //                ],
                 [
-                    'text' => '	Cập Nhật Chấm Công Tháng',
+                    'text' => 'Chấm Công Tháng',
                     'url'  => 'timekeeping/request_timekeeping',
                 ],
                 [

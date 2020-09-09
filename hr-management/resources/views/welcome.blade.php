@@ -54,6 +54,62 @@
 @stop
 
 @section('content')
+    <div class="card">
+        <div class="card-header">
+            <div class="button-group-card-header">
+                {{--                @if($role_use_number == 1)--}}
+{{--                <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-store"><i class="fas fa-plus-circle"></i> Create Area New </button>--}}
+                {{--                @endif--}}
+                {{--                <a href="{{route('export_report_area')}}" class="btn btn-success" type="button"><i class="fas fa-file-download"></i>Export</a>--}}
+                {{--                <button id = "" type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-file-download"></i> Export </button>--}}
+            </div>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i></button>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th style="width:5%">#</th>
+                    <th style="width:10%">Tên Công Ty</th>
+                    <th style="width:10%">Tổng số khu vực</th>
+                    <th style="width:10%">GDV</th>
+                    <th style="width:10%">AM</th>
+                    <th style="width:10%">KAM</th>
+                    <th style="width:10%">Chính Thức</th>
+                    <th style="width:10%">Thử Việc</th>
+                    <th style="width:10%">Tổng số Nhân Viên</th>
+                </tr>
+                </thead>
+                <tbody id="table_body">
+                @if(count($area) > 0)
+                    @foreach($area as $key => $value)
+                        <tr>
+                            <td>{{$key+1}}</td>
+                            <td>{{$value->name}}</td>
+                            <td>{{$value->sum}}</td>
+                            <td>{{$value->GDV}}</td>
+                            <td>{{$value->AM}}</td>
+                            <td>{{$value->KAM}}</td>
+                            <td>{{$value->CT}}</td>
+                            <td>{{$value->TV}}</td>
+                            <td>{{($value->CT)+($value->TV)}}</td>
+                        </tr>
+                    @endforeach
+                @else
+                    <td colspan="8" style="text-align: center">
+                        <h3>Empty Data</h3>
+                    </td>
+                @endif
+
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
 {{--    <!-- Info boxes -->--}}
 {{--    <div class="row">--}}
 {{--        <div class="col-12 slide-swiper">--}}

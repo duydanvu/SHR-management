@@ -575,6 +575,7 @@ class RequestController extends Controller
         $user_id = Auth::id();
         $roles = User::find($user_id);
         $date = date("Y-m-d");
+        $month = substr($date,0,7);
         $date_now = substr($date,-2,2);
         if($roles->position_id == 1){
             $staff = DB::table('timesheets')
@@ -611,12 +612,19 @@ class RequestController extends Controller
                     ,DB::raw("'0' as D29")
                     ,DB::raw("'0' as D30")
                     ,DB::raw("'0' as D31")
-                    ,'users.id')
+                    ,DB::raw("'0' as sum_ps")
+                    ,DB::raw("'0' as sum_as_y")
+                    ,DB::raw("'0' as sum_as_n")
+                    ,DB::raw("'0' as sum_no_ts")
+                    ,'users.id','users.email')
                 ->where('position_id','=','2')
                 ->whereBetween('date',[substr($date, 0, 8).'01',substr($date, 0, 8).'31'])
                 ->get();
 
                 foreach ($staff as $values) {
+                    $sum_ps = 0;
+                    $sum_as_y = 0;
+                    $sum_as_n = 0;
                     for($i = 1; $i <=31; $i++) {
                     if($i <10){
                         $i = '0'.$i;
@@ -631,11 +639,17 @@ class RequestController extends Controller
                         foreach ($check_time_01 as $check_time){
                             if($check_time->logtime == 'present'){
                                 $values->$item = '1';
+                                $sum_ps = $sum_ps + 1;
+                                $values->sum_ps = $sum_ps;
                             }else{
                                 if($check_time->logtime == 'absent'){
                                     $values->$item = '2';
-                                }else{
+                                    $sum_as_y = $sum_as_y + 1;
+                                    $values->sum_as_y = $sum_as_y;
+                                }elseif($check_time->logtime == 'absent1'){
                                     $values->$item = '3';
+                                    $sum_as_n = $sum_as_n + 1;
+                                    $values->sum_as_n = $sum_as_n;
                                 }
                             }
                         }
@@ -677,7 +691,11 @@ class RequestController extends Controller
                     ,DB::raw("'0' as D29")
                     ,DB::raw("'0' as D30")
                     ,DB::raw("'0' as D31")
-                    ,'users.id')
+                    ,DB::raw("'0' as sum_ps")
+                    ,DB::raw("'0' as sum_as_y")
+                    ,DB::raw("'0' as sum_as_n")
+                    ,DB::raw("'0' as sum_no_ts")
+                    ,'users.id','users.email')
                 ->where('position_id','<>','1')
                 ->where('position_id','<>','2')
                 ->where('users.store_id','=',$roles->store_id)
@@ -685,6 +703,9 @@ class RequestController extends Controller
                 ->get();
 
             foreach ($staff as $values) {
+                $sum_ps = 0;
+                $sum_as_y = 0;
+                $sum_as_n = 0;
                 for($i = 1; $i <=31; $i++) {
                     if($i <10){
                         $i = '0'.$i;
@@ -699,11 +720,17 @@ class RequestController extends Controller
                         foreach ($check_time_01 as $check_time){
                             if($check_time->logtime == 'present'){
                                 $values->$item = '1';
+                                $sum_ps = $sum_ps + 1;
+                                $values->sum_ps = $sum_ps;
                             }else{
                                 if($check_time->logtime == 'absent'){
                                     $values->$item = '2';
+                                    $sum_as_y = $sum_as_y + 1;
+                                    $values->sum_as_y = $sum_as_y;
                                 }else{
                                     $values->$item = '3';
+                                    $sum_as_n = $sum_as_n + 1;
+                                    $values->sum_as_n = $sum_as_n;
                                 }
                             }
                         }
@@ -711,7 +738,7 @@ class RequestController extends Controller
                 }
             }
         }
-        return view('timesheets.quan_ly_cham_cong')->with(['staff'=>$staff,'auth'=>$roles,'date_now'=>$date_now]);
+        return view('timesheets.quan_ly_cham_cong')->with(['staff'=>$staff,'auth'=>$roles,'date_now'=>$date_now,'month'=>$month]);
     }
     public function search_user_with_time(Request  $request){
         $user_id = Auth::id();
@@ -753,12 +780,19 @@ class RequestController extends Controller
                     ,DB::raw("'0' as D29")
                     ,DB::raw("'0' as D30")
                     ,DB::raw("'0' as D31")
-                    ,'users.id')
+                    ,DB::raw("'0' as sum_ps")
+                    ,DB::raw("'0' as sum_as_y")
+                    ,DB::raw("'0' as sum_as_n")
+                    ,DB::raw("'0' as sum_no_ts")
+                    ,'users.id','users.email')
                 ->where('position_id','=','2')
                 ->where('date','like','%'.$request->month.'%')
                 ->where('users.last_name','like','%'.$request->name_user.'%')
                 ->get();
                 foreach ($staff as $values) {
+                    $sum_ps = 0;
+                    $sum_as_y = 0;
+                    $sum_as_n = 0;
                     for($i = 1; $i <=31; $i++) {
                     if($i <10){
                         $i = '0'.$i;
@@ -773,11 +807,17 @@ class RequestController extends Controller
                         foreach ($check_time_01 as $check_time){
                             if($check_time->logtime == 'present'){
                                 $values->$item = '1';
+                                $sum_ps = $sum_ps + 1;
+                                $values->sum_ps = $sum_ps;
                             }else{
                                 if($check_time->logtime == 'absent'){
                                     $values->$item = '2';
+                                    $sum_as_y = $sum_as_y + 1;
+                                    $values->sum_as_y = $sum_as_y;
                                 }else{
                                     $values->$item = '3';
+                                    $sum_as_n = $sum_as_n + 1;
+                                    $values->sum_as_n = $sum_as_n;
                                 }
                             }
                         }
@@ -819,7 +859,11 @@ class RequestController extends Controller
                     ,DB::raw("'0' as D29")
                     ,DB::raw("'0' as D30")
                     ,DB::raw("'0' as D31")
-                    ,'users.id')
+                    ,DB::raw("'0' as sum_ps")
+                    ,DB::raw("'0' as sum_as_y")
+                    ,DB::raw("'0' as sum_as_n")
+                    ,DB::raw("'0' as sum_no_ts")
+                    ,'users.id','users.email')
                 ->where('position_id','<>','1')
                 ->where('position_id','<>','2')
                 ->where('users.store_id','=',$roles->store_id)
@@ -827,6 +871,9 @@ class RequestController extends Controller
                 ->where('users.last_name','like','%'.$request->name_user.'%')
                 ->get();
             foreach ($staff as $values) {
+                $sum_ps = 0;
+                $sum_as_y = 0;
+                $sum_as_n = 0;
                 for($i = 1; $i <=31; $i++) {
                     if($i <10){
                         $i = '0'.$i;
@@ -841,11 +888,17 @@ class RequestController extends Controller
                         foreach ($check_time_01 as $check_time){
                             if($check_time->logtime == 'present'){
                                 $values->$item = '1';
+                                $sum_ps = $sum_ps + 1;
+                                $values->sum_ps = $sum_ps;
                             }else{
                                 if($check_time->logtime == 'absent'){
                                     $values->$item = '2';
+                                    $sum_as_y = $sum_as_y + 1;
+                                    $values->sum_as_y = $sum_as_y;
                                 }else{
                                     $values->$item = '3';
+                                    $sum_as_n = $sum_as_n + 1;
+                                    $values->sum_as_n = $sum_as_n;
                                 }
                             }
                         }
@@ -856,8 +909,10 @@ class RequestController extends Controller
         $result = null;
         foreach ($staff as $key=>$value){
             $result .= '<tr >';
-            $result .= '<td>'.$key.'</td>';
-            $result .= '<td>'.$value->last_name.'</td>';
+            $result .= '<td>'.$value->last_name.' ('.$value->email.')</td>';
+            $result .= '<td><button style="height: 15px;width: 5px; background-color: green"></button><a>:'.($value->sum_ps).'</a>
+                                <button style="height: 15px;width: 5px; background-color: orange"></button><a>:'.($value->sum_as_y).'</a>
+                                <button style="height: 15px;width: 5px; background-color: red"></button><a>:'.($value->sum_as_n).'</a></td>';
             for($i = 1;$i <= 31;$i++)
             {
                 if ($i < 10) {
