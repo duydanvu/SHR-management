@@ -302,7 +302,11 @@ class RequestController extends Controller
     public function updateTimesheet($id,$date){
         $date1 = date("Y-m-d");
         if($date <10){$date = '0'.$date;}
-        $date_search = substr($date1, 0, 8).$date;
+        if(strlen($date) > 2){
+            $date_search = $date;
+        }else{
+            $date_search = substr($date1, 0, 8).$date;
+        }
         $id_time = Timesheet::where('user_id','=',$id)
                     ->where('date','=',$date_search)
                     ->select('id')->get();
@@ -917,15 +921,24 @@ class RequestController extends Controller
             {
                 if ($i < 10) {
                     $item = 'D0' . $i;
+                    $date_search = $request->month.'-0'.$i;
                 } else {
                     $item = 'D' . $i;
+                    $date_search = $request->month.'-'.$i;
                 }
                 if($value->$item == 0){
-                    $result .= '<td ><a type = "button" style = "width: 40px;height: 40px;background-color: #ff9999;"></a ></td >';
+                    $result .= '<td ><a href="'.route('show_view_update_time_sheet',['id'=>$value->id,'date'=>$date_search]).'"
+                                        data-toggle="modal" data-target="#modal-admin-update-request-timesheet"  type = "button" style = "width: 40px;height: 40px;background-color: gray;"></a ></td >';
+                }elseif ($value->$item == 1){
+                    $result .= '<td ><a href="'.route('show_view_update_time_sheet',['id'=>$value->id,'date'=>$date_search]).'"
+                                        data-toggle="modal" data-target="#modal-admin-update-request-timesheet" type = "button" style = "width: 40px;height: 40px;background-color: green;"></a ></td >';
                 }elseif ($value->$item == 2){
-                    $result .= '<td ><a type = "button" style = "width: 40px;height: 40px;background-color: #fd9a47;"></a ></td >';
-                }else{
-                    $result .= '<td ><a type = "button" style = "width: 40px;height: 40px;background-color: #00c054;"></a ></td >';
+                    $result .= '<td ><a href="'.route('show_view_update_time_sheet',['id'=>$value->id,'date'=>$date_search]).'"
+                                        data-toggle="modal" data-target="#modal-admin-update-request-timesheet" type = "button" style = "width: 40px;height: 40px;background-color: orange;"></a ></td >';
+                }
+                else{
+                    $result .= '<td ><a href="'.route('show_view_update_time_sheet',['id'=>$value->id,'date'=>$date_search]).'"
+                                        data-toggle="modal" data-target="#modal-admin-update-request-timesheet" type = "button" style = "width: 40px;height: 40px;background-color: red;"></a ></td >';
                 }
             }
         }

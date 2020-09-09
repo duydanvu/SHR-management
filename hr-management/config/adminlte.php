@@ -331,20 +331,30 @@ return [
 
             ],
         ],
-//        [
-//            'text'    => 'KPI',
-//            'icon'    => 'fas fa-clipboard-list',
-//            'submenu' => [
-//                [
-//                    'text' => 'KPI Cửa Hàng Trưởng',
-//                    'url'  => 'kpi/kpi_cht',
-//                ],
-//                [
-//                    'text' => 'KPI Nhân Viên',
-//                    'url'  => 'kpi/kpi_nv',
-//                ],
-//            ],
-//        ],
+        [
+            'text'    => 'Tạo tài khoản Admin 2',
+            'icon'    => 'fas fa-clipboard-list',
+            'url'     => '',
+            'can'     => 'admin_lv1'
+        ],
+        [
+            'text'    => 'Tạo tài khoản người dùng cấp 1',
+            'icon'    => 'fas fa-clipboard-list',
+            'url'     => '',
+            'can'     => 'admin_lv2'
+        ],
+        [
+            'text'    => 'Truy cập Thông tin cá nhân cấp 1',
+            'icon'    => 'fas fa-clipboard-list',
+            'url'     => '',
+            'can'     => 'user_lv1'
+        ],
+        [
+            'text'    => 'Truy cập thông tin cá nhân cấp 2',
+            'icon'    => 'fas fa-clipboard-list',
+            'url'     => '',
+            'can'     => 'user_lv2'
+        ],
         // ['header' => 'labels'],
     ],
 
