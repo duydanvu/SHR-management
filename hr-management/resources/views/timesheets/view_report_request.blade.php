@@ -5,13 +5,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Report Timesheet</h1>
+                <h1>Thống kê chấm công</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item "><a href="/home">Home</a></li>
-                    <li class="breadcrumb-item "><a href="#">Timesheets</a></li>
-                    <li class="breadcrumb-item active">Report</li>
+                    <li class="breadcrumb-item "><a href="/home">Trang chủ</a></li>
+                    <li class="breadcrumb-item "><a href="#">Thống Kê</a></li>
+                    <li class="breadcrumb-item active">Thống Kê Chấm Công</li>
                 </ol>
             </div>
         </div>
@@ -22,7 +22,7 @@
     <div class="card card-outline card-primary-dashboard">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <div class="card-header">
-            <h3 class="card-title">Search</h3>
+            <h3 class="card-title">Tìm Kiếm</h3>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                     <i class="fas fa-minus"></i></button>
@@ -36,7 +36,7 @@
                 @if($position_auth == 1)
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Search by Area</label>
+                        <label for="exampleInputEmail1">Khu Vực</label>
                         <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
                             @foreach ($area as $area)
                                 <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>
@@ -47,7 +47,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Search by Store</label>
+                        <label for="exampleInputEmail1">Cửa Hàng</label>
                         <select id="store_search" name = "store_search" class="form-control select2"  value="{{ old('store_search') }}" autocomplete="store_search" style="width: 100%;">
                             @foreach ($store as $store2)
                                 <option value="{{$store2['store_id']}}">{{$store2['store_name']}}-{{$store2['store_address']}}</option>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Search by Position</label>
+                        <label for="exampleInputEmail1">Chức Vụ</label>
                         <select id="position_search" name = "position_search" class="form-control select2"  value="{{ old('position_search') }}" autocomplete="position_search" style="width: 100%;">
                             @foreach ($position as $position)
                                 <option value="{{$position['position_id']}}">{{$position['position_name']}}-{{$position['description']}}</option>
@@ -69,7 +69,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Search by Department</label>
+                        <label for="exampleInputEmail1">Phòng Ban</label>
                         <select id="department_search" name = "department_search" class="form-control select2"  value="{{ old('department_search') }}" autocomplete="department_search" style="width: 100%;">
                             @foreach ($department as $department)
                                 <option value="{{$department['id']}}">{{$department['name']}}-{{$department['description']}}</option>
@@ -80,7 +80,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Search by Service</label>
+                        <label for="exampleInputEmail1">Dịch Vụ</label>
                         <select id="service_search" name = "service_search" class="form-control select2"  value="{{ old('service_search') }}" autocomplete="service_search" style="width: 100%;">
                             @foreach ($service as $service)
                                 <option value="{{$service['id']}}">{{$service['name']}}-{{$service['description']}}</option>
@@ -91,7 +91,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Search by Contract</label>
+                        <label for="exampleInputEmail1">Hợp Đồng</label>
                         <select id="contract_search" name = "contract_search" class="form-control select2"  value="{{ old('contract_search') }}" autocomplete="contract_search" style="width: 100%;">
                             @foreach ($contract as $contract)
                                 <option value="{{$contract['contract_id']}}">{{$contract['name']}}-{{$contract['description']}}</option>
@@ -103,7 +103,7 @@
                 @endif
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Start time</label>
+                        <label for="exampleInputEmail1">Thời Gian Bắt Đầu</label>
                         <input id="start_date" type="date" class="form-control @error('txtComment') is-invalid @enderror"  name="txtStartDate"  autocomplete="number" required >
                         @error('txtComment')
                         <span class="invalid-feedback" role="alert">
@@ -114,7 +114,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">End time</label>
+                        <label for="exampleInputEmail1">Thời Gian Kết Thúc</label>
                         <input id="end_date" type="date" class="form-control @error('txtComment') is-invalid @enderror"  name="txtEndDate"  autocomplete="number" required >
                         @error('txtComment')
                         <span class="invalid-feedback" role="alert">
@@ -127,10 +127,10 @@
             <div class="card-footer" style="background: transparent;">
                 <div class="row">
                     <div class="col-12 col-md-12 col-sm-12">
-                        <a href=" " type="submit" class="btn btn-default" >Refresh</a>
+                        <a href=" " type="submit" class="btn btn-default" >Làm Mới</a>
                         <button id = "import_user" type="submit" class="btn btn-success" data-toggle="modal"
-                                data-target="#modal"><i class="fas fa-plus-circle"></i> Export Report</button>
-                        <button type="button" id="fillter_date" class="btn btn-primary" style="float: right;">Filter</button>
+                                data-target="#modal"><i class="fas fa-plus-circle"></i> Xuất Báo Cáo</button>
+                        <button type="button" id="fillter_date" class="btn btn-primary" style="float: right;">Tìm Kiếm</button>
                     </div>
                 </div>
             </div>

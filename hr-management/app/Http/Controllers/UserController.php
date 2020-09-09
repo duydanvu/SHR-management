@@ -339,15 +339,10 @@ class UserController extends Controller
                                         <div class="dropdown-menu" role="menu">
                                             <a href="'.route('view_update_user',['id'=>$value->id]).'" data-remote="false"
                                                data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
-                                                <i class="fas fa-edit"> Edit</i>
+                                                <i class="fas fa-edit"> Sửa</i>
                                             </a>
                                             <a href="'.route('delete_information_user',['id'=>$value->id]).'"  class="btn dropdown-item">
-                                                <i class="fas fa-users"> Delete</i>
-                                            </a>
-
-                                            <a href="'.route('view_update_user_image',['id'=>$value->id]).'" data-remote="false"
-                                               data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">
-                                                <i class="fas fa-image"> View Image</i>
+                                                <i class="fas fa-users"> Xóa</i>
                                             </a>
                                         </div>
 

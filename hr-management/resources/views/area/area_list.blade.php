@@ -23,7 +23,7 @@
         <div class="card-header">
             <div class="button-group-card-header">
                 {{--                @if($role_use_number == 1)--}}
-                <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-store"><i class="fas fa-plus-circle"></i> Create Area New </button>
+                <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-store"><i class="fas fa-plus-circle"></i> Tạo Khu Vực Mới </button>
                 {{--                @endif--}}
 {{--                <a href="{{route('export_report_area')}}" class="btn btn-success" type="button"><i class="fas fa-file-download"></i>Export</a>--}}
 {{--                <button id = "" type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-file-download"></i> Export </button>--}}
@@ -68,17 +68,16 @@
                             <td class="text-center">
 {{--                                @if($role_use_number == 1)--}}
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-primary">Action</button>
                                     <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <div class="dropdown-menu" role="menu">
                                         <a href="{{route('admin_list_update_area',['id'=> $value->id])}}" data-remote="false"
                                            data-toggle="modal" data-target="#modal-area-action-update" class="btn dropdown-item">
-                                            <i class="fas fa-edit"> Edit</i>
+                                            <i class="fas fa-edit"> Sửa Khu Vực</i>
                                         </a>
                                         <a href="{{route('delete_information_area',['id'=> $value->id])}}"  class="btn dropdown-item">
-                                            <i class="fas fa-users"> Delete</i>
+                                            <i class="fas fa-users"> Xóa Khu Vực</i>
                                         </a>
                                     </div>
 
@@ -89,7 +88,7 @@
                     @endforeach
                 @else
                     <td colspan="8" style="text-align: center">
-                        <h3>Empty Data</h3>
+                        <h3>Không có dữ liệu</h3>
                     </td>
                 @endif
 
@@ -104,7 +103,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Update Action</h4>
+                        <h4 class="modal-title">Sửa</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
@@ -114,8 +113,8 @@
 
                         </div>
                         <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary">Lưu</button>
                         </div>
                     </form>
                 </div>
@@ -129,7 +128,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Create Area </h4>
+                    <h4 class="modal-title">Tạo Khu Vực Mới </h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -164,8 +163,8 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button id="create_member" type="submit" class="btn btn-primary">Save changers</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        <button id="create_member" type="submit" class="btn btn-primary">Lưu</button>
                     </div>
                 </form>
             </div>
@@ -202,7 +201,14 @@
                         bSortable: false,
                         aTargets: ['noSort']
                     } // Disable sorting on columns marked as so
-                ]
+                ],
+                "oLanguage": {
+                    "sSearch": "Tìm Kiếm",
+                    "sLengthMenu": "Hiển Thị _MENU_ Bản Ghi",
+                },
+                "language": {
+                    "info": "Đang hiển thị _START_ tới _END_ trong _TOTAL_ kết quả",
+                }
             });
             // fix table
             $("#example1").parent().css({"overflow": "auto"});

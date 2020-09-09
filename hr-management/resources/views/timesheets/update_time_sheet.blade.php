@@ -7,7 +7,7 @@
         <div class="col-lg-12 col-sm-12">
             <div class="card-body col-lg-12 float-left">
                 <div class="form-group">
-                    <label for="name">Date</label>
+                    <label for="name">Ngày</label>
                     <input id="date_ts" type="date" class="form-control @error('date_ts') is-invalid @enderror" value="{{$user_timesheet->date}}" name="date_ts"  autocomplete="number" required readonly>
                     @error('txtComment')
                     <span class="invalid-feedback" role="alert">
@@ -16,7 +16,7 @@
                     @enderror
                 </div>
                 <div class="form-group">
-                    <label for="name">Time Sheets</label>
+                    <label for="name">Chấm Công</label>
                     <select id="status_timesheet" name = "status_timesheet" class="form-control select2"  value="{{ old('status_timesheet') }}" autocomplete="status_timesheet" style="width: 100%;">
                         <option value="present" @if($user_timesheet->logtime == 'present') selected @endif>Đi Làm</option>
                         <option value="absent" @if($user_timesheet->logtime == 'absent') selected @endif>Nghỉ Có Phép</option>

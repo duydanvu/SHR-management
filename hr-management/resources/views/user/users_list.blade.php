@@ -5,12 +5,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>User</h1>
+                <h1>Nhân Sự</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item "><a href="/home">Trang Trủ</a></li>
-                    <li class="breadcrumb-item "><a href="#">Quản Lý Nhân Sự</a></li>
+                    <li class="breadcrumb-item "><a >Quản Lý Nhân Sự</a></li>
                     <li class="breadcrumb-item active">Nhân Sự</li>
                 </ol>
             </div>
@@ -33,7 +33,7 @@
                 <div class="col-md-3 ml-4">
                     <div class="form-group">
                         <meta name="csrf-token2" content="{{ csrf_token() }}">
-                        <label for="exampleInputEmail1">Tìm Kiếm Theo Khu Vực</label>
+                        <label for="exampleInputEmail1">Khu Vực</label>
                         <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
                             @foreach ($area as $area)
                                 <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>
@@ -42,9 +42,9 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 ml-4">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Tìm Kiếm Theo Cửa Hàng</label>
+                        <label for="exampleInputEmail1">Cửa Hàng</label>
                         <select id="store_search" name = "store_search" class="form-control select2"  value="{{ old('store_search') }}" autocomplete="store_search" style="width: 100%;">
                             @foreach ($store as $store2)
                                 <option value="{{$store2['store_id']}}">{{$store2['store_name']}}-{{$store2['store_address']}}</option>
@@ -53,9 +53,9 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 ml-4">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Tìm Kiếm Tên Nhân Sự</label>
+                        <label for="exampleInputEmail1">Tên Nhân Sự</label>
                         <input id="name_user" type="text" class="form-control @error('txtNameUser') is-invalid @enderror" name="txtFName" value=""  autocomplete="number" required>
                         @error('txtNameUser')
                         <span class="invalid-feedback" role="alert">
@@ -65,8 +65,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-10">
-                <div class="col-md-2 float-left" >
+            <div class="col-12 col-md-12 col-xl-12 float-left">
+                <div class="col-md-3 col-3 col-xl-2 float-left" >
                     <div class="form-group">
                         <label for="exampleInputEmail1">Chức Vụ</label>
                         <select id="position_search" name = "position_search" class="form-control select2"  value="{{ old('position_search') }}" autocomplete="position_search" style="width: 100%;">
@@ -77,7 +77,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-2 float-left">
+                <div class="col-md-3 col-3 col-xl-2 float-left">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Phòng Ban</label>
                         <select id="department_search" name = "department_search" class="form-control select2"  value="{{ old('department_search') }}" autocomplete="department_search" style="width: 100%;">
@@ -88,7 +88,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-2 float-left">
+                <div class="col-md-3 col-3 col-xl-2 float-left">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Dịch Vụ</label>
                         <select id="service_search" name = "service_search" class="form-control select2"  value="{{ old('service_search') }}" autocomplete="service_search" style="width: 100%;">
@@ -99,7 +99,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-2 float-left">
+                <div class="col-md-3 col-3 col-xl-2 float-left">
                     <div class="form-group">
                         <label for="exampleInputEmail1" >Hợp Đồng</label>
                         <select id="contract_search" name = "contract_search" class="form-control select2"  value="{{ old('contract_search') }}" autocomplete="contract_search" style="width: 100%;">
@@ -110,7 +110,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-2 float-left">
+                <div class="col-md-3 col-4 col-xl-2 float-left">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Thời Gian Bắt đầu</label>
                         <input id="start_date" type="date" class="form-control @error('txtComment') is-invalid @enderror"  name="txtStartDate"  autocomplete="number" required >
@@ -121,7 +121,7 @@
                         @enderror
                     </div>
                 </div>
-                <div class="col-md-2 float-left">
+                <div class="col-md-3 col-4 col-xl-2 float-left">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Thời Gian Kết Thúc</label>
                         <input id="end_date" type="date" class="form-control @error('txtComment') is-invalid @enderror"  name="txtEndDate"  autocomplete="number" required >
@@ -133,7 +133,7 @@
                     </div>
                 </div>
             </div>
-            <div class="pt-4" style="float: left">
+            <div class="pt-4 float-left ml-4" style="float: left">
                 <button type="submit" id="fillter_date" class="btn btn-primary mt-2" style="float: left"><i class="fas fa-search-minus">Tìm Kiếm</i></button>
             </div>
         </div>
@@ -200,10 +200,10 @@
                                         <a href="{{route('delete_information_user',['id'=>$value->id])}}"  class="btn dropdown-item">
                                             <i class="fas fa-users"> Xóa</i>
                                         </a>
-                                        <a href="{{route('view_update_user_image',['id'=>$value->id])}}" data-remote="false"
-                                           data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">
-                                            <i class="fas fa-image"> Sửa Ảnh</i>
-                                        </a>
+{{--                                        <a href="{{route('view_update_user_image',['id'=>$value->id])}}" data-remote="false"--}}
+{{--                                           data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">--}}
+{{--                                            <i class="fas fa-image"> Sửa Ảnh</i>--}}
+{{--                                        </a>--}}
                                     </div>
 
                                 </div>
@@ -304,24 +304,24 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="card-body col-lg-6 float-left">
-                                <span id="uploaded_image"><img id="img_prv1" src="{{URL::to('/')}}/upload/man.png" style="max-width: 150px;max-height: 200px; width: 150px;height: 200px"></span>
-                                <div class="form-group col-8 float-right">
-                                    <label for="name">Upload Ảnh</label>
-                                    {{--                                    <form id="upload_form" enctype="multipart/form-data" method="post">--}}
-                                    <meta name="csrf-token1" content="{{ csrf_token() }}">
-                                    <input id="select_file" type="file" name="select_file" required="true" class="pb-3">
-                                    {{--                                        <input type="submit" name="upload" id="upload" class="btn btn-primary" value="Upload Image">--}}
-                                    {{--                                    </form>--}}
-                                    <span id="mgs_ta"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+{{--                <form>--}}
+{{--                    <div class="modal-body">--}}
+{{--                        <div class="row">--}}
+{{--                            <div class="card-body col-lg-6 float-left">--}}
+{{--                                <span id="uploaded_image"><img id="img_prv1" src="{{URL::to('/')}}/upload/man.png" style="max-width: 150px;max-height: 200px; width: 150px;height: 200px"></span>--}}
+{{--                                <div class="form-group col-8 float-right">--}}
+{{--                                    <label for="name">Upload Ảnh</label>--}}
+{{--                                    --}}{{--                                    <form id="upload_form" enctype="multipart/form-data" method="post">--}}
+{{--                                    <meta name="csrf-token1" content="{{ csrf_token() }}">--}}
+{{--                                    <input id="select_file" type="file" name="select_file" required="true" class="pb-3">--}}
+{{--                                    --}}{{--                                        <input type="submit" name="upload" id="upload" class="btn btn-primary" value="Upload Image">--}}
+{{--                                    --}}{{--                                    </form>--}}
+{{--                                    <span id="mgs_ta"></span>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </form>--}}
                 <form class="form-horizontal" action="{{route('add_new_user')}}" method="post">
                     <div class="modal-body">
                         @csrf
@@ -498,7 +498,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-12 col-sm-12">
-                                <h3 class="ml-5">Detail</h3>
+                                <h3 class="ml-5">Chi Tiết</h3>
                                 <hr style="width: 90%">
                                 <div class="card-body col-lg-6 float-left">
                                     <div class="form-group">
@@ -598,8 +598,8 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button id="create_member" type="submit" class="btn btn-primary" >Lưu Thay</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        <button id="create_member" type="submit" class="btn btn-primary" >Lưu</button>
                     </div>
                 </form>
             </div>
@@ -636,7 +636,7 @@
         <div class="modal-dialog col-lg-8" style="max-width: 800px">
             <div class="modal-content col-lg-12 ">
                 <div class="modal-header">
-                    <h4 class="modal-title">Import Nhân Sự</h4>
+                    <h4 class="modal-title">Nhập Nhân Sự</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -652,11 +652,11 @@
                                         <div class="form-check">
                                             <input id="male_import" type="radio" class="form-check-input" name="txtGender" value="male"  autocomplete="number" required>
                                             <label class="form-check-label " for="male">
-                                                Male
+                                                Nam
                                             </label>
                                             <input id="female_import" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>
                                             <label class="form-check-label ml-5 " for="female">
-                                                Female
+                                                Nữ
                                             </label>
                                         </div>
                                     </div>
@@ -720,8 +720,8 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button id="import_member" type="submit" class="btn btn-primary" >Import</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        <button id="import_member" type="submit" class="btn btn-primary" >Nhập</button>
                     </div>
                 </form>
             </div>
@@ -734,7 +734,7 @@
         <div class="modal-dialog col-lg-8" style="max-width: 800px">
             <div class="modal-content col-lg-12 ">
                 <div class="modal-header">
-                    <h4 class="modal-title">Export User</h4>
+                    <h4 class="modal-title">Xuất Dữ Liệu</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -928,8 +928,8 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button id="import_member" type="submit" class="btn btn-primary" >Export</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        <button id="import_member" type="submit" class="btn btn-primary" >Xuất</button>
                     </div>
                 </form>
             </div>

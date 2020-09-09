@@ -42,12 +42,10 @@
 @section('content_header')
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1 class="m-0 text-dark font-weight-bold">Dashboard</h1>
+            <h1 class="m-0 text-dark font-weight-bold">Trang Chủ</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">Dashboard</li>
             </ol>
         </div><!-- /.col -->
     </div><!-- /.row -->
@@ -70,12 +68,12 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-            <table id="example1" class="table table-bordered table-striped">
+            <table id="example1" class="table table-bordered table-striped" style="width: 100%">
                 <thead>
                 <tr>
                     <th style="width:5%">#</th>
-                    <th style="width:10%">Tên Công Ty</th>
-                    <th style="width:10%">Tổng số khu vực</th>
+                    <th style="width:20%">Tên Công Ty</th>
+                    <th style="width:15%">Tổng số khu vực</th>
                     <th style="width:10%">GDV</th>
                     <th style="width:10%">AM</th>
                     <th style="width:10%">KAM</th>
@@ -326,7 +324,12 @@
 {{--    </div>--}}
 @stop
 
+@section('css')
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+@stop
 @section('js')
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.5/js/swiper.min.js"></script>
 {{--    <script>--}}
@@ -402,6 +405,26 @@
 {{--        });--}}
 {{--    </script>--}}
     <script>
+        $(function () {
+            $("#example1").DataTable({
+                aoColumnDefs: [
+                    {
+                        bSortable: false,
+                        aTargets: ['noSort'],
+
+                    } // Disable sorting on columns marked as so
+                ],
+                "oLanguage": {
+                    "sSearch": "Tìm Kiếm",
+                    "sLengthMenu": "Hiển Thị _MENU_ Bản Ghi",
+                },
+                "language": {
+                    "info": "Đang hiển thị _START_ tới _END_ trong _TOTAL_ kết quả",
+                }
+            });
+            // fix table
+            $("#example1").parent().css({"overflow": "auto"});
+        });
         var swiper = new Swiper('.swiper-container', {
             effect: 'coverflow',
             grabCursor: true,
