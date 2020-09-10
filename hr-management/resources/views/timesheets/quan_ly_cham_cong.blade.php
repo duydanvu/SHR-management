@@ -50,19 +50,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-2">
-                        <button style="height: 15px;width: 5px; background-color: red; margin-left: 20px; margin-top: 20px"></button>
+                    <div class="col-lg-4 col-sm-6">
+                        <button style="height: 15px;width: 5px; background-color: red;  margin-top: 20px"></button>
                         <a>Nghỉ Không Phép</a>
                     </div>
-                    <div class="col-2">
+                    <div class="col-lg-3 col-sm-6">
                         <button style="height: 15px;width: 5px; background-color: orange;margin-top: 20px"></button>
                         <a>Nghỉ Có Phép</a>
                     </div>
-                    <div class="col-2">
+                    <div class="col-lg-2 col-sm-6">
                         <button style="height: 15px;width: 5px; background-color: green;margin-top: 20px"></button>
                         <a>Đi Làm</a>
                     </div>
-                    <div class="col-2">
+                    <div class="col-lg-3 col-sm-6">
                         <button style="height: 15px;width: 5px; background-color: gray;margin-top: 20px"></button>
                         <a>Chưa Chấm Công</a>
                     </div>
@@ -74,13 +74,13 @@
 
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped " style="width: 100%">
-                <thead>
+                <thead id="table_header">
                 <tr>
                     <th style="width:15%;text-align: center" >Tên </th>
                     <th style="width:5%; text-align: center" >Tổng </th>
-                    @for($i = 1;$i <= 31;$i++)
-                    <th style="width:2%;text-align: center">Ngày {{$i}}</th>
-                    @endfor
+                    @foreach($dayOfWeek as $key=>$values)
+                    <th style="width:2%;text-align: center">{{$values}} ({{$key}})</th>
+                    @endforeach
                 </tr>
                 </thead>
                 <tbody id="table_body">
@@ -262,8 +262,9 @@
                     data:dt,
                     success:function(resultData){
                         // // $('.effort').val(resultData);
-                        $('#table_body').html(resultData);
-                        console.log(resultData);
+                        $('#table_body').html(resultData['result']);
+                        $('#table_header').html(resultData['title_table']);
+                        // console.log(resultData['title_table']);
                     }
                 });
             });

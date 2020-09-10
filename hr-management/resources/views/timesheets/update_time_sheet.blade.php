@@ -42,7 +42,7 @@
                     @enderror
                 </div>
                 <div class="form-group">
-                    <label for="name">Comment</label>
+                    <label for="name">Ghi Chú</label>
                     <input id="address_CMT" type="text" class="form-control @error('txtComment') is-invalid @enderror" value="{{$user_timesheet->comment}}" name="txtComment"  autocomplete="number">
                     @error('txtComment')
                     <span class="invalid-feedback" role="alert">

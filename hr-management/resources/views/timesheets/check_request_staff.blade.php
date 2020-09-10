@@ -28,20 +28,20 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-2">
-                <button style="height: 15px;width: 5px; background-color: red; margin-left: 30px; margin-top: 20px"></button>
+            <div class="col-lg-3 col-md-3 col-sm-6">
+                <button style="height: 15px;width: 5px; background-color: red; margin-left: 20px; margin-top: 20px"></button>
                 <a>Nghỉ Không Phép</a>
             </div>
-            <div class="col-2">
-                <button style="height: 15px;width: 5px; background-color: orange;margin-top: 20px"></button>
+            <div class="col-lg-3 col-md-3 col-sm-6">
+                <button style="height: 15px;width: 5px; background-color: orange;margin-left: 20px;margin-top: 20px"></button>
                 <a>Nghỉ Có Phép</a>
             </div>
-            <div class="col-2">
-                <button style="height: 15px;width: 5px; background-color: green;margin-top: 20px"></button>
+            <div class="col-lg-3 col-md-2 col-sm-6">
+                <button style="height: 15px;width: 5px; background-color: green;margin-left: 20px;margin-top: 20px"></button>
                 <a>Đi Làm</a>
             </div>
-            <div class="col-2">
-                <button style="height: 15px;width: 5px; background-color: gray;margin-top: 20px"></button>
+            <div class="col-lg-3 col-md-3 col-sm-6">
+                <button style="height: 15px;width: 5px; background-color: gray;margin-left: 20px;margin-top: 20px"></button>
                 <a>Chưa Chấm Công</a>
             </div>
         </div>
@@ -129,7 +129,7 @@
         <div class="modal-dialog" style="max-width: 600px">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Update Request</h4>
+                    <h4 class="modal-title">Chấm Công</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
@@ -140,8 +140,8 @@
                     </div>
                     <input name="id_submit" hidden/>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button id="btn_accept" type="submit" class="btn btn-primary">Update</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        <button id="btn_accept" type="submit" class="btn btn-primary">Lưu</button>
                     </div>
                 </form>
             </div>

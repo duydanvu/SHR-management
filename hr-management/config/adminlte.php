@@ -269,10 +269,10 @@ return [
 //                            'text' => 'Position',
 //                            'url'  => 'admin/position',
 //                        ],
-//                        [
-//                            'text' => 'Store',
-//                            'url'  => 'admin/store',
-//                        ],
+                        [
+                            'text' => 'Cửa Hàng',
+                            'url'  => 'admin/store',
+                        ],
 //                        [
 //                            'text' => 'Department',
 //                            'url'  => 'admin/department',

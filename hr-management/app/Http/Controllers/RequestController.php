@@ -565,22 +565,65 @@ class RequestController extends Controller
             if($i < 10){
                 $date_1 = substr($date, 0, 8).'0'.$i;
                 $dayOfWeek = date("l", strtotime($date_1));
-                $date_of_week[substr($date_1,5,5)] = $dayOfWeek;
+                $date_of_week[substr($date_1,5,5)] = $this->transferDayOfWeek($dayOfWeek);
             }else{
                 $date_1 = substr($date, 0, 8).$i;
                 $dayOfWeek = date("l", strtotime($date_1));
-                $date_of_week[substr($date_1,5,5)] = $dayOfWeek;
+                $date_of_week[substr($date_1,5,5)] = $this->transferDayOfWeek($dayOfWeek);
             }
         }
         return view('timesheets.check_request_staff')->with(['staff'=>$staff,'auth'=>$roles,
             'date_now'=>$date_now,'month_now'=>$month_now,'date_of_week'=>$date_of_week]);
     }
+
+    public function transferDayOfWeek($name){
+        switch ($name){
+            case 'Monday':
+                return 'Thứ 2';
+            case 'Tuesday':
+                return 'Thứ 3';
+            case 'Wednesday':
+                return 'Thứ 4';
+            case 'Thursday':
+                return 'Thứ 5';
+            case 'Friday':
+                return 'Thứ 6';
+            case 'Saturday':
+                return 'Thứ 7';
+            case 'Sunday':
+                return 'Chủ Nhật';
+        }
+    }
+
+    public function sumDayofMonth($month){
+        if($month == 1 ||$month == 3 ||$month == 5 ||$month == 7 ||$month == 8 ||$month == 10 ||$month == 12){
+            return $sumDayOfMonth = 31;
+        }elseif($month == 2){
+            return $sumDayOfMonth = 28;
+        }else{
+            return $sumDayOfMonth = 30;
+        }
+    }
+
     public function checkTimesheetMonth(){
         $user_id = Auth::id();
         $roles = User::find($user_id);
         $date = date("Y-m-d");
         $month = substr($date,0,7);
         $date_now = substr($date,-2,2);
+        $x = substr($date,5,2);
+        $sumDayOfMonth = $this->sumDayofMonth($x);
+        $dayofweek = [];
+        for($i = 1; $i <= $sumDayOfMonth; $i++){
+            if ($i < 0){
+                $day = '0'.$i;
+            }else{
+                $day = $i;
+            }
+            $date_1 = substr($date, 0, 8).$day;
+            $dayOfWeek = date("l", strtotime($date_1));
+            $dayofweek[substr($date_1,5,5)] = $this->transferDayOfWeek($dayOfWeek);
+        }
         if($roles->position_id == 1){
             $staff = DB::table('timesheets')
                 ->join('users','timesheets.user_id','=','users.id')
@@ -742,13 +785,34 @@ class RequestController extends Controller
                 }
             }
         }
-        return view('timesheets.quan_ly_cham_cong')->with(['staff'=>$staff,'auth'=>$roles,'date_now'=>$date_now,'month'=>$month]);
+        return view('timesheets.quan_ly_cham_cong')->with(['staff'=>$staff,'auth'=>$roles,'date_now'=>$date_now,'month'=>$month,'dayOfWeek'=>$dayofweek]);
     }
     public function search_user_with_time(Request  $request){
         $user_id = Auth::id();
         $roles = User::find($user_id);
         $date = date("Y-m-d");
         $date_now = substr($date,-2,2);
+        $monthOfYear = substr($request->month,5,2);
+        $sumDayOfMonth = $this->sumDayofMonth($monthOfYear);
+        $dayofweek = [];
+        for($i = 1; $i <= $sumDayOfMonth; $i++){
+            if ($i < 0){
+                $day = '0'.$i;
+            }else{
+                $day = $i;
+            }
+            $date_1 = $request->month.'-'.$day;
+            $dayOfWeek = date("l", strtotime($date_1));
+            $dayofweek[substr($date_1,5,5)] = $this->transferDayOfWeek($dayOfWeek);
+        }
+        $title_table = null;
+        $title_table.= '<tr>';
+        $title_table.= '<th style="width:15%;text-align: center" >Tên </th>';
+        $title_table.= '<th style="width:5%; text-align: center" >Tổng </th>';
+        foreach($dayofweek as $key=>$values){
+            $title_table.= '<th style="width:2%;text-align: center">'.($values).' ('.($key).')</th>';
+        }
+        $title_table.= '</tr>';
         if($roles->position_id == 1){
             $staff = DB::table('timesheets')
                 ->join('users','timesheets.user_id','=','users.id')
@@ -943,7 +1007,7 @@ class RequestController extends Controller
             }
         }
         $result .= '</tr>';
-        return $result;
+        return ['result'=>$result,'title_table'=>$title_table];
     }
 
     public function viewRequestStaff($id){

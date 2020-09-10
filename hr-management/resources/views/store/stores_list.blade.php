@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Stores</h1>
+                <h1>Cửa Hàng</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -23,9 +23,9 @@
         <div class="card-header">
             <div class="button-group-card-header">
 {{--                @if($role_use_number == 1)--}}
-                    <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-store"><i class="fas fa-plus-circle"></i> Create Account </button>
+                    <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-store"><i class="fas fa-plus-circle"></i> Tạo Cửa Hàng Mới</button>
 {{--                @endif--}}
-                <a href="{{route('export_report_stores')}}" class="btn btn-success" type="button"><i class="fas fa-file-download"></i>Export</a>
+                <a href="{{route('export_report_stores')}}" class="btn btn-success" type="button"><i class="fas fa-file-download"></i>Xuất File</a>
             </div>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -57,17 +57,16 @@
                             <td class="text-center">
 {{--                                @if($role_use_number == 1)--}}
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-primary">Action</button>
                                         <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <div class="dropdown-menu" role="menu">
                                             <a href="{{route('view_update_store',['id'=>$value->store_id])}}" data-remote="false"
                                                data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
-                                                <i class="fas fa-edit"> Edit</i>
+                                                <i class="fas fa-edit"> Sửa </i>
                                             </a>
                                             <a href="{{route('delete_information_store',['id'=>$value->store_id])}}"  class="btn dropdown-item">
-                                                <i class="fas fa-users"> Delete</i>
+                                                <i class="fas fa-users"> Xóa </i>
                                             </a>
                                         </div>
 
@@ -93,7 +92,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Update Action</h4>
+                    <h4 class="modal-title">Cập Nhật ThôngTin</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
@@ -103,8 +102,8 @@
 
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
                     </div>
                 </form>
             </div>
@@ -118,7 +117,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Create Store</h4>
+                    <h4 class="modal-title">Tạo Mới Cửa Hàng</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -172,8 +171,8 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button id="create_member" type="submit" class="btn btn-primary">Save changers</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        <button id="create_member" type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
                     </div>
                 </form>
             </div>
@@ -210,7 +209,14 @@
                         bSortable: false,
                         aTargets: ['noSort']
                     } // Disable sorting on columns marked as so
-                ]
+                ],
+                "oLanguage": {
+                    "sSearch": "Tìm Kiếm",
+                    "sLengthMenu": "Hiển Thị _MENU_ Bản Ghi",
+                },
+                "language": {
+                    "info": "Đang hiển thị _START_ tới _END_ trong _TOTAL_ kết quả",
+                }
             });
             // fix table
             $("#example1").parent().css({"overflow": "auto"});
