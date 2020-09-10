@@ -53,7 +53,7 @@
                             <td>{{$value->store_name}}</td>
                             <td>{{$value->store_address}}</td>
                             <td><a href="{{route('view_store_of_area',['id'=>$value->id])}}">{{$value->area_name}}</a></td>
-                            <td><a href="{{route('view_store_of_area',['id'=>$value->id])}}">{{$value->sum}}</a></td>
+                            <td><a>{{$value->sum}}</a></td>
                             <td class="text-center">
 {{--                                @if($role_use_number == 1)--}}
                                     <div class="btn-group">

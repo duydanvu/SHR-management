@@ -63,7 +63,7 @@ class ReportController extends Controller
     }
 
     public function export_users(Request $request){
-        return Excel::download(new ExportController($request),'user.xlsx');
+        return Excel::download(new ExportController($request),'Nhan_su.xlsx');
     }
 
     public function showDetailTime(){

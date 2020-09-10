@@ -1113,6 +1113,6 @@ class RequestController extends Controller
 
 
     public function export_timesheet(Request $request){
-        return Excel::download(new ExportTimesheetController($request),'Timesheets.xlsx');
+        return Excel::download(new ExportTimesheetController($request),'ThongKeChamCong.xlsx');
     }
 }

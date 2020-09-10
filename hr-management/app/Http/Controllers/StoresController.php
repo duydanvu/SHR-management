@@ -193,6 +193,6 @@ class StoresController extends Controller
     }
 
     public function export_stores(){
-        return Excel::download(new ExportStoresController(),'Stores.xlsx');
+        return Excel::download(new ExportStoresController(),'CuaHang.xlsx');
     }
 }
