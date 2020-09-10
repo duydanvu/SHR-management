@@ -235,28 +235,23 @@ return [
             'text'        => 'Trang Chủ',
             'url'         => '/home',
             'icon'        => 'fas fa-tachometer-alt',
-//            'submenu' => [
-//                [
-//                    'text' => 'Team',
-//                    'url'  => 'dashboard/team',
-//                ],
-//
-//            ],
-        ],
-//
-        [
-            'text'    => 'Quản Lý Nhân Sự',
-            'icon'    => 'fas fa-users',
-            'can' => 'view_menu',
+            'can'         => 'not_system',
             'submenu' => [
-                [
-                    'text' => 'Nhân sự',
-                    'url'  => 'admin/user',
-                ],
-                [
-                    'text' => 'Khu Vực',
-                    'url'  => 'admin/area',
-                ],
+//
+            [
+                'text'    => 'Quản Lý Nhân Sự',
+                'icon'    => 'fas fa-users',
+                'can'         => 'not_systems',
+                'can' => 'view_menu',
+                'submenu' => [
+                    [
+                        'text' => 'Nhân sự',
+                        'url'  => 'admin/user',
+                    ],
+                    [
+                        'text' => 'Khu Vực',
+                        'url'  => 'admin/area',
+                    ],
 //                [
 //                    'text'    => 'Quản Lý',
 //                    'icon'    => 'fas fa-users',
@@ -269,10 +264,10 @@ return [
 //                            'text' => 'Position',
 //                            'url'  => 'admin/position',
 //                        ],
-                        [
-                            'text' => 'Cửa Hàng',
-                            'url'  => 'admin/store',
-                        ],
+                    [
+                        'text' => 'Cửa Hàng',
+                        'url'  => 'admin/store',
+                    ],
 //                        [
 //                            'text' => 'Department',
 //                            'url'  => 'admin/department',
@@ -285,13 +280,13 @@ return [
 //                ]
 
 
+                ],
             ],
-        ],
 //
-        [
-            'text'    => 'THỐNG KÊ ',
-            'icon'    => 'fas fa-clipboard-list',
-            'submenu' => [
+            [
+                'text'    => 'THỐNG KÊ ',
+                'icon'    => 'fas fa-clipboard-list',
+                'submenu' => [
 //                [
 //                    'text' => 'Báo Cáo Theo Thời Gian',
 //                    'url'  => 'report/report_with_time',
@@ -300,60 +295,100 @@ return [
 //                    'text' => 'Báo Cáo Theo Nhân Viên',
 //                    'url'  => 'report/report_with_user',
 //                ],
-                [
-                    'text' => '	Thống Kê Chấm Công',
-                    'url'  => 'request/report_view',
-                ],
+                    [
+                        'text' => '	Thống Kê Chấm Công',
+                        'url'  => 'request/report_view',
+                    ],
 //                [
 //                    'text' => 'Thống Kê Hợp Đồng',
 //                    'url'  => 'admin/contract',
 //                ],
+                ],
             ],
-        ],
-        [
-            'text'    => 'QUẢN LÝ CHẤM CÔNG',
-            'icon'    => 'fas fa-blender-phone',
-            'submenu' => [
+            [
+                'text'    => 'QUẢN LÝ CHẤM CÔNG',
+                'icon'    => 'fas fa-blender-phone',
+                'submenu' => [
 
 //                [
 //                    'text' => '	Chấm Công',
 //                    'url'  => 'timekeeping/timekeeping_for_staff',
 //                ],
-                [
-                    'text' => 'Chấm Công Tháng',
-                    'url'  => 'timekeeping/request_timekeeping',
-                ],
-                [
-                    'text' => '	Quản Lý Chấm Công ',
-                    'url'  => 'timekeeping/request_timekeeping/request_month',
-                ],
+                    [
+                        'text' => 'Chấm Công Tháng',
+                        'url'  => 'timekeeping/request_timekeeping',
+                    ],
+                    [
+                        'text' => '	Quản Lý Chấm Công ',
+                        'url'  => 'timekeeping/request_timekeeping/request_month',
+                    ],
 
 
+                ],
             ],
         ],
-        [
-            'text'    => 'Tạo tài khoản Admin 2',
-            'icon'    => 'fas fa-clipboard-list',
-            'url'     => '',
-            'can'     => 'admin_lv1'
         ],
         [
-            'text'    => 'Tạo tài khoản người dùng cấp 1',
-            'icon'    => 'fas fa-clipboard-list',
-            'url'     => '',
-            'can'     => 'admin_lv2'
-        ],
-        [
-            'text'    => 'Truy cập Thông tin cá nhân cấp 1',
-            'icon'    => 'fas fa-clipboard-list',
-            'url'     => '',
-            'can'     => 'user_lv1'
-        ],
-        [
-            'text'    => 'Truy cập thông tin cá nhân cấp 2',
-            'icon'    => 'fas fa-clipboard-list',
-            'url'     => '',
-            'can'     => 'user_lv2'
+            'text'        => 'Trang Chủ',
+            'url'         => '/home1',
+            'icon'        => 'fas fa-tachometer-alt',
+            'can'         => 'system',
+            'submenu' => [
+                [
+                    'text'    => 'Tạo tài khoản Admin 2',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/admin1/view',
+                    'can'     => 'admin_lv1'
+                ],
+                [
+                    'text'    => 'Tạo  người dùng ',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => 'admin2/view',
+                    'can'     => 'admin_lv2'
+                ],
+                [
+                    'text'    => 'Cập Nhật Thông Tin',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/admin2/view_information',
+                    'can'     => 'admin_lv2'
+                ],
+                [
+                    'text'    => 'Tạo Nhóm',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => 'admin2/group',
+                    'can'     => 'admin_lv2'
+                ],
+                [
+                    'text'    => 'Tạo Hạn Mức Thu Tiền',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/admin2/add_han_muc',
+                    'can'     => 'admin_lv2'
+                ],
+                [
+                    'text'    => 'Khóa Người Dùng',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/admin2/lock_acc_user',
+                    'can'     => 'admin_lv2'
+                ],
+                [
+                    'text'    => 'Truy cập Thông tin cá nhân',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/user1/view_information',
+                    'can'     => 'user_lv1'
+                ],
+                [
+                    'text'    => 'Khóa Tài Khoản Người Dùng',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/user1/lock_acc_user',
+                    'can'     => 'user_lv1'
+                ],
+                [
+                    'text'    => 'Truy cập thông tin cá nhân cấp 2',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '',
+                    'can'     => 'user_lv2'
+                ],
+            ]
         ],
         // ['header' => 'labels'],
     ],

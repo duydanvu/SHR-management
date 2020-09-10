@@ -20,6 +20,23 @@ Route::post('/logout','Auth\CustomAuthController@logout')->name('logout');
 
 Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/home', 'HomeController@index')->name('dashboard');
+    Route::get('/home1', 'HomeController@index_system')->name('dashboard2');
+
+    //admin1
+    Route::get('/admin1/view','Admin1Controller@index')->name('view_list_account_admin_lv2');
+
+    //admin2
+    Route::get('/admin2/view','Admin2Controller@index')->name('view_list_account_user');
+    Route::get('/admin2/group','Admin2Controller@group')->name('view_list_group_user');
+    Route::get('/admin2/add_to_group','Admin2Controller@addUserToGroup')->name('add_user_to_group');
+    Route::get('/admin2/add_asm_to_group','Admin2Controller@addASMToGroup')->name('add_asm_to_group');
+    Route::get('/admin2/add_han_muc','Admin2Controller@viewHanMuc')->name('view_han_muc_user');
+    Route::get('/admin2/lock_acc_user','Admin2Controller@lockAccUser')->name('view_list_lock_acc_user');
+    Route::get('/admin2/view_information','Admin2Controller@view_information')->name('view_information_user_auth');
+
+    //user1
+    Route::get('/user1/lock_acc_user','User1Controller@lockAccUser')->name('view_list_lock_acc_user2');
+    Route::get('/user1/view_information','User1Controller@view_information')->name('view_information_user1_auth');
 
     // route area
     Route::get('/admin/area','AreaController@listArea')->name('show_list_area');

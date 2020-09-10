@@ -53,7 +53,11 @@ class CustomAuthController extends Controller
                 'message' => 'Hello '.$user->last_name.'!',
                 'alert-type' => 'success'
             );
-            return redirect('/home')->with($notification);
+            if($user->type == 'systems'){
+                return redirect('/home1')->with($notification);
+            }else {
+                return redirect('/home')->with($notification);
+            }
         }else
         {
             $notification = array(

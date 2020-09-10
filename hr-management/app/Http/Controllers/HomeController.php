@@ -112,4 +112,8 @@ class HomeController extends Controller
         }
         return view('welcome',compact('area'));
     }
+
+    public function index_system(){
+        return view('welcome2');
+    }
 }

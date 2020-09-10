@@ -34,6 +34,23 @@ class AuthServiceProvider extends ServiceProvider
            }
 
         });
+        Gate::define('not_system',function ($user){
+            if($user->type != 'systems'){
+                return true;
+            }else{
+                return false;
+            }
+        });
+
+        Gate::define('system',function ($user){
+
+           if($user->type === 'systems'){
+               return true;
+           }else{
+               return false;
+           }
+        });
+
         Gate::define('admin_lv1',function ($user){
             $action = UserAction::where('user_id','=',$user->id)->get();
             if(count($action) == 1) {
