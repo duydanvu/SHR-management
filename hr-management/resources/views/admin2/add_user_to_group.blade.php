@@ -34,7 +34,10 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-            <table id="example1" class="table table-bordered table-striped">
+            <form action="{{route('add_user_group')}}" method="post">
+                @csrf
+                <input name="id_group" value="{{$id_group}}_id" hidden>
+                <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                     <th style="width:5%">#</th>
@@ -51,17 +54,26 @@
                 </tr>
                 </thead>
                 <tbody id="table_body">
-                    <tr>
-                       <td><input type="checkbox" name="addASM" value="add"></td>
-                       <td>1</td>
-                       <td>Dang Tam</td>
-                       <td>Tam@gmail.com</td>
-                       <td>11/10/200</td>
-                       <td>0914321233</td>
-                    </tr>
+                    @if(count($user) > 0)
+                        @foreach($user as $key => $value)
+                            <tr>
+                                <td><input type="checkbox" name="addASM{{$key}}" value="{{$value->id}}"></td>
+                                <td>{{$key+1}}</td>
+                                <td>{{$value->last_name}}</td>
+                                <td>{{$value->email}}</td>
+                                <td>{{$value->dob}}</td>
+                                <td>{{$value->phone}}</td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <td colspan="8" style="text-align: center">
+                            <h3>Empty Data</h3>
+                        </td>
+                    @endif
                 </tbody>
-            </table>
-            <button type="submit" id="addUser2" class="btn btn-primary mt-4" style="float: left"><i class="fas fa-plus-circle"> Thêm</i></button>
+                </table>
+                <button type="submit" id="addUser2" class="btn btn-primary mt-4" style="float: left"><i class="fas fa-plus-circle"> Thêm</i></button>
+            </form>
         </div>
         <!-- /.card-body -->
     </div>

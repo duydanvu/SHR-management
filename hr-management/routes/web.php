@@ -27,9 +27,18 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
 
     //admin2
     Route::get('/admin2/view','Admin2Controller@index')->name('view_list_account_user');
+    Route::get('/admin2/search_update/{id}','Admin2Controller@search_user_update')->name('search_view_update_user');
+    Route::post('/admin2/add_user2','Admin2Controller@add_account_user')->name('add_new_acc_user');
+    Route::post('/admin2/update_user2','Admin2Controller@update_account_user')->name('update_account_user_sts');
+
     Route::get('/admin2/group','Admin2Controller@group')->name('view_list_group_user');
-    Route::get('/admin2/add_to_group','Admin2Controller@addUserToGroup')->name('add_user_to_group');
-    Route::get('/admin2/add_asm_to_group','Admin2Controller@addASMToGroup')->name('add_asm_to_group');
+    Route::post('/admin2/group/create','Admin2Controller@createGroup')->name('create_group_for_user');
+    Route::get('/admin2/add_to_group/{id}','Admin2Controller@addUserToGroup')->name('add_user_to_group');
+    Route::post('/admin2/insert_to_group','Admin2Controller@insertUserToGroup')->name('add_user_group');
+    Route::post('/admin2/insert_asm_to_group','Admin2Controller@insertASMforGroup')->name('add_asm_group');
+    Route::get('/admin2/add_asm_to_group/{id}','Admin2Controller@addASMToGroup')->name('add_asm_to_group');
+
+
     Route::get('/admin2/add_han_muc','Admin2Controller@viewHanMuc')->name('view_han_muc_user');
     Route::get('/admin2/lock_acc_user','Admin2Controller@lockAccUser')->name('view_list_lock_acc_user');
     Route::get('/admin2/view_information','Admin2Controller@view_information')->name('view_information_user_auth');

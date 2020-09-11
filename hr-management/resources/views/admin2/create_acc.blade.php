@@ -29,18 +29,18 @@
         </div>
         <div class="card-body">
             <div class="row">
-{{--                <div class="col-md-3 ml-4">--}}
-{{--                    <div class="form-group">--}}
-{{--                        <meta name="csrf-token2" content="{{ csrf_token() }}">--}}
-{{--                        <label for="exampleInputEmail1">Khu Vực</label>--}}
-{{--                        <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">--}}
-{{--                            @foreach ($area as $area)--}}
-{{--                                <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>--}}
-{{--                            @endforeach--}}
-{{--                            <option value="all" selected>All</option>--}}
-{{--                        </select>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+                <div class="col-md-3 ml-4">
+                    <div class="form-group">
+                        <meta name="csrf-token2" content="{{ csrf_token() }}">
+                        <label for="exampleInputEmail1">Khu Vực</label>
+                        <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
+                            @foreach ($area as $area)
+                                <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>
+                            @endforeach
+                            <option value="all" selected>All</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="col-md-3 ml-4">
                     <div class="form-group">
                         <meta name="csrf-token2" content="{{ csrf_token() }}">
@@ -92,62 +92,36 @@
                     {{--                    <th style="width:10%">Chuyên Môn</th>--}}
                     <th style="width:10%">Ngày Sinh</th>
                     <th style="width:10%">Số Điện Thoại</th>
+                    <th style="width:10%">Người Dùng</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
-{{--                @if(count($user) > 0)--}}
-{{--                    @foreach($user as $key => $value)--}}
-{{--                        <tr>--}}
-{{--                            <td>{{$key+1}}</td>--}}
-{{--                            <td class="text-center">--}}
-{{--                                --}}{{--                                @if($role_use_number == 1)--}}
-{{--                                <div class="btn-group">--}}
-{{--                                    --}}{{--                                        <button type="button" class="btn btn-primary">Action</button>--}}
-{{--                                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">--}}
-{{--                                        <span class="sr-only">Toggle Dropdown</span>--}}
-{{--                                    </button>--}}
-{{--                                    <div class="dropdown-menu" role="menu">--}}
-{{--                                        <a href="{{route('view_update_user',['id'=>$value->id])}}" data-remote="false"--}}
-{{--                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">--}}
-{{--                                            <i class="fas fa-edit"> Sửa</i>--}}
-{{--                                        </a>--}}
-{{--                                        <a href="{{route('delete_information_user',['id'=>$value->id])}}"  class="btn dropdown-item">--}}
-{{--                                            <i class="fas fa-users"> Xóa</i>--}}
-{{--                                        </a>--}}
-{{--                                        --}}{{--                                        <a href="{{route('view_update_user_image',['id'=>$value->id])}}" data-remote="false"--}}
-{{--                                        --}}{{--                                           data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">--}}
-{{--                                        --}}{{--                                            <i class="fas fa-image"> Sửa Ảnh</i>--}}
-{{--                                        --}}{{--                                        </a>--}}
-{{--                                    </div>--}}
-
-{{--                                </div>--}}
-{{--                                --}}{{--                                @endif--}}
-{{--                            </td>--}}
-{{--                            --}}{{--                            <td><img id="img_prv" src="{{URL::to('/')}}{{$value->url_image}}" style="max-width: 50px;max-height: 50px; width: 50px;height: 50px"></td>--}}
-{{--                            <td><a href="{{route('view_update_user_detail',['id'=>$value->id])}}" data-remote="false"--}}
-{{--                                   data-toggle="modal" data-target="#modal-admin-action-update-detail" class=" dropdown-item">--}}
-{{--                                    <i class="fas fa-info-circle"></i>  {{$value->first_name}} {{$value->last_name}}--}}
-{{--                                </a></td>--}}
-{{--                            --}}{{--                            <td>{{str_replace('@','@ ',$value->email)}}</td>--}}
-{{--                            --}}{{--                            <td>{{str_replace('/','-',$value->phone)}}</td>--}}
-{{--                            <td>{{$value->dob}}</td>--}}
-{{--                            --}}{{--                            <td>{{$value->gender}}</td>--}}
-{{--                            --}}{{--                            <td>{{$value->line}}</td>--}}
-{{--                            <td>{{$value->store_name}}</td>--}}
-{{--                            <td>{{$value->area_name}}</td>--}}
-{{--                            <td>{{$value->position_name}}</td>--}}
-{{--                            --}}{{--                            <td>{{$value->dp_name}}</td>--}}
-{{--                            --}}{{--                            <td>{{$value->sv_name}}</td>--}}
-{{--                            <td>{{$value->ct_name}}</td>--}}
-{{--                            <td>{{$value->start_time}}</td>--}}
-{{--                            <td>{{$value->end_time}}</td>--}}
-{{--                        </tr>--}}
-{{--                    @endforeach--}}
-{{--                @else--}}
-{{--                    <td colspan="8" style="text-align: center">--}}
-{{--                        <h3>Empty Data</h3>--}}
-{{--                    </td>--}}
-{{--                @endif--}}
+                @if(count($list_user) > 0)
+                    @foreach($list_user as $key => $value)
+                        <tr>
+                            <td>{{$key+1}}</td>
+                            <td class="text-center">
+                                        <a href="{{route('search_view_update_user',['id'=>$value->id])}}" data-remote="false"
+                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                            <i class="fas fa-edit"> Sửa</i>
+                                        </a>
+                            </td>
+                            <td>{{$value->last_name}}</td>
+                            <td>{{$value->email}}</td>
+                            <td>{{$value->dob}}</td>
+                            <td>{{$value->phone}}</td>
+                            @if($value->position_name == 'ASM')
+                            <td>{{$value->position_name}}</td>
+                            @else
+                            <td>UserLV2</td>
+                            @endif
+                        </tr>
+                    @endforeach
+                @else
+                    <td colspan="8" style="text-align: center">
+                        <h3>Không có Thông Tin</h3>
+                    </td>
+                @endif
 
                 </tbody>
             </table>
@@ -157,14 +131,14 @@
 
     {{--    --}}{{-- modal --}}
     <div class="modal fade" id="modal-admin-action-update">
-        <div class="modal-dialog" style="max-width: 1000px">
+        <div class="modal-dialog" >
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Cập nhật thông tin</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form action="{{route('update_information_user')}}" method="post">
+                <form action="{{route('update_account_user_sts')}}" method="post">
                     <div class="modal-body">
                         @csrf
 
@@ -194,7 +168,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-horizontal" action="{{route('add_new_user')}}" method="post">
+                <form class="form-horizontal" action="{{route('add_new_acc_user')}}" method="post">
                     <div class="modal-body">
                         @csrf
                         <div class="row">
@@ -255,29 +229,14 @@
                                         </span>
                                         @enderror
                                     </div>
-
-
-                                    <div class="form-group">
-                                        <label for="name">Giới Tính</label>
-                                        <div class="form-check">
-                                            <input id="male" type="radio" class="form-check-input" name="txtGender" value="male"  autocomplete="number" required>
-                                            <label class="form-check-label " for="male">
-                                                Male
-                                            </label>
-                                            <input id="female" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>
-                                            <label class="form-check-label ml-5 " for="female">
-                                                Female
-                                            </label>
-                                        </div>
-                                    </div>
                                     <div class="form-group">
                                         <label for="name">Người Dùng</label>
                                         <div class="form-check">
-                                            <input id="user1" type="radio" class="form-check-input" name="txtASM" value="user1"  autocomplete="number" required>
+                                            <input id="user1" type="radio" class="form-check-input" name="txtAccUser" value="user1"  autocomplete="number" required>
                                             <label class="form-check-label " for="user1">
                                                 ASM
                                             </label>
-                                            <input id="user2" type="radio" class="form-check-input ml-4" name="txtUser2" value="user2"  autocomplete="number" required>
+                                            <input id="user2" type="radio" class="form-check-input ml-4" name="txtAccUser" value="user2"  autocomplete="number" required>
                                             <label class="form-check-label ml-5 " for="user2">
                                                 Người Dùng Cấp 2
                                             </label>
@@ -289,30 +248,6 @@
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
                         <button id="create_member" type="submit" class="btn btn-primary" >Lưu</button>
-                    </div>
-                </form>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    {{--     modal --}}
-    <div class="modal fade" id="modal-admin-action-update-image">
-        <div class="modal-dialog" style="max-width: 1000px">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Update Action</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <form action="{{route('update_information_user_image')}}" method="post">
-                    <div class="modal-body">
-                        @csrf
-
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                 </form>
             </div>

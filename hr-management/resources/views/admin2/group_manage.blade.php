@@ -29,18 +29,6 @@
         </div>
         <div class="card-body">
             <div class="row">
-                {{--                <div class="col-md-3 ml-4">--}}
-                {{--                    <div class="form-group">--}}
-                {{--                        <meta name="csrf-token2" content="{{ csrf_token() }}">--}}
-                {{--                        <label for="exampleInputEmail1">Khu Vực</label>--}}
-                {{--                        <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">--}}
-                {{--                            @foreach ($area as $area)--}}
-                {{--                                <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>--}}
-                {{--                            @endforeach--}}
-                {{--                            <option value="all" selected>All</option>--}}
-                {{--                        </select>--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
                 <div class="col-md-3 ml-4">
                     <div class="form-group">
                         <meta name="csrf-token2" content="{{ csrf_token() }}">
@@ -93,68 +81,25 @@
                 </thead>
                 <tbody id="table_body">
                 <tr>
-                    <td>1</td>
-                    <td ><a href="{{route('add_user_to_group')}}">Thêm Người</a></td>
-                    <td ><a href="{{route('add_asm_to_group')}}">Thêm Quản Lý</a></td>
-                    <td>N001</td>
-                    <td>Nhóm 1</td>
-                    <td>1</td>
-                    <td>3</td>
-                    <td>20</td>
                 </tr>
-                {{--                @if(count($user) > 0)--}}
-                {{--                    @foreach($user as $key => $value)--}}
-                {{--                        <tr>--}}
-                {{--                            <td>{{$key+1}}</td>--}}
-                {{--                            <td class="text-center">--}}
-                {{--                                --}}{{--                                @if($role_use_number == 1)--}}
-                {{--                                <div class="btn-group">--}}
-                {{--                                    --}}{{--                                        <button type="button" class="btn btn-primary">Action</button>--}}
-                {{--                                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">--}}
-                {{--                                        <span class="sr-only">Toggle Dropdown</span>--}}
-                {{--                                    </button>--}}
-                {{--                                    <div class="dropdown-menu" role="menu">--}}
-                {{--                                        <a href="{{route('view_update_user',['id'=>$value->id])}}" data-remote="false"--}}
-                {{--                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">--}}
-                {{--                                            <i class="fas fa-edit"> Sửa</i>--}}
-                {{--                                        </a>--}}
-                {{--                                        <a href="{{route('delete_information_user',['id'=>$value->id])}}"  class="btn dropdown-item">--}}
-                {{--                                            <i class="fas fa-users"> Xóa</i>--}}
-                {{--                                        </a>--}}
-                {{--                                        --}}{{--                                        <a href="{{route('view_update_user_image',['id'=>$value->id])}}" data-remote="false"--}}
-                {{--                                        --}}{{--                                           data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">--}}
-                {{--                                        --}}{{--                                            <i class="fas fa-image"> Sửa Ảnh</i>--}}
-                {{--                                        --}}{{--                                        </a>--}}
-                {{--                                    </div>--}}
-
-                {{--                                </div>--}}
-                {{--                                --}}{{--                                @endif--}}
-                {{--                            </td>--}}
-                {{--                            --}}{{--                            <td><img id="img_prv" src="{{URL::to('/')}}{{$value->url_image}}" style="max-width: 50px;max-height: 50px; width: 50px;height: 50px"></td>--}}
-                {{--                            <td><a href="{{route('view_update_user_detail',['id'=>$value->id])}}" data-remote="false"--}}
-                {{--                                   data-toggle="modal" data-target="#modal-admin-action-update-detail" class=" dropdown-item">--}}
-                {{--                                    <i class="fas fa-info-circle"></i>  {{$value->first_name}} {{$value->last_name}}--}}
-                {{--                                </a></td>--}}
-                {{--                            --}}{{--                            <td>{{str_replace('@','@ ',$value->email)}}</td>--}}
-                {{--                            --}}{{--                            <td>{{str_replace('/','-',$value->phone)}}</td>--}}
-                {{--                            <td>{{$value->dob}}</td>--}}
-                {{--                            --}}{{--                            <td>{{$value->gender}}</td>--}}
-                {{--                            --}}{{--                            <td>{{$value->line}}</td>--}}
-                {{--                            <td>{{$value->store_name}}</td>--}}
-                {{--                            <td>{{$value->area_name}}</td>--}}
-                {{--                            <td>{{$value->position_name}}</td>--}}
-                {{--                            --}}{{--                            <td>{{$value->dp_name}}</td>--}}
-                {{--                            --}}{{--                            <td>{{$value->sv_name}}</td>--}}
-                {{--                            <td>{{$value->ct_name}}</td>--}}
-                {{--                            <td>{{$value->start_time}}</td>--}}
-                {{--                            <td>{{$value->end_time}}</td>--}}
-                {{--                        </tr>--}}
-                {{--                    @endforeach--}}
-                {{--                @else--}}
-                {{--                    <td colspan="8" style="text-align: center">--}}
-                {{--                        <h3>Empty Data</h3>--}}
-                {{--                    </td>--}}
-                {{--                @endif--}}
+                                @if(count($group) > 0)
+                                    @foreach($group as $key => $value)
+                                        <tr>
+                                            <td>{{$key+1}}</td>
+                                            <td ><a href="{{route('add_user_to_group',['id'=>$value->id])}}">Thêm Người</a></td>
+                                            <td ><a href="{{route('add_asm_to_group',['id'=>$value->id])}}">Thêm Quản Lý</a></td>
+                                            <td>{{$value->name}}</td>
+                                            <td>{{$value->name}}</td>
+                                            <td>{{$value->description}}</td>
+                                            <td>{{$value->name_manager}}</td>
+                                            <td>{{$value->sum_user}}</td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <td colspan="8" style="text-align: center">
+                                        <h3>Empty Data</h3>
+                                    </td>
+                                @endif
 
                 </tbody>
             </table>
@@ -189,8 +134,6 @@
 
     {{--     modal --}}
 
-    {{--    --}}{{-- modal --}}
-
     {{--     modal --}}
     <div class="modal fade"  id="modal-create-member" >
         <div class="modal-dialog col-lg-8" >
@@ -201,7 +144,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-horizontal" action="#" method="post">
+                <form class="form-horizontal" action="{{route('create_group_for_user')}}" method="post">
                     <div class="modal-body">
                         @csrf
                         <div class="row">
@@ -218,18 +161,9 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Tên</label>
-                                    <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value=""  autocomplete="number" required>
-                                    @error('txtLName')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
                                     <label for="name">Chi Tiết</label>
-                                    <input id="email" type="text" class="form-control @error('txtEmail') is-invalid @enderror" name="txtEmail" value=""  autocomplete="number" required>
-                                    @error('txtEmail')
+                                    <input id="description" type="text" class="form-control @error('txtDescription') is-invalid @enderror" name="txtDescription" value=""  autocomplete="number" required>
+                                    @error('txtDescription')
                                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

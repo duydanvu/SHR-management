@@ -346,14 +346,14 @@ return [
                     'url'     => 'admin2/view',
                     'can'     => 'admin_lv2'
                 ],
+//                [
+//                    'text'    => 'Cập Nhật Thông Tin',
+//                    'icon'    => 'fas fa-clipboard-list',
+//                    'url'     => '/admin2/view_information',
+//                    'can'     => 'admin_lv2'
+//                ],
                 [
-                    'text'    => 'Cập Nhật Thông Tin',
-                    'icon'    => 'fas fa-clipboard-list',
-                    'url'     => '/admin2/view_information',
-                    'can'     => 'admin_lv2'
-                ],
-                [
-                    'text'    => 'Tạo Nhóm',
+                    'text'    => 'Quản lý Nhóm',
                     'icon'    => 'fas fa-clipboard-list',
                     'url'     => 'admin2/group',
                     'can'     => 'admin_lv2'
@@ -365,7 +365,7 @@ return [
                     'can'     => 'admin_lv2'
                 ],
                 [
-                    'text'    => 'Khóa Người Dùng',
+                    'text'    => 'Quản lý Người Dùng',
                     'icon'    => 'fas fa-clipboard-list',
                     'url'     => '/admin2/lock_acc_user',
                     'can'     => 'admin_lv2'

@@ -29,18 +29,18 @@
         </div>
         <div class="card-body">
             <div class="row">
-                {{--                <div class="col-md-3 ml-4">--}}
-                {{--                    <div class="form-group">--}}
-                {{--                        <meta name="csrf-token2" content="{{ csrf_token() }}">--}}
-                {{--                        <label for="exampleInputEmail1">Khu Vực</label>--}}
-                {{--                        <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">--}}
-                {{--                            @foreach ($area as $area)--}}
-                {{--                                <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>--}}
-                {{--                            @endforeach--}}
-                {{--                            <option value="all" selected>All</option>--}}
-                {{--                        </select>--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
+                                <div class="col-md-3 ml-4">
+                                    <div class="form-group">
+                                        <meta name="csrf-token2" content="{{ csrf_token() }}">
+                                        <label for="exampleInputEmail1">Khu Vực</label>
+                                        <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
+                                            @foreach ($area as $area)
+                                                <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>
+                                            @endforeach
+                                            <option value="all" selected>All</option>
+                                        </select>
+                                    </div>
+                                </div>
                 <div class="col-md-3 ml-4">
                     <div class="form-group">
                         <meta name="csrf-token2" content="{{ csrf_token() }}">
@@ -80,7 +80,7 @@
                 <tr>
                     <th style="width:5%">#</th>
                     <th style="width:5%" class="noSort">Action</th>
-                    {{--                    <th style="width:20%">Image</th>--}}
+                    <th style="width:10%">Hạn Mức Hiện Tại</th>
                     <th style="width:10%">Họ Tên</th>
                     {{--                    <th style="width:10%">Email</th>--}}
                     {{--                    <th style="width:10%">Phone</th>--}}
@@ -92,14 +92,23 @@
                 </tr>
                 </thead>
                 <tbody id="table_body">
-                    <tr>
-                        <td>1</td>
-                        <td><input type="button" value="Tạo Hạn Mức" data-toggle="modal" data-target="#modal-create-member"></td>
-                        <td>Duy Dan</td>
-                        <td>Danvd@gmailcom</td>
-                        <td>11/12/2000</td>
-                        <td>01635741661</td>
-                    </tr>
+                @if(count($user) > 0)
+                    @foreach($user as $key => $value)
+                        <tr>
+                            <td>{{$key+1}}</td>
+                            <td><input type="button" value="Tạo Hạn Mức" data-toggle="modal" data-target="#modal-create-member"></td>
+                            <td>{{$value->han_muc}}</td>
+                            <td>{{$value->last_name}}</td>
+                            <td>{{$value->email}}</td>
+                            <td>{{$value->dob}}</td>
+                            <td>{{$value->phone}}</td>
+                        </tr>
+                    @endforeach
+                @else
+                    <td colspan="8" style="text-align: center">
+                        <h3>Empty Data</h3>
+                    </td>
+                @endif
                 </tbody>
             </table>
         </div>

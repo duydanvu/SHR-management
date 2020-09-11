@@ -116,13 +116,22 @@
                                           </div>
                                           <!-- Message End -->
                                         </a>
-                                    <a href="#" class="dropdown-item" data-remote="false" data-toggle="modal" data-target="#modal-change-password">
+{{--                                    <a href="" class="dropdown-item" data-remote="false" data-toggle="modal" data-target="#modal-change-password">--}}
+{{--                                        <!-- Message Start -->--}}
+{{--                                        <div class="media">--}}
+{{--                                            <div class="media-body">--}}
+{{--                                                    <i class="fa fa-key"> Change Password</i>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                        <!-- Message End -->--}}
+{{--                                    </a>--}}
+                                    <a href="/admin2/view_information" class="dropdown-item" >
                                         <!-- Message Start -->
-                                        {{--<div class="media">--}}
-                                            {{--<div class="media-body">--}}
-                                                    {{--<i class="fa fa-key"> Change Password</i>--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
+                                        <div class="media">
+                                            <div class="media-body">
+                                                    <i class="fa fa-edit"> Thay Đổi Thông Tin</i>
+                                            </div>
+                                        </div>
                                         <!-- Message End -->
                                     </a>
                                 </div>

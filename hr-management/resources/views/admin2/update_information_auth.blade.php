@@ -26,7 +26,7 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-            <div class="col-lg-8 m-auto" >
+            <div class="col-lg-6 m-auto" >
                 <div class="= col-lg-12 ">
                     <form class="form-horizontal" action="#" method="post">
                         <div class="body">
