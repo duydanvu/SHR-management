@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Area;
 use App\Group;
+use App\Imports\UsersImport;
 use App\Position;
 use App\User;
 use Illuminate\Http\Request;
@@ -251,7 +252,13 @@ class Admin2Controller extends Controller
     }
 
     public function lockAccUser(){
-        return view('admin2.lock_unlock_account');
+        $user = User::join('positions','users.position_id','=','positions.position_id')
+            ->where('positions.position_name','<>','Admin')
+            ->where('activation_key','<>',null)
+            ->where('type','=',null)
+            ->get();
+        $area = Area::all();
+        return view('admin2.lock_unlock_account')->with(['user'=>$user,'area'=>$area]);
     }
 
     public function addASMToGroup($id){
@@ -301,5 +308,252 @@ class Admin2Controller extends Controller
             'alert-type' => 'success'
         );
         return Redirect::back()->with($notification);
+    }
+
+    public function view_han_muc_user($id){
+        $user = User::find($id);
+        return view('admin2.tao_han_muc')->with(['user'=>$user]);
+    }
+
+    public function update_han_muc(Request $request){
+        try {
+            $update_group = DB::table('users')->where('id', '=', $request->id_users1)
+                ->update([
+                    'han_muc' => $request->txtLimit,
+                ]);
+        }catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Lỗi ! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Cập nhật thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+
+    public function view_lock_account($id){
+        $user = User::find($id);
+        return view('admin2.lock_account')->with(['user'=>$user]);
+    }
+
+    public function action_lock_account(Request $request){
+        try {
+            $update_group = DB::table('users')->where('id', '=', $request->id_users1)
+                ->update([
+                    'activation_key' => null,
+                ]);
+        }catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Lỗi ! Vui lòng thử lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Khóa Thành Công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+
+    public function searchListAccAdminLv2(Request  $request){
+        $list_user = User::leftJoin('positions','positions.position_id','=','users.position_id')
+            ->join('stores','stores.store_id','=','users.store_id')
+            ->join('area','stores.area_id','=','area.id')
+            ->select('users.id','users.last_name','users.email','users.dob','users.phone','positions.position_name')
+//            ->where('users.last_name','like','%'.$request->name_user.'%')
+//            ->where('area.id','=',$request->area_search)
+            ->where('users.position_id','<>','1');
+//            ->get();
+        if($request->area_search == 'all'){
+           $area_list_user = $list_user;
+        }else{
+            $area_list_user = $list_user->where('area.id','=',$request->area_search);
+        }
+
+        if ($request->name_user == null){
+            $name_list_user = $area_list_user;
+        }else{
+            $name_list_user = $area_list_user->where('users.last_name','like','%'.$request->name_user.'%');
+        }
+
+        $result = null;
+        foreach ($name_list_user->get() as $key=>$value){
+            $result .= '<tr>';
+            $result .= '<td>'.($key+1).'</td>';
+            $result .= '<td class="text-center">
+                                        <a href="'.route('search_view_update_user',['id'=>$value->id]).'" data-remote="false"
+                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                            <i class="fas fa-edit"> Sửa</i>
+                                        </a>
+                            </td>';
+            $result .= '<td>'.($value->last_name).'</td>';
+            $result .= '<td>'.($value->email).'</td>';
+            $result .= '<td>'.($value->dob).'</td>';
+            $result .= '<td>'.($value->phone).'</td>';
+            if($value->position_name == 'ASM'){
+                $result .= '<td>'.($value->position_name).'</td>';
+            }else {
+                $result .= '<td>UserLV2</td>';
+            }
+            $result .= '</tr>';
+        }
+        return $result;
+
+    }
+
+    public function search_han_muc_thu_tien(Request $request){
+        $user = User::join('positions','users.position_id','=','positions.position_id')
+            ->join('stores','stores.store_id','=','users.store_id')
+            ->join('area','stores.area_id','=','area.id')
+            ->where('positions.position_name','<>','ASM')
+            ->where('positions.position_name','<>','Admin')
+            ->where('type','=',null);
+//            ->get();
+
+        if($request->area_search == 'all'){
+            $area_list_user = $user;
+        }else{
+            $area_list_user = $user->where('area.id','=',$request->area_search);
+        }
+
+        if ($request->name_user == null){
+            $name_list_user = $area_list_user;
+        }else{
+            $name_list_user = $area_list_user->where('users.last_name','like','%'.$request->name_user.'%');
+        }
+        $result = null;
+
+        foreach ($name_list_user->get() as $key=>$value){
+            $result .= '<tr>';
+            $result .= '<td>'.($key+1).'</td>';
+            $result .= '<td><a href="'.route('view_han_muc_tung_user',['id'=>$value->id]).'" data-remote="false"
+                                    data-toggle="modal" data-target="#modal-create-member" class="btn dropdown-item">Tạo Hạn Mức</a></td>';
+            $result .= '<td>'.($value->han_muc).'</td>';
+            $result .= '<td>'.($value->last_name).'</td>';
+            $result .= '<td>'.($value->email).'</td>';
+            $result .= '<td>'.($value->dob).'</td>';
+            $result .= '<td>'.($value->phone).'</td>';
+            $result .= '</tr>';
+        }
+        return $result;
+    }
+
+    public function search_account_active(Request $request){
+
+        $user = User::join('positions','users.position_id','=','positions.position_id')
+            ->join('stores','stores.store_id','=','users.store_id')
+            ->join('area','stores.area_id','=','area.id')
+            ->where('positions.position_name','<>','Admin')
+            ->where('activation_key','<>',null)
+            ->where('type','=',null);
+        if($request->area_search == 'all'){
+            $area_list_user = $user;
+        }else{
+            $area_list_user = $user->where('area.id','=',$request->area_search);
+        }
+
+        if ($request->name_user == null){
+            $name_list_user = $area_list_user;
+        }else{
+            $name_list_user = $area_list_user->where('users.last_name','like','%'.$request->name_user.'%');
+        }
+        $result = null;
+
+        foreach ($name_list_user->get() as $key=>$value){
+            $result .= '<tr>';
+            $result .= '<td>'.($key+1).'</td>';
+            $result .= '<td><a href="'.route('view_lock_account',['id'=>$value->id]).'" data-remote="false"
+                                   data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">Khóa Tài Khoản</a></td>';
+            $result .= '<td>'.($value->last_name).'</td>';
+            $result .= '<td>'.($value->email).'</td>';
+            $result .= '<td>'.($value->dob).'</td>';
+            $result .= '<td>'.($value->phone).'</td>';
+            $result .= '<td> Đang hoạt động </td>';
+            $result .= '</tr>';
+        }
+        return $result;
+    }
+
+    public function import_han_muc(Request $request){
+        $path1 = $request->file('file')->store('temp');
+        $path=storage_path('app').'/'.$path1;
+        $data = \Excel::toArray(new UsersImport,$path);
+        if(count($data[0]) > 0){
+            foreach ($data as $key =>$value){
+                foreach ($value as $key1 => $row) {
+                    if($key1 > 0) {
+
+                        $insert_data[] = array(
+                            'email' => $row[1],
+                            'han_muc' => $row[2]
+                        );
+                    }
+                }
+            }
+//            dd($insert_data);
+            if(!empty($insert_data))
+            {
+                foreach ($insert_data as $key=>$value){
+                    $id_user = DB::table('users')->where('email','=',$value->email)->get();
+                    foreach ($id_user as $value2){
+                        $update_user = DB::table('users')->where('id', '=', $value2->id)
+                            ->update([
+                                'han_muc' => $value->han_muc,
+                            ]);
+                    }
+                }
+
+                DB::table('users')->insert($insert_data);
+                $notification = array(
+                    'message' => 'Import success!',
+                    'alert-type' => 'success'
+                );
+
+            }
+        }
+        return back()->with($notification);
+    }
+    public function import_lock_acc(Request $request){
+        $path1 = $request->file('file')->store('temp');
+        $path=storage_path('app').'/'.$path1;
+        $data = \Excel::toArray(new UsersImport,$path);
+        if(count($data[0]) > 0){
+            foreach ($data as $key =>$value){
+                foreach ($value as $key1 => $row) {
+                    if($key1 > 0) {
+
+                        $insert_data[] = array(
+                            'email' => $row[1]
+                        );
+                    }
+                }
+            }
+//            dd($insert_data);
+            if(!empty($insert_data))
+            {
+                foreach ($insert_data as $key=>$value){
+                    $id_user = DB::table('users')->where('email','=',$value->email)->get();
+                    foreach ($id_user as $value2){
+                        $update_user = DB::table('users')->where('id', '=', $value2->id)
+                            ->update([
+                                'activation_key' => null,
+                            ]);
+                    }
+                }
+
+                DB::table('users')->insert($insert_data);
+                $notification = array(
+                    'message' => 'Import success!',
+                    'alert-type' => 'success'
+                );
+
+            }
+        }
+        return back()->with($notification);
     }
 }

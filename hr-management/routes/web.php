@@ -34,9 +34,23 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/admin2/group','Admin2Controller@group')->name('view_list_group_user');
     Route::post('/admin2/group/create','Admin2Controller@createGroup')->name('create_group_for_user');
     Route::get('/admin2/add_to_group/{id}','Admin2Controller@addUserToGroup')->name('add_user_to_group');
+    Route::get('/admin2/han_muc/{id}','Admin2Controller@view_han_muc_user')->name('view_han_muc_tung_user');
+    Route::post('/admin2/update_han_muc_cho_user','Admin2Controller@update_han_muc')->name('update_han_muc_cho_user');
+    Route::get('/admin2/view_lock_account/{id}','Admin2Controller@view_lock_account')->name('view_lock_account');
+    Route::post('/admin2/action_lock_account','Admin2Controller@action_lock_account')->name('action_lock_account');
     Route::post('/admin2/insert_to_group','Admin2Controller@insertUserToGroup')->name('add_user_group');
     Route::post('/admin2/insert_asm_to_group','Admin2Controller@insertASMforGroup')->name('add_asm_group');
     Route::get('/admin2/add_asm_to_group/{id}','Admin2Controller@addASMToGroup')->name('add_asm_to_group');
+
+    //import lock acc and han muc
+    Route::post('/admin2/import_lock_acc','Admin2Controller@import_lock_acc')->name('import_lock_acc');
+    Route::post('/admin2/import_han_muc','Admin2Controller@import_han_muc')->name('import_han_muc');
+
+
+    //ajax
+    Route::post('/admin2/search_list_acc_admin_lv2','Admin2Controller@searchListAccAdminLv2')->name('search_list_acc_with_area_name');
+    Route::post('/admin2/search_han_muc_thu_tien','Admin2Controller@search_han_muc_thu_tien')->name('search_han_muc_thu_tien');
+    Route::post('/admin2/search_account_active','Admin2Controller@search_account_active')->name('search_account_active');
 
 
     Route::get('/admin2/add_han_muc','Admin2Controller@viewHanMuc')->name('view_han_muc_user');

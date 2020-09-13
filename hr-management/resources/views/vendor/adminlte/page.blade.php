@@ -125,15 +125,17 @@
 {{--                                        </div>--}}
 {{--                                        <!-- Message End -->--}}
 {{--                                    </a>--}}
+                                    @if(\Illuminate\Support\Facades\Auth::user()->type == 'systems')
                                     <a href="/admin2/view_information" class="dropdown-item" >
                                         <!-- Message Start -->
                                         <div class="media">
                                             <div class="media-body">
-                                                    <i class="fa fa-edit"> Thay Đổi Thông Tin</i>
+                                                    <i class="fa fa-edit"> Thay Đổi Thông Tin </i>
                                             </div>
                                         </div>
                                         <!-- Message End -->
                                     </a>
+                                        @endif
                                 </div>
                             </li>
 

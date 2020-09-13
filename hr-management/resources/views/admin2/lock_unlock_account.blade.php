@@ -29,18 +29,18 @@
         </div>
         <div class="card-body">
             <div class="row">
-                {{--                <div class="col-md-3 ml-4">--}}
-                {{--                    <div class="form-group">--}}
-                {{--                        <meta name="csrf-token2" content="{{ csrf_token() }}">--}}
-                {{--                        <label for="exampleInputEmail1">Khu Vực</label>--}}
-                {{--                        <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">--}}
-                {{--                            @foreach ($area as $area)--}}
-                {{--                                <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>--}}
-                {{--                            @endforeach--}}
-                {{--                            <option value="all" selected>All</option>--}}
-                {{--                        </select>--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
+                                <div class="col-md-3 ml-4">
+                                    <div class="form-group">
+                                        <meta name="csrf-token2" content="{{ csrf_token() }}">
+                                        <label for="exampleInputEmail1">Khu Vực</label>
+                                        <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
+                                            @foreach ($area as $area)
+                                                <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>
+                                            @endforeach
+                                            <option value="all" selected>All</option>
+                                        </select>
+                                    </div>
+                                </div>
                 <div class="col-md-3 ml-4">
                     <div class="form-group">
                         <meta name="csrf-token2" content="{{ csrf_token() }}">
@@ -55,6 +55,9 @@
                 </div>
                 <div class="col-md-2 ml-4 mt-md-2">
                     <button type="submit" id="fillter_date" class="btn btn-primary mt-4" style="float: left"><i class="fas fa-search-minus">Tìm Kiếm</i></button>
+                </div>
+                <div class="col-md-2 ml-4 mt-md-2">
+                    <button id = "import_user" type="button" class="btn btn-info mt-4" data-toggle="modal" data-target="#modal-admin-import-user"><i class="fas fa-plus-circle"></i> Nhập Danh Sách</button>
                 </div>
             </div>
         </div>
@@ -89,32 +92,28 @@
                     {{--                    <th style="width:10%">Chuyên Môn</th>--}}
                     <th style="width:10%">Ngày Sinh</th>
                     <th style="width:10%">Số Điện Thoại</th>
+                    <th style="width:10%">Tình trạng hoạt động</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
-                    <tr>
-                        <td>1</td>
-                        <td><div class="btn-group">
-                                <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <div class="dropdown-menu" role="menu">
-                                    <a href="#" data-remote="false"
-                                       data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
-                                        <i class="fas fa-edit"> Sửa</i>
-                                    </a>
-                                    <a href="#" data-remote="false"
-                                       data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">
-                                        <i class="fas fa-image"> Khóa Tài Khoản</i>
-                                    </a>
-                                </div>
-
-                            </div></td>
-                        <td>Duy dan</td>
-                        <td>Danvd@gmail.com</td>
-                        <td>11/12/2000</td>
-                        <td>01635741661</td>
-                    </tr>
+                @if(count($user) > 0)
+                    @foreach($user as $key => $value)
+                        <tr>
+                            <td>{{$key+1}}</td>
+                            <td><a href="{{route('view_lock_account',['id'=>$value->id])}}" data-remote="false"
+                                   data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">Khóa Tài Khoản</a></td>
+                            <td>{{$value->last_name}}</td>
+                            <td>{{$value->email}}</td>
+                            <td>{{$value->dob}}</td>
+                            <td>{{$value->phone}}</td>
+                            <td>Đang hoạt động</td>
+                        </tr>
+                    @endforeach
+                @else
+                    <td colspan="8" style="text-align: center">
+                        <h3>Không có dữ liệua</h3>
+                    </td>
+                @endif
                 </tbody>
             </table>
         </div>
@@ -123,21 +122,21 @@
 
     {{--    --}}{{-- modal --}}
     <div class="modal fade" id="modal-admin-action-update">
-        <div class="modal-dialog" style="max-width: 1000px">
+        <div class="modal-dialog" >
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Cập nhật thông tin</h4>
+                    <h4 class="modal-title">Khóa tài khoản</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form action="{{route('update_information_user')}}" method="post">
+                <form action="{{route('action_lock_account')}}" method="post">
                     <div class="modal-body">
                         @csrf
 
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Lưu</button>
+                        <button type="submit" class="btn btn-primary">Khóa</button>
                     </div>
                 </form>
             </div>
@@ -146,94 +145,26 @@
         <!-- /.modal-dialog -->
     </div>
 
-    {{--     modal --}}
-
-    {{--    --}}{{-- modal --}}
-
-    {{--     modal --}}
-    <div class="modal fade"  id="modal-create-member" >
-        <div class="modal-dialog col-lg-8" >
+    {{---- modal -----}}
+    <div class="modal fade" id="modal-admin-import-user">
+        <div class="modal-dialog col-lg-8" style="max-width: 800px">
             <div class="modal-content col-lg-12 ">
                 <div class="modal-header">
-                    <h4 class="modal-title">Tạo Tài Khoản</h4>
+                    <h4 class="modal-title">Nhập Nhân Sự</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-horizontal" action="{{route('add_new_user')}}" method="post">
+                <form class="form-horizontal" action="{{route('import')}}" enctype="multipart/form-data" method="post">
                     <div class="modal-body">
                         @csrf
                         <div class="row">
-                            <div id = "url_image1"></div>
                             <div class="col-lg-12 col-sm-12">
-
-                                <div class="form-group">
-                                    <label for="name">Tên tài khoản</label>
-                                    <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
-                                    @error('txtName')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Mật Khẩu</label>
-                                    <input id="txtPassword" type="password" class="form-control @error('txtPassword') is-invalid @enderror" name="txtPassword" value=""  autocomplete="number" required>
-                                    @error('txtPassword')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Tên</label>
-                                    <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value=""  autocomplete="number" required>
-                                    @error('txtLName')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Email</label>
-                                    <input id="email" type="text" class="form-control @error('txtEmail') is-invalid @enderror" name="txtEmail" value=""  autocomplete="number" required>
-                                    @error('txtEmail')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Phone</label>
-                                    <input id="phone" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
-                                    @error('txtPhone')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Ngày Sinh</label>
-                                    <input id="bod" type="date" class="form-control @error('txtDob') is-invalid @enderror" name="txtDob" value=""  autocomplete="number" required>
-                                    @error('txtDob')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-
-
-                                <div class="form-group">
-                                    <label for="name">Giới Tính</label>
-                                    <div class="form-check">
-                                        <input id="male" type="radio" class="form-check-input" name="txtGender" value="male"  autocomplete="number" required>
-                                        <label class="form-check-label " for="male">
-                                            Male
-                                        </label>
-                                        <input id="female" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>
-                                        <label class="form-check-label ml-5 " for="female">
-                                            Female
-                                        </label>
+                                <div class="card-body col-lg-6 float-left">
+                                    <div class="form-group">
+                                        <div class="col-sm-10 p-0">
+                                            <input type="file" name="file" required="true">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -241,14 +172,14 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                        <button id="create_member" type="submit" class="btn btn-primary" >Lưu</button>
+                        <button id="import_member" type="submit" class="btn btn-primary" >Nhập</button>
                     </div>
                 </form>
             </div>
             <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
+
     {{--     modal --}}
     <div class="modal fade" id="modal-admin-action-update-image">
         <div class="modal-dialog" style="max-width: 1000px">
@@ -316,17 +247,10 @@
     <script>
         $(document).ready(function(){
             $('#fillter_date').click(function () {
-                let store_search = $('#store_search').val();
+                let area_search = $('#area_search').val();
                 let name_user = $('#name_user').val();
-                let position_search = $('#position_search').val();
-                let department_search = $('#position_search').val();
-                let service_search = $('#service_search').val();
-                let contract_search = $('#contract_search').val();
-                let start_date = $('#start_date').val();
-                let end_date = $('#end_date').val();
                 let _token = $('meta[name="csrf-token-2"]').attr('content');
-                var dt = {_token,store_search,name_user,position_search,department_search,
-                    service_search,contract_search,start_date,end_date};
+                var dt = {_token,area_search,name_user};
                 console.log(dt);
                 $.ajaxSetup({
                     headers: {
@@ -335,12 +259,11 @@
                 });
                 $.ajax({
                     type:'POST',
-                    url:'{{route('search_user_with_store')}}',
+                    url:'{{route('search_account_active')}}',
                     data:dt,
                     success:function(resultData){
                         // // $('.effort').val(resultData);
-                        $('#table_body').html(resultData['result']);
-                        $('#sum_result').html(resultData['sum']);
+                        $('#table_body').html(resultData);
                         // console.log(resultData);
                     }
                 });

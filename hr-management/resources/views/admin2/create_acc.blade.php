@@ -298,17 +298,10 @@
     <script>
         $(document).ready(function(){
             $('#fillter_date').click(function () {
-                let store_search = $('#store_search').val();
+                let area_search = $('#area_search').val();
                 let name_user = $('#name_user').val();
-                let position_search = $('#position_search').val();
-                let department_search = $('#position_search').val();
-                let service_search = $('#service_search').val();
-                let contract_search = $('#contract_search').val();
-                let start_date = $('#start_date').val();
-                let end_date = $('#end_date').val();
                 let _token = $('meta[name="csrf-token-2"]').attr('content');
-                var dt = {_token,store_search,name_user,position_search,department_search,
-                    service_search,contract_search,start_date,end_date};
+                var dt = {_token,area_search,name_user};
                 console.log(dt);
                 $.ajaxSetup({
                     headers: {
@@ -317,12 +310,12 @@
                 });
                 $.ajax({
                     type:'POST',
-                    url:'{{route('search_user_with_store')}}',
+                    url:'{{route('search_list_acc_with_area_name')}}',
                     data:dt,
                     success:function(resultData){
                         // // $('.effort').val(resultData);
-                        $('#table_body').html(resultData['result']);
-                        $('#sum_result').html(resultData['sum']);
+                        $('#table_body').html(resultData);
+                        // $('#sum_result').html(resultData['sum']);
                         // console.log(resultData);
                     }
                 });

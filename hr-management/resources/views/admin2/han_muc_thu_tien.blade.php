@@ -56,6 +56,9 @@
                 <div class="col-md-2 ml-4 mt-md-2">
                     <button type="submit" id="fillter_date" class="btn btn-primary mt-4" style="float: left"><i class="fas fa-search-minus">Tìm Kiếm</i></button>
                 </div>
+                <div class="col-md-2 ml-4 mt-md-2">
+                    <button id = "import_user" type="button" class="btn btn-info mt-4" data-toggle="modal" data-target="#modal-admin-import-user"><i class="fas fa-plus-circle"></i> Nhập Danh Sách</button>
+                </div>
             </div>
         </div>
     </div>
@@ -96,7 +99,8 @@
                     @foreach($user as $key => $value)
                         <tr>
                             <td>{{$key+1}}</td>
-                            <td><input type="button" value="Tạo Hạn Mức" data-toggle="modal" data-target="#modal-create-member"></td>
+                            <td><a href="{{route('view_han_muc_tung_user',['id'=>$value->id])}}" data-remote="false"
+                                    data-toggle="modal" data-target="#modal-create-member" class="btn dropdown-item">Tạo Hạn Mức</a></td>
                             <td>{{$value->han_muc}}</td>
                             <td>{{$value->last_name}}</td>
                             <td>{{$value->email}}</td>
@@ -106,13 +110,48 @@
                     @endforeach
                 @else
                     <td colspan="8" style="text-align: center">
-                        <h3>Empty Data</h3>
+                        <h3>Không có dữ liệu</h3>
                     </td>
                 @endif
                 </tbody>
             </table>
         </div>
         <!-- /.card-body -->
+    </div>
+
+    {{---- modal -----}}
+    <div class="modal fade" id="modal-admin-import-user">
+        <div class="modal-dialog col-lg-8" style="max-width: 800px">
+            <div class="modal-content col-lg-12 ">
+                <div class="modal-header">
+                    <h4 class="modal-title">Nhập Nhân Sự</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form class="form-horizontal" action="{{route('import')}}" enctype="multipart/form-data" method="post">
+                    <div class="modal-body">
+                        @csrf
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12">
+                                <div class="card-body col-lg-6 float-left">
+                                    <div class="form-group">
+                                        <div class="col-sm-10 p-0">
+                                            <input type="file" name="file" required="true">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        <button id="import_member" type="submit" class="btn btn-primary" >Nhập</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
     </div>
 
     {{--     modal --}}
@@ -125,42 +164,10 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-horizontal" action="#" method="post">
+                <form class="form-horizontal" action="{{route('update_han_muc_cho_user')}}" method="post">
                     <div class="modal-body">
                         @csrf
-                        <div class="row">
-                            <div id = "url_image1"></div>
-                            <div class="col-lg-12 col-sm-12">
 
-                                <div class="form-group">
-                                    <label for="name">Tên</label>
-                                    <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value=""  autocomplete="number" required>
-                                    @error('txtLName')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Email</label>
-                                    <input id="email" type="text" class="form-control @error('txtEmail') is-invalid @enderror" name="txtEmail" value=""  autocomplete="number" required>
-                                    @error('txtEmail')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Hạn Mức Thu Tiền</label>
-                                    <input id="phone" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
-                                    @error('txtPhone')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
@@ -185,7 +192,7 @@
 
     <script>
 
-        $("#modal-admin-action-update").on("show.bs.modal", function(e) {
+        $("#modal-create-member").on("show.bs.modal", function(e) {
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });
@@ -216,17 +223,10 @@
     <script>
         $(document).ready(function(){
             $('#fillter_date').click(function () {
-                let store_search = $('#store_search').val();
+                let area_search = $('#area_search').val();
                 let name_user = $('#name_user').val();
-                let position_search = $('#position_search').val();
-                let department_search = $('#position_search').val();
-                let service_search = $('#service_search').val();
-                let contract_search = $('#contract_search').val();
-                let start_date = $('#start_date').val();
-                let end_date = $('#end_date').val();
                 let _token = $('meta[name="csrf-token-2"]').attr('content');
-                var dt = {_token,store_search,name_user,position_search,department_search,
-                    service_search,contract_search,start_date,end_date};
+                var dt = {_token,area_search,name_user};
                 console.log(dt);
                 $.ajaxSetup({
                     headers: {
@@ -235,12 +235,11 @@
                 });
                 $.ajax({
                     type:'POST',
-                    url:'{{route('search_user_with_store')}}',
+                    url:'{{route('search_han_muc_thu_tien')}}',
                     data:dt,
                     success:function(resultData){
                         // // $('.effort').val(resultData);
-                        $('#table_body').html(resultData['result']);
-                        $('#sum_result').html(resultData['sum']);
+                        $('#table_body').html(resultData);
                         // console.log(resultData);
                     }
                 });
