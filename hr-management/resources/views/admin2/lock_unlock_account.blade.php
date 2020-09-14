@@ -101,7 +101,8 @@
                         <tr>
                             <td>{{$key+1}}</td>
                             <td><a href="{{route('view_lock_account',['id'=>$value->id])}}" data-remote="false"
-                                   data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">Khóa Tài Khoản</a></td>
+                                   data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                    <i class="fas fa-lock"> Khóa Tài Khoản</i></a></td>
                             <td>{{$value->last_name}}</td>
                             <td>{{$value->email}}</td>
                             <td>{{$value->dob}}</td>

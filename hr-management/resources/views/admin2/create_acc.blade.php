@@ -103,7 +103,7 @@
                             <td class="text-center">
                                         <a href="{{route('search_view_update_user',['id'=>$value->id])}}" data-remote="false"
                                            data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
-                                            <i class="fas fa-edit"> Sửa</i>
+                                                <i class="fas fa-edit"> Sửa</i>
                                         </a>
                             </td>
                             <td>{{$value->last_name}}</td>

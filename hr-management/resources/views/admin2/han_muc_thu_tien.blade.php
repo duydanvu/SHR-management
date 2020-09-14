@@ -100,7 +100,7 @@
                         <tr>
                             <td>{{$key+1}}</td>
                             <td><a href="{{route('view_han_muc_tung_user',['id'=>$value->id])}}" data-remote="false"
-                                    data-toggle="modal" data-target="#modal-create-member" class="btn dropdown-item">Tạo Hạn Mức</a></td>
+                                    data-toggle="modal" data-target="#modal-create-member" class="btn dropdown-item"> <i class="fas fa-money-bill"> Tạo Hạn Mức</i></a></td>
                             <td>{{$value->han_muc}}</td>
                             <td>{{$value->last_name}}</td>
                             <td>{{$value->email}}</td>

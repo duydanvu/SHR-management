@@ -83,71 +83,46 @@
                 <tr>
                     <th style="width:5%">#</th>
                     <th style="width:5%" class="noSort">Action</th>
-                    {{--                    <th style="width:20%">Image</th>--}}
                     <th style="width:10%">Họ Tên</th>
-                    {{--                    <th style="width:10%">Email</th>--}}
-                    {{--                    <th style="width:10%">Phone</th>--}}
                     <th style="width:10%">Email</th>
-                    {{--                    <th style="width:10%">Gender</th>--}}
-                    {{--                    <th style="width:10%">Chuyên Môn</th>--}}
                     <th style="width:10%">Ngày Sinh</th>
                     <th style="width:10%">Số Điện Thoại</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
-{{--                @if(count($user) > 0)--}}
-{{--                    @foreach($user as $key => $value)--}}
-{{--                        <tr>--}}
-{{--                            <td>{{$key+1}}</td>--}}
-{{--                            <td class="text-center">--}}
-{{--                                --}}{{--                                @if($role_use_number == 1)--}}
+                @if(count($user) > 0)
+                    @foreach($user as $key => $value)
+                        <tr>
+                            <td>{{$key+1}}</td>
+                            <td class="text-center">
+                                <a href="{{route('search_view_update_admin_lv2',['id'=>$value['id']])}}" data-remote="false"
+                                   data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                    <i class="fas fa-edit"> Sửa</i>
+                                </a>
 {{--                                <div class="btn-group">--}}
-{{--                                    --}}{{--                                        <button type="button" class="btn btn-primary">Action</button>--}}
 {{--                                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">--}}
 {{--                                        <span class="sr-only">Toggle Dropdown</span>--}}
 {{--                                    </button>--}}
 {{--                                    <div class="dropdown-menu" role="menu">--}}
-{{--                                        <a href="{{route('view_update_user',['id'=>$value->id])}}" data-remote="false"--}}
-{{--                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">--}}
-{{--                                            <i class="fas fa-edit"> Sửa</i>--}}
-{{--                                        </a>--}}
-{{--                                        <a href="{{route('delete_information_user',['id'=>$value->id])}}"  class="btn dropdown-item">--}}
+{{--                                        --}}
+{{--                                        <a href="{{route('delete_information_user',['id'=>$value['id']])}}"  class="btn dropdown-item">--}}
 {{--                                            <i class="fas fa-users"> Xóa</i>--}}
 {{--                                        </a>--}}
-{{--                                        --}}{{--                                        <a href="{{route('view_update_user_image',['id'=>$value->id])}}" data-remote="false"--}}
-{{--                                        --}}{{--                                           data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">--}}
-{{--                                        --}}{{--                                            <i class="fas fa-image"> Sửa Ảnh</i>--}}
-{{--                                        --}}{{--                                        </a>--}}
 {{--                                    </div>--}}
 
 {{--                                </div>--}}
-{{--                                --}}{{--                                @endif--}}
-{{--                            </td>--}}
-{{--                            --}}{{--                            <td><img id="img_prv" src="{{URL::to('/')}}{{$value->url_image}}" style="max-width: 50px;max-height: 50px; width: 50px;height: 50px"></td>--}}
-{{--                            <td><a href="{{route('view_update_user_detail',['id'=>$value->id])}}" data-remote="false"--}}
-{{--                                   data-toggle="modal" data-target="#modal-admin-action-update-detail" class=" dropdown-item">--}}
-{{--                                    <i class="fas fa-info-circle"></i>  {{$value->first_name}} {{$value->last_name}}--}}
-{{--                                </a></td>--}}
-{{--                            --}}{{--                            <td>{{str_replace('@','@ ',$value->email)}}</td>--}}
-{{--                            --}}{{--                            <td>{{str_replace('/','-',$value->phone)}}</td>--}}
-{{--                            <td>{{$value->dob}}</td>--}}
-{{--                            --}}{{--                            <td>{{$value->gender}}</td>--}}
-{{--                            --}}{{--                            <td>{{$value->line}}</td>--}}
-{{--                            <td>{{$value->store_name}}</td>--}}
-{{--                            <td>{{$value->area_name}}</td>--}}
-{{--                            <td>{{$value->position_name}}</td>--}}
-{{--                            --}}{{--                            <td>{{$value->dp_name}}</td>--}}
-{{--                            --}}{{--                            <td>{{$value->sv_name}}</td>--}}
-{{--                            <td>{{$value->ct_name}}</td>--}}
-{{--                            <td>{{$value->start_time}}</td>--}}
-{{--                            <td>{{$value->end_time}}</td>--}}
-{{--                        </tr>--}}
-{{--                    @endforeach--}}
-{{--                @else--}}
-{{--                    <td colspan="8" style="text-align: center">--}}
-{{--                        <h3>Empty Data</h3>--}}
-{{--                    </td>--}}
-{{--                @endif--}}
+                            </td>
+                            <td>{{$value['last_name']}}</td>
+                            <td>{{$value['email']}}</td>
+                            <td>{{$value['dob']}}</td>
+                            <td>{{$value['phone']}}</td>
+                        </tr>
+                    @endforeach
+                @else
+                    <td colspan="8" style="text-align: center">
+                        <h3>Không có dữ liệu</h3>
+                    </td>
+                @endif
 
                 </tbody>
             </table>
@@ -157,14 +132,14 @@
 
     {{--    --}}{{-- modal --}}
     <div class="modal fade" id="modal-admin-action-update">
-        <div class="modal-dialog" style="max-width: 1000px">
+        <div class="modal-dialog" >
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Cập nhật thông tin</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form action="{{route('update_information_user')}}" method="post">
+                <form action="{{route('update_account_admin_lv2')}}" method="post">
                     <div class="modal-body">
                         @csrf
 
@@ -194,11 +169,10 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-horizontal" action="{{route('add_new_user')}}" method="post">
+                <form class="form-horizontal" action="{{route('add_account_admin_lv2')}}" method="post">
                     <div class="modal-body">
                         @csrf
                         <div class="row">
-                            <div id = "url_image1"></div>
                             <div class="col-lg-12 col-sm-12">
 
                                     <div class="form-group">
@@ -255,8 +229,6 @@
                                         </span>
                                         @enderror
                                     </div>
-
-
                                     <div class="form-group">
                                         <label for="name">Giới Tính</label>
                                         <div class="form-check">
@@ -350,17 +322,9 @@
     <script>
         $(document).ready(function(){
             $('#fillter_date').click(function () {
-                let store_search = $('#store_search').val();
                 let name_user = $('#name_user').val();
-                let position_search = $('#position_search').val();
-                let department_search = $('#position_search').val();
-                let service_search = $('#service_search').val();
-                let contract_search = $('#contract_search').val();
-                let start_date = $('#start_date').val();
-                let end_date = $('#end_date').val();
                 let _token = $('meta[name="csrf-token-2"]').attr('content');
-                var dt = {_token,store_search,name_user,position_search,department_search,
-                    service_search,contract_search,start_date,end_date};
+                var dt = {_token,name_user};
                 console.log(dt);
                 $.ajaxSetup({
                     headers: {
@@ -369,12 +333,11 @@
                 });
                 $.ajax({
                     type:'POST',
-                    url:'{{route('search_user_with_store')}}',
+                    url:'{{route('search_ajax_admin_lv2')}}',
                     data:dt,
                     success:function(resultData){
                         // // $('.effort').val(resultData);
-                        $('#table_body').html(resultData['result']);
-                        $('#sum_result').html(resultData['sum']);
+                        $('#table_body').html(resultData);
                         // console.log(resultData);
                     }
                 });

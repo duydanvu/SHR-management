@@ -8,7 +8,9 @@ use App\Imports\UsersImport;
 use App\Position;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 
 class Admin2Controller extends Controller
@@ -132,12 +134,13 @@ class Admin2Controller extends Controller
 
     public function group(){
         $group = Group::select('groups.*',DB::raw("'0'as sum_user"),DB::raw(" null as name_manager"))->get();
-        $group_1 = Group::join('users as u1','u1.group_id','=','groups.id')
+        $group_1 = Group::leftJoin('users as u1','u1.group_id','=','groups.id')
                     ->join('users as u2','u2.id','=','groups.manager')
                     ->select('groups.id','groups.name','groups.description','groups.manager','u2.last_name',DB::raw('COUNT(u1.id) as sum_user'))
                     ->groupBy('groups.id','groups.name','groups.description','groups.manager','u2.last_name')
                     ->get();
-        $group_2 = Group::join('users as u1','u1.group_id','=','groups.id')
+//        dd($group_1);
+        $group_2 = Group::leftJoin('users as u1','u1.group_id','=','groups.id')
             ->select('groups.id','groups.name','groups.description','groups.manager',DB::raw('COUNT(u1.id) as sum_user'))
             ->groupBy('groups.id','groups.name','groups.description','groups.manager')
             ->get();
@@ -148,6 +151,7 @@ class Admin2Controller extends Controller
                 }
             }
         }
+//        dd($group);
         foreach ($group as $value){
             foreach ($group_2 as $value_1){
                 if ($value->id == $value_1->id){
@@ -291,7 +295,11 @@ class Admin2Controller extends Controller
             }
             $str_result = substr($str,1,strlen($str)-1);
             $arr_id_group_old = Group::find($id_group)->manager;
-            $str_result = $arr_id_group_old.','.$str_result;
+            if($arr_id_group_old == null){
+                $str_result = $str_result;
+            }else {
+                $str_result = $arr_id_group_old . ',' . $str_result;
+            }
             $update_group = DB::table('groups')->where('id', '=', $id_group)
                 ->update([
                     'manager' => $str_result,
@@ -432,7 +440,8 @@ class Admin2Controller extends Controller
             $result .= '<tr>';
             $result .= '<td>'.($key+1).'</td>';
             $result .= '<td><a href="'.route('view_han_muc_tung_user',['id'=>$value->id]).'" data-remote="false"
-                                    data-toggle="modal" data-target="#modal-create-member" class="btn dropdown-item">Tạo Hạn Mức</a></td>';
+                                    data-toggle="modal" data-target="#modal-create-member" class="btn dropdown-item">
+                                    <i class="fas fa-money-bill"> Tạo Hạn Mức</i></a></td>';
             $result .= '<td>'.($value->han_muc).'</td>';
             $result .= '<td>'.($value->last_name).'</td>';
             $result .= '<td>'.($value->email).'</td>';
@@ -468,7 +477,8 @@ class Admin2Controller extends Controller
             $result .= '<tr>';
             $result .= '<td>'.($key+1).'</td>';
             $result .= '<td><a href="'.route('view_lock_account',['id'=>$value->id]).'" data-remote="false"
-                                   data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">Khóa Tài Khoản</a></td>';
+                                   data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                   <i class="fas fa-lock"> Khóa Tài Khoản</i></a></td>';
             $result .= '<td>'.($value->last_name).'</td>';
             $result .= '<td>'.($value->email).'</td>';
             $result .= '<td>'.($value->dob).'</td>';
@@ -507,8 +517,6 @@ class Admin2Controller extends Controller
                             ]);
                     }
                 }
-
-                DB::table('users')->insert($insert_data);
                 $notification = array(
                     'message' => 'Import success!',
                     'alert-type' => 'success'
@@ -545,8 +553,6 @@ class Admin2Controller extends Controller
                             ]);
                     }
                 }
-
-                DB::table('users')->insert($insert_data);
                 $notification = array(
                     'message' => 'Import success!',
                     'alert-type' => 'success'
@@ -555,5 +561,128 @@ class Admin2Controller extends Controller
             }
         }
         return back()->with($notification);
+    }
+
+    public function update_password_for_user(Request $request){
+        if(strcmp($request->txtPassword_new,$request->txtPassword_new_reenter) == 0){
+            $login = Auth::user()->login;
+            $credentials = [
+                'login' => $login,
+                'password' => $request->txtPassword_old,
+            ];
+            if(Auth::attempt($credentials)){
+                $user_id = Auth::id();
+                $update_user = DB::table('users')->where('id', '=', $user_id)
+                    ->update([
+                        'password' => Hash::make($request->txtPassword_new),
+                    ]);
+                $notification = array(
+                    'message' => 'Cập Nhật Thành Công',
+                    'alert-type' => 'success'
+                );
+            }else{
+                $notification = array(
+                    'message' => 'Mật khẩu nhập không chính xác!',
+                    'alert-type' => 'error'
+                );
+            }
+
+        }else{
+            $notification = array(
+                'message' => 'Cần nhập lại đúng mật khẩu mới!',
+                'alert-type' => 'error'
+            );
+        }
+        return Redirect::back()->with($notification);
+    }
+
+    public function update_information_auth_user(Request $request){
+        $validator = \Validator::make($request->all(),[
+            'txtName' => 'required|max:50',
+            'txtLName'=> 'required|max:50',
+            'txtEmail' => 'required',
+            'txtPhone' => 'required',
+            'txtDob' => 'required',
+            'txtGender'=> 'required',
+        ]);
+        $notification= array(
+            'message' => ' Cập nhật lỗi! Hãy kiểm tra lại thông tin!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+            $id_auth = Auth::id();
+            $update_user = DB::table('users')->where('id','=',$id_auth)
+                ->update([
+                    'login'=>$request->txtName,
+                    'last_name'=>$request->txtLName,
+                    'email'=> $request->txtEmail,
+                    'phone'=> $request->txtPhone,
+                    'dob'=> $request->txtDob,
+                    'gender'=> $request->txtGender,
+                ]);
+        }catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Tên hoặc Thông tin không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Cập nhật thông tin thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+
+    public function search_ajax_group_with_infor(Request $request){
+        $group = Group::select('groups.*',DB::raw("'0'as sum_user"),DB::raw(" null as name_manager"))
+            ->where('groups.name','like','%'.$request->name_user.'%')
+            ->orwhere('groups.id_group','like','%'.$request->name_user.'%')
+            ->get();
+        $group_1 = Group::leftJoin('users as u1','u1.group_id','=','groups.id')
+            ->join('users as u2','u2.id','=','groups.manager')
+            ->select('groups.id','groups.name','groups.description','groups.manager','u2.last_name',DB::raw('COUNT(u1.id) as sum_user'))
+            ->groupBy('groups.id','groups.name','groups.description','groups.manager','u2.last_name')
+            ->get();
+//        dd($group_1);
+        $group_2 = Group::leftJoin('users as u1','u1.group_id','=','groups.id')
+            ->select('groups.id','groups.name','groups.description','groups.manager',DB::raw('COUNT(u1.id) as sum_user'))
+            ->groupBy('groups.id','groups.name','groups.description','groups.manager')
+            ->get();
+        foreach ($group as $value){
+            foreach ($group_1 as $value_1){
+                if ($value->id == $value_1->id){
+                    $value->name_manager = $value_1->last_name;
+                }
+            }
+        }
+//        dd($group);
+        foreach ($group as $value){
+            foreach ($group_2 as $value_1){
+                if ($value->id == $value_1->id){
+                    $value->sum_user = $value_1->sum_user;
+                }
+            }
+        }
+        $result = null;
+        foreach ($group as $key=>$value){
+            $result .= '<tr>';
+            $result .= '<td>'.($key+1).'</td>';
+            $result .= '<td ><a href="'.route('add_user_to_group',['id'=>$value->id]).'">Thêm Người</a></td>';
+            $result .= '<td ><a href="'.route('add_asm_to_group',['id'=>$value->id]).'">Thêm Quản Lý</a></td>';
+            $result .= '<td>'.($value->id_group).'</td>';
+            $result .= '<td>'.($value->name).'</td>';
+            $result .= '<td>'.($value->description).'</td>';
+            $result .= '<td>'.($value->name_manager).'</td>';
+            $result .= '<td>'.($value->sum_user).'</td>';
+            $result .= '</tr>';
+        }
+        return $result;
     }
 }

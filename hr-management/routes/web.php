@@ -24,6 +24,10 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
 
     //admin1
     Route::get('/admin1/view','Admin1Controller@index')->name('view_list_account_admin_lv2');
+    Route::get('/admin1/search_update/{id}','Admin1Controller@search_user_update')->name('search_view_update_admin_lv2');
+    Route::post('/admin1/update_account_user','Admin1Controller@update_account_user')->name('update_account_admin_lv2');
+    Route::post('/admin1/add_account_admin_lv2','Admin1Controller@add_account_user')->name('add_account_admin_lv2');
+    Route::post('/admin1/search_ajax_admin_lv2','Admin1Controller@search_ajax_admin_lv2')->name('search_ajax_admin_lv2');
 
     //admin2
     Route::get('/admin2/view','Admin2Controller@index')->name('view_list_account_user');
@@ -51,11 +55,14 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::post('/admin2/search_list_acc_admin_lv2','Admin2Controller@searchListAccAdminLv2')->name('search_list_acc_with_area_name');
     Route::post('/admin2/search_han_muc_thu_tien','Admin2Controller@search_han_muc_thu_tien')->name('search_han_muc_thu_tien');
     Route::post('/admin2/search_account_active','Admin2Controller@search_account_active')->name('search_account_active');
-
+    Route::post('/admin2/search_group_with_name_or_id_group','Admin2Controller@search_ajax_group_with_infor')->name('search_group_with_name_or_id_group');
 
     Route::get('/admin2/add_han_muc','Admin2Controller@viewHanMuc')->name('view_han_muc_user');
     Route::get('/admin2/lock_acc_user','Admin2Controller@lockAccUser')->name('view_list_lock_acc_user');
     Route::get('/admin2/view_information','Admin2Controller@view_information')->name('view_information_user_auth');
+
+    Route::post('/admin2/update_password_for_user','Admin2Controller@update_password_for_user')->name('update_password_for_user');
+    Route::post('/admin2/update_information_auth_user','Admin2Controller@update_information_auth_user')->name('update_information_auth_user');
 
     //user1
     Route::get('/user1/lock_acc_user','User1Controller@lockAccUser')->name('view_list_lock_acc_user2');

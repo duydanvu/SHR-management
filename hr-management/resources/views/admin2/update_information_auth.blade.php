@@ -28,7 +28,7 @@
         <div class="card-body">
             <div class="col-lg-6 m-auto" >
                 <div class="= col-lg-12 ">
-                    <form class="form-horizontal" action="#" method="post">
+                    <form class="form-horizontal" action="{{route('update_information_auth_user')}}" method="post">
                         <div class="body">
                             @csrf
                             <div class="row">
@@ -37,7 +37,7 @@
 
                                     <div class="form-group">
                                         <label for="name">Tên tài khoản</label>
-                                        <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
+                                        <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value="{{\Illuminate\Support\Facades\Auth::user()->login}}"  autocomplete="number" required>
                                         @error('txtName')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -46,7 +46,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Tên</label>
-                                        <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value=""  autocomplete="number" required>
+                                        <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value="{{\Illuminate\Support\Facades\Auth::user()->last_name}}"  autocomplete="number" required>
                                         @error('txtLName')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Email</label>
-                                        <input id="email" type="text" class="form-control @error('txtEmail') is-invalid @enderror" name="txtEmail" value=""  autocomplete="number" required>
+                                        <input id="email" type="text" class="form-control @error('txtEmail') is-invalid @enderror" name="txtEmail" value="{{\Illuminate\Support\Facades\Auth::user()->email}}"  autocomplete="number" required>
                                         @error('txtEmail')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -64,7 +64,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Phone</label>
-                                        <input id="phone" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
+                                        <input id="phone" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value="{{\Illuminate\Support\Facades\Auth::user()->phone}}"  autocomplete="number" required>
                                         @error('txtPhone')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -73,7 +73,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Ngày Sinh</label>
-                                        <input id="bod" type="date" class="form-control @error('txtDob') is-invalid @enderror" name="txtDob" value=""  autocomplete="number" required>
+                                        <input id="bod" type="date" class="form-control @error('txtDob') is-invalid @enderror" name="txtDob" value="{{\Illuminate\Support\Facades\Auth::user()->dob}}"  autocomplete="number" required>
                                         @error('txtDob')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -85,12 +85,14 @@
                                     <div class="form-group">
                                         <label for="name">Giới Tính</label>
                                         <div class="form-check">
-                                            <input id="male" type="radio" class="form-check-input" name="txtGender" value="male"  autocomplete="number" required>
-                                            <label class="form-check-label " for="male">
+                                            <input id="male" type="radio" class="form-check-input" name="txtGender" value="male"  autocomplete="number"
+                                                   @if(\Illuminate\Support\Facades\Auth::user()->gender == 'male') checked @endif required>
+                                            <label class="form-check-label" for="male" >
                                                 Male
                                             </label>
-                                            <input id="female" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>
-                                            <label class="form-check-label ml-5 " for="female">
+                                            <input id="female" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number"
+                                                   @if(\Illuminate\Support\Facades\Auth::user()->gender == 'female') checked @endif required>
+                                            <label class="form-check-label ml-5" for="female" >
                                                 Female
                                             </label>
                                         </div>
@@ -120,7 +122,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-horizontal" action="#" method="post">
+                <form class="form-horizontal" action="{{route('update_password_for_user')}}" method="post">
                     <div class="modal-body">
                         @csrf
                         <div class="row">
@@ -129,7 +131,7 @@
 
                                 <div class="form-group">
                                     <label for="name">Tên tài khoản</label>
-                                    <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
+                                    <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value="{{\Illuminate\Support\Facades\Auth::user()->last_name}}"  autocomplete="number" required readonly>
                                     @error('txtName')
                                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -138,8 +140,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Mật Khẩu Cũ</label>
-                                    <input id="txtPassword" type="password" class="form-control @error('txtPassword') is-invalid @enderror" name="txtPassword" value=""  autocomplete="number" required>
-                                    @error('txtPassword')
+                                    <input id="txtPassword_old" type="password" class="form-control @error('txtPassword_old') is-invalid @enderror" name="txtPassword_old" value=""  autocomplete="number" required>
+                                    @error('txtPassword_old')
                                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -147,8 +149,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Mật Khẩu Mới</label>
-                                    <input id="txtPassword" type="password" class="form-control @error('txtPassword') is-invalid @enderror" name="txtPassword" value=""  autocomplete="number" required>
-                                    @error('txtPassword')
+                                    <input id="txtPassword_new" type="password" class="form-control @error('txtPassword_new') is-invalid @enderror" name="txtPassword_new" value=""  autocomplete="number" required>
+                                    @error('txtPassword_new')
                                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -156,8 +158,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Nhập Lại Mật Khẩu</label>
-                                    <input id="txtPassword" type="password" class="form-control @error('txtPassword') is-invalid @enderror" name="txtPassword" value=""  autocomplete="number" required>
-                                    @error('txtPassword')
+                                    <input id="txtPassword_new_reenter" type="password" class="form-control @error('txtPassword_new_reenter') is-invalid @enderror" name="txtPassword_new_reenter" value=""  autocomplete="number" required>
+                                    @error('txtPassword_new_reenter')
                                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
