@@ -222,7 +222,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Ngày Sinh</label>
-                                        <input id="bod" type="date" class="form-control @error('txtDob') is-invalid @enderror" name="txtDob" value=""  autocomplete="number" required>
+                                        <input id="bod" type="date" class="form-control @error('txtDob') is-invalid @enderror" name="txtDob" value="1990-01-01"  autocomplete="number" required>
                                         @error('txtDob')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>

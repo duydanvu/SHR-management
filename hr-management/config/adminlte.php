@@ -370,12 +370,12 @@ return [
                     'url'     => '/admin2/lock_acc_user',
                     'can'     => 'admin_lv2'
                 ],
-                [
-                    'text'    => 'Truy cập Thông tin cá nhân',
-                    'icon'    => 'fas fa-clipboard-list',
-                    'url'     => '/user1/view_information',
-                    'can'     => 'user_lv1'
-                ],
+//                [
+//                    'text'    => 'Truy cập Thông tin cá nhân',
+//                    'icon'    => 'fas fa-clipboard-list',
+//                    'url'     => '/user1/view_information',
+//                    'can'     => 'user_lv1'
+//                ],
                 [
                     'text'    => 'Khóa Tài Khoản Người Dùng',
                     'icon'    => 'fas fa-clipboard-list',

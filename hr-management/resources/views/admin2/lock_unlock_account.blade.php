@@ -156,7 +156,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-horizontal" action="{{route('import')}}" enctype="multipart/form-data" method="post">
+                <form class="form-horizontal" action="{{route('import_lock_acc')}}" enctype="multipart/form-data" method="post">
                     <div class="modal-body">
                         @csrf
                         <div class="row">

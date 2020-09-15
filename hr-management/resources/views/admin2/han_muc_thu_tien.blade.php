@@ -78,7 +78,7 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-            <table id="example1" class="table table-bordered table-striped">
+            <table id="example1" class="table table-bordered table-striped" style="text-align: center">
                 <thead>
                 <tr>
                     <th style="width:5%">#</th>
@@ -101,7 +101,7 @@
                             <td>{{$key+1}}</td>
                             <td><a href="{{route('view_han_muc_tung_user',['id'=>$value->id])}}" data-remote="false"
                                     data-toggle="modal" data-target="#modal-create-member" class="btn dropdown-item"> <i class="fas fa-money-bill"> Tạo Hạn Mức</i></a></td>
-                            <td>{{$value->han_muc}}</td>
+                            <td>{{number_format($value->han_muc)}}</td>
                             <td>{{$value->last_name}}</td>
                             <td>{{$value->email}}</td>
                             <td>{{$value->dob}}</td>
@@ -129,7 +129,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-horizontal" action="{{route('import')}}" enctype="multipart/form-data" method="post">
+                <form class="form-horizontal" action="{{route('import_han_muc')}}" enctype="multipart/form-data" method="post">
                     <div class="modal-body">
                         @csrf
                         <div class="row">

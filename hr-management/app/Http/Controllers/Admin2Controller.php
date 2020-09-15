@@ -52,7 +52,7 @@ class Admin2Controller extends Controller
                 ->withInput();
         }
         try{
-            if($request['txtAccUser'] == 'ASM'){
+            if($request['txtAccUser'] == 'user1'){
                 $position = 7;
             }else{
                 $position = 3;
@@ -104,7 +104,7 @@ class Admin2Controller extends Controller
                 ->withInput();
         }
         try{
-            if($request->txtAccUser == 'ASM'){
+            if($request->txtAccUser == 'user1'){
                 $position = 7;
             }else{
                 $position = 3;
@@ -214,6 +214,13 @@ class Admin2Controller extends Controller
         return view('admin2.add_user_to_group')->with(['user'=>$user,'id_group'=>$id]);
     }
 
+    public function list_user_of_group($id){
+        $user = User::select('id','last_name','email','dob','phone')
+                ->where('group_id','=',$id)->get();
+        $group = Group::find($id);
+        return view('admin2.list_user_of_group')->with(['user'=>$user,'group'=>$group]);
+    }
+
     public function insertUserToGroup(Request $request){
         $arr = $request->toArray();
         $arr_id_group = explode('_',$request->id_group);
@@ -240,6 +247,36 @@ class Admin2Controller extends Controller
         }
         $notification = array(
             'message' => 'Thêm vào nhóm thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+    public function leave_user_from_group(Request $request){
+        $arr = $request->toArray();
+        $arr_id_group = explode('_',$request->id_group);
+        $id_group = $arr_id_group[0];
+        $arr_id = [];
+        foreach ($arr as $value){
+            if(is_numeric($value)){
+                array_push($arr_id,$value);
+            }
+        }
+        try {
+            foreach ($arr_id as $value) {
+                $update_user = DB::table('users')->where('id', '=', $value)
+                    ->update([
+                        'group_id' => null,
+                    ]);
+            }
+        }catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Lỗi ! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Rời nhóm thành công!',
             'alert-type' => 'success'
         );
         return Redirect::back()->with($notification);
@@ -509,12 +546,14 @@ class Admin2Controller extends Controller
             if(!empty($insert_data))
             {
                 foreach ($insert_data as $key=>$value){
-                    $id_user = DB::table('users')->where('email','=',$value->email)->get();
-                    foreach ($id_user as $value2){
-                        $update_user = DB::table('users')->where('id', '=', $value2->id)
-                            ->update([
-                                'han_muc' => $value->han_muc,
-                            ]);
+                    $id_user = DB::table('users')->where('email','=',$value['email'])->get();
+                    if($id_user) {
+                        foreach ($id_user as $value2) {
+                            $update_user = DB::table('users')->where('id', '=', $value2->id)
+                                ->update([
+                                    'han_muc' => $value['han_muc'],
+                                ]);
+                        }
                     }
                 }
                 $notification = array(
@@ -545,12 +584,14 @@ class Admin2Controller extends Controller
             if(!empty($insert_data))
             {
                 foreach ($insert_data as $key=>$value){
-                    $id_user = DB::table('users')->where('email','=',$value->email)->get();
-                    foreach ($id_user as $value2){
-                        $update_user = DB::table('users')->where('id', '=', $value2->id)
-                            ->update([
-                                'activation_key' => null,
-                            ]);
+                    $id_user = DB::table('users')->where('email','=',$value['email'])->get();
+                    if(count($id_user) > 0) {
+                        foreach ($id_user as $value2) {
+                            $update_user = DB::table('users')->where('id', '=', $value2->id)
+                                ->update([
+                                    'activation_key' => null,
+                                ]);
+                        }
                     }
                 }
                 $notification = array(

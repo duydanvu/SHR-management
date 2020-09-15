@@ -5,12 +5,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Tài Khoản Admin Cấp 2</h1>
+                <h1>Nhóm {{$group->name}} - {{$group->id_group}}</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item "><a href="/home1">Trang Chủ</a></li>
-                    <li class="breadcrumb-item "><a >Tạo Tài Khoản</a></li>
+                    <li class="breadcrumb-item "><a >Danh sách thành viên</a></li>
                 </ol>
             </div>
         </div>
@@ -18,55 +18,11 @@
 @stop
 
 @section('content')
-    <div class="card card-outline card-primary-dashboard">
-        <meta name="csrf-token-2" content="{{ csrf_token() }}">
-        <div class="card-header">
-            <h3 class="card-title">Tìm Kiếm</h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                    <i class="fas fa-minus"></i></button>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-3 ml-4">
-                    <div class="form-group">
-                        <meta name="csrf-token2" content="{{ csrf_token() }}">
-                        <label for="exampleInputEmail1">Khu Vực</label>
-                        <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
-                            @foreach ($area as $area)
-                                <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>
-                            @endforeach
-                            <option value="all" selected>All</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-3 ml-4">
-                    <div class="form-group">
-                        <meta name="csrf-token2" content="{{ csrf_token() }}">
-                        <label for="exampleInputEmail1">Tên Tài Khoản</label>
-                        <input id="name_user" type="text" class="form-control @error('txtNameUser') is-invalid @enderror" name="txtFName" value=""  autocomplete="number" required>
-                        @error('txtNameUser')
-                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-md-2 ml-4 mt-md-2">
-                    <button type="submit" id="fillter_date" class="btn btn-primary mt-4" style="float: left"><i class="fas fa-search-minus">Tìm Kiếm</i></button>
-                </div>
-                <div class="col-md-3 ml-4 mt-md-2 " style="float: left">
-                    <button id = "" type="button" class="btn btn-info mt-4" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Thêm Tài Khoản</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
+
     <div class="card">
         <div class="card-header">
             <div class="button-group-card-header">
-                <label class="ml-3">Danh Sách</label>
+                <label class="ml-3">Danh Sách </label>
                 {{--                @if($role_use_number == 1)--}}
                 {{--                @endif--}}
                 {{--<a href="{{route('export_to_file_csv')}}" class="btn btn-success btn-xs offset-lg-10" style="float: right;">export</a>--}}
@@ -78,11 +34,13 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-            <table id="example1" class="table table-bordered table-striped" style="text-align: center">
+            <form action="{{route('leave_user_from_group')}}" method="post">
+                @csrf
+                <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                     <th style="width:5%">#</th>
-                    <th style="width:5%" class="noSort">Action</th>
+                    <th style="width:5%">STT</th>
                     {{--                    <th style="width:20%">Image</th>--}}
                     <th style="width:10%">Họ Tên</th>
                     {{--                    <th style="width:10%">Email</th>--}}
@@ -92,53 +50,43 @@
                     {{--                    <th style="width:10%">Chuyên Môn</th>--}}
                     <th style="width:10%">Ngày Sinh</th>
                     <th style="width:10%">Số Điện Thoại</th>
-                    <th style="width:10%">Người Dùng</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
-                @if(count($list_user) > 0)
-                    @foreach($list_user as $key => $value)
-                        <tr>
-                            <td>{{$key+1}}</td>
-                            <td class="text-center">
-                                        <a href="{{route('search_view_update_user',['id'=>$value->id])}}" data-remote="false"
-                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
-                                                <i class="fas fa-edit"> Sửa</i>
-                                        </a>
-                            </td>
-                            <td>{{$value->last_name}}</td>
-                            <td>{{$value->email}}</td>
-                            <td>{{$value->dob}}</td>
-                            <td>{{$value->phone}}</td>
-                            @if($value->position_name == 'ASM')
-                            <td>{{$value->position_name}}</td>
-                            @else
-                            <td>UserLV2</td>
-                            @endif
-                        </tr>
-                    @endforeach
-                @else
-                    <td colspan="8" style="text-align: center">
-                        <h3>Không có Thông Tin</h3>
-                    </td>
-                @endif
-
+                    @if(count($user) > 0)
+                        @foreach($user as $key => $value)
+                            <tr>
+                                <td><input type="checkbox" name="leaveGroup{{$key}}" value="{{$value->id}}"></td>
+                                <td>{{$key+1}}</td>
+                                <td>{{$value->last_name}}</td>
+                                <td>{{$value->email}}</td>
+                                <td>{{$value->dob}}</td>
+                                <td>{{$value->phone}}</td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <td colspan="8" style="text-align: center">
+                            <h3>Không có thành viên</h3>
+                        </td>
+                    @endif
                 </tbody>
-            </table>
+                </table>
+                <button type="submit" id="addUser2" class="btn btn-primary mt-4" style="float: left"><i class="fas fa-plus-circle"> Rời Nhóm</i></button>
+            </form>
         </div>
         <!-- /.card-body -->
     </div>
 
     {{--    --}}{{-- modal --}}
     <div class="modal fade" id="modal-admin-action-update">
-        <div class="modal-dialog" >
+        <div class="modal-dialog" style="max-width: 1000px">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Cập nhật thông tin</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form action="{{route('update_account_user_sts')}}" method="post">
+                <form action="{{route('update_information_user')}}" method="post">
                     <div class="modal-body">
                         @csrf
 
@@ -168,86 +116,112 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-horizontal" action="{{route('add_new_acc_user')}}" method="post">
+                <form class="form-horizontal" action="{{route('add_new_user')}}" method="post">
                     <div class="modal-body">
                         @csrf
                         <div class="row">
                             <div id = "url_image1"></div>
                             <div class="col-lg-12 col-sm-12">
 
-                                    <div class="form-group">
-                                        <label for="name">Tên tài khoản</label>
-                                        <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
-                                        @error('txtName')
-                                        <span class="invalid-feedback" role="alert">
+                                <div class="form-group">
+                                    <label for="name">Tên tài khoản</label>
+                                    <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
+                                    @error('txtName')
+                                    <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Mật Khẩu</label>
-                                        <input id="txtPassword" type="password" class="form-control @error('txtPassword') is-invalid @enderror" name="txtPassword" value=""  autocomplete="number" required>
-                                        @error('txtPassword')
-                                        <span class="invalid-feedback" role="alert">
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Mật Khẩu</label>
+                                    <input id="txtPassword" type="password" class="form-control @error('txtPassword') is-invalid @enderror" name="txtPassword" value=""  autocomplete="number" required>
+                                    @error('txtPassword')
+                                    <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Tên</label>
-                                        <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value=""  autocomplete="number" required>
-                                        @error('txtLName')
-                                        <span class="invalid-feedback" role="alert">
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Tên</label>
+                                    <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value=""  autocomplete="number" required>
+                                    @error('txtLName')
+                                    <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Email</label>
-                                        <input id="email" type="text" class="form-control @error('txtEmail') is-invalid @enderror" name="txtEmail" value=""  autocomplete="number" required>
-                                        @error('txtEmail')
-                                        <span class="invalid-feedback" role="alert">
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Email</label>
+                                    <input id="email" type="text" class="form-control @error('txtEmail') is-invalid @enderror" name="txtEmail" value=""  autocomplete="number" required>
+                                    @error('txtEmail')
+                                    <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Phone</label>
-                                        <input id="phone" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
-                                        @error('txtPhone')
-                                        <span class="invalid-feedback" role="alert">
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Phone</label>
+                                    <input id="phone" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
+                                    @error('txtPhone')
+                                    <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Ngày Sinh</label>
-                                        <input id="bod" type="date" class="form-control @error('txtDob') is-invalid @enderror" name="txtDob" value="1990-01-01"  autocomplete="number" required>
-                                        @error('txtDob')
-                                        <span class="invalid-feedback" role="alert">
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Ngày Sinh</label>
+                                    <input id="bod" type="date" class="form-control @error('txtDob') is-invalid @enderror" name="txtDob" value=""  autocomplete="number" required>
+                                    @error('txtDob')
+                                    <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
-                                        @enderror
+                                    @enderror
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="name">Giới Tính</label>
+                                    <div class="form-check">
+                                        <input id="male" type="radio" class="form-check-input" name="txtGender" value="male"  autocomplete="number" required>
+                                        <label class="form-check-label " for="male">
+                                            Male
+                                        </label>
+                                        <input id="female" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>
+                                        <label class="form-check-label ml-5 " for="female">
+                                            Female
+                                        </label>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="name">Người Dùng</label>
-                                        <div class="form-check">
-                                            <input id="user1" type="radio" class="form-check-input" name="txtAccUser" value="user1"  autocomplete="number" required>
-                                            <label class="form-check-label " for="user1">
-                                                ASM
-                                            </label>
-                                            <input id="user2" type="radio" class="form-check-input ml-4" name="txtAccUser" value="user2"  autocomplete="number" required>
-                                            <label class="form-check-label ml-5 " for="user2">
-                                                Người Dùng Cấp 2
-                                            </label>
-                                        </div>
-                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
                         <button id="create_member" type="submit" class="btn btn-primary" >Lưu</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    {{--     modal --}}
+    <div class="modal fade" id="modal-admin-action-update-image">
+        <div class="modal-dialog" style="max-width: 1000px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Update Action</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form action="{{route('update_information_user_image')}}" method="post">
+                    <div class="modal-body">
+                        @csrf
+
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                 </form>
             </div>
@@ -298,10 +272,17 @@
     <script>
         $(document).ready(function(){
             $('#fillter_date').click(function () {
-                let area_search = $('#area_search').val();
+                let store_search = $('#store_search').val();
                 let name_user = $('#name_user').val();
+                let position_search = $('#position_search').val();
+                let department_search = $('#position_search').val();
+                let service_search = $('#service_search').val();
+                let contract_search = $('#contract_search').val();
+                let start_date = $('#start_date').val();
+                let end_date = $('#end_date').val();
                 let _token = $('meta[name="csrf-token-2"]').attr('content');
-                var dt = {_token,area_search,name_user};
+                var dt = {_token,store_search,name_user,position_search,department_search,
+                    service_search,contract_search,start_date,end_date};
                 console.log(dt);
                 $.ajaxSetup({
                     headers: {
@@ -310,12 +291,12 @@
                 });
                 $.ajax({
                     type:'POST',
-                    url:'{{route('search_list_acc_with_area_name')}}',
+                    url:'{{route('search_user_with_store')}}',
                     data:dt,
                     success:function(resultData){
                         // // $('.effort').val(resultData);
-                        $('#table_body').html(resultData);
-                        // $('#sum_result').html(resultData['sum']);
+                        $('#table_body').html(resultData['result']);
+                        $('#sum_result').html(resultData['sum']);
                         // console.log(resultData);
                     }
                 });
@@ -399,5 +380,6 @@
         });
     </script>
 @stop
+
 
 

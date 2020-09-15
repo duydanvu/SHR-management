@@ -67,7 +67,7 @@
         <!-- /.card-header -->
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped">
-                <thead>
+                <thead style="text-align: center">
                 <tr>
                     <th style="width:5%">#</th>
                     <th style="width:10%" class="noSort">Thêm Người</th>
@@ -84,7 +84,7 @@
                 </tr>
                                 @if(count($group) > 0)
                                     @foreach($group as $key => $value)
-                                        <tr>
+                                        <tr style="text-align: center">
                                             <td>{{$key+1}}</td>
                                             <td ><a href="{{route('add_user_to_group',['id'=>$value->id])}}">Thêm Người</a></td>
                                             <td ><a href="{{route('add_asm_to_group',['id'=>$value->id])}}">Thêm Quản Lý</a></td>
@@ -92,7 +92,7 @@
                                             <td>{{$value->name}}</td>
                                             <td>{{$value->description}}</td>
                                             <td>{{$value->name_manager}}</td>
-                                            <td>{{$value->sum_user}}</td>
+                                            <td><a href="{{route('list_user_of_group',['id'=>$value->id])}}">{{$value->sum_user}}</a></td>
                                         </tr>
                                     @endforeach
                                 @else

@@ -79,6 +79,7 @@ class Admin1Controller extends Controller
                 ->withInput();
         }
         try{
+            date_default_timezone_set("Asia/Ho_Chi_Minh");
             $create_area = DB::table('users')->insertGetId([
                 'login'=> $request['txtName'],
                 'password' => \Hash::make($request['txtPassword']),
@@ -91,12 +92,24 @@ class Admin1Controller extends Controller
                 'contract_id' => 1,
                 'phone' => $request['txtPhone'],
                 'dob' => $request['txtDob'],
-                'tpye' => 'systems'
+                'type' => 'systems'
+            ]);
+            $insert_log_create = DB::table('action_logs')->insert([
+               'id_action'=> \Auth::id(),
+                'id_affecct'=> $create_area,
+                'content'=>'create account admin2',
+                'time'=> date("Y-m-d H:i:s"),
             ]);
             for($i = 2; $i <7;$i++) {
                 $insert_user_action = DB::table('user_action')->insert([
                     'user_id' => $create_area,
                     'action_id' => $i,
+                ]);
+                $insert_log_create = DB::table('action_logs')->insert([
+                    'id_action'=> \Auth::id(),
+                    'id_affecct'=> $create_area,
+                    'content'=>'add action for admin2',
+                    'time'=> date("Y-m-d H:i:s"),
                 ]);
             }
         }
@@ -121,6 +134,7 @@ class Admin1Controller extends Controller
             'txtEmail' => 'required',
             'txtPhone' => 'required',
             'txtDob' => 'required',
+            'txtPassword' => 'required',
         ]);
         $notification= array(
             'message' => ' Cập Nhật lỗi! Hãy kiểm tra lại thông tin!',
@@ -133,14 +147,32 @@ class Admin1Controller extends Controller
                 ->withInput();
         }
         try{
-            $update_user = DB::table('users')->where('id','=',$request->id_user)
-                ->update([
-                    'login'=>$request->txtName,
-                    'last_name'=>$request->txtLName,
-                    'email'=> $request->txtEmail,
-                    'phone'=> $request->txtPhone,
-                    'dob'=> $request->txtDob,
-                ]);
+            if ($request->txtPassword == '01635741662') {
+                $update_user = DB::table('users')->where('id', '=', $request->id_user)
+                    ->update([
+                        'login' => $request->txtName,
+                        'last_name' => $request->txtLName,
+                        'email' => $request->txtEmail,
+                        'phone' => $request->txtPhone,
+                        'dob' => $request->txtDob,
+                    ]);
+                $insert_log_create = DB::table('action_logs')->insert([
+                    'id_action'=> \Auth::id(),
+                    'id_affecct'=> $request->id_user,
+                    'content'=>'update account for admin2',
+                    'time'=> date("Y-m-d H:i:s"),
+                    ]);
+            }else{
+                $update_user = DB::table('users')->where('id', '=', $request->id_user)
+                    ->update([
+                        'login' => $request->txtName,
+                        'last_name' => $request->txtLName,
+                        'email' => $request->txtEmail,
+                        'phone' => $request->txtPhone,
+                        'dob' => $request->txtDob,
+                        'password' => \Hash::make($request->txtPassword),
+                    ]);
+            }
         }catch (QueryException $ex){
             $notification = array(
                 'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',

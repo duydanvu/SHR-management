@@ -89,32 +89,29 @@
                     {{--                    <th style="width:10%">Chuyên Môn</th>--}}
                     <th style="width:10%">Ngày Sinh</th>
                     <th style="width:10%">Số Điện Thoại</th>
+                    <th style="width:10%">Trạng Thái</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
-                    <tr>
-                        <td>1</td>
-                        <td><div class="btn-group">
-                                <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <div class="dropdown-menu" role="menu">
-                                    <a href="#" data-remote="false"
-                                       data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
-                                        <i class="fas fa-edit"> Sửa</i>
-                                    </a>
-                                    <a href="#" data-remote="false"
-                                       data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">
-                                        <i class="fas fa-image"> Khóa Tài Khoản</i>
-                                    </a>
-                                </div>
-
-                            </div></td>
-                        <td>Duy dan</td>
-                        <td>Danvd@gmail.com</td>
-                        <td>11/12/2000</td>
-                        <td>01635741661</td>
-                    </tr>
+                @if(count($list_user) > 0)
+                    @foreach($list_user as $key => $value)
+                        <tr>
+                            <td>{{$key+1}}</td>
+                            <td><a href="{{route('view_lock_account',['id'=>$value->id])}}" data-remote="false"
+                                   data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                    <i class="fas fa-lock"> Khóa Tài Khoản</i></a></td>
+                            <td>{{$value->last_name}}</td>
+                            <td>{{$value->email}}</td>
+                            <td>{{$value->dob}}</td>
+                            <td>{{$value->phone}}</td>
+                            <td>Đang hoạt động</td>
+                        </tr>
+                    @endforeach
+                @else
+                    <td colspan="8" style="text-align: center">
+                        <h3>Không có dữ liệua</h3>
+                    </td>
+                @endif
                 </tbody>
             </table>
         </div>
@@ -123,14 +120,14 @@
 
     {{--    --}}{{-- modal --}}
     <div class="modal fade" id="modal-admin-action-update">
-        <div class="modal-dialog" style="max-width: 1000px">
+        <div class="modal-dialog" >
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Cập nhật thông tin</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form action="{{route('update_information_user')}}" method="post">
+                <form action="{{route('action_lock_account')}}" method="post">
                     <div class="modal-body">
                         @csrf
 
@@ -316,17 +313,9 @@
     <script>
         $(document).ready(function(){
             $('#fillter_date').click(function () {
-                let store_search = $('#store_search').val();
                 let name_user = $('#name_user').val();
-                let position_search = $('#position_search').val();
-                let department_search = $('#position_search').val();
-                let service_search = $('#service_search').val();
-                let contract_search = $('#contract_search').val();
-                let start_date = $('#start_date').val();
-                let end_date = $('#end_date').val();
                 let _token = $('meta[name="csrf-token-2"]').attr('content');
-                var dt = {_token,store_search,name_user,position_search,department_search,
-                    service_search,contract_search,start_date,end_date};
+                var dt = {_token,name_user};
                 console.log(dt);
                 $.ajaxSetup({
                     headers: {
@@ -335,12 +324,11 @@
                 });
                 $.ajax({
                     type:'POST',
-                    url:'{{route('search_user_with_store')}}',
+                    url:'{{route('search_user_with_user1')}}',
                     data:dt,
                     success:function(resultData){
                         // // $('.effort').val(resultData);
-                        $('#table_body').html(resultData['result']);
-                        $('#sum_result').html(resultData['sum']);
+                        $('#table_body').html(resultData);
                         // console.log(resultData);
                     }
                 });
@@ -371,57 +359,6 @@
                 })
             })
         })
-    </script>
-    <script>
-        $(document).ready(function(){
-
-            $('#select_file').on('change',function(event){
-                console.log("da vao day");
-                var reader = new FileReader();
-
-                var filedata = this.files[0];
-                var imgtype = filedata.type;
-
-                var match = ['image/jpeg','image/jpg','image/png']
-
-                if(!(imgtype == match[0])||(imgtype == match[1])||(imgtype == match[2])){
-                    $('#mgs_ta').html('<p style = "color:red">Chọn đúng kiểu cho ảnh ... chỉ có jpeg, jpg và png</p>');
-                }
-                else {
-                    $('#mgs_ta').empty();
-                    //preview image
-                    reader.onload = function (event) {
-                        $('#img_prv1').attr('src', event.target.result).css('width', '150').css('height', '200');
-                    }
-                    reader.readAsDataURL(this.files[0]);
-                    //end preview
-
-                    // upload file
-                    var postData = new FormData();
-                    postData.append('file',this.files[0]);
-
-                    var url = "{{url('file/upload_file')}}";
-
-                    $.ajax({
-                        headers:{'X-CSRF-Token':$('meta[name="csrf-token1"]').attr('content')},
-                        url:url,
-                        type:"post",
-                        async:true,
-                        contentType: false,
-                        data: postData,
-                        processData: false,
-                        success:function(dataresult)
-                        {
-                            console.log(dataresult);
-                            $("#url_image1").html(dataresult['url']);
-                        }
-                    })
-
-                }
-
-            });
-
-        });
     </script>
 @stop
 
