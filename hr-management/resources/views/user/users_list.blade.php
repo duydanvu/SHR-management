@@ -145,7 +145,7 @@
                 {{--                @if($role_use_number == 1)--}}
                 <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Thêm Nhân Sự </button>
                 <button id = "import_user" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-admin-import-user"><i class="fas fa-plus-circle"></i> Nhập Nhân Sự</button>
-                <button id = "import_user" type="button" class="btn btn-success" data-toggle="modal"
+                <button id = "export_user" type="button" class="btn btn-success" data-toggle="modal"
                         data-target="#modal-admin-export-user"><i class="fas fa-plus-circle"></i> Xuất File </button>
                 {{--                @endif--}}
                 {{--<a href="{{route('export_to_file_csv')}}" class="btn btn-success btn-xs offset-lg-10" style="float: right;">export</a>--}}
@@ -234,7 +234,6 @@
                         <h3>Empty Data</h3>
                     </td>
                 @endif
-
                 </tbody>
             </table>
             {{ $user->links() }}
@@ -266,8 +265,6 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-
-    {{--     modal --}}
 
     {{--    --}}{{-- modal --}}
     <div class="modal fade" id="modal-admin-action-update-detail">
@@ -744,35 +741,41 @@
                         @csrf
                         <div class="row">
                             <div class="col-lg-12 col-sm-12">
-                                <div class="col-6 float-left">
+                                <div class="col-6 float-left pl-1">
                                     <div class="form-group ">
                                         <label for="name">Khu Vực</label>
                                         <div class="col-sm-10 p-0">
-                                            <select id="area_export" name = "area_export" class="form-control select2"  value="{{ old('area_export') }}" autocomplete="area_export" style="width: 100%;">
-                                                @foreach ($area1 as $area)
-                                                    <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>
-                                                @endforeach
-                                            </select>
+                                            <input id="area_export" name = "area_export" autocomplete="area_export" style="width: 100%;" hidden>
+                                            <input id="area_export_text" name = "area_export_text" autocomplete="area_export" style="width: 100%;" readonly>
+{{--                                            <select id="area_export" name = "area_export" class="form-control select2"  value="{{ old('area_export') }}" autocomplete="area_export" style="width: 100%;">--}}
+{{--                                                @foreach ($area1 as $area)--}}
+{{--                                                    <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>--}}
+{{--                                                @endforeach--}}
+{{--                                            </select>--}}
                                         </div>
                                     </div>
                                     <div class="form-group ">
                                         <label for="name">Cửa hàng</label>
                                         <div class="col-sm-10 p-0">
-                                            <select id="store_export" name = "store_export" class="form-control select2"  value="{{ old('store') }}" autocomplete="store_export" style="width: 100%;">
-                                                @foreach ($store1 as $store1)
-                                                    <option value="{{$store1['store_id']}}">{{$store1['store_name']}}-{{$store1['store_address']}}</option>
-                                                @endforeach
-                                            </select>
+                                            <input id="store_export" name = "store_export" autocomplete="store_export" style="width: 100%;" hidden>
+                                            <input id="store_export_text" name = "store_export_text" autocomplete="area_export" style="width: 100%;" readonly>
+{{--                                            <select id="store_export" name = "store_export" class="form-control select2"  value="{{ old('store') }}" autocomplete="store_export" style="width: 100%;">--}}
+{{--                                                @foreach ($store1 as $store1)--}}
+{{--                                                    <option value="{{$store1['store_id']}}">{{$store1['store_name']}}-{{$store1['store_address']}}</option>--}}
+{{--                                                @endforeach--}}
+{{--                                            </select>--}}
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Chức Vụ</label>
                                         <div class="col-sm-10 p-0 ">
-                                            <select id="position_export" name = "position_export" class="form-control select2"  value="{{ old('position') }}" autocomplete="position_export" style="width: 100%;">
-                                                @foreach ($position1 as $position1)
-                                                    <option value="{{$position1['position_id']}}">{{$position1['position_name']}}-{{$position1['description']}}</option>
-                                                @endforeach
-                                            </select>
+                                            <input id="position_export" name = "position_export" autocomplete="area_export" style="width: 100%;" hidden>
+                                            <input id="position_export_text" name = "position_export_text" autocomplete="area_export" style="width: 100%;" readonly>
+{{--                                            <select id="position_export" name = "position_export" class="form-control select2"  value="{{ old('position') }}" autocomplete="position_export" style="width: 100%;">--}}
+{{--                                                @foreach ($position1 as $position1)--}}
+{{--                                                    <option value="{{$position1['position_id']}}">{{$position1['position_name']}}-{{$position1['description']}}</option>--}}
+{{--                                                @endforeach--}}
+{{--                                            </select>--}}
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -836,31 +839,37 @@
                                     <div class="form-group">
                                         <label for="name">Hợp Đồng</label>
                                         <div class="col-sm-10 p-0">
-                                            <select id="contract_export" name = "contract_export" class="form-control select2"  value="{{ old('contract') }}" autocomplete="contract_export" style="width: 100%;">
-                                                @foreach ($contract1 as $contract1)
-                                                    <option value="{{$contract1['contract_id']}}">{{$contract1['name']}}-{{$contract1['description']}}</option>
-                                                @endforeach
-                                            </select>
+                                            <input id="contract_export" name = "contract_export" autocomplete="area_export" style="width: 100%;" hidden>
+                                            <input id="contract_export_text" name = "contract_export_text" autocomplete="area_export" style="width: 100%;" readonly>
+{{--                                            <select id="contract_export" name = "contract_export" class="form-control select2"  value="{{ old('contract') }}" autocomplete="contract_export" style="width: 100%;">--}}
+{{--                                                @foreach ($contract1 as $contract1)--}}
+{{--                                                    <option value="{{$contract1['contract_id']}}">{{$contract1['name']}}-{{$contract1['description']}}</option>--}}
+{{--                                                @endforeach--}}
+{{--                                            </select>--}}
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Bộ Phận</label>
                                         <div class="col-sm-10 p-0">
-                                            <select id="department_export" name = "department_export" class="form-control select2"  value="{{ old('department') }}" autocomplete="department_export" style="width: 100%;">
-                                                @foreach ($department1 as $department1)
-                                                    <option value="{{$department1['id']}}">{{$department1['name']}}-{{$department1['description']}}</option>
-                                                @endforeach
-                                            </select>
+                                            <input id="department_export" name = "department_export" autocomplete="area_export" style="width: 100%;" hidden>
+                                            <input id="department_export_text" name = "department_export_text" autocomplete="area_export" style="width: 100%;" readonly>
+{{--                                            <select id="department_export" name = "department_export" class="form-control select2"  value="{{ old('department') }}" autocomplete="department_export" style="width: 100%;">--}}
+{{--                                                @foreach ($department1 as $department1)--}}
+{{--                                                    <option value="{{$department1['id']}}">{{$department1['name']}}-{{$department1['description']}}</option>--}}
+{{--                                                @endforeach--}}
+{{--                                            </select>--}}
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Dịch Vụ</label>
                                         <div class="col-sm-10 p-0">
-                                            <select id="service_export" name = "service_export" class="form-control select2"  value="{{ old('service') }}" autocomplete="service_export" style="width: 100%;">
-                                                @foreach ($service1 as $service1)
-                                                    <option value="{{$service1['id']}}">{{$service1['name']}}-{{$service1['description']}}</option>
-                                                @endforeach
-                                            </select>
+                                            <input id="service_export" name = "service_export" autocomplete="area_export" style="width: 100%;" hidden>
+                                            <input id="service_export_text" name = "service_export_text" autocomplete="area_export" style="width: 100%;" readonly>
+{{--                                            <select id="service_export" name = "service_export" class="form-control select2"  value="{{ old('service') }}" autocomplete="service_export" style="width: 100%;">--}}
+{{--                                                @foreach ($service1 as $service1)--}}
+{{--                                                    <option value="{{$service1['id']}}">{{$service1['name']}}-{{$service1['description']}}</option>--}}
+{{--                                                @endforeach--}}
+{{--                                            </select>--}}
                                         </div>
                                     </div>
                                     <div class="form-check">
@@ -929,7 +938,7 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                        <button id="import_member" type="submit" class="btn btn-primary" >Xuất</button>
+                        <button id="export_member" type="submit" class="btn btn-primary" >Xuất</button>
                     </div>
                 </form>
             </div>
@@ -978,8 +987,9 @@
     </script>
 
     <script>
-        $(document).ready(function(){
+        $(document).ready(function()    {
             $('#fillter_date').click(function () {
+                let area = $("#area_search").val();
                 let store_search = $('#store_search').val();
                 let name_user = $('#name_user').val();
                 let position_search = $('#position_search').val();
@@ -989,7 +999,7 @@
                 let start_date = $('#start_date').val();
                 let end_date = $('#end_date').val();
                 let _token = $('meta[name="csrf-token-2"]').attr('content');
-                var dt = {_token,store_search,name_user,position_search,department_search,
+                var dt = {_token,area,store_search,name_user,position_search,department_search,
                     service_search,contract_search,start_date,end_date};
                 console.log(dt);
                 $.ajaxSetup({
@@ -1014,6 +1024,46 @@
 
     <script>
         $(document).ready(function () {
+            $("#export_user").click(function () {
+                let area = $("#area_search").val();
+                var area_text = $("#area_search option:selected").html();
+                $("#area_export").val(area);
+                $("#area_export_text").val(area_text);
+
+                let store_search = $('#store_search').val();
+                let store_text = $('#store_search option:selected').html();
+                $("#store_export").val(store_search);
+                $("#store_export_text").val(store_text)
+
+                let position_search = $('#position_search').val();
+                let position_text = $('#position_search option:selected').html();
+                $("#position_export").val(position_search);
+                $("#position_export_text").val(position_text)
+
+                let department_search = $('#position_search').val();
+                let department_text = $('#position_search option:selected').html();
+                $("#department_export").val(department_search);
+                $("#department_export_text").val(department_text)
+
+                let service_search = $('#service_search').val();
+                let service_text = $('#service_search option:selected').html();
+                $("#service_export").val(service_search);
+                $("#service_export_text").val(service_text)
+
+                let contract_search = $('#contract_search').val();
+                let contract_text= $('#contract_search option:selected').html();
+                $("#contract_export").val(contract_search);
+                $("#contract_export_text").val(contract_text);
+
+                console.log(store_text);
+                // console.log(area,store_search,position_search,department_search,service_search,contract_search);
+
+            })
+        })
+    </script>
+
+    <script>
+        $(document).ready(function () {
             $("#area_search").change(function () {
                 var area = $("#area_search").val();
                 $.ajax({
@@ -1031,6 +1081,7 @@
                             // console.log(store);
                             $('#store_search').append('<option value="'+store.store_id+'">'+store.store_name+'-'+store.store_address+'</option>');
                         })
+                        $('#store_search').append('<option value="all"> All </option>');
                     }
                 })
             })

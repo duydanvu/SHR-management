@@ -261,7 +261,7 @@ class UserController extends Controller
 
     public function search_user_with_store(Request $request){
         $result = null;
-        if($request->store_search == null){
+        if($request->store_search == null || $request->store_search == 'all'){
             $user = User::join('stores','users.store_id','=','stores.store_id')
                 ->join('positions','users.position_id','=','positions.position_id')
                 ->join('contracts','users.contract_id','=','contracts.contract_id')
@@ -271,6 +271,7 @@ class UserController extends Controller
                 ->select('users.*','stores.store_name','positions.position_name',
                     'contracts.name as ct_name','departments.name as dp_name',
                     'services.name as sv_name','area.area_name')
+                ->where('area.id','=',$request->area)
                 ;
         }else{
             $user = User::join('stores','users.store_id','=','stores.store_id')
@@ -328,44 +329,50 @@ class UserController extends Controller
             }
         }
         $sum = count($user_time->get());
-        foreach ($user_time->get() as $key=>$value){
-            $result .= '<tr>';
-            $result .= '<td>'.($key+1).'</td>';
-            $result .= '<td class="text-center">
+        if($sum > 0 ) {
+            foreach ($user_time->get() as $key => $value) {
+                $result .= '<tr>';
+                $result .= '<td>' . ($key + 1) . '</td>';
+                $result .= '<td class="text-center">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <div class="dropdown-menu" role="menu">
-                                            <a href="'.route('view_update_user',['id'=>$value->id]).'" data-remote="false"
+                                            <a href="' . route('view_update_user', ['id' => $value->id]) . '" data-remote="false"
                                                data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
                                                 <i class="fas fa-edit"> Sửa</i>
                                             </a>
-                                            <a href="'.route('delete_information_user',['id'=>$value->id]).'"  class="btn dropdown-item">
+                                            <a href="' . route('delete_information_user', ['id' => $value->id]) . '"  class="btn dropdown-item">
                                                 <i class="fas fa-users"> Xóa</i>
                                             </a>
                                         </div>
 
                                     </div>
                             </td>';
-            $result .= '<td><a href="'.route('view_update_user_detail',['id'=>$value->id]).'" data-remote="false"
+                $result .= '<td><a href="' . route('view_update_user_detail', ['id' => $value->id]) . '" data-remote="false"
                                    data-toggle="modal" data-target="#modal-admin-action-update-detail" class=" dropdown-item">
-                                    <i class="fas fa-info-circle"></i>'.($value->first_name).' '. ($value->last_name).'
+                                    <i class="fas fa-info-circle"></i>' . ($value->first_name) . ' ' . ($value->last_name) . '
                                 </a></td>';
 //            $result .= '<td>'.(str_replace('@','@ ',$value->email)).'</td>';
 //            $result .= '<td>'.(str_replace("/","-",$value->phone)).'</td>';
-            $result .= '<td>'.($value->dob).'</td>';
+                $result .= '<td>' . ($value->dob) . '</td>';
 //            $result .= '<td>'.($value->gender).'</td>';
 //            $result .= '<td>'.($value->line).'</td>';
-            $result .= '<td>'.($value->store_name).'</td>';
-            $result .= '<td>'.($value->area_name).'</td>';
-            $result .= '<td>'.($value->position_name).'</td>';
+                $result .= '<td>' . ($value->store_name) . '</td>';
+                $result .= '<td>' . ($value->area_name) . '</td>';
+                $result .= '<td>' . ($value->position_name) . '</td>';
 //            $result .= '<td>'.($value->dp_name).'</td>';
 //            $result .= '<td>'.($value->sv_name).'</td>';
-            $result .= '<td>'.($value->ct_name).'</td>';
-            $result .= '<td>'.($value->start_time).'</td>';
-            $result .= '<td>'.($value->end_time).'</td>';
-            $result .= '</tr>';
+                $result .= '<td>' . ($value->ct_name) . '</td>';
+                $result .= '<td>' . ($value->start_time) . '</td>';
+                $result .= '<td>' . ($value->end_time) . '</td>';
+                $result .= '</tr>';
+            }
+        }else{
+            $result .= '<td colspan="8" style="text-align: center">
+                        <h3>Không có dữ liệu</h3>
+                    </td>';
         }
         return ['result'=>$result,'sum'=>$sum];
     }

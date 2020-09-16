@@ -137,30 +137,35 @@ class ReportController extends Controller
                 $user_time = $user_service;
             }
         }
-
-        foreach ($user_time->get() as $key => $value){
-            $result .= '<tr>';
-            $result .= '<td>'.($key+1).'</td>';
-            $result .= '<td>'.($value->store_name).'</td>';
-            $result .= '<td>'.($value->first_name).' '.($value->last_name).'</td>';
-            $result .= '<td style="width:10%">'.($value->email).'</td>';
-            $result .= '<td>'.(str_replace("/","-",$value->phone)).'</td>';
-            $result .= '<td>'.($value->dob).'</td>';
-            $result .= '<td>'.($value->line).'</td>';
-            $result .= '<td>'.($value->position_name).'</td>';
-            $result .= '<td>'.($value->dp_name).'</td>';
-            $result .= '<td>'.($value->sv_name).'</td>';
-            $result .= '<td>'.($value->ct_name).'</td>';
-            $result .= '<td>'.($value->contract_number).'</td>';
-            $result .= '<td>'.($value->start_time).'</td>';
-            $result .= '<td>'.($value->end_time).'</td>';
-            $result .= '<td class="text-center">
-                                <a href="'.route('view_user_detail_report',['id'=>$value->id]).'" data-remote="false"
+        if(count($user_time->get()) > 0) {
+            foreach ($user_time->get() as $key => $value) {
+                $result .= '<tr>';
+                $result .= '<td>' . ($key + 1) . '</td>';
+                $result .= '<td>' . ($value->store_name) . '</td>';
+                $result .= '<td>' . ($value->first_name) . ' ' . ($value->last_name) . '</td>';
+                $result .= '<td style="width:10%">' . ($value->email) . '</td>';
+                $result .= '<td>' . (str_replace("/", "-", $value->phone)) . '</td>';
+                $result .= '<td>' . ($value->dob) . '</td>';
+                $result .= '<td>' . ($value->line) . '</td>';
+                $result .= '<td>' . ($value->position_name) . '</td>';
+                $result .= '<td>' . ($value->dp_name) . '</td>';
+                $result .= '<td>' . ($value->sv_name) . '</td>';
+                $result .= '<td>' . ($value->ct_name) . '</td>';
+                $result .= '<td>' . ($value->contract_number) . '</td>';
+                $result .= '<td>' . ($value->start_time) . '</td>';
+                $result .= '<td>' . ($value->end_time) . '</td>';
+                $result .= '<td class="text-center">
+                                <a href="' . route('view_user_detail_report', ['id' => $value->id]) . '" data-remote="false"
                                    data-toggle="modal" data-target="#modal-admin-action-update-detail" class="btn dropdown-item">
                                     <i class="fas fa-info-circle">detail</i>
                                 </a>
                             </td>
                         </tr>';
+            }
+        }else{
+            $result .= '<td colspan="8" style="text-align: center">
+                        <h3>Empty Data</h3>
+                    </td>';
         }
         return $result;
     }

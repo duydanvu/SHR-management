@@ -19,7 +19,7 @@ class ExportController extends Controller implements FromCollection,WithHeadings
     //
     public function collection()
     {
-        $users = User::join('stores','users.store_id','=','stores.store_id')
+        $users1 = User::join('stores','users.store_id','=','stores.store_id')
             ->join('positions','users.position_id','=','positions.position_id')
             ->join('contracts','users.contract_id','=','contracts.contract_id')
             ->join('departments','users.department_id','=','departments.id')
@@ -27,12 +27,34 @@ class ExportController extends Controller implements FromCollection,WithHeadings
             ->select('stores.store_address','positions.description as ps_description'
                 ,'contracts.description as ct_description','departments.description as dp_description',
                 'services.description as sv_description')
-            ->where('users.store_id','=',$this->request->store_export)
-            ->where('users.position_id','=',$this->request->position_export)
-            ->where('users.contract_id','=',$this->request->contract_export)
-            ->where('users.department_id','=',$this->request->department_export)
-            ->where('users.service_id','=',$this->request->service_export)
             ;
+        if($this->request->store_export == 'all' || $this->request->store_export == null){
+            $users_store = $users1;
+        }else{
+            $users_store = $users1->where('users.store_id','=',$this->request->store_export);
+        }
+
+        if($this->request->position_export == 'all'){
+            $users_position = $users_store;
+        }else{
+            $users_position = $users_store->where('users.position_id','=',$this->request->position_export);
+        }
+        if($this->request->contract_export == 'all'){
+            $users_contract = $users_position;
+        }else{
+            $users_contract = $users_position->where('users.contract_id','=',$this->request->contract_export);
+        }
+        if($this->request->department_export == 'all'){
+            $users_department = $users_contract;
+        }else{
+            $users_department = $users_contract->where('users.department_id','=',$this->request->department_export);
+        }
+        if($this->request->service_export == 'all'){
+            $users_service = $users_department;
+        }else{
+            $users_service = $users_department->where('users.service_id','=',$this->request->service_export);
+        }
+        $users = $users_service;
         $arr = [];
         if ($this->request->name_ex != null){
             $users = $users->addSelect('users.first_name','users.last_name');
