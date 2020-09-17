@@ -57,7 +57,7 @@ class Admin2Controller extends Controller
             }else{
                 $position = 3;
             }
-            $create_area = DB::table('users')->insert([
+            $create_area = DB::table('users')->insertGetId([
                 'login'=> $request['txtName'],
                 'password' => \Hash::make($request['txtPassword']),
                 'last_name' => $request['txtLName'],
@@ -70,7 +70,23 @@ class Admin2Controller extends Controller
                 'phone' => $request['txtPhone'],
                 'dob' => $request['txtDob'],
                 'position_id' => $position,
+                'type'=>'systems'
             ]);
+            if($position = 7 ){
+                $insert = DB::table('user_action')->insert([
+                    'user_id'=>$create_area,
+                    'action_id'=> 3
+                ]);
+                $insert = DB::table('user_action')->insert([
+                    'user_id'=>$create_area,
+                    'action_id'=> 6
+                ]);
+            }elseif ($position = 3 ){
+                $insert = DB::table('user_action')->insert([
+                    'user_id'=>$create_area,
+                    'action_id'=> 6
+                ]);
+            }
         }catch (QueryException $ex){
             $notification = array(
                 'message' => 'Tên hoặc Thông tin không chính xác! Vui lòng nhập lại ',
@@ -726,4 +742,29 @@ class Admin2Controller extends Controller
         }
         return $result;
     }
+
+    public function index_supplier(){
+        return view('admin2.index_supplier');
+    }
+
+    public function index_transporter(){
+        return view('admin2.index_transporter');
+    }
+
+    public function index_products(){
+        return view('admin2.index_products');
+    }
+
+    public function index_products_decentralization(){
+        return view('admin2.index_products_decentralization');
+    }
+
+    public function chuyen_san_pham(){
+        return view('admin2.chuyen_san_pham');
+    }
+
+    public function tiep_nhan_san_pham(){
+        return view('admin2.tiep_nhan_san_pham');
+    }
+
 }

@@ -341,17 +341,82 @@ return [
                     'can'     => 'admin_lv1'
                 ],
                 [
+                    'text'    => 'Quản Lý Kho',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/admin1/warehouse',
+                    'can'     => 'admin_lv1'
+                ],
+                [
+                    'text'    => 'Quản Lý Kết Nối',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'can'     => 'admin_lv1',
+                    'submenu' => [
+                        [
+                            'text'    => 'Landing page bán hàng',
+                            'icon'    => 'fas fa-clipboard-list',
+                            'url'     => '/admin1/connect/landingpage',
+                            'can'     => 'admin_lv1'
+                        ],
+                        [
+                            'text'    => 'Đối tác',
+                            'icon'    => 'fas fa-clipboard-list',
+                            'url'     => '/admin1/connect/doitac',
+                            'can'     => 'admin_lv1'
+                        ],
+]
+                ],
+                [
                     'text'    => 'Tạo  người dùng ',
                     'icon'    => 'fas fa-clipboard-list',
                     'url'     => 'admin2/view',
                     'can'     => 'admin_lv2'
                 ],
-//                [
-//                    'text'    => 'Cập Nhật Thông Tin',
-//                    'icon'    => 'fas fa-clipboard-list',
-//                    'url'     => '/admin2/view_information',
-//                    'can'     => 'admin_lv2'
-//                ],
+                [
+                    'text'    => 'Quản lý nhà cung cấp',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/admin2/supplier',
+                    'can'     => 'admin_lv2'
+                ],
+                [
+                    'text'    => 'Đối tác vận chuyển',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/admin2/transporter',
+                    'can'     => 'admin_lv2'
+                ],
+                [
+                    'text'    => 'Quản lý Sản Phẩm',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'can'     => 'admin_lv2',
+                    'submenu' =>[
+                       [
+                           'text'    => 'Sản Phẩm',
+                           'url'     => '/admin2/product',
+                           'can'     => 'admin_lv2',
+                       ] ,
+                       [
+                           'text'    => 'Phân Quyền Sản Phẩm',
+                           'url'     => '/admin2/product_decentralization',
+                           'can'     => 'admin_lv2',
+                       ],
+                    ]
+                ],
+                [
+                    'text'    => 'Quản lý Kho',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'can'     => 'admin_lv2',
+                    'submenu' =>[
+                        [
+                            'text'    => 'Chuyển Sản Phẩm',
+                            'url'     => '/admin2/chuyen_san_pham',
+                            'can'     => 'admin_lv2',
+                        ] ,
+                        [
+                            'text'    => 'Tiếp Nhận Sản Phẩm',
+                            'url'     => '/admin2/tiep_nhan_san_pham',
+                            'can'     => 'admin_lv2',
+                        ],
+                    ]
+                ],
                 [
                     'text'    => 'Quản lý Nhóm',
                     'icon'    => 'fas fa-clipboard-list',
@@ -380,6 +445,12 @@ return [
                     'text'    => 'Khóa Tài Khoản Người Dùng',
                     'icon'    => 'fas fa-clipboard-list',
                     'url'     => '/user1/lock_acc_user',
+                    'can'     => 'user_lv1'
+                ],
+                [
+                    'text'    => 'Phân Quyền Sản Phẩm',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/user1/phan_quyen_san_pham',
                     'can'     => 'user_lv1'
                 ],
                 [

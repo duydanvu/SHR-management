@@ -29,6 +29,21 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::post('/admin1/add_account_admin_lv2','Admin1Controller@add_account_user')->name('add_account_admin_lv2');
     Route::post('/admin1/search_ajax_admin_lv2','Admin1Controller@search_ajax_admin_lv2')->name('search_ajax_admin_lv2');
 
+    //admin1/warehouse
+    Route::get('/admin1/warehouse','Admin1Controller@index_warehouse')->name('home_manager_warehouse');
+
+    //admin1/connect/landingpage
+    Route::get('/admin1/connect/landingpage','Admin1Controller@index_connect_landing_page')->name('connect_landing_page');
+
+    //admin1/connect/doitac
+    Route::get('/admin1/connect/doitac','Admin1Controller@index_connect_doi_tac')->name('connect_doi_tac');
+
+    //admin2/chuyen_san_pham
+    Route::get('/admin2/chuyen_san_pham','Admin2Controller@chuyen_san_pham')->name('chuyen_san_pham');
+
+    //admin2/tiep_nhan_san_pham
+    Route::get('/admin2/tiep_nhan_san_pham','Admin2Controller@tiep_nhan_san_pham')->name('tiep_nhan_san_pham');
+
     //admin2
     Route::get('/admin2/view','Admin2Controller@index')->name('view_list_account_user');
     Route::get('/admin2/search_update/{id}','Admin2Controller@search_user_update')->name('search_view_update_user');
@@ -47,6 +62,18 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::post('/admin2/insert_asm_to_group','Admin2Controller@insertASMforGroup')->name('add_asm_group');
     Route::post('/admin2/leave_user_from_group','Admin2Controller@leave_user_from_group')->name('leave_user_from_group');
     Route::get('/admin2/add_asm_to_group/{id}','Admin2Controller@addASMToGroup')->name('add_asm_to_group');
+
+    //admin2/supplier
+    Route::get('/admin2/supplier','Admin2Controller@index_supplier')->name('home_manager_supplier');
+
+    //admin2/transporter
+    Route::get('/admin2/transporter','Admin2Controller@index_transporter')->name('home_manager_transporter');
+
+    //admin2/product
+    Route::get('/admin2/product','Admin2Controller@index_products')->name('home_manager_product');
+
+    //admin2/product_decentralization
+    Route::get('/admin2/product_decentralization','Admin2Controller@index_products_decentralization')->name('home_product_decentralization');
 
     //import lock acc and han muc
     Route::post('/admin2/import_lock_acc','Admin2Controller@import_lock_acc')->name('import_lock_acc');
@@ -71,6 +98,9 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/user1/view_information','User1Controller@view_information')->name('view_information_user1_auth');
     Route::post('/user1/search_user_with_user1','User1Controller@search_user_with_user1')->name('search_user_with_user1');
 
+    //user1/phan_quyen_san_pham
+    Route::get('/user1/phan_quyen_san_pham','User1Controller@phanQuyenSanPham')->name('phan_quyen_san_pham');
+
     // route area
     Route::get('/admin/area','AreaController@listArea')->name('show_list_area');
     Route::post('/admin/area/addnew','AreaController@addNewArea')->name('add_new_area');
@@ -87,6 +117,7 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/admin/store/delete/{id}','StoresController@destroy')->name('delete_information_store');
     Route::get('/admin/store/view_store_area/{id}','StoresController@view_all_store_of_area')->name('view_store_of_area');
     Route::get('/admin/store/export','StoresController@export_stores')->name('export_report_stores');
+    Route::resource('ajaxstores','StoresController');
 
     //route contract
     Route::get('/admin/contract','ContractController@index')->name('show_list_contract');
@@ -118,6 +149,7 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
 
     //route user
     Route::get('/admin/user','UserController@index')->name('show_list_user');
+    Route::resource('ajaxuser','UserController');
     Route::post('/admin/user/addnew','UserController@store')->name('add_new_user');
     Route::get('/admin/user/view_update/{id}','UserController@viewUpdate')->name('view_update_user');
     Route::post('/admin/user/update','UserController@update')->name('update_information_user');

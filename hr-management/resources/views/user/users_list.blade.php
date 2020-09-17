@@ -157,7 +157,7 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-            <h5 style="float: left" >Tổng : </h5><h5 id="sum_result" style="float: left">{{$sum}}</h5>
+{{--            <h5 style="float: left" >Tổng : </h5><h5 id="sum_result" style="float: left">{{$sum}}</h5>--}}
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
@@ -180,63 +180,57 @@
                     <th style="width:10%">Ngày kết thúc</th>
                 </tr>
                 </thead>
-                <tbody id="table_body">
-                @if(count($user) > 0)
-                    @foreach($user as $key => $value)
-                        <tr>
-                            <td>{{$key+1}}</td>
-                            <td class="text-center">
-                                {{--                                @if($role_use_number == 1)--}}
-                                <div class="btn-group">
-                                    {{--                                        <button type="button" class="btn btn-primary">Action</button>--}}
-                                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <div class="dropdown-menu" role="menu">
-                                        <a href="{{route('view_update_user',['id'=>$value->id])}}" data-remote="false"
-                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
-                                            <i class="fas fa-edit"> Sửa</i>
-                                        </a>
-                                        <a href="{{route('delete_information_user',['id'=>$value->id])}}"  class="btn dropdown-item">
-                                            <i class="fas fa-users"> Xóa</i>
-                                        </a>
+{{--                <tbody id="table_body">--}}
+{{--                @if(count($user) > 0)--}}
+{{--                    @foreach($user as $key => $value)--}}
+{{--                        <tr>--}}
+{{--                            <td>{{$key+1}}</td>--}}
+{{--                            <td class="text-center">--}}
+{{--                                --}}{{--                                @if($role_use_number == 1)--}}
+{{--                                <div class="btn-group">--}}
+{{--                                    --}}{{--                                        <button type="button" class="btn btn-primary">Action</button>--}}
+{{--                                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">--}}
+{{--                                        <span class="sr-only">Toggle Dropdown</span>--}}
+{{--                                    </button>--}}
+{{--                                    <div class="dropdown-menu" role="menu">--}}
+{{--                                        <a href="{{route('view_update_user',['id'=>$value->id])}}" data-remote="false"--}}
+{{--                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">--}}
+{{--                                            <i class="fas fa-edit"> Sửa</i>--}}
+{{--                                        </a>--}}
+{{--                                        <a href="{{route('delete_information_user',['id'=>$value->id])}}"  class="btn dropdown-item">--}}
+{{--                                            <i class="fas fa-users"> Xóa</i>--}}
+{{--                                        </a>--}}
 {{--                                        <a href="{{route('view_update_user_image',['id'=>$value->id])}}" data-remote="false"--}}
 {{--                                           data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">--}}
 {{--                                            <i class="fas fa-image"> Sửa Ảnh</i>--}}
 {{--                                        </a>--}}
-                                    </div>
+{{--                                    </div>--}}
 
-                                </div>
-                                {{--                                @endif--}}
-                            </td>
-                            {{--                            <td><img id="img_prv" src="{{URL::to('/')}}{{$value->url_image}}" style="max-width: 50px;max-height: 50px; width: 50px;height: 50px"></td>--}}
-                            <td><a href="{{route('view_update_user_detail',['id'=>$value->id])}}" data-remote="false"
-                                   data-toggle="modal" data-target="#modal-admin-action-update-detail" class=" dropdown-item">
-                                    <i class="fas fa-info-circle"></i>  {{$value->first_name}} {{$value->last_name}}
-                                </a></td>
-                            {{--                            <td>{{str_replace('@','@ ',$value->email)}}</td>--}}
-                            {{--                            <td>{{str_replace('/','-',$value->phone)}}</td>--}}
-                            <td>{{$value->dob}}</td>
-                            {{--                            <td>{{$value->gender}}</td>--}}
-                            {{--                            <td>{{$value->line}}</td>--}}
-                            <td>{{$value->store_name}}</td>
-                            <td>{{$value->area_name}}</td>
-                            <td>{{$value->position_name}}</td>
-                            {{--                            <td>{{$value->dp_name}}</td>--}}
-                            {{--                            <td>{{$value->sv_name}}</td>--}}
-                            <td>{{$value->ct_name}}</td>
-                            <td>{{$value->start_time}}</td>
-                            <td>{{$value->end_time}}</td>
-                        </tr>
-                    @endforeach
-                @else
-                    <td colspan="8" style="text-align: center">
-                        <h3>Empty Data</h3>
-                    </td>
-                @endif
-                </tbody>
+{{--                                </div>--}}
+{{--                                --}}{{--                                @endif--}}
+{{--                            </td>--}}
+{{--                            --}}{{--                            <td><img id="img_prv" src="{{URL::to('/')}}{{$value->url_image}}" style="max-width: 50px;max-height: 50px; width: 50px;height: 50px"></td>--}}
+{{--                            <td><a href="{{route('view_update_user_detail',['id'=>$value->id])}}" data-remote="false"--}}
+{{--                                   data-toggle="modal" data-target="#modal-admin-action-update-detail" class=" dropdown-item">--}}
+{{--                                    <i class="fas fa-info-circle"></i>  {{$value->first_name}} {{$value->last_name}}--}}
+{{--                                </a></td>--}}
+{{--                            <td>{{$value->dob}}</td>--}}
+{{--                            <td>{{$value->store_name}}</td>--}}
+{{--                            <td>{{$value->area_name}}</td>--}}
+{{--                            <td>{{$value->position_name}}</td>--}}
+{{--                            <td>{{$value->ct_name}}</td>--}}
+{{--                            <td>{{$value->start_time}}</td>--}}
+{{--                            <td>{{$value->end_time}}</td>--}}
+{{--                        </tr>--}}
+{{--                    @endforeach--}}
+{{--                @else--}}
+{{--                    <td colspan="8" style="text-align: center">--}}
+{{--                        <h3>Empty Data</h3>--}}
+{{--                    </td>--}}
+{{--                @endif--}}
+{{--                </tbody>--}}
             </table>
-            {{ $user->links() }}
+{{--            {{ $user->links() }}--}}
         </div>
         <!-- /.card-body -->
     </div>
@@ -972,22 +966,56 @@
         });
 
         $(function () {
-            // $("#example1").DataTable({
-            //     aoColumnDefs: [
-            //         {
-            //             bSortable: false,
-            //             aTargets: ['noSort']
-            //         } // Disable sorting on columns marked as so
-            //     ]
-            // });
-            // fix table
-            $("#example1").parent().css({"overflow": "auto"});
-        });
+            $.ajaxSetup({
 
-    </script>
+                headers: {
 
-    <script>
-        $(document).ready(function()    {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token-2"]').attr('content')
+
+                }
+
+            });
+
+            fill_datatable();
+
+            function fill_datatable(area = '',store_search='all',name_user ='',
+                                    position_search='all',department_search='all',service_search='all',
+                                    contract_search='all',start_date='',end_date='') {
+                var table = $('#example1').DataTable({
+                    processing: true,
+
+                    serverSide: true,
+
+                    ajax: {
+                        url: "{{ route('ajaxuser.index') }}",
+                        data:{area:area,store_search:store_search,name_user :name_user,
+                            position_search : position_search,department_search:department_search,service_search : service_search,
+                            contract_search : contract_search,start_date :start_date,end_date : end_date}
+                    },
+                    columns: [
+
+                        {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                        {data: 'action', name: 'action', orderable: false, searchable: false},
+                        {data: 'last_name', name: 'last_name'},
+                        {data: 'dob', name: 'dob'},
+                        {data: 'store_name', name: 'store_name'},
+                        {data: 'area_name', name: 'area_name'},
+                        {data: 'position_name', name: 'position_name'},
+                        {data: 'ct_name', name: 'ct_name'},
+                        {data: 'start_time', name: 'start_time'},
+                        {data: 'end_time', name: 'end_time'},
+
+                    ],
+                    "oLanguage": {
+                        "sSearch": "Tìm Kiếm",
+                        "sLengthMenu": "Hiển Thị _MENU_ Bản Ghi",
+                    },
+                    "language": {
+                        "info": "Đang hiển thị _START_ tới _END_ trong _TOTAL_ kết quả",
+                    },
+                    "bDestroy": true
+                });
+            }
             $('#fillter_date').click(function () {
                 let area = $("#area_search").val();
                 let store_search = $('#store_search').val();
@@ -998,29 +1026,51 @@
                 let contract_search = $('#contract_search').val();
                 let start_date = $('#start_date').val();
                 let end_date = $('#end_date').val();
-                let _token = $('meta[name="csrf-token-2"]').attr('content');
-                var dt = {_token,area,store_search,name_user,position_search,department_search,
-                    service_search,contract_search,start_date,end_date};
-                console.log(dt);
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token-2"]').attr('content')
-                    }
-                });
-                $.ajax({
-                    type:'POST',
-                    url:'{{route('search_user_with_store')}}',
-                    data:dt,
-                    success:function(resultData){
-                        // // $('.effort').val(resultData);
-                        $('#table_body').html(resultData['result']);
-                        $('#sum_result').html(resultData['sum']);
-                        // console.log(resultData);
-                    }
-                });
+                if(area != ''){
+                    $('#example1').DataTable().destroy();
+                    fill_datatable(area,store_search,name_user,position_search,department_search,service_search,contract_search,start_date,end_date);
+                }
             });
+            $("#example1").parent().css({"overflow": "auto"});
         });
+
     </script>
+
+{{--    <script>--}}
+{{--        $(document).ready(function()    {--}}
+{{--            $('#fillter_date').click(function () {--}}
+{{--                let area = $("#area_search").val();--}}
+{{--                let store_search = $('#store_search').val();--}}
+{{--                let name_user = $('#name_user').val();--}}
+{{--                let position_search = $('#position_search').val();--}}
+{{--                let department_search = $('#position_search').val();--}}
+{{--                let service_search = $('#service_search').val();--}}
+{{--                let contract_search = $('#contract_search').val();--}}
+{{--                let start_date = $('#start_date').val();--}}
+{{--                let end_date = $('#end_date').val();--}}
+{{--                let _token = $('meta[name="csrf-token-2"]').attr('content');--}}
+{{--                var dt = {_token,area,store_search,name_user,position_search,department_search,--}}
+{{--                    service_search,contract_search,start_date,end_date};--}}
+{{--                console.log(dt);--}}
+{{--                $.ajaxSetup({--}}
+{{--                    headers: {--}}
+{{--                        'X-CSRF-TOKEN': $('meta[name="csrf-token-2"]').attr('content')--}}
+{{--                    }--}}
+{{--                });--}}
+{{--                $.ajax({--}}
+{{--                    type:'POST',--}}
+{{--                    url:'{{route('search_user_with_store')}}',--}}
+{{--                    data:dt,--}}
+{{--                    success:function(resultData){--}}
+{{--                        // // $('.effort').val(resultData);--}}
+{{--                        $('#table_body').html(resultData['result']);--}}
+{{--                        $('#sum_result').html(resultData['sum']);--}}
+{{--                        // console.log(resultData);--}}
+{{--                    }--}}
+{{--                });--}}
+{{--            });--}}
+{{--        });--}}
+{{--    </script>--}}
 
     <script>
         $(document).ready(function () {

@@ -208,4 +208,16 @@ class Admin1Controller extends Controller
         }
         return Redirect::back()->with($notification);
     }
+
+    public function index_warehouse(){
+        return view('admin1.index_warehouse');
+    }
+
+    public function index_connect_landing_page(){
+        return view('admin1.list_products');
+    }
+
+    public function index_connect_doi_tac(){
+        return view('admin1.list_products_connect_doi_tac');
+    }
 }

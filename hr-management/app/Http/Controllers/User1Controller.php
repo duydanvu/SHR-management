@@ -19,7 +19,11 @@ class User1Controller extends Controller
                 ->where('activation_key','<>',null)
                 ->union($user1);
         }
-        $list_user = $user->get();
+        try {
+            $list_user = $user->get();
+        }catch (\ErrorException $ex){
+            $list_user = [];
+        }
         return view('user1.lock_unlock_account')->with(['list_user'=>$list_user]);
     }
 
@@ -66,7 +70,7 @@ class User1Controller extends Controller
         }
         return $result;
     }
-//    public function view_information(){
-//        return view('user1.update_information_auth');
-//    }
+    public function phanQuyenSanPham(){
+        return view('user1.index_products_decentralization');
+    }
 }

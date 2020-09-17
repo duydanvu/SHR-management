@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class StoresController extends Controller
 {
@@ -17,15 +18,47 @@ class StoresController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $stores = Store::join('area','area.id','=','stores.area_id')
-                ->leftJoin('users','stores.store_id','=','users.store_id')
-                ->select('stores.store_id','stores.store_address','area.id','stores.store_name','area.area_name',DB::raw('COUNT(users.store_id) AS sum'))
-            ->groupBy('stores.store_id','stores.store_address','stores.store_name','area.id','area.area_name')
-            ->get();
+        if($request->ajax()){
+            if($request->area == 'all' || $request->area == ''){
+                $stores = Store::join('area','area.id','=','stores.area_id')
+                    ->leftJoin('users','stores.store_id','=','users.store_id')
+                    ->select('stores.store_id','stores.store_address','area.id','stores.store_name','area.area_name',DB::raw('COUNT(users.store_id) AS sum'))
+                    ->groupBy('stores.store_id','stores.store_address','stores.store_name','area.id','area.area_name')
+                    ->get();
+            } else{
+                $stores = Store::join('area','area.id','=','stores.area_id')
+                    ->leftJoin('users','stores.store_id','=','users.store_id')
+                    ->select('stores.store_id','stores.store_address','area.id','stores.store_name','area.area_name',DB::raw('COUNT(users.store_id) AS sum'))
+                    ->where('area.id','=',$request->area)
+                    ->groupBy('stores.store_id','stores.store_address','stores.store_name','area.id','area.area_name')
+                    ->get();
+            }
+            return DataTables::of($stores)->addIndexColumn()
+                    ->addColumn('action',function ($row){
+                        $result = '<div class="btn-group">
+                                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a href="'.route('view_update_store',['id'=>$row->store_id]).'" data-remote="false"
+                                               data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                                <i class="fas fa-edit"> Sửa </i>
+                                            </a>
+                                            <a href="'.route('delete_information_store',['id'=>$row->store_id]).'"  class="btn dropdown-item">
+                                                <i class="fas fa-users"> Xóa </i>
+                                            </a>
+                                        </div>
+
+                                    </div>';
+                        return $result;
+                    })->rawColumns(['action'])->make(true);
+        }
+
         $area = Area::all();
-        return view('store.stores_list')->with(['stores'=>$stores,'area'=>$area]);
+        $area1 = Area::all();
+        return view('store.stores_list',compact('area','area1'));
     }
 
     public function view_all_store_of_area($id){
