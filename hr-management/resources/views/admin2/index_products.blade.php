@@ -92,48 +92,56 @@
                 </tr>
                 </thead>
                 <tbody id="table_body">
-                    <tr>
-                        <td>1</td>
-                        <td>action</td>
-                        <td><a type="button" class="btn btn-info mt-4" data-toggle="modal" data-target="#modal-nhap-san-pham">Nhập</a></td>
-                        <td><a type="button" class="btn btn-info mt-4" data-toggle="modal" data-target="#modal-tra-san-pham">Trả</a></td>
-                        <td>Sản Phẩm 1</td>
-                        <td>PDS001</td>
-                        <td>Dịch Vụ</td>
-                        <td>1000000</td>
-                        <td>1300000</td>
-                        <td>ti le</td>
-                        <td>15%</td>
-                        <td>SP001</td>
-                        <td>Mua bán</td>
-                        <td>023</td>
-                    </tr>
-{{--                @if(count($list_user) > 0)--}}
-{{--                    @foreach($list_user as $key => $value)--}}
-{{--                        <tr>--}}
-{{--                            <td>{{$key+1}}</td>--}}
-{{--                            <td class="text-center">--}}
-{{--                                        <a href="{{route('search_view_update_user',['id'=>$value->id])}}" data-remote="false"--}}
-{{--                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">--}}
-{{--                                                <i class="fas fa-edit"> Sửa</i>--}}
-{{--                                        </a>--}}
-{{--                            </td>--}}
-{{--                            <td>{{$value->last_name}}</td>--}}
-{{--                            <td>{{$value->email}}</td>--}}
-{{--                            <td>{{$value->dob}}</td>--}}
-{{--                            <td>{{$value->phone}}</td>--}}
-{{--                            @if($value->position_name == 'ASM')--}}
-{{--                            <td>{{$value->position_name}}</td>--}}
-{{--                            @else--}}
-{{--                            <td>UserLV2</td>--}}
-{{--                            @endif--}}
-{{--                        </tr>--}}
-{{--                    @endforeach--}}
-{{--                @else--}}
-{{--                    <td colspan="8" style="text-align: center">--}}
-{{--                        <h3>Không có Thông Tin</h3>--}}
-{{--                    </td>--}}
-{{--                @endif--}}
+                @if(count($product) > 0)
+                    @foreach($product as $key => $value)
+                        <tr>
+                            <td>{{$key+1}}</td>
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a href="{{route('search_product',['id'=>$value->id])}}" data-remote="false"
+                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                            <i class="fas fa-edit"> Sửa</i>
+                                        </a>
+                                        <a href="{{route('delete_information_user',['id'=>$value->id])}}"  class="btn dropdown-item">
+                                            <i class="fas fa-users"> Xóa</i>
+                                        </a>
+                                        <a href="{{route('view_update_user_image',['id'=>$value->id])}}" data-remote="false"
+                                           data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">
+                                            <i class="fas fa-image"> Dừng bán</i>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </td>
+                            </td>
+                            <td><a type="button" class="btn btn-info " data-toggle="modal" data-target="#modal-nhap-san-pham">Nhập</a></td>
+                            <td><a type="button" class="btn btn-info " data-toggle="modal" data-target="#modal-tra-san-pham">Trả</a></td>
+                            <td>{{$value->name}}</td>
+                            <td>{{$value->product_code}}</td>
+                            <td>{{$value->type}}</td>
+                            <td>{{$value->price_in}}</td>
+                            <td>{{$value->price_out}}</td>
+                            @if($value->hh_default == null)
+                                <td>Tỉ Lệ</td>
+                                <td>{{$value->hh_percent}}</td>
+                                @elseif($value->hh_default != null)
+                                <td>Mức Cố Định</td>
+                                <td>{{$value->hh_default}}</td>
+                            @endif
+                            <td>{{$value->id_supplier}}</td>
+                            <td>{{$value->cooperation}}</td>
+                            <td>{{$value->contract}}</td>
+                        </tr>
+                    @endforeach
+                @else
+                    <td colspan="8" style="text-align: center">
+                        <h3>Không có Thông Tin</h3>
+                    </td>
+                @endif
 
                 </tbody>
             </table>
@@ -150,7 +158,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form action="{{route('update_account_user_sts')}}" method="post">
+                <form action="{{route('update_product')}}" method="post">
                     <div class="modal-body">
                         @csrf
 
@@ -180,7 +188,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-horizontal" action="{{route('add_new_acc_user')}}" method="post">
+                <form class="form-horizontal" action="{{route('add_product')}}" method="post">
                     <div class="modal-body">
                         @csrf
                         <div class="row">
@@ -199,12 +207,12 @@
                                 <div class="form-group">
                                     <label for="name">Loại Sản Phẩm</label>
                                     <div class="form-check">
-                                        <input id="male" type="radio" class="form-check-input" name="txtGender" value="male"  autocomplete="number" required>
-                                        <label class="form-check-label " for="male">
+                                        <input id="hanghoa" type="radio" class="form-check-input" name="txtType" value="hanghoa"  autocomplete="number" required>
+                                        <label class="form-check-label " for="hanghoa">
                                             Hàng Hóa
                                         </label>
-                                        <input id="female" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>
-                                        <label class="form-check-label ml-5 " for="female">
+                                        <input id="dichvu" type="radio" class="form-check-input ml-4" name="txtType" value="dichvu"  autocomplete="number" required>
+                                        <label class="form-check-label ml-5 " for="dichvu">
                                             Dịch Vụ
                                         </label>
                                     </div>
@@ -212,36 +220,33 @@
                                 <div class="form-group">
                                     <meta name="csrf-token2" content="{{ csrf_token() }}">
                                     <label for="exampleInputEmail1">Nhà Cung Cấp</label>
-                                    <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
-{{--                                        @foreach ($area as $area)--}}
-{{--                                            <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>--}}
-{{--                                        @endforeach--}}
-                                        <option value="all" selected>SPL001 - Cung cấp 1</option>
-                                        <option value="all" selected>SPL002 - Cung cấp 2</option>
-                                        <option value="all" selected>SPL003 - Cung cấp 3</option>
+                                    <select id="supplier" name = "txtSupplier" class="form-control select2"  value="{{ old('txtSupplier') }}" autocomplete="txtSupplier" style="width: 100%;">
+                                        @foreach ($supplier as $supplier)
+                                            <option value="{{$supplier->id}}">{{$supplier->name}}-{{$supplier->address}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Loại Hình Hợp Tác</label>
                                     <div class="form-check">
-                                        <input id="male" type="radio" class="form-check-input" name="txtGender" value="male"  autocomplete="number" required>
-                                        <label class="form-check-label " for="male">
+                                        <input id="muaban" type="radio" class="form-check-input" name="txtTypeHT" value="muaban"  autocomplete="number" required>
+                                        <label class="form-check-label " for="muaban">
                                             Mua bán
                                         </label>
-                                        <input id="female" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>
-                                        <label class="form-check-label ml-5 " for="female">
+                                        <input id="kigui" type="radio" class="form-check-input ml-4" name="txtTypeHT" value="kigui"  autocomplete="number" required>
+                                        <label class="form-check-label ml-5 " for="kigui">
                                             Kí Gửi
                                         </label>
-                                        <input id="female" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>
-                                        <label class="form-check-label ml-5 " for="female">
+                                        <input id="hoptac" type="radio" class="form-check-input ml-4" name="txtTypeHT" value="hoptac"  autocomplete="number" required>
+                                        <label class="form-check-label ml-5 " for="hoptac">
                                             Hợp Tác
                                         </label>
                                     </div>
                                 </div>
                                     <div class="form-group">
                                         <label for="name">Hợp Đồng Tham Chiếu</label>
-                                        <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value=""  autocomplete="number" required>
-                                        @error('txtLName')
+                                        <input id="contract" type="text" class="form-control @error('txtContract') is-invalid @enderror" name="txtContract" value=""  autocomplete="number" required>
+                                        @error('txtContract')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -249,8 +254,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Giá Nhập</label>
-                                        <input id="phone" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
-                                        @error('txtPhone')
+                                        <input id="PriceIn" type="number" class="form-control @error('txtPriceIn') is-invalid @enderror" name="txtPriceIn" value=""  autocomplete="number" required>
+                                        @error('txtPriceIn')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -258,8 +263,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Giá bán</label>
-                                        <input id="phone" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
-                                        @error('txtPhone')
+                                        <input id="PriceOut" type="number" class="form-control @error('txtPriceIn') is-invalid @enderror" name="txtPriceOut" value=""  autocomplete="number" required>
+                                        @error('txtPriceIn')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -268,20 +273,20 @@
                                 <div class="form-group">
                                     <label for="name">Hình Thức Hoa Hồng</label>
                                     <div class="form-check">
-                                        <input id="male" type="radio" class="form-check-input" name="txtGender" value="male"  autocomplete="number" required>
-                                        <label class="form-check-label " for="male">
+                                        <input id="codinh" type="radio" class="form-check-input" name="txtHH" value="codinh"  autocomplete="number" required>
+                                        <label class="form-check-label " for="codinh">
                                             Mức Cố Định
                                         </label>
-                                        <input id="female" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>
-                                        <label class="form-check-label ml-5 " for="female">
+                                        <input id="tile" type="radio" class="form-check-input ml-4" name="txtHH" value="tile"  autocomplete="number" required>
+                                        <label class="form-check-label ml-5 " for="tile">
                                             Theo Tỉ lệ
                                         </label>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Mức Hoa Hồng</label>
-                                    <input id="phone" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
-                                    @error('txtPhone')
+                                    <input id="priceHH" type="number" class="form-control @error('txtPriceHH') is-invalid @enderror" name="txtPriceHH" value=""  autocomplete="number" required>
+                                    @error('txtPriceHH')
                                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

@@ -80,7 +80,7 @@
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
-                <tr>
+                <tr style="text-align: center">
                     <th style="width:5%">#</th>
                     <th style="width:5%" class="noSort">Action</th>
                     <th style="width:10%">Tên Kho</th>
@@ -89,47 +89,39 @@
 {{--                    <th style="width:10%">Số Điện Thoại</th>--}}
                 </tr>
                 </thead>
-                <tbody id="table_body">
-                <tr>
-                    <td>1</td>
-                    <td>action</td>
-                    <td>Kho 1</td>
-                    <td>WH001</td>
-                    <td>Hà Nội</td>
-                </tr>
-{{--                @if(count($user) > 0)--}}
-{{--                    @foreach($user as $key => $value)--}}
-{{--                        <tr>--}}
-{{--                            <td>{{$key+1}}</td>--}}
-{{--                            <td class="text-center">--}}
-{{--                                <a href="{{route('search_view_update_admin_lv2',['id'=>$value['id']])}}" data-remote="false"--}}
-{{--                                   data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">--}}
-{{--                                    <i class="fas fa-edit"> Sửa</i>--}}
-{{--                                </a>--}}
-{{--                                <div class="btn-group">--}}
+                <tbody id="table_body" style="text-align: center">
+                @if(count($wh) > 0)
+                    @foreach($wh as $key => $value)
+                        <tr>
+                            <td>{{$key+1}}</td>
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <a class="btn btn-primary" href="{{route('search_Warehouse',['id'=>$value->id])}}" data-remote="false"
+                                       data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                        <i class="fas fa-edit"> Sửa</i>
+                                    </a>
+                                    <a  class="btn btn-danger" href="{{route('delete_information_user',['id'=>$value->id])}}"  class="btn dropdown-item">
+                                        <i class="fas fa-users"> Xóa</i>
+                                    </a>
 {{--                                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">--}}
 {{--                                        <span class="sr-only">Toggle Dropdown</span>--}}
 {{--                                    </button>--}}
 {{--                                    <div class="dropdown-menu" role="menu">--}}
 {{--                                        --}}
-{{--                                        <a href="{{route('delete_information_user',['id'=>$value['id']])}}"  class="btn dropdown-item">--}}
-{{--                                            <i class="fas fa-users"> Xóa</i>--}}
-{{--                                        </a>--}}
 {{--                                    </div>--}}
 
-{{--                                </div>--}}
-{{--                            </td>--}}
-{{--                            <td>{{$value['last_name']}}</td>--}}
-{{--                            <td>{{$value['email']}}</td>--}}
-{{--                            <td>{{$value['dob']}}</td>--}}
-{{--                            <td>{{$value['phone']}}</td>--}}
-{{--                        </tr>--}}
-{{--                    @endforeach--}}
-{{--                @else--}}
-{{--                    <td colspan="8" style="text-align: center">--}}
-{{--                        <h3>Không có dữ liệu</h3>--}}
-{{--                    </td>--}}
-{{--                @endif--}}
+                                </div>
+                            </td>
+                            <td>{{$value->name}}</td>
+                            <td>{{$value->warehouse_code}}</td>
+                            <td>{{$value->address}}</td>
+                        </tr>
+                    @endforeach
+                @else
+                    <td colspan="8" style="text-align: center">
+                        <h3>Không có dữ liệu</h3>
+                    </td>
+                @endif
 
                 </tbody>
             </table>
@@ -146,7 +138,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form action="{{route('update_account_admin_lv2')}}" method="post">
+                <form action="{{route('update_Warehouse')}}" method="post">
                     <div class="modal-body">
                         @csrf
 
@@ -176,7 +168,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-horizontal" action="{{route('add_account_admin_lv2')}}" method="post">
+                <form class="form-horizontal" action="{{route('add_warehouse')}}" method="post">
                     <div class="modal-body">
                         @csrf
                         <div class="row">
@@ -193,8 +185,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Địa chỉ kho</label>
-                                        <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value=""  autocomplete="number" required>
-                                        @error('txtLName')
+                                        <input id="address" type="text" class="form-control @error('txtAddress') is-invalid @enderror" name="txtAddress" value=""  autocomplete="number" required>
+                                        @error('txtAddress')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

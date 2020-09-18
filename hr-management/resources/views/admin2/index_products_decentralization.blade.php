@@ -93,8 +93,7 @@
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <div class="dropdown-menu" role="menu">
-                                    <a href="" data-remote="false"
-                                       data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                    <a href="{{route('list_product_decentralization_with_group',['id'=> 1])}}" data-remote="false" class="btn dropdown-item">
                                         <i class="fas fa-edit"> Nhóm</i>
                                     </a>
                                     <a href=""  class="btn dropdown-item"><i class="fas fa-users"> Thành Phố</i>

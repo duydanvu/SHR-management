@@ -6,7 +6,11 @@ use App\Area;
 use App\Group;
 use App\Imports\UsersImport;
 use App\Position;
+use App\Products;
+use App\Supplier;
+use App\Transports;
 use App\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -744,19 +748,361 @@ class Admin2Controller extends Controller
     }
 
     public function index_supplier(){
-        return view('admin2.index_supplier');
+        $spl = Supplier::all();
+        return view('admin2.index_supplier',compact('spl'));
+    }
+
+    public function addSupplier(Request $request){
+        $validator = \Validator::make($request->all(),[
+            'txtName' => 'required|max:50',
+            'txtAddress' => 'required|max:250',
+            'txtPhone' => 'required',
+            'txtContract' => 'required'
+        ]);
+        $notification= array(
+            'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+            $create_spl = DB::table('suppliers')->insertGetId([
+                'name'=> $request['txtName'],
+                'address' => $request['txtAddress'],
+                'phone'=> $request['txtPhone'],
+                'contract_tc'=> $request['txtContract'],
+            ]);
+            $supplier_code = 'SPL_'.$create_spl;
+            $update_user = DB::table('suppliers')->where('id', '=', $create_spl)
+                ->update([
+                    'supply_code' => $supplier_code,
+                ]);
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Thêm thông tin thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+
+    public function searchSupplier($id){
+        $spl = Supplier::find($id);
+        return view('admin2.update_infor_supplier',compact('spl'));
+    }
+
+    public function updateSupplier(Request $request){
+        $validator = \Validator::make($request->all(),[
+            'txtName' => 'required|max:50',
+            'txtAddress' => 'required|max:250',
+            'txtPhone' => 'required',
+            'txtContract' => 'required'
+        ]);
+        $notification= array(
+            'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+            $update_user = DB::table('suppliers')->where('id', '=', $request->id_spl)
+                ->update([
+                    'name' => $request->txtName,
+                    'address' => $request->txtAddress,
+                    'phone'=> $request->txtPhone,
+                    'contract_tc'=>$request->txtContract,
+                ]);
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Cập nhật thông tin thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
     }
 
     public function index_transporter(){
-        return view('admin2.index_transporter');
+        $tsp = Transports::all();
+        return view('admin2.index_transporter',compact('tsp'));
+    }
+
+    public function addTransporter(Request $request){
+        $validator = \Validator::make($request->all(),[
+            'txtName' => 'required|max:50',
+            'txtAddress' => 'required|max:250',
+            'txtPhone' => 'required',
+            'txtContract' => 'required'
+        ]);
+        $notification= array(
+            'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+            $create_tsp = DB::table('transports')->insertGetId([
+                'name'=> $request['txtName'],
+                'address' => $request['txtAddress'],
+                'phone'=> $request['txtPhone'],
+                'contract_tc'=> $request['txtContract'],
+            ]);
+            $trans_code = 'TSP_'.$create_tsp;
+            $update_user = DB::table('transports')->where('id', '=', $create_tsp)
+                ->update([
+                    'trans_code' => $trans_code,
+                ]);
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Thêm thông tin thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+
+    public function searchTransporter($id){
+        $tsp = Transports::find($id);
+        return view('admin2.update_infor_transport',compact('tsp'));
+    }
+
+    public function updateTransporter(Request $request){
+        $validator = \Validator::make($request->all(),[
+            'txtName' => 'required|max:50',
+            'txtAddress' => 'required|max:250',
+            'txtPhone' => 'required',
+            'txtContract' => 'required'
+        ]);
+        $notification= array(
+            'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+            $update_user = DB::table('transports')->where('id', '=', $request->id_spl)
+                ->update([
+                    'name' => $request->txtName,
+                    'address' => $request->txtAddress,
+                    'phone'=> $request->txtPhone,
+                    'contract_tc'=>$request->txtContract,
+                ]);
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Cập nhật thông tin thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
     }
 
     public function index_products(){
-        return view('admin2.index_products');
+        $product = Products::all();
+        $supplier = Supplier::all();
+        return view('admin2.index_products')->with(['product'=>$product,'supplier'=>$supplier]);
+    }
+
+    public function addProduct(Request $request){
+
+        $validator = \Validator::make($request->all(),[
+            'txtName' => 'required|max:50',
+            'txtType' => 'required|max:250',
+            'txtSupplier' => 'required',
+            'txtTypeHT' => 'required',
+            'txtContract' => 'required',
+            'txtPriceIn' => 'required',
+            'txtPriceOut' => 'required',
+            'txtHH' => 'required',
+            'txtPriceHH' => 'required',
+        ]);
+        $notification= array(
+            'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+            if($request->txtHH == 'codinh'){
+                $create_pdu = DB::table('products')->insertGetId([
+                    'name'=> $request['txtName'],
+                    'type' => $request['txtType'],
+                    'id_supplier'=> $request['txtSupplier'],
+                    'contract'=> $request['txtContract'],
+                    'cooperation'=> $request['txtTypeHT'],
+                    'price_in'=> $request['txtPriceIn'],
+                    'price_out'=> $request['txtPriceOut'],
+                    'hh_default'=> $request['txtPriceHH'],
+                    'hh_percent'=> null,
+                ]);
+            }elseif($request->txtHH == 'tile' && $request->txtPriceHH > 0 && $request->txtPriceHH < 100){
+                $create_pdu = DB::table('products')->insertGetId([
+                    'name'=> $request['txtName'],
+                    'type' => $request['txtType'],
+                    'id_supplier'=> $request['txtSupplier'],
+                    'contract'=> $request['txtContract'],
+                    'cooperation'=> $request['txtTypeHT'],
+                    'price_in'=> $request['txtPriceIn'],
+                    'price_out'=> $request['txtPriceOut'],
+                    'hh_default'=> null,
+                    'hh_percent'=> $request['txtPriceHH'],
+                ]);
+            }else{
+                $notification = array(
+                    'message' => 'Cần chọn hình thức hoa hồng và nhập đúng tỉ lệ hoa hồng cho sản phẩm!',
+                    'alert-type' => 'error'
+                );
+                return Redirect::back()->with($notification);
+            }
+
+            if(!is_numeric($create_pdu)){
+                $notification = array(
+                    'message' => 'Cần nhập đúng tỉ lệ hoa hồng cho sản phẩm! Vui lòng nhập lại ',
+                    'alert-type' => 'error'
+                );
+                return Redirect::back()->with($notification);
+            }else{
+                $product_code = 'PDU_'.$create_pdu;
+                $update_user = DB::table('products')->where('id', '=', $create_pdu)
+                    ->update([
+                        'product_code' => $product_code,
+                    ]);
+            }
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Thêm thông tin thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+
+    public function searchProduct($id){
+        $product = Products::find($id);
+        $supplier = Supplier::all();
+        return view('admin2.update_infor_product',compact('product','supplier'));
+    }
+
+    public function updateProduct(Request $request){
+        $validator = \Validator::make($request->all(),[
+            'txtName' => 'required|max:50',
+            'txtType' => 'required|max:250',
+            'txtSupplier' => 'required',
+            'txtTypeHT' => 'required',
+            'txtContract' => 'required',
+            'txtPriceIn' => 'required',
+            'txtPriceOut' => 'required',
+            'txtHH' => 'required',
+            'txtPriceHH' => 'required',
+        ]);
+        $notification= array(
+            'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+            if($request->txtHH == 'codinh'){
+                $update_product = DB::table('products')->where('id', '=', $request->id_product)
+                    ->update([
+                        'name'=> $request['txtName'],
+                        'type' => $request['txtType'],
+                        'id_supplier'=> $request['txtSupplier'],
+                        'contract'=> $request['txtContract'],
+                        'cooperation'=> $request['txtTypeHT'],
+                        'price_in'=> $request['txtPriceIn'],
+                        'price_out'=> $request['txtPriceOut'],
+                        'hh_default'=> $request['txtPriceHH'],
+                        'hh_percent'=> null,
+                    ]);
+            }
+            elseif($request->txtHH == 'tile' && $request->txtPriceHH > 0 && $request->txtPriceHH < 100){
+                $update_product = DB::table('products')->where('id', '=', $request->id_product)
+                    ->update([
+                        'name'=> $request['txtName'],
+                        'type' => $request['txtType'],
+                        'id_supplier'=> $request['txtSupplier'],
+                        'contract'=> $request['txtContract'],
+                        'cooperation'=> $request['txtTypeHT'],
+                        'price_in'=> $request['txtPriceIn'],
+                        'price_out'=> $request['txtPriceOut'],
+                        'hh_default'=> null,
+                        'hh_percent'=> $request['txtPriceHH'],
+                    ]);
+            }
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Cập nhật thông tin thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
     }
 
     public function index_products_decentralization(){
         return view('admin2.index_products_decentralization');
+    }
+
+    public function products_decentralization_list_group($id){
+        return view('admin2.list_group_decentralization');
     }
 
     public function chuyen_san_pham(){

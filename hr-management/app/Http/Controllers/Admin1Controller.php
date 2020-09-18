@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Warehouse;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -210,7 +211,89 @@ class Admin1Controller extends Controller
     }
 
     public function index_warehouse(){
-        return view('admin1.index_warehouse');
+        $wh = Warehouse::all();
+        return view('admin1.index_warehouse',compact('wh'));
+    }
+
+    public function addWarehouse(Request $request){
+        $validator = \Validator::make($request->all(),[
+            'txtName' => 'required|max:50',
+            'txtAddress' => 'required|max:250',
+        ]);
+        $notification= array(
+            'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+            $create_wh = DB::table('warehouses')->insertGetId([
+                'name'=> $request['txtName'],
+                'address' => $request['txtAddress'],
+            ]);
+            $warehouse_code = 'WH_'.$create_wh;
+            $update_user = DB::table('warehouses')->where('id', '=', $create_wh)
+                ->update([
+                    'warehouse_code' => $warehouse_code,
+                ]);
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Thêm thông tin thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+
+    public function searchWarehouse($id){
+        $wh = Warehouse::find($id);
+        return view('admin1.update_infor_warehouse',compact('wh'));
+    }
+
+    public function updateWarehouse(Request $request){
+        $validator = \Validator::make($request->all(),[
+            'txtName' => 'required|max:50',
+            'txtAddress' => 'required|max:250',
+        ]);
+        $notification= array(
+            'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+            $update_user = DB::table('warehouses')->where('id', '=', $request->id_wh)
+                ->update([
+                    'name' => $request->txtName,
+                    'address' => $request->txtAddress,
+                ]);
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Cập nhật thông tin thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
     }
 
     public function index_connect_landing_page(){

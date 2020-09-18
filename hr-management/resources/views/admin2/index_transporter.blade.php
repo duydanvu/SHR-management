@@ -79,42 +79,33 @@
                 </tr>
                 </thead>
                 <tbody id="table_body">
-                    <tr>
-                        <td>1</td>
-                        <td>action</td>
-                        <td>Đối Tác 1</td>
-                        <td>TFM001</td>
-                        <td>Hà Nội</td>
-                        <td>0945333231</td>
-                        <td>012</td>
-                    </tr>
-{{--                @if(count($list_user) > 0)--}}
-{{--                    @foreach($list_user as $key => $value)--}}
-{{--                        <tr>--}}
-{{--                            <td>{{$key+1}}</td>--}}
-{{--                            <td class="text-center">--}}
-{{--                                        <a href="{{route('search_view_update_user',['id'=>$value->id])}}" data-remote="false"--}}
-{{--                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">--}}
-{{--                                                <i class="fas fa-edit"> Sửa</i>--}}
-{{--                                        </a>--}}
-{{--                            </td>--}}
-{{--                            <td>{{$value->last_name}}</td>--}}
-{{--                            <td>{{$value->email}}</td>--}}
-{{--                            <td>{{$value->dob}}</td>--}}
-{{--                            <td>{{$value->phone}}</td>--}}
-{{--                            @if($value->position_name == 'ASM')--}}
-{{--                            <td>{{$value->position_name}}</td>--}}
-{{--                            @else--}}
-{{--                            <td>UserLV2</td>--}}
-{{--                            @endif--}}
-{{--                        </tr>--}}
-{{--                    @endforeach--}}
-{{--                @else--}}
-{{--                    <td colspan="8" style="text-align: center">--}}
-{{--                        <h3>Không có Thông Tin</h3>--}}
-{{--                    </td>--}}
-{{--                @endif--}}
-
+                @if(count($tsp) > 0)
+                    @foreach($tsp as $key => $value)
+                        <tr>
+                            <td>{{$key+1}}</td>
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <a href="{{route('search_transporter',['id'=>$value->id])}}" data-remote="false"
+                                       data-toggle="modal" data-target="#modal-admin-action-update" class="btn btn-primary">
+                                        <i class="fas fa-edit"> Sửa</i></a>
+                                    <a href="#" data-remote="false"
+                                       data-toggle="modal" data-target="#modal-admin-action-update" class="btn btn-danger">
+                                        <i class="fas fa-edit"> Xóa</i>
+                                    </a>
+                                </div>
+                            </td>
+                            <td>{{$value->name}}</td>
+                            <td>{{$value->trans_code}}</td>
+                            <td>{{$value->address}}</td>
+                            <td>{{$value->phone}}</td>
+                            <td>{{$value->contract_tc}}</td>
+                        </tr>
+                    @endforeach
+                @else
+                    <td colspan="8" style="text-align: center">
+                        <h3>Không có Thông Tin</h3>
+                    </td>
+                @endif
                 </tbody>
             </table>
         </div>
@@ -130,7 +121,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form action="{{route('update_account_user_sts')}}" method="post">
+                <form action="{{route('update_transporter')}}" method="post">
                     <div class="modal-body">
                         @csrf
 
@@ -160,13 +151,12 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-horizontal" action="{{route('add_new_acc_user')}}" method="post">
+                <form class="form-horizontal" action="{{route('add_transporter')}}" method="post">
                     <div class="modal-body">
                         @csrf
                         <div class="row">
                             <div id = "url_image1"></div>
                             <div class="col-lg-12 col-sm-12">
-
                                     <div class="form-group">
                                         <label for="name">Tên Đối Tác Vận Chuyển</label>
                                         <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
@@ -178,8 +168,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Địa Chỉ</label>
-                                        <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value=""  autocomplete="number" required>
-                                        @error('txtLName')
+                                        <input id="Address" type="text" class="form-control @error('txtAddress') is-invalid @enderror" name="txtAddress" value=""  autocomplete="number" required>
+                                        @error('txtAddress')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -196,8 +186,8 @@
                                     </div>
                                 <div class="form-group">
                                     <label for="name">Hợp Đồng Tham Chiếu</label>
-                                    <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value=""  autocomplete="number" required>
-                                    @error('txtLName')
+                                    <input id="Contract" type="text" class="form-control @error('txtContract') is-invalid @enderror" name="txtContract" value=""  autocomplete="number" required>
+                                    @error('txtContract')
                                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

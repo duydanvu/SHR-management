@@ -31,6 +31,9 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
 
     //admin1/warehouse
     Route::get('/admin1/warehouse','Admin1Controller@index_warehouse')->name('home_manager_warehouse');
+    Route::post('/admin/warehouse','Admin1Controller@addWarehouse')->name('add_warehouse');
+    Route::get('/admin1/warehouse/{id}','Admin1Controller@searchWarehouse')->name('search_Warehouse');
+    Route::post('/admin1/warehouse/update','Admin1Controller@updateWarehouse')->name('update_Warehouse');
 
     //admin1/connect/landingpage
     Route::get('/admin1/connect/landingpage','Admin1Controller@index_connect_landing_page')->name('connect_landing_page');
@@ -65,15 +68,26 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
 
     //admin2/supplier
     Route::get('/admin2/supplier','Admin2Controller@index_supplier')->name('home_manager_supplier');
+    Route::post('/admin2/supplier/add','Admin2Controller@addSupplier')->name('add_supplier');
+    Route::get('/admin2/supplier/{id}','Admin2Controller@searchSupplier')->name('search_supplier');
+    Route::post('/admin2/supplier/update','Admin2Controller@updateSupplier')->name('update_supplier');
 
     //admin2/transporter
     Route::get('/admin2/transporter','Admin2Controller@index_transporter')->name('home_manager_transporter');
+    Route::post('/admin2/transporter/add','Admin2Controller@addTransporter')->name('add_transporter');
+    Route::get('/admin2/transporter/{id}','Admin2Controller@searchTransporter')->name('search_transporter');
+    Route::post('/admin2/transporter/update','Admin2Controller@updateTransporter')->name('update_transporter');
 
     //admin2/product
     Route::get('/admin2/product','Admin2Controller@index_products')->name('home_manager_product');
+    Route::post('/admin2/product/add','Admin2Controller@addProduct')->name('add_product');
+    Route::get('/admin2/product/{id}','Admin2Controller@searchProduct')->name('search_product');
+    Route::post('/admin2/product/update','Admin2Controller@updateProduct')->name('update_product');
 
     //admin2/product_decentralization
     Route::get('/admin2/product_decentralization','Admin2Controller@index_products_decentralization')->name('home_product_decentralization');
+    Route::get('/admin2/product_decentralization/group/{id}','Admin2Controller@products_decentralization_list_group')
+        ->name('list_product_decentralization_with_group');
 
     //import lock acc and han muc
     Route::post('/admin2/import_lock_acc','Admin2Controller@import_lock_acc')->name('import_lock_acc');
