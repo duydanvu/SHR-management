@@ -180,15 +180,14 @@
                     <th style="width:10%">Ngày kết thúc</th>
                 </tr>
                 </thead>
-{{--                <tbody id="table_body">--}}
+                <tbody id="table_body">
 {{--                @if(count($user) > 0)--}}
 {{--                    @foreach($user as $key => $value)--}}
 {{--                        <tr>--}}
 {{--                            <td>{{$key+1}}</td>--}}
 {{--                            <td class="text-center">--}}
-{{--                                --}}{{--                                @if($role_use_number == 1)--}}
 {{--                                <div class="btn-group">--}}
-{{--                                    --}}{{--                                        <button type="button" class="btn btn-primary">Action</button>--}}
+{{--                                                                            <button type="button" class="btn btn-primary">Action</button>--}}
 {{--                                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">--}}
 {{--                                        <span class="sr-only">Toggle Dropdown</span>--}}
 {{--                                    </button>--}}
@@ -207,9 +206,8 @@
 {{--                                    </div>--}}
 
 {{--                                </div>--}}
-{{--                                --}}{{--                                @endif--}}
 {{--                            </td>--}}
-{{--                            --}}{{--                            <td><img id="img_prv" src="{{URL::to('/')}}{{$value->url_image}}" style="max-width: 50px;max-height: 50px; width: 50px;height: 50px"></td>--}}
+{{--                                                        <td><img id="img_prv" src="{{URL::to('/')}}{{$value->url_image}}" style="max-width: 50px;max-height: 50px; width: 50px;height: 50px"></td>--}}
 {{--                            <td><a href="{{route('view_update_user_detail',['id'=>$value->id])}}" data-remote="false"--}}
 {{--                                   data-toggle="modal" data-target="#modal-admin-action-update-detail" class=" dropdown-item">--}}
 {{--                                    <i class="fas fa-info-circle"></i>  {{$value->first_name}} {{$value->last_name}}--}}
@@ -228,7 +226,7 @@
 {{--                        <h3>Empty Data</h3>--}}
 {{--                    </td>--}}
 {{--                @endif--}}
-{{--                </tbody>--}}
+                </tbody>
             </table>
 {{--            {{ $user->links() }}--}}
         </div>
@@ -432,8 +430,8 @@
                                         <label for="name">Chức Vụ</label>
                                         <div class="col-sm-10 p-0 ">
                                             <select id="position" name = "position" class="form-control select2"  value="{{ old('position') }}" autocomplete="position" style="width: 100%;">
-                                                @foreach ($position as $position)
-                                                    <option value="{{$position['position_id']}}">{{$position['position_name']}}-{{$position['description']}}</option>
+                                                @foreach ($position1 as $position1)
+                                                    <option value="{{$position1['position_id']}}">{{$position1['position_name']}}-{{$position1['description']}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -442,7 +440,7 @@
                                         <label for="name">Hợp Đồng</label>
                                         <div class="col-sm-10 p-0">
                                             <select id="contract" name = "contract" class="form-control select2"  value="{{ old('contract') }}" autocomplete="contract" style="width: 100%;">
-                                                @foreach ($contract as $contract)
+                                                @foreach ($contract1 as $contract)
                                                     <option value="{{$contract['contract_id']}}">{{$contract['name']}}-{{$contract['description']}}</option>
                                                 @endforeach
                                             </select>
@@ -452,7 +450,7 @@
                                         <label for="name">Bộ Phận</label>
                                         <div class="col-sm-10 p-0">
                                             <select id="department" name = "department" class="form-control select2"  value="{{ old('department') }}" autocomplete="department" style="width: 100%;">
-                                                @foreach ($department as $department)
+                                                @foreach ($department1 as $department)
                                                     <option value="{{$department['id']}}">{{$department['name']}}-{{$department['description']}}</option>
                                                 @endforeach
                                             </select>
@@ -462,7 +460,7 @@
                                         <label for="name">Dịch Vụ</label>
                                         <div class="col-sm-10 p-0">
                                             <select id="service" name = "service" class="form-control select2"  value="{{ old('service') }}" autocomplete="service" style="width: 100%;">
-                                                @foreach ($service as $service)
+                                                @foreach ($service1 as $service)
                                                     <option value="{{$service['id']}}">{{$service['name']}}-{{$service['description']}}</option>
                                                 @endforeach
                                             </select>
@@ -665,7 +663,7 @@
                                         <label for="name">Chức Vụ</label>
                                         <div class="col-sm-10 p-0 ">
                                             <select id="position_import" name = "position_import" class="form-control select2"  value="{{ old('position') }}" autocomplete="position_import" style="width: 100%;">
-                                                @foreach ($position1 as $position)
+                                                @foreach ($position2 as $position)
                                                     <option value="{{$position['position_id']}}">{{$position['position_name']}}-{{$position['description']}}</option>
                                                 @endforeach
                                             </select>

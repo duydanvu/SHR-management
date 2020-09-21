@@ -127,7 +127,6 @@ class UserController extends Controller
                                         <a href="'.route('delete_information_user',['id'=>$row->id]).'"  class="btn dropdown-item">
                                             <i class="fas fa-users"> Xóa</i>
                                         </a>
-{{--
                                     </div>
 
                                 </div>';
@@ -142,6 +141,7 @@ class UserController extends Controller
             'service' =>$service,
             'store1'=>$store1,
             'position1'=>$position1,
+            'position2'=>$position,
             'contract1'=>$contract1,
             'department1'=>$department1,
             'service1' =>$service1,
