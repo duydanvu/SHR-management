@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Products;
 use App\User;
 use App\Warehouse;
 use Illuminate\Database\QueryException;
@@ -297,7 +298,47 @@ class Admin1Controller extends Controller
     }
 
     public function index_connect_landing_page(){
-        return view('admin1.list_products');
+        $product = Products::all();
+        return view('admin1.list_products',compact('product'));
+    }
+
+    public function connect_landing_page($id){
+        $product = Products::find($id);
+        return view('admin1.connect_landing_page',compact('product'));
+    }
+
+    public function updateLandingPage(Request $request){
+        $validator = \Validator::make($request->all(),[
+            'txtLink' => 'required ',
+        ]);
+        $notification= array(
+            'message' => ' Cần nhập đường dẫn để kết nối !',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+            $update_user = DB::table('products')->where('id', '=', $request->id_product)
+                ->update([
+                    'landing_page' => $request->txtLink,
+                ]);
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Cập nhật thông tin thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
     }
 
     public function index_connect_doi_tac(){

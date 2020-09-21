@@ -10,6 +10,8 @@ use App\Products;
 use App\Supplier;
 use App\Transports;
 use App\User;
+use App\UserProduct;
+use App\Warehouse;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -1098,11 +1100,203 @@ class Admin2Controller extends Controller
     }
 
     public function index_products_decentralization(){
+
         return view('admin2.index_products_decentralization');
     }
 
+    public function receiveProductView($id){
+        $date = date("Y-m-d H:i:s");
+        $product = Products::find($id);
+        $warehouse = Warehouse::all();
+        return view('admin2.nhap_san_pham',compact('product','warehouse','date'));
+    }
+
+    public function returnProductView($id){
+        $date = date("Y-m-d");
+        $product = Products::find($id);
+        $warehouse = Warehouse::all();
+        return view('admin2.tra_san_pham',compact('product','warehouse','date'));
+    }
+
+    public function importTotalProduct(Request $request){
+//        dd(date("c",strtotime($request['txtDate'])));
+        $date = date("Y-m-d");
+        $tablename1 = substr($date,0,4);
+        $tablename2 = substr($date,5,2);
+        $tablename = 'iep_'.$tablename1.$tablename2;
+        $validator = \Validator::make($request->all(),[
+            'txtName' => 'required',
+            'txtWarehouse' => 'required',
+            'txtContract_tc' => 'required',
+            'txtTotalImport' => 'required',
+            'txtDate' => 'required',
+        ]);
+        $notification= array(
+            'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+            $create_iep = DB::table($tablename)->insertGetId([
+                'id_product'=> $request['id_product'],
+                'id_warehouse' => $request['txtWarehouse'],
+                'time'=> $request['txtDate'],
+                'import_total'=> $request['txtTotalImport'],
+                'total'=> $request['txtTotalImport'],
+                'type'=>$request['txtTypeHT'],
+            ]);
+            $sum_import = DB::table($tablename)->sum('import_total');
+            $sum_export = DB::table($tablename)->sum('export_total');
+            $create_product_warehouse = DB::table('warehouse_products')->insert([
+               'id_product'=> $request['id_product'],
+                'id_warehouse' => $request['txtWarehouse'],
+                'contract_tc'=> $request['txtContract_tc'],
+                'time'=> $request['txtDate'],
+                'total'=>($sum_import-$sum_export),
+            ]);
+
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Thêm thông tin nhập sản phẩm thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+    public function exportTotalProduct(Request $request){
+        $date = date("Y-m-d");
+        $tablename1 = substr($date,0,4);
+        $tablename2 = substr($date,5,2);
+        $tablename = 'iep_'.$tablename1.$tablename2;
+        $validator = \Validator::make($request->all(),[
+            'txtName' => 'required',
+            'txtWarehouse' => 'required',
+            'txtContract_tc' => 'required',
+            'txtTotalExport' => 'required',
+            'txtDate' => 'required',
+            'txtTypeHT'=>'required',
+        ]);
+        $notification= array(
+            'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+            $create_iep = DB::table($tablename)->insertGetId([
+                'id_product'=> $request['id_product'],
+                'id_warehouse' => $request['txtWarehouse'],
+                'time'=> $request['txtDate'],
+                'export_total'=> $request['txtTotalExport'],
+                'total'=> $request['txtTotalExport'],
+                'type'=>$request['txtTypeHT'],
+            ]);
+            $sum_import = DB::table($tablename)->sum('import_total');
+            $sum_export = DB::table($tablename)->sum('export_total');
+            $create_product_warehouse = DB::table('warehouse_products')->insert([
+               'id_product'=> $request['id_product'],
+                'id_warehouse' => $request['txtWarehouse'],
+                'contract_tc'=> $request['txtContract_tc'],
+                'time'=> $request['txtDate'],
+                'total'=>($sum_import-$sum_export),
+            ]);
+
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Thêm thông tin trả sản phẩm thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+
     public function products_decentralization_list_group($id){
-        return view('admin2.list_group_decentralization');
+        $list_group = Group::select('groups.*')->addSelect(DB::raw(" null as name_manager"));
+        $arr_id_group = [];
+        foreach ($list_group->get() as $value_group){
+            $check_group_with_product = UserProduct::select('id')
+                ->where('id_product','=',$id)
+                ->where('id_group','=',$value_group->id)
+                ->get();
+            if(sizeof($check_group_with_product) >0){
+                array_push($arr_id_group,$value_group->id);
+            }
+        }
+        foreach ($arr_id_group as $value_check){
+            $list_group = $list_group ->where('id','<>',$value_check);
+        }
+        $list_group_check = $list_group->get();
+        foreach ($list_group_check as $key=>$values){
+            $list_name = null;
+            if($values->manager != null){
+                $arr_id = explode(",",$values->manager);
+                foreach ($arr_id as $value){
+                    $name = User::select('last_name')->where('id','=',$value)->get();
+                    foreach ($name as $name_value){
+                        $list_name = $list_name .'-'.$name_value->last_name;
+                    }
+                }
+            }
+            $values->name_manager = substr($list_name,1);
+        }
+        return view('admin2.list_group_decentralization',compact('list_group_check','id'));
+    }
+
+    public function addProductForGroup(Request $request){
+        $arr = $request->toArray();
+        $arr_id_product = explode('_',$request->id_product);
+        $id_product = $arr_id_product[0];
+        $arr_id = [];
+        foreach ($arr as $value){
+            if(is_numeric($value)){
+                array_push($arr_id,$value);
+            }
+        }
+        try{
+            foreach ($arr_id as $values){
+                $id_user = User::select('id')->where('group_id','=',$values)->get();
+                foreach ($id_user as $value_user){
+                    $add_user_group = DB::table('user_products')->insert([
+                        'id_user'=> $value_user->id,
+                        'id_product' => $id_product,
+                        'id_group' => $values,
+                        'status'=> 'active',
+                    ]);
+                }
+            }
+        }catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Lỗi ! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Phân quyền sản phẩm cho nhóm thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
     }
 
     public function chuyen_san_pham(){

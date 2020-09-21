@@ -10,6 +10,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item "><a href="/home1">Trang Chủ</a></li>
+                    <li class="breadcrumb-item "><a href="/admin2/product">Quản lý Sản Phẩm</a></li>
                     <li class="breadcrumb-item "><a >Danh Sách Nhóm</a></li>
                 </ol>
             </div>
@@ -34,9 +35,9 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-            <form action="{{route('add_asm_group')}}" method="post">
+            <form action="{{route('add_group_to_sell_product')}}" method="post">
                 @csrf
-{{--                <input name="id_group" value="{{$id_group}}_id" hidden>--}}
+                <input name="id_product" value="{{$id}}_id" hidden>
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
@@ -49,46 +50,22 @@
                     </tr>
                     </thead>
                     <tbody id="table_body">
-                    <tr>
-                        <td><input type="checkbox" name="group" value=""></td>
-                        <td>1</td>
-                        <td>Nhom 1</td>
-                        <td>GRP 001</td>
-                        <td>chi tiet</td>
-                        <td>quan ly</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" name="group" value=""></td>
-                        <td>2</td>
-                        <td>Nhom 1</td>
-                        <td>GRP 001</td>
-                        <td>chi tiet</td>
-                        <td>quan ly</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" name="group" value=""></td>
-                        <td>3</td>
-                        <td>Nhom 1</td>
-                        <td>GRP 001</td>
-                        <td>chi tiet</td>
-                        <td>quan ly</td>
-                    </tr>
-{{--                    @if(count($user) > 0)--}}
-{{--                        @foreach($user as $key => $value)--}}
-{{--                            <tr>--}}
-{{--                                <td><input type="checkbox" name="group{{$key}}" value="{{$value->id}}"></td>--}}
-{{--                                <td>{{$key+1}}</td>--}}
-{{--                                <td>{{$value->name}}</td>--}}
-{{--                                <td>{{$value->id_group}}</td>--}}
-{{--                                <td>{{$value->description}}</td>--}}
-{{--                                <td>{{$value->manager}}</td>--}}
-{{--                            </tr>--}}
-{{--                        @endforeach--}}
-{{--                    @else--}}
-{{--                        <td colspan="8" style="text-align: center">--}}
-{{--                            <h3>Empty Data</h3>--}}
-{{--                        </td>--}}
-{{--                    @endif--}}
+                    @if(count($list_group_check) > 0)
+                        @foreach($list_group_check as $key => $value)
+                            <tr>
+                                <td><input type="checkbox" name="group{{$key}}" value="{{$value->id}}"></td>
+                                <td>{{$key+1}}</td>
+                                <td>{{$value->name}}</td>
+                                <td>{{$value->id_group}}</td>
+                                <td>{{$value->description}}</td>
+                                <td>@foreach(explode("-",$value->name_manager) as $value) <p>{{$value}}</p>@endforeach</td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <td colspan="8" style="text-align: center">
+                            <h3>Không có dữ liệu</h3>
+                        </td>
+                    @endif
                     </tbody>
                 </table>
                 <button type="submit" id="addUser2" class="btn btn-primary mt-4" style="float: left"><i class="fas fa-plus-circle"> Thêm</i></button>

@@ -393,11 +393,11 @@ return [
                            'url'     => '/admin2/product',
                            'can'     => 'admin_lv2',
                        ] ,
-                       [
-                           'text'    => 'Phân Quyền Sản Phẩm',
-                           'url'     => '/admin2/product_decentralization',
-                           'can'     => 'admin_lv2',
-                       ],
+//                       [
+//                           'text'    => 'Phân Quyền Sản Phẩm',
+//                           'url'     => '/admin2/product_decentralization',
+//                           'can'     => 'admin_lv2',
+//                       ],
                     ]
                 ],
                 [

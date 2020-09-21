@@ -70,7 +70,7 @@
                 <thead>
                 <tr>
                     <th style="width:5%">#</th>
-                    <th style="width:5%" class="noSort">Action</th>
+                    <th style="width:5%" class="noSort">Phân Quyền</th>
                     <th style="width:10%">Tên Sản Phẩm</th>
                     <th style="width:10%">Mã Sản Phẩm</th>
                     <th style="width:10%">Loại Sản Phẩm</th>
@@ -84,63 +84,43 @@
                 </tr>
                 </thead>
                 <tbody id="table_body">
-                    <tr>
-                        <td>1</td>
-                        <td class="text-center">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-primary">Phân Quyền</button>
-                                <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <div class="dropdown-menu" role="menu">
-                                    <a href="{{route('list_product_decentralization_with_group',['id'=> 1])}}" data-remote="false" class="btn dropdown-item">
-                                        <i class="fas fa-edit"> Nhóm</i>
-                                    </a>
-                                    <a href=""  class="btn dropdown-item"><i class="fas fa-users"> Thành Phố</i>
-                                    </a>
-                                    <a href="" data-remote="false" data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">
-                                        <i class="fas fa-image"> Khu Vực</i></a>
+                @if(count($list_user) > 0)
+                    @foreach($list_user as $key => $value)
+                        <tr>
+                            <td>{{$key+1}}</td>
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a href="{{route('list_product_decentralization_with_group',['id'=> 1])}}" data-remote="false" class="btn dropdown-item">
+                                            <i class="fas fa-edit"> Nhóm</i>
+                                        </a>
+                                        <a href=""  class="btn dropdown-item"><i class="fas fa-users"> Thành Phố</i>
+                                        </a>
+                                        <a href="" data-remote="false" data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">
+                                            <i class="fas fa-image"> Khu Vực</i></a>
+                                    </div>
                                 </div>
-                            </div>
 
-                        </td>
-                        <td>Sản Phẩm 1</td>
-                        <td>PDS001</td>
-                        <td>Dịch Vụ</td>
-                        <td>1000000</td>
-                        <td>1300000</td>
-                        <td>ti le</td>
-                        <td>15%</td>
-                        <td>SP001</td>
-                        <td>Mua bán</td>
-                        <td>023</td>
-                    </tr>
-{{--                @if(count($list_user) > 0)--}}
-{{--                    @foreach($list_user as $key => $value)--}}
-{{--                        <tr>--}}
-{{--                            <td>{{$key+1}}</td>--}}
-{{--                            <td class="text-center">--}}
-{{--                                        <a href="{{route('search_view_update_user',['id'=>$value->id])}}" data-remote="false"--}}
-{{--                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">--}}
-{{--                                                <i class="fas fa-edit"> Sửa</i>--}}
-{{--                                        </a>--}}
-{{--                            </td>--}}
-{{--                            <td>{{$value->last_name}}</td>--}}
-{{--                            <td>{{$value->email}}</td>--}}
-{{--                            <td>{{$value->dob}}</td>--}}
-{{--                            <td>{{$value->phone}}</td>--}}
-{{--                            @if($value->position_name == 'ASM')--}}
-{{--                            <td>{{$value->position_name}}</td>--}}
-{{--                            @else--}}
-{{--                            <td>UserLV2</td>--}}
-{{--                            @endif--}}
-{{--                        </tr>--}}
-{{--                    @endforeach--}}
-{{--                @else--}}
-{{--                    <td colspan="8" style="text-align: center">--}}
-{{--                        <h3>Không có Thông Tin</h3>--}}
-{{--                    </td>--}}
-{{--                @endif--}}
+                            </td>
+                            <td>{{$value->last_name}}</td>
+                            <td>{{$value->email}}</td>
+                            <td>{{$value->dob}}</td>
+                            <td>{{$value->phone}}</td>
+                            @if($value->position_name == 'ASM')
+                            <td>{{$value->position_name}}</td>
+                            @else
+                            <td>UserLV2</td>
+                            @endif
+                        </tr>
+                    @endforeach
+                @else
+                    <td colspan="8" style="text-align: center">
+                        <h3>Không có Thông Tin</h3>
+                    </td>
+                @endif
 
                 </tbody>
             </table>

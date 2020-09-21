@@ -37,6 +37,9 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
 
     //admin1/connect/landingpage
     Route::get('/admin1/connect/landingpage','Admin1Controller@index_connect_landing_page')->name('connect_landing_page');
+    Route::get('/admin1/connect/landingpage/product/{id}','Admin1Controller@connect_landing_page')->name('connect_landingpage');
+    Route::get('/admin1/connect/doi_tac/product/{id}','Admin1Controller@connect_doi_tac')->name('connect_doi_tac');
+    Route::post('/admin1/connect/landing_page','Admin1Controller@updateLandingPage')->name('update_landing_page');
 
     //admin1/connect/doitac
     Route::get('/admin1/connect/doitac','Admin1Controller@index_connect_doi_tac')->name('connect_doi_tac');
@@ -83,11 +86,16 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::post('/admin2/product/add','Admin2Controller@addProduct')->name('add_product');
     Route::get('/admin2/product/{id}','Admin2Controller@searchProduct')->name('search_product');
     Route::post('/admin2/product/update','Admin2Controller@updateProduct')->name('update_product');
+    Route::get('/admin2/product/receive_product/{id}','Admin2Controller@receiveProductView')->name('tim_san_pham_de_nhap');
+    Route::get('/admin2/product/return_product/{id}','Admin2Controller@returnProductView')->name('tim_san_pham_de_tra');
+    Route::post('/admin2/product/import_total_product','Admin2Controller@importTotalProduct')->name('import_total_product');
+    Route::post('/admin2/product/export_total_product','Admin2Controller@exportTotalProduct')->name('export_total_product');
 
     //admin2/product_decentralization
     Route::get('/admin2/product_decentralization','Admin2Controller@index_products_decentralization')->name('home_product_decentralization');
     Route::get('/admin2/product_decentralization/group/{id}','Admin2Controller@products_decentralization_list_group')
         ->name('list_product_decentralization_with_group');
+    Route::post('/admin2/add_product_for_group','Admin2Controller@addProductForGroup')->name('add_group_to_sell_product');
 
     //import lock acc and han muc
     Route::post('/admin2/import_lock_acc','Admin2Controller@import_lock_acc')->name('import_lock_acc');

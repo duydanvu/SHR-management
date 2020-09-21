@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Tài Khoản Admin Cấp 2</h1>
+                <h1>Tài Khoản Admin Cấp 1</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -81,46 +81,50 @@
                 </tr>
                 </thead>
                 <tbody id="table_body">
-                    <tr>
-                        <td>1</td>
-                        <td><a data-toggle="modal" type="button" class="btn btn-info" data-target="#modal-connect-product">Kết Nối</a></td>
-                        <td>Sản Phẩm 1</td>
-                        <td>PDS001</td>
-                        <td>Dịch Vụ</td>
-                        <td>1000000</td>
-                        <td>1300000</td>
-                        <td>ti le</td>
-                        <td>15%</td>
-                        <td>SP001</td>
-                        <td>Mua bán</td>
-                        <td>023</td>
-                    </tr>
-{{--                @if(count($list_user) > 0)--}}
-{{--                    @foreach($list_user as $key => $value)--}}
-{{--                        <tr>--}}
-{{--                            <td>{{$key+1}}</td>--}}
-{{--                            <td class="text-center">--}}
-{{--                                        <a href="{{route('search_view_update_user',['id'=>$value->id])}}" data-remote="false"--}}
-{{--                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">--}}
-{{--                                                <i class="fas fa-edit"> Sửa</i>--}}
-{{--                                        </a>--}}
-{{--                            </td>--}}
-{{--                            <td>{{$value->last_name}}</td>--}}
-{{--                            <td>{{$value->email}}</td>--}}
-{{--                            <td>{{$value->dob}}</td>--}}
-{{--                            <td>{{$value->phone}}</td>--}}
-{{--                            @if($value->position_name == 'ASM')--}}
-{{--                            <td>{{$value->position_name}}</td>--}}
-{{--                            @else--}}
-{{--                            <td>UserLV2</td>--}}
-{{--                            @endif--}}
-{{--                        </tr>--}}
-{{--                    @endforeach--}}
-{{--                @else--}}
-{{--                    <td colspan="8" style="text-align: center">--}}
-{{--                        <h3>Không có Thông Tin</h3>--}}
-{{--                    </td>--}}
-{{--                @endif--}}
+                @if(count($product) > 0)
+                    @foreach($product as $key => $value)
+                        <tr>
+                            <td>{{$key+1}}</td>
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a href="{{route('connect_landingpage',['id'=> $value->id])}}" data-remote="false" class="btn dropdown-item"
+                                           data-toggle="modal" data-target="#modal-connect-product">
+                                            <i class="fas fa-edit">Kết nối Landing page</i>
+                                        </a>
+                                        <a href="{{route('connect_doi_tac',['id'=>$value->id])}}" data-remote="false"
+                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                            <i class="fas fa-edit"> Kết nối đối tác</i>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </td>
+                            <td>{{$value->name}}</td>
+                            <td>{{$value->product_code}}</td>
+                            <td>{{$value->type}}</td>
+                            <td>{{$value->price_in}}</td>
+                            <td>{{$value->price_out}}</td>
+                            @if($value->hh_default == null)
+                                <td>Tỉ Lệ</td>
+                                <td>{{$value->hh_percent}}</td>
+                                @elseif($value->hh_default != null)
+                                <td>Mức Cố Định</td>
+                                <td>{{$value->hh_default}}</td>
+                            @endif
+                            <td>{{$value->id_supplier}}</td>
+                            <td>{{$value->cooperation}}</td>
+                            <td>{{$value->contract}}</td>
+                        </tr>
+                    @endforeach
+                @else
+                    <td colspan="8" style="text-align: center">
+                        <h3>Không có Thông Tin</h3>
+                    </td>
+                @endif
 
                 </tbody>
             </table>
@@ -158,38 +162,15 @@
         <div class="modal-dialog col-lg-8" >
             <div class="modal-content col-lg-12 ">
                 <div class="modal-header">
-                    <h4 class="modal-title">Tạo Sản Phẩm</h4>
+                    <h4 class="modal-title">Tạo Đường Dẫn kết nối</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-horizontal" action="" method="post">
+                <form class="form-horizontal" action="{{route('update_landing_page')}}" method="post">
                     <div class="modal-body">
                         @csrf
-                        <div class="row">
-                            <div id = "url_image1"></div>
-                            <div class="col-lg-12 col-sm-12">
 
-                                <div class="form-group">
-                                    <label for="name">Tên Sản Phẩm</label>
-                                    <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value="Sản Phẩm 1"  autocomplete="number" required>
-                                    @error('txtName')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Đường dẫn kết nối</label>
-                                    <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
-                                    @error('txtName')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
@@ -354,6 +335,10 @@
             $(this).find(".modal-body").load(link.attr("href"));
         });
         $("#modal-admin-action-update-detail").on("show.bs.modal", function(e) {
+            var link = $(e.relatedTarget);
+            $(this).find(".modal-body").load(link.attr("href"));
+        });
+        $("#modal-connect-product").on("show.bs.modal", function(e) {
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });
