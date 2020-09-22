@@ -74,14 +74,13 @@ class Admin2Controller extends Controller
                 'store_id' => 1,
                 'department_id' => 1,
                 'service_id' => 1,
-                'position_id' => 1,
                 'contract_id' => 1,
                 'phone' => $request['txtPhone'],
                 'dob' => $request['txtDob'],
                 'position_id' => $position,
                 'type'=>'systems'
             ]);
-            if($position = 7 ){
+            if($request['txtAccUser'] == 'user1' ){
                 $insert = DB::table('user_action')->insert([
                     'user_id'=>$create_area,
                     'action_id'=> 3
@@ -90,10 +89,10 @@ class Admin2Controller extends Controller
                     'user_id'=>$create_area,
                     'action_id'=> 6
                 ]);
-            }elseif ($position = 3 ){
+            }else{
                 $insert = DB::table('user_action')->insert([
                     'user_id'=>$create_area,
-                    'action_id'=> 6
+                    'action_id'=> 3
                 ]);
             }
         }catch (QueryException $ex){

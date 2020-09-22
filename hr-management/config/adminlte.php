@@ -436,6 +436,12 @@ return [
 //                    'can'     => 'user_lv1'
 //                ],
                 [
+                    'text'    => 'Truy cập thông tin cá nhân cấp 2',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '',
+                    'can'     => 'user_lv2'
+                ],
+                [
                     'text'    => 'Khóa Tài Khoản Người Dùng',
                     'icon'    => 'fas fa-clipboard-list',
                     'url'     => '/user1/lock_acc_user',
@@ -447,12 +453,7 @@ return [
                     'url'     => '/user1/phan_quyen_san_pham',
                     'can'     => 'user_lv1'
                 ],
-                [
-                    'text'    => 'Truy cập thông tin cá nhân cấp 2',
-                    'icon'    => 'fas fa-clipboard-list',
-                    'url'     => '',
-                    'can'     => 'user_lv2'
-                ],
+
             ]
         ],
         // ['header' => 'labels'],

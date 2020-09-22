@@ -81,11 +81,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('user_lv2',function ($user){
             $action = UserAction::where('user_id','=',$user->id)->get();
             if(count($action) == 1){
-                foreach ( $action as $value){
-                    if($value->action_id == 3){
-                        return true;
-                    }
-                }
+                return true;
             }else{
                 return false;
             }
