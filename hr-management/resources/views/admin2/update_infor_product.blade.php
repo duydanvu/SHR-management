@@ -79,6 +79,15 @@
             @enderror
         </div>
         <div class="form-group">
+            <label for="name">Giá Khuyến Mại</label>
+            <input id="PriceSale" type="number" class="form-control @error('txtPriceSale') is-invalid @enderror" name="txtPriceSale" value="{{$product->price_sale}}"  autocomplete="number" required>
+            @error('txtPriceSale')
+            <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+            @enderror
+        </div>
+        <div class="form-group">
             <label for="name">Hình Thức Hoa Hồng</label>
             <div class="form-check">
                 <input id="codinh" type="radio" class="form-check-input" name="txtHH" value="codinh"@if($product->hh_default != null) checked @endif autocomplete="number" required>

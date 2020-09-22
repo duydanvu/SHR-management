@@ -21,6 +21,15 @@
             @enderror
         </div>
         <div class="form-group">
+            <label for="name">Mật Khẩu</label>
+            <input id="password" type="password" class="form-control @error('txtPassword') is-invalid @enderror" name="txtPassword" value="01635741662"  autocomplete="number" required>
+            @error('txtPassword')
+            <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+            @enderror
+        </div>
+        <div class="form-group">
             <label for="name">Email</label>
             <input id="email" type="text" class="form-control @error('txtEmail') is-invalid @enderror" name="txtEmail" value="{{$user->email}}"  autocomplete="number" required>
             @error('txtEmail')
@@ -30,7 +39,7 @@
             @enderror
         </div>
         <div class="form-group">
-            <label for="name">Phone</label>
+            <label for="name">Số Điện Thoại</label>
             <input id="phone" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value="{{$user->phone}}"  autocomplete="number" required>
             @error('txtPhone')
             <span class="invalid-feedback" role="alert">

@@ -11,7 +11,10 @@ use App\Supplier;
 use App\Transports;
 use App\User;
 use App\UserProduct;
+use App\W2W;
 use App\Warehouse;
+use App\WarehouseProduct;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -59,7 +62,7 @@ class Admin2Controller extends Controller
         }
         try{
             if($request['txtAccUser'] == 'user1'){
-                $position = 7;
+                $position = 1;
             }else{
                 $position = 3;
             }
@@ -114,6 +117,7 @@ class Admin2Controller extends Controller
             'txtPhone' => 'required',
             'txtDob' => 'required',
             'txtAccUser'=> 'required',
+            'txtPassword'=> 'required',
         ]);
         $notification= array(
             'message' => ' Cập Nhật lỗi! Hãy kiểm tra lại thông tin!',
@@ -127,7 +131,7 @@ class Admin2Controller extends Controller
         }
         try{
             if($request->txtAccUser == 'user1'){
-                $position = 7;
+                $position = 1;
             }else{
                 $position = 3;
             }
@@ -135,6 +139,7 @@ class Admin2Controller extends Controller
                 ->update([
                     'login'=>$request->txtName,
                     'last_name'=>$request->txtLName,
+                    'password'=>$request->txtPassword,
                     'email'=> $request->txtEmail,
                     'phone'=> $request->txtPhone,
                     'dob'=> $request->txtDob,
@@ -802,6 +807,34 @@ class Admin2Controller extends Controller
         $spl = Supplier::find($id);
         return view('admin2.update_infor_supplier',compact('spl'));
     }
+    public function updateStatusSupplier($id){
+        $spl = Supplier::find($id);
+        try{
+            if($spl->status == 'active') {
+                $update_spl = DB::table('suppliers')->where('id', '=', $id)
+                    ->update([
+                        'status' => 'stop',
+                    ]);
+            }elseif ($spl->status == 'stop'){
+                $update_spl = DB::table('suppliers')->where('id', '=', $id)
+                    ->update([
+                        'status' => 'active',
+                    ]);
+            }
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thực hiện cập nhật kho lỗi',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Cập nhật trang thái kho thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
 
     public function updateSupplier(Request $request){
         $validator = \Validator::make($request->all(),[
@@ -897,6 +930,35 @@ class Admin2Controller extends Controller
         return view('admin2.update_infor_transport',compact('tsp'));
     }
 
+    public function updateStatusTransporter($id){
+        $tsp = Transports::find($id);
+        try{
+            if($tsp->status == 'active') {
+                $update_spl = DB::table('transports')->where('id', '=', $id)
+                    ->update([
+                        'status' => 'stop',
+                    ]);
+            }elseif ($tsp->status == 'stop'){
+                $update_spl = DB::table('transports')->where('id', '=', $id)
+                    ->update([
+                        'status' => 'active',
+                    ]);
+            }
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thực hiện cập nhật kho lỗi',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Cập nhật trang thái kho thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+
     public function updateTransporter(Request $request){
         $validator = \Validator::make($request->all(),[
             'txtName' => 'required|max:50',
@@ -939,8 +1001,12 @@ class Admin2Controller extends Controller
 
     public function index_products(){
         $product = Products::all();
-        $supplier = Supplier::all();
+        $supplier = Supplier::where('status','=','active')->get();
         return view('admin2.index_products')->with(['product'=>$product,'supplier'=>$supplier]);
+    }
+    public function indexAddNewProducts(){
+        $supplier = Supplier::where('status','=','active')->get();
+        return view('admin2.index_add_products',compact('supplier'));
     }
 
     public function addProduct(Request $request){
@@ -955,6 +1021,7 @@ class Admin2Controller extends Controller
             'txtPriceOut' => 'required',
             'txtHH' => 'required',
             'txtPriceHH' => 'required',
+            'txtPriceSale' => 'required',
         ]);
         $notification= array(
             'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
@@ -976,6 +1043,7 @@ class Admin2Controller extends Controller
                     'cooperation'=> $request['txtTypeHT'],
                     'price_in'=> $request['txtPriceIn'],
                     'price_out'=> $request['txtPriceOut'],
+                    'price_sale'=> $request['txtPriceSale'],
                     'hh_default'=> $request['txtPriceHH'],
                     'hh_percent'=> null,
                 ]);
@@ -988,6 +1056,7 @@ class Admin2Controller extends Controller
                     'cooperation'=> $request['txtTypeHT'],
                     'price_in'=> $request['txtPriceIn'],
                     'price_out'=> $request['txtPriceOut'],
+                    'price_sale'=> $request['txtPriceSale'],
                     'hh_default'=> null,
                     'hh_percent'=> $request['txtPriceHH'],
                 ]);
@@ -1033,6 +1102,35 @@ class Admin2Controller extends Controller
         return view('admin2.update_infor_product',compact('product','supplier'));
     }
 
+    public function updateStatusProduct($id){
+        $product = Products::find($id);
+        try{
+            if($product->status == 'active') {
+                $update_spl = DB::table('products')->where('id', '=', $id)
+                    ->update([
+                        'status' => 'stop',
+                    ]);
+            }elseif ($product->status == 'stop'){
+                $update_spl = DB::table('products')->where('id', '=', $id)
+                    ->update([
+                        'status' => 'active',
+                    ]);
+            }
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thực hiện cập nhật kho lỗi',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Cập nhật trang thái kho thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+
     public function updateProduct(Request $request){
         $validator = \Validator::make($request->all(),[
             'txtName' => 'required|max:50',
@@ -1042,6 +1140,7 @@ class Admin2Controller extends Controller
             'txtContract' => 'required',
             'txtPriceIn' => 'required',
             'txtPriceOut' => 'required',
+            'txtPriceSale' => 'required',
             'txtHH' => 'required',
             'txtPriceHH' => 'required',
         ]);
@@ -1066,6 +1165,7 @@ class Admin2Controller extends Controller
                         'cooperation'=> $request['txtTypeHT'],
                         'price_in'=> $request['txtPriceIn'],
                         'price_out'=> $request['txtPriceOut'],
+                        'price_sale'=> $request['txtPriceSale'],
                         'hh_default'=> $request['txtPriceHH'],
                         'hh_percent'=> null,
                     ]);
@@ -1080,6 +1180,7 @@ class Admin2Controller extends Controller
                         'cooperation'=> $request['txtTypeHT'],
                         'price_in'=> $request['txtPriceIn'],
                         'price_out'=> $request['txtPriceOut'],
+                        'price_sale'=> $request['txtPriceSale'],
                         'hh_default'=> null,
                         'hh_percent'=> $request['txtPriceHH'],
                     ]);
@@ -1107,15 +1208,29 @@ class Admin2Controller extends Controller
     public function receiveProductView($id){
         $date = date("Y-m-d H:i:s");
         $product = Products::find($id);
-        $warehouse = Warehouse::all();
+        $warehouse = Warehouse::where('status','=','active')->get();
         return view('admin2.nhap_san_pham',compact('product','warehouse','date'));
     }
 
     public function returnProductView($id){
         $date = date("Y-m-d");
         $product = Products::find($id);
-        $warehouse = Warehouse::all();
+        $warehouse = Warehouse::where('status','=','active')->get();
         return view('admin2.tra_san_pham',compact('product','warehouse','date'));
+    }
+
+    public function searchTotalProduct(Request $request){
+
+            $total = WarehouseProduct::where('id_product','=',$request->id_product)
+                ->where('id_warehouse','=',$request->id_wh)
+                ->orderBy('id','desc')
+                ->first();
+            if($total == null){
+                return 0;
+            }else{
+                return $total->total;
+            }
+
     }
 
     public function importTotalProduct(Request $request){
@@ -1150,14 +1265,23 @@ class Admin2Controller extends Controller
                 'total'=> $request['txtTotalImport'],
                 'type'=>$request['txtTypeHT'],
             ]);
-            $sum_import = DB::table($tablename)->sum('import_total');
-            $sum_export = DB::table($tablename)->sum('export_total');
+            $sum_import = DB::table($tablename)
+                ->where('id_product','=',$request['id_product'])
+                ->where('id_warehouse','=',$request['txtWarehouse'])
+                ->where('time','<',$date)
+                ->sum('import_total');
+            $sum_export = DB::table($tablename)
+                ->where('id_product','=',$request['id_product'])
+                ->where('id_warehouse','=',$request['txtWarehouse'])
+                ->where('time','<',$date)
+                ->sum('export_total');
             $create_product_warehouse = DB::table('warehouse_products')->insert([
                'id_product'=> $request['id_product'],
                 'id_warehouse' => $request['txtWarehouse'],
                 'contract_tc'=> $request['txtContract_tc'],
                 'time'=> $request['txtDate'],
                 'total'=>($sum_import-$sum_export),
+                'type'=>'import'
             ]);
 
         }
@@ -1197,6 +1321,21 @@ class Admin2Controller extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+        if($request['txtDate'] < $date){
+            $notification= array(
+                'message' => ' Thời gian trả lớn hơn thời gian hiện tại!',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()
+                ->with($notification)
+                ->withInput();
+        }
+        if($request['txtTotalWarehouse'] < $request['txtTotalExport']){
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
         try{
             $create_iep = DB::table($tablename)->insertGetId([
                 'id_product'=> $request['id_product'],
@@ -1206,14 +1345,23 @@ class Admin2Controller extends Controller
                 'total'=> $request['txtTotalExport'],
                 'type'=>$request['txtTypeHT'],
             ]);
-            $sum_import = DB::table($tablename)->sum('import_total');
-            $sum_export = DB::table($tablename)->sum('export_total');
+            $sum_import = DB::table($tablename)
+                ->where('id_product','=',$request['id_product'])
+                ->where('id_warehouse','=',$request['txtWarehouse'])
+                ->where('time','<',$date)
+                ->sum('import_total');
+            $sum_export = DB::table($tablename)
+                ->where('id_product','=',$request['id_product'])
+                ->where('id_warehouse','=',$request['txtWarehouse'])
+                ->where('time','<',$date)
+                ->sum('export_total');
             $create_product_warehouse = DB::table('warehouse_products')->insert([
                'id_product'=> $request['id_product'],
                 'id_warehouse' => $request['txtWarehouse'],
                 'contract_tc'=> $request['txtContract_tc'],
                 'time'=> $request['txtDate'],
                 'total'=>($sum_import-$sum_export),
+                'type' => 'export'
             ]);
 
         }
@@ -1300,11 +1448,168 @@ class Admin2Controller extends Controller
     }
 
     public function chuyen_san_pham(){
-        return view('admin2.chuyen_san_pham');
+        $product = Products::where('status','=','active')->get();
+        $warehouse = Warehouse::where('status','=','active')->get();
+        return view('admin2.chuyen_san_pham',compact('product','warehouse'));
+    }
+
+    public function transportProductToWarehouse($id){
+        $product = Products::find($id);
+        $warehouse = Warehouse::where('status','=','active')->get();
+        $warehouse1 = Warehouse::where('status','=','active')->get();
+        return view('admin2.chuyen_san_pham_giua_cac_kho',compact('product','warehouse','warehouse1'));
+    }
+
+    public function actionWarehouseToWarehouse(Request $request){
+
+        $validator = \Validator::make($request->all(),[
+            'txtWarehouseFrom' => 'required',
+            'txtWarehouseTo' => 'required',
+            'txtTotalWarehouse' => 'required',
+            'txtDate' => 'required',
+        ]);
+        $notification= array(
+            'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        if($request['txtWarehouseFrom'] == $request['txtWarehouseTo']){
+            $notification= array(
+                'message' => ' Cần nhập kho khác nhau để chuyển sản phẩm!',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()
+                ->with($notification)
+                ->withInput();
+        }
+        if($request['txtTotalWarehouse'] < $request['txtTotalExport']){
+            $notification= array(
+                'message' => ' Số lượng chuyển không được lớn hơn số lượng tồn!',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()
+                ->with($notification)
+                ->withInput();
+        }
+        try{
+                $create_pdu = DB::table('w2w')->insertGetId([
+                    'id_product'=>$request['id_product'],
+                    'id_warehouse_from'=> $request['txtWarehouseFrom'],
+                    'id_warehouse_to' => $request['txtWarehouseTo'],
+                    'time'=> $request['txtDate'],
+                    'quatity'=>$request['txtTotalExport'],
+                    'status'=> 'sendding',
+                    'id_action'=> Auth::id(),
+                ]);
+
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Thêm thông tin thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
     }
 
     public function tiep_nhan_san_pham(){
-        return view('admin2.tiep_nhan_san_pham');
+        $list_w2w = W2W::join('warehouses as w1','w1.id','=','w2w.id_warehouse_from')
+                    ->join('warehouses as w2','w2.id','=','w2w.id_warehouse_to')
+                    ->join('products','w2w.id_product','=','products.id')
+                    ->select('w2w.id','products.id','products.name','w1.name as name_from','w2.name as name_to','quatity','time')
+                    ->where('w2w.status','=','sendding')->get();
+        return view('admin2.tiep_nhan_san_pham',compact('list_w2w'));
+    }
+
+    public function acceptW2W($id){
+        $list_w2w = W2W::join('warehouses as w1','w1.id','=','w2w.id_warehouse_from')
+            ->join('warehouses as w2','w2.id','=','w2w.id_warehouse_to')
+            ->join('products','w2w.id_product','=','products.id')
+            ->select('w2w.id','products.id as id_pdu','products.name','w1.id as id_from','w1.name as name_from1',
+                'w2.id as id_to','w2.name as name_to1','quatity','time')
+            ->where('w2w.status','=','sendding')
+            ->find($id);
+        return view('admin2.action_accept-w2w',compact('list_w2w'));
+    }
+
+    public function acceptActionW2W(Request $request){
+        $date = date("Y-m-d");
+        $tablename1 = substr($date,0,4);
+        $tablename2 = substr($date,5,2);
+        $tablename = 'iep_'.$tablename1.$tablename2;
+        try{
+            $id_last_from = DB::table('warehouse_products')
+                ->where('id_product','=',$request->id_product)
+                ->where('id_warehouse','=',$request->id_WarehouseFrom)
+                ->where('time','<',$date)
+                ->orderBy('id','desc')
+                ->first();
+            $id_last_to = DB::table('warehouse_products')
+                ->where('id_product','=',$request->id_product)
+                ->where('id_warehouse','=',$request->id_WarehouseTo)
+                ->where('time','<',$date)
+                ->orderBy('id','desc')
+                ->first();
+            $sub_warehouse_from= DB::table('warehouse_products')->insertGetId([
+                'id_product'=>$request->id_product,
+                'id_warehouse'=> $request->id_WarehouseFrom,
+                'contract_tc' => '0000',
+                'time'=> Carbon::now(),
+                'total'=>$id_last_from->total - $request->txtTotalWarehouse,
+                'type'=> 'w2w',
+            ]);
+            $add_warehouse_to = DB::table('warehouse_products')->insertGetId([
+                'id_product'=>$request->id_product,
+                'id_warehouse'=> $request->id_WarehouseTo,
+                'contract_tc' => '0000',
+                'time'=> Carbon::now(),
+                'total'=>$id_last_to->total + $request->txtTotalWarehouse,
+                'type'=> 'w2w',
+            ]);
+            $sub_warehouse= DB::table($tablename)->insertGetId([
+                'id_product'=>$request->id_product,
+                'id_warehouse'=> $request->id_WarehouseFrom,
+                'export_total' => $request->txtTotalWarehouse,
+                'time'=> Carbon::now(),
+                'total'=>$request->txtTotalWarehouse,
+                'type'=> 'w2w',
+            ]);
+            $add_warehouse= DB::table($tablename)->insertGetId([
+                'id_product'=>$request->id_product,
+                'id_warehouse'=> $request->id_WarehouseTo,
+                'import_total' => $request->txtTotalWarehouse,
+                'time'=> Carbon::now(),
+                'total'=>$request->txtTotalWarehouse,
+                'type'=> 'w2w',
+            ]);
+            $update_w2w = DB::table('w2w')
+                ->where('id','=',$request->id_w2w)
+                ->update([
+                    'status'=>'done',
+                ]);
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng kiểm tra lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Thực hiện thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
     }
 
 }

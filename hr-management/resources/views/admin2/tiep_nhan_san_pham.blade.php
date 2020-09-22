@@ -72,58 +72,35 @@
                     <th style="width:5%">#</th>
                     <th style="width:5%" class="noSort">Action</th>
                     <th style="width:10%">Tên Sản Phẩm</th>
-                    <th style="width:10%">Mã Sản Phẩm</th>
-                    <th style="width:10%">Loại Sản Phẩm</th>
-                    <th style="width:10%">Giá Nhập</th>
-                    <th style="width:10%">Giá Bán</th>
-                    <th style="width:10%">Hình Thức Hoa Hồng</th>
-                    <th style="width:10%">Mức Hoa Hồng</th>
-                    <th style="width:10%">Nhà Cung Cấp</th>
-                    <th style="width:10%">Loại Hình Hợp Tác</th>
-                    <th style="width:10%">Hợp Đồng Tham Chiếu</th>
+                    <th style="width:10%">Kho chuyển đi</th>
+                    <th style="width:10%">Kho chuyển đến</th>
+                    <th style="width:10%">Số Lượng</th>
+                    <th style="width:10%">Thời gian</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
-                    <tr>
-                        <td>1</td>
-                        <td><a type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-member">action</a></td>
-                        <td>Sản Phẩm 1</td>
-                        <td>PDS001</td>
-                        <td>Dịch Vụ</td>
-                        <td>1000000</td>
-                        <td>1300000</td>
-                        <td>ti le</td>
-                        <td>15%</td>
-                        <td>SP001</td>
-                        <td>Mua bán</td>
-                        <td>023</td>
-                    </tr>
-{{--                @if(count($list_user) > 0)--}}
-{{--                    @foreach($list_user as $key => $value)--}}
-{{--                        <tr>--}}
-{{--                            <td>{{$key+1}}</td>--}}
-{{--                            <td class="text-center">--}}
-{{--                                        <a href="{{route('search_view_update_user',['id'=>$value->id])}}" data-remote="false"--}}
-{{--                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">--}}
-{{--                                                <i class="fas fa-edit"> Sửa</i>--}}
-{{--                                        </a>--}}
-{{--                            </td>--}}
-{{--                            <td>{{$value->last_name}}</td>--}}
-{{--                            <td>{{$value->email}}</td>--}}
-{{--                            <td>{{$value->dob}}</td>--}}
-{{--                            <td>{{$value->phone}}</td>--}}
-{{--                            @if($value->position_name == 'ASM')--}}
-{{--                            <td>{{$value->position_name}}</td>--}}
-{{--                            @else--}}
-{{--                            <td>UserLV2</td>--}}
-{{--                            @endif--}}
-{{--                        </tr>--}}
-{{--                    @endforeach--}}
-{{--                @else--}}
-{{--                    <td colspan="8" style="text-align: center">--}}
-{{--                        <h3>Không có Thông Tin</h3>--}}
-{{--                    </td>--}}
-{{--                @endif--}}
+                @if(count($list_w2w) > 0)
+                    @foreach($list_w2w as $key => $value)
+                        <tr>
+                            <td>{{$key+1}}</td>
+                            <td class="text-center">
+                                        <a href="{{route('accept_w2w',['id'=>$value->id])}}" data-remote="false"
+                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                                <i class="fas fa-edit"> Xác Nhận</i>
+                                        </a>
+                            </td>
+                            <td>{{$value->name}}</td>
+                            <td>{{$value->name_from}}</td>
+                            <td>{{$value->name_to}}</td>
+                            <td>{{$value->quatity}}</td>
+                            <td>{{$value->time}}</td>
+                        </tr>
+                    @endforeach
+                @else
+                    <td colspan="8" style="text-align: center">
+                        <h3>Không có Thông Tin</h3>
+                    </td>
+                @endif
 
                 </tbody>
             </table>
@@ -136,18 +113,18 @@
         <div class="modal-dialog" >
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Cập nhật thông tin</h4>
+                    <h4 class="modal-title">Thông tin chuyển kho</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form action="{{route('update_account_user_sts')}}" method="post">
+                <form action="{{route('action_accept_w2w')}}" method="post">
                     <div class="modal-body">
                         @csrf
 
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Lưu</button>
+                        <button type="submit" class="btn btn-primary">Thực Hiện</button>
                     </div>
                 </form>
             </div>
@@ -157,256 +134,6 @@
     </div>
 
     {{--     modal --}}
-
-    {{--    --}}{{-- modal --}}
-
-    {{--     modal --}}
-    <div class="modal fade"  id="modal-create-member" >
-        <div class="modal-dialog col-lg-8" >
-            <div class="modal-content col-lg-12 ">
-                <div class="modal-header">
-                    <h4 class="modal-title">Tiếp Nhận Sản Phẩm</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form class="form-horizontal" action="{{route('add_new_acc_user')}}" method="post">
-                    <div class="modal-body">
-                        @csrf
-                        <div class="row">
-                            <div id = "url_image1"></div>
-                            <div class="col-lg-12 col-sm-12">
-
-                                <div class="form-group">
-                                    <label for="name">Tên Sản Phẩm</label>
-                                    <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
-                                    @error('txtName')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Mã Sản Phẩm</label>
-                                    <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
-                                    @error('txtName')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Hợp Đồng Tham Chiếu</label>
-                                    <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value=""  autocomplete="number" required>
-                                    @error('txtLName')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Số Lượng Tiếp Nhận</label>
-                                    <input id="phone" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
-                                    @error('txtPhone')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Ngày Tiếp Nhận</label>
-                                    <input id="phone" type="date" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
-                                    @error('txtPhone')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                        <button id="create_member" type="submit" class="btn btn-primary" >Lưu</button>
-                    </div>
-                </form>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <div class="modal fade"  id="modal-nhap-san-pham" >
-        <div class="modal-dialog col-lg-8" >
-            <div class="modal-content col-lg-12 ">
-                <div class="modal-header">
-                    <h4 class="modal-title">Nhập Sản Phẩm</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form class="form-horizontal" action="{{route('add_new_acc_user')}}" method="post">
-                    <div class="modal-body">
-                        @csrf
-                        <div class="row">
-                            <div id = "url_image1"></div>
-                            <div class="col-lg-12 col-sm-12">
-
-                                <div class="form-group">
-                                    <label for="name">Tên Sản Phẩm</label>
-                                    <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
-                                    @error('txtName')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Mã Sản Phẩm</label>
-                                    <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
-                                    @error('txtName')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <meta name="csrf-token2" content="{{ csrf_token() }}">
-                                    <label for="exampleInputEmail1">Kho</label>
-                                    <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
-                                        {{--                                        @foreach ($area as $area)--}}
-                                        {{--                                            <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>--}}
-                                        {{--                                        @endforeach--}}
-                                        <option value="all" selected>SPL001 - Kho 1</option>
-                                        <option value="all" selected>SPL002 - Kho 2</option>
-                                        <option value="all" selected>SPL003 - Kho 3</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Hợp Đồng Tham Chiếu</label>
-                                    <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value=""  autocomplete="number" required>
-                                    @error('txtLName')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Số Lượng Nhập</label>
-                                    <input id="phone" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
-                                    @error('txtPhone')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Ngày Nhập</label>
-                                    <input id="name" type="date" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
-                                    @error('txtName')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                        <button id="create_member" type="submit" class="btn btn-primary" >Lưu</button>
-                    </div>
-                </form>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <div class="modal fade"  id="modal-tra-san-pham" >
-        <div class="modal-dialog col-lg-8" >
-            <div class="modal-content col-lg-12 ">
-                <div class="modal-header">
-                    <h4 class="modal-title">Trả Sản Phẩm</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form class="form-horizontal" action="{{route('add_new_acc_user')}}" method="post">
-                    <div class="modal-body">
-                        @csrf
-                        <div class="row">
-                            <div id = "url_image1"></div>
-                            <div class="col-lg-12 col-sm-12">
-
-                                <div class="form-group">
-                                    <label for="name">Tên Sản Phẩm</label>
-                                    <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
-                                    @error('txtName')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Mã Sản Phẩm</label>
-                                    <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
-                                    @error('txtName')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <meta name="csrf-token2" content="{{ csrf_token() }}">
-                                    <label for="exampleInputEmail1">Kho Tồn</label>
-                                    <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
-                                        {{--                                        @foreach ($area as $area)--}}
-                                        {{--                                            <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>--}}
-                                        {{--                                        @endforeach--}}
-                                        <option value="all" selected>SPL001 - Kho 1</option>
-                                        <option value="all" selected>SPL002 - Kho 2</option>
-                                        <option value="all" selected>SPL003 - Kho 3</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Hợp Đồng Tham Chiếu</label>
-                                    <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value=""  autocomplete="number" required>
-                                    @error('txtLName')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Số Lượng Trả</label>
-                                    <input id="phone" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
-                                    @error('txtPhone')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Ngày Trả</label>
-                                    <input id="name" type="date" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
-                                    @error('txtName')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                        <button id="create_member" type="submit" class="btn btn-primary" >Lưu</button>
-                    </div>
-                </form>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
 
 @stop
 

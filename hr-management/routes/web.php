@@ -33,6 +33,7 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/admin1/warehouse','Admin1Controller@index_warehouse')->name('home_manager_warehouse');
     Route::post('/admin/warehouse','Admin1Controller@addWarehouse')->name('add_warehouse');
     Route::get('/admin1/warehouse/{id}','Admin1Controller@searchWarehouse')->name('search_Warehouse');
+    Route::get('/admin1/warehouse/status/{id}','Admin1Controller@updateStatusWarehouse')->name('update_status_Warehouse');
     Route::post('/admin1/warehouse/update','Admin1Controller@updateWarehouse')->name('update_Warehouse');
 
     //admin1/connect/landingpage
@@ -40,9 +41,8 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/admin1/connect/landingpage/product/{id}','Admin1Controller@connect_landing_page')->name('connect_landingpage');
     Route::get('/admin1/connect/doi_tac/product/{id}','Admin1Controller@connect_doi_tac')->name('connect_doi_tac');
     Route::post('/admin1/connect/landing_page','Admin1Controller@updateLandingPage')->name('update_landing_page');
+    Route::post('/admin1/connect/doi_tac','Admin1Controller@updateDoiTac')->name('update_doi_tac');
 
-    //admin1/connect/doitac
-    Route::get('/admin1/connect/doitac','Admin1Controller@index_connect_doi_tac')->name('connect_doi_tac');
 
     //admin2/chuyen_san_pham
     Route::get('/admin2/chuyen_san_pham','Admin2Controller@chuyen_san_pham')->name('chuyen_san_pham');
@@ -73,23 +73,37 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/admin2/supplier','Admin2Controller@index_supplier')->name('home_manager_supplier');
     Route::post('/admin2/supplier/add','Admin2Controller@addSupplier')->name('add_supplier');
     Route::get('/admin2/supplier/{id}','Admin2Controller@searchSupplier')->name('search_supplier');
+    Route::get('/admin2/supplier/status/{id}','Admin2Controller@updateStatusSupplier')->name('update_status_supplier');
     Route::post('/admin2/supplier/update','Admin2Controller@updateSupplier')->name('update_supplier');
 
     //admin2/transporter
     Route::get('/admin2/transporter','Admin2Controller@index_transporter')->name('home_manager_transporter');
     Route::post('/admin2/transporter/add','Admin2Controller@addTransporter')->name('add_transporter');
     Route::get('/admin2/transporter/{id}','Admin2Controller@searchTransporter')->name('search_transporter');
+    Route::get('/admin2/transporter/status/{id}','Admin2Controller@updateStatusTransporter')->name('update_status_transporter');
     Route::post('/admin2/transporter/update','Admin2Controller@updateTransporter')->name('update_transporter');
 
     //admin2/product
     Route::get('/admin2/product','Admin2Controller@index_products')->name('home_manager_product');
+    Route::get('/admin2/product/add/new','Admin2Controller@indexAddNewProducts')->name('add_new_product');
     Route::post('/admin2/product/add','Admin2Controller@addProduct')->name('add_product');
     Route::get('/admin2/product/{id}','Admin2Controller@searchProduct')->name('search_product');
+    Route::get('/admin2/product/update/{id}','Admin2Controller@updateStatusProduct')->name('update_status_product');
+    // view chuyen san pham gia cac kho
+    Route::get('/admin2/product/transport_warehouse/{id}','Admin2Controller@transportProductToWarehouse')->name('view_chuyen_san_pham_warehouse');
+    Route::post('/admin2/product/warehouse_to_warehouse','Admin2Controller@actionWarehouseToWarehouse')->name('action_warehouse_to_warehouse');
+    Route::get('/admin2/accept_w2w/{id}','Admin2Controller@acceptW2W')->name('accept_w2w');
+    Route::post('/admin2/accept_w2w/action_update','Admin2Controller@acceptActionW2W')->name('action_accept_w2w');
+
     Route::post('/admin2/product/update','Admin2Controller@updateProduct')->name('update_product');
     Route::get('/admin2/product/receive_product/{id}','Admin2Controller@receiveProductView')->name('tim_san_pham_de_nhap');
     Route::get('/admin2/product/return_product/{id}','Admin2Controller@returnProductView')->name('tim_san_pham_de_tra');
+
     Route::post('/admin2/product/import_total_product','Admin2Controller@importTotalProduct')->name('import_total_product');
     Route::post('/admin2/product/export_total_product','Admin2Controller@exportTotalProduct')->name('export_total_product');
+
+    //ajax tim kiem hang ton
+    Route::post('admin2/warehouse/total_product','Admin2Controller@searchTotalProduct')->name('search_total_product');
 
     //admin2/product_decentralization
     Route::get('/admin2/product_decentralization','Admin2Controller@index_products_decentralization')->name('home_product_decentralization');

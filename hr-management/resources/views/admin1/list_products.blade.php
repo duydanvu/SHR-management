@@ -96,7 +96,7 @@
                                             <i class="fas fa-edit">Kết nối Landing page</i>
                                         </a>
                                         <a href="{{route('connect_doi_tac',['id'=>$value->id])}}" data-remote="false"
-                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                           data-toggle="modal" data-target="#modal-connect-doi-tac" class="btn dropdown-item">
                                             <i class="fas fa-edit"> Kết nối đối tác</i>
                                         </a>
                                     </div>
@@ -133,15 +133,15 @@
     </div>
 
     {{--    --}}{{-- modal --}}
-    <div class="modal fade" id="modal-admin-action-update">
+    <div class="modal fade" id="modal-connect-doi-tac">
         <div class="modal-dialog" >
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Cập nhật thông tin</h4>
+                    <h4 class="modal-title">Kết nối đối tác</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form action="{{route('update_account_user_sts')}}" method="post">
+                <form action="{{route('update_doi_tac')}}" method="post">
                     <div class="modal-body">
                         @csrf
 
@@ -185,135 +185,6 @@
     {{-- modal --}}
 
     {{--     modal --}}
-    <div class="modal fade"  id="modal-create-member" >
-        <div class="modal-dialog col-lg-8" >
-            <div class="modal-content col-lg-12 ">
-                <div class="modal-header">
-                    <h4 class="modal-title">Tạo Sản Phẩm</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form class="form-horizontal" action="{{route('add_new_acc_user')}}" method="post">
-                    <div class="modal-body">
-                        @csrf
-                        <div class="row">
-                            <div id = "url_image1"></div>
-                            <div class="col-lg-12 col-sm-12">
-
-                                    <div class="form-group">
-                                        <label for="name">Tên Sản Phẩm</label>
-                                        <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
-                                        @error('txtName')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                <div class="form-group">
-                                    <label for="name">Loại Sản Phẩm</label>
-                                    <div class="form-check">
-                                        <input id="male" type="radio" class="form-check-input" name="txtGender" value="male"  autocomplete="number" required>
-                                        <label class="form-check-label " for="male">
-                                            Hàng Hóa
-                                        </label>
-                                        <input id="female" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>
-                                        <label class="form-check-label ml-5 " for="female">
-                                            Dịch Vụ
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <meta name="csrf-token2" content="{{ csrf_token() }}">
-                                    <label for="exampleInputEmail1">Nhà Cung Cấp</label>
-                                    <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
-{{--                                        @foreach ($area as $area)--}}
-{{--                                            <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>--}}
-{{--                                        @endforeach--}}
-                                        <option value="all" selected>SPL001 - Cung cấp 1</option>
-                                        <option value="all" selected>SPL002 - Cung cấp 2</option>
-                                        <option value="all" selected>SPL003 - Cung cấp 3</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Loại Hình Hợp Tác</label>
-                                    <div class="form-check">
-                                        <input id="male" type="radio" class="form-check-input" name="txtGender" value="male"  autocomplete="number" required>
-                                        <label class="form-check-label " for="male">
-                                            Mua bán
-                                        </label>
-                                        <input id="female" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>
-                                        <label class="form-check-label ml-5 " for="female">
-                                            Kí Gửi
-                                        </label>
-                                        <input id="female" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>
-                                        <label class="form-check-label ml-5 " for="female">
-                                            Hợp Tác
-                                        </label>
-                                    </div>
-                                </div>
-                                    <div class="form-group">
-                                        <label for="name">Hợp Đồng Tham Chiếu</label>
-                                        <input id="lName" type="text" class="form-control @error('txtLName') is-invalid @enderror" name="txtLName" value=""  autocomplete="number" required>
-                                        @error('txtLName')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Giá Nhập</label>
-                                        <input id="phone" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
-                                        @error('txtPhone')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Giá bán</label>
-                                        <input id="phone" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
-                                        @error('txtPhone')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                <div class="form-group">
-                                    <label for="name">Hình Thức Hoa Hồng</label>
-                                    <div class="form-check">
-                                        <input id="male" type="radio" class="form-check-input" name="txtGender" value="male"  autocomplete="number" required>
-                                        <label class="form-check-label " for="male">
-                                            Mức Cố Định
-                                        </label>
-                                        <input id="female" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>
-                                        <label class="form-check-label ml-5 " for="female">
-                                            Theo Tỉ lệ
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Mức Hoa Hồng</label>
-                                    <input id="phone" type="number" class="form-control @error('txtPhone') is-invalid @enderror" name="txtPhone" value=""  autocomplete="number" required>
-                                    @error('txtPhone')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                        <button id="create_member" type="submit" class="btn btn-primary" >Lưu</button>
-                    </div>
-                </form>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
 @stop
 
 @section('css')
@@ -334,7 +205,7 @@
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });
-        $("#modal-admin-action-update-detail").on("show.bs.modal", function(e) {
+        $("#modal-connect-doi-tac").on("show.bs.modal", function(e) {
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });

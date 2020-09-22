@@ -88,10 +88,15 @@
                                     <a href="{{route('search_transporter',['id'=>$value->id])}}" data-remote="false"
                                        data-toggle="modal" data-target="#modal-admin-action-update" class="btn btn-primary">
                                         <i class="fas fa-edit"> Sửa</i></a>
-                                    <a href="#" data-remote="false"
-                                       data-toggle="modal" data-target="#modal-admin-action-update" class="btn btn-danger">
-                                        <i class="fas fa-edit"> Xóa</i>
-                                    </a>
+                                    @if($value->status == 'active')
+                                        <a href="{{route('update_status_transporter',['id'=>$value->id])}}"  class="btn btn-danger">
+                                            <i class="fas fa-edit"> Tạm dừng</i>
+                                        </a>
+                                    @elseif($value->status == 'stop')
+                                        <a href="{{route('update_status_transporter',['id'=>$value->id])}}"  class="btn btn-success">
+                                            <i class="fas fa-edit"> Kích Hoạt</i>
+                                        </a>
+                                    @endif
                                 </div>
                             </td>
                             <td>{{$value->name}}</td>

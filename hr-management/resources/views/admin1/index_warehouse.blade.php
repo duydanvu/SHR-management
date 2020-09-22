@@ -100,9 +100,15 @@
                                        data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
                                         <i class="fas fa-edit"> Sửa</i>
                                     </a>
-                                    <a  class="btn btn-danger" href="{{route('delete_information_user',['id'=>$value->id])}}"  class="btn dropdown-item">
-                                        <i class="fas fa-users"> Xóa</i>
+                                    @if($value->status == 'active')
+                                    <a  class="btn btn-danger" href="{{route('update_status_Warehouse',['id'=>$value->id])}}"  class="btn dropdown-item">
+                                        <i class="fas fa-users"> Tạm Dừng</i>
                                     </a>
+                                    @elseif($value->status == 'stop')
+                                        <a  class="btn btn-success" href="{{route('update_status_Warehouse',['id'=>$value->id])}}"  class="btn dropdown-item">
+                                            <i class="fas fa-users">Kích Hoạt</i>
+                                        </a>
+                                    @endif
 {{--                                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">--}}
 {{--                                        <span class="sr-only">Toggle Dropdown</span>--}}
 {{--                                    </button>--}}

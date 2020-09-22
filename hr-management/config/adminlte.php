@@ -357,12 +357,6 @@ return [
                             'url'     => '/admin1/connect/landingpage',
                             'can'     => 'admin_lv1'
                         ],
-                        [
-                            'text'    => 'Đối tác',
-                            'icon'    => 'fas fa-clipboard-list',
-                            'url'     => '/admin1/connect/doitac',
-                            'can'     => 'admin_lv1'
-                        ],
 ]
                 ],
                 [
@@ -384,20 +378,20 @@ return [
                     'can'     => 'admin_lv2'
                 ],
                 [
-                    'text'    => 'Quản lý Sản Phẩm',
+                    'text'    => 'Sản Phẩm',
                     'icon'    => 'fas fa-clipboard-list',
                     'can'     => 'admin_lv2',
                     'submenu' =>[
+                        [
+                            'text'    => 'Thêm Sản Phẩm',
+                            'url'     => '/admin2/product/add/new',
+                            'can'     => 'admin_lv2',
+                        ],
                        [
-                           'text'    => 'Sản Phẩm',
+                           'text'    => 'Quản lý Sản Phẩm',
                            'url'     => '/admin2/product',
                            'can'     => 'admin_lv2',
                        ] ,
-//                       [
-//                           'text'    => 'Phân Quyền Sản Phẩm',
-//                           'url'     => '/admin2/product_decentralization',
-//                           'can'     => 'admin_lv2',
-//                       ],
                     ]
                 ],
                 [
@@ -411,7 +405,7 @@ return [
                             'can'     => 'admin_lv2',
                         ] ,
                         [
-                            'text'    => 'Tiếp Nhận Sản Phẩm',
+                            'text'    => 'Xác Nhận Sản Phẩm',
                             'url'     => '/admin2/tiep_nhan_san_pham',
                             'can'     => 'admin_lv2',
                         ],

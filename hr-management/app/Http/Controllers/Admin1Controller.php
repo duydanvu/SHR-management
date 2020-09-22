@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Products;
+use App\Supplier;
+use App\Transports;
 use App\User;
 use App\Warehouse;
 use Illuminate\Database\QueryException;
@@ -260,6 +262,34 @@ class Admin1Controller extends Controller
         $wh = Warehouse::find($id);
         return view('admin1.update_infor_warehouse',compact('wh'));
     }
+    public function updateStatusWarehouse($id){
+        $wh = Warehouse::find($id);
+        try{
+            if($wh->status == 'active') {
+                $update_user = DB::table('warehouses')->where('id', '=', $id)
+                    ->update([
+                        'status' => 'stop',
+                    ]);
+            }elseif ($wh->status == 'stop'){
+                $update_user = DB::table('warehouses')->where('id', '=', $id)
+                    ->update([
+                        'status' => 'active',
+                    ]);
+            }
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thực hiện cập nhật kho lỗi',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Cập nhật trang thái kho thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
 
     public function updateWarehouse(Request $request){
         $validator = \Validator::make($request->all(),[
@@ -340,8 +370,48 @@ class Admin1Controller extends Controller
         );
         return Redirect::back()->with($notification);
     }
+    public function updateDoiTac(Request $request){
+        $validator = \Validator::make($request->all(),[
+            'txtSupplier' => 'required ',
+            'txtTransport' => 'required ',
+            'txtPayment' => 'required ',
+        ]);
+        $notification= array(
+            'message' => ' Kiểm tra kết nối đường dẫn !',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+            $update_user = DB::table('products')->where('id', '=', $request->id_product)
+                ->update([
+                    'link_supplier' => $request->txtSupplier,
+                    'link_transport' => $request->txtTransport,
+                    'payment' => $request->txtPayment,
+                ]);
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Cập nhật thông tin thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
 
-    public function index_connect_doi_tac(){
-        return view('admin1.list_products_connect_doi_tac');
+    public function connect_doi_tac($id){
+        $product = Products::find($id);
+        $supplier = Supplier::where('status','=','active')->get();
+        $transport = Transports::all();
+        return view('admin1.connect_doi_tac',compact('product','supplier','transport'));
     }
 }

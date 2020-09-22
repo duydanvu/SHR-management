@@ -84,6 +84,7 @@
                     <th style="width:10%">Loại Sản Phẩm</th>
                     <th style="width:10%">Giá Nhập</th>
                     <th style="width:10%">Giá Bán</th>
+                    <th style="width:10%">Giá Khuyến Mại</th>
                     <th style="width:10%">Hình Thức Hoa Hồng</th>
                     <th style="width:10%">Mức Hoa Hồng</th>
                     <th style="width:10%">Nhà Cung Cấp</th>
@@ -109,27 +110,30 @@
                                            data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
                                             <i class="fas fa-edit"> Sửa</i>
                                         </a>
-                                        <a href="{{route('delete_information_user',['id'=>$value->id])}}"  class="btn dropdown-item">
-                                            <i class="fas fa-users"> Xóa</i>
-                                        </a>
-                                        <a href="{{route('view_update_user_image',['id'=>$value->id])}}" data-remote="false"
-                                           data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">
-                                            <i class="fas fa-image"> Dừng bán</i>
-                                        </a>
+                                        @if($value->status == 'active')
+                                            <a href="{{route('update_status_product',['id'=>$value->id])}}"  class="btn dropdown-item">
+                                                <i class="fas fa-users"> Tạm Dừng</i>
+                                            </a>
+                                        @elseif($value->status == 'stop')
+                                            <a href="{{route('update_status_product',['id'=>$value->id])}}"  class="btn dropdown-item">
+                                                <i class="fas fa-users"> Kích Hoạt</i>
+                                            </a>
+                                        @endif
                                     </div>
 
                                 </div>
                             </td>
                             </td>
                             <td><a type="button" class="btn btn-info " href="{{route('tim_san_pham_de_nhap',['id'=>$value->id])}}"
-                                   data-remote="false" data-toggle="modal" data-target="#modal-nhap-san-pham">Nhập</a></td>
+                                   data-remote="false" data-toggle="modal" data-target="#modal-nhap-san-pham">Nhập Hàng</a></td>
                             <td><a type="button" class="btn btn-info " href="{{route('tim_san_pham_de_tra',['id'=>$value->id])}}"
-                                   data-remote="false" data-toggle="modal" data-target="#modal-tra-san-pham">Trả</a></td>
+                                   data-remote="false" data-toggle="modal" data-target="#modal-tra-san-pham">Trả Hàng</a></td>
                             <td>{{$value->name}}</td>
                             <td>{{$value->product_code}}</td>
                             <td>{{$value->type}}</td>
                             <td>{{$value->price_in}}</td>
                             <td>{{$value->price_out}}</td>
+                            <td>{{$value->price_sale}}</td>
                             @if($value->hh_default == null)
                                 <td>Tỉ Lệ</td>
                                 <td>{{$value->hh_percent}}</td>
@@ -270,6 +274,15 @@
                                         <label for="name">Giá bán</label>
                                         <input id="PriceOut" type="number" class="form-control @error('txtPriceIn') is-invalid @enderror" name="txtPriceOut" value=""  autocomplete="number" required>
                                         @error('txtPriceIn')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Giá Khuyến Mại</label>
+                                        <input id="PriceSale" type="number" class="form-control @error('txtPriceSale') is-invalid @enderror" name="txtPriceSale" value=""  autocomplete="number" required>
+                                        @error('txtPriceSale')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
