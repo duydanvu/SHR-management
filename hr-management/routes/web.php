@@ -133,9 +133,14 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/user1/lock_acc_user','User1Controller@lockAccUser')->name('view_list_lock_acc_user2');
     Route::get('/user1/view_information','User1Controller@view_information')->name('view_information_user1_auth');
     Route::post('/user1/search_user_with_user1','User1Controller@search_user_with_user1')->name('search_user_with_user1');
+    Route::get('/user1/view_user_with_sale_product/{id}','User1Controller@view_user_with_sale_product')->name('view_user_with_sale_product');
+    Route::get('/user1/update_user_to_sale_product/{id}','User1Controller@updateUserSaleProduct')->name('update_user_to_sale_product');
 
     //user1/phan_quyen_san_pham
     Route::get('/user1/phan_quyen_san_pham','User1Controller@phanQuyenSanPham')->name('phan_quyen_san_pham');
+
+    //user2/danh sach san pham kha dung
+    Route::get('/user2/list_product','User2Controller@list_product')->name('danh_sach_san_pham_kha_dung');
 
     // route area
     Route::get('/admin/area','AreaController@listArea')->name('show_list_area');

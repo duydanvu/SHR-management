@@ -36,6 +36,7 @@
         <div class="card-body">
             <form action="{{route('leave_user_from_group')}}" method="post">
                 @csrf
+                <input name="id_group" value="{{$group->id}}_id" hidden>
                 <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>

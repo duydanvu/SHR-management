@@ -29,18 +29,6 @@
         </div>
         <div class="card-body">
             <div class="row">
-                {{--                <div class="col-md-3 ml-4">--}}
-                {{--                    <div class="form-group">--}}
-                {{--                        <meta name="csrf-token2" content="{{ csrf_token() }}">--}}
-                {{--                        <label for="exampleInputEmail1">Khu Vực</label>--}}
-                {{--                        <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">--}}
-                {{--                            @foreach ($area as $area)--}}
-                {{--                                <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>--}}
-                {{--                            @endforeach--}}
-                {{--                            <option value="all" selected>All</option>--}}
-                {{--                        </select>--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
                 <div class="col-md-3 ml-4">
                     <div class="form-group">
                         <meta name="csrf-token2" content="{{ csrf_token() }}">

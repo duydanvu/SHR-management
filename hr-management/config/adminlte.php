@@ -436,10 +436,16 @@ return [
 //                    'can'     => 'user_lv1'
 //                ],
                 [
-                    'text'    => 'Truy cập thông tin cá nhân cấp 2',
+                    'text'    => 'Sản Phẩm',
                     'icon'    => 'fas fa-clipboard-list',
-                    'url'     => '',
-                    'can'     => 'user_lv2'
+                    'can'     => 'user_lv2',
+                    'submenu' =>[
+                        [
+                            'text'    => 'Quản lý Sản Phẩm',
+                            'url'     => '/user2/list_product',
+                            'can'     => 'user_lv2',
+                        ] ,
+                    ]
                 ],
                 [
                     'text'    => 'Khóa Tài Khoản Người Dùng',

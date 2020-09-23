@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Group;
+use App\Products;
 use App\User;
+use App\UserProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class User1Controller extends Controller
 {
@@ -13,11 +17,18 @@ class User1Controller extends Controller
 
         foreach ($id_group as $key=>$value){
             if($key == 0){
-                $user1 = User::where('group_id','=',$value->id)->where('activation_key','<>',null);
+                $user = User::where('group_id','=',$value->id)->where('activation_key','<>',null);
             }
-            $user = User::where('group_id','=',$value->id)
-                ->where('activation_key','<>',null)
-                ->union($user1);
+            if($key == 1){
+                $user = User::where('group_id','=',$value->id)
+                    ->where('activation_key','<>',null)
+                    ->union($user);
+            }
+            if($key > 1){
+                $user = User::where('group_id','=',$value->id)
+                    ->where('activation_key','<>',null)
+                    ->union($user);
+            }
         }
         try {
             $list_user = $user->get();
@@ -33,12 +44,19 @@ class User1Controller extends Controller
         if ($request->name_user == null){
             foreach ($id_group as $key=>$value){
                 if($key == 0){
-                    $user1 = User::where('group_id','=',$value->id)
+                    $user = User::where('group_id','=',$value->id)
                         ->where('activation_key','<>',null);
                 }
-                $user = User::where('group_id','=',$value->id)
-                    ->where('activation_key','<>',null)
-                    ->union($user1);
+                if($key == 1){
+                    $user = User::where('group_id','=',$value->id)
+                        ->where('activation_key','<>',null)
+                        ->union($user);
+                }
+                if($key > 1){
+                    $user = User::where('group_id','=',$value->id)
+                        ->where('activation_key','<>',null)
+                        ->union($user);
+                }
             }
         }else{
             foreach ($id_group as $key=>$value){
@@ -47,10 +65,18 @@ class User1Controller extends Controller
                         ->where('last_name','like','%'.$request->name_user.'%')
                         ->where('activation_key','<>',null);
                 }
-                $user = User::where('group_id','=',$value->id)
-                    ->where('activation_key','<>',null)
-                    ->where('last_name','like','%'.$request->name_user.'%')
-                    ->union($user1);
+                if($key == 1){
+                    $user = User::where('group_id','=',$value->id)
+                        ->where('activation_key','<>',null)
+                        ->where('last_name','like','%'.$request->name_user.'%')
+                        ->union($user1);
+                }
+                if($key > 1){
+                    $user = User::where('group_id','=',$value->id)
+                        ->where('activation_key','<>',null)
+                        ->where('last_name','like','%'.$request->name_user.'%')
+                        ->union($user);
+                }
             }
         }
         $result = null;
@@ -71,6 +97,73 @@ class User1Controller extends Controller
         return $result;
     }
     public function phanQuyenSanPham(){
-        return view('user1.index_products_decentralization');
+        $id_group = Group::where('manager','like','%'.\Auth::id().'%')->get();
+        foreach ($id_group as $key=>$value){
+            if($key == 0) {
+                $id_product = UserProduct::where('id_group', '=', $value->id)
+                ->select('id_product','id_group')
+                ->groupBy('id_product','id_group');
+            }
+            $id_product = UserProduct::where('id_group', '=', $value->id)
+                ->select('id_product','id_group')
+                ->groupBy('id_product','id_group')
+                ->union($id_product);
+        }
+        foreach ($id_product->get() as $key=> $values){
+            if($key == 0){
+                $product = Products::where('id','=',$values->id_product);
+            }
+            if($key == 1){
+                $product = Products::where('id','=',$values->id_product)->union($product);
+            }
+            if($key > 1){
+                $product = Products::where('id','=',$values->id_product)->union($product);
+            }
+        }
+        $list_product = $product->get();
+        return view('user1.index_products_decentralization',compact('list_product'));
+    }
+
+    public function view_user_with_sale_product($id){
+        $id_group = Group::where('manager','like','%'.\Auth::id().'%')->get();
+        foreach ($id_group as $key => $value){
+            if($key == 0){
+                $user = UserProduct::join('users','users.id','=','user_products.id_user')
+                    ->where('users.activation_key','=','active')
+                    ->where('id_group','=',$value->id)
+                    ->where('id_product','=',$id)
+                    ->select('user_products.*','users.last_name','users.email');
+            }
+            $user = UserProduct::join('users','users.id','=','user_products.id_user')
+                ->where('users.activation_key','=','active')
+                ->where('id_group','=',$value->id)
+                ->where('id_product','=',$id)
+                ->select('user_products.*','users.last_name','users.email')
+                ->union($user);
+
+        }
+        $list_user = $user->get();
+        $list_group = Group::all();
+        return view('user1.list_user_sale_product',compact('list_user','list_group','id'));
+    }
+
+    public function updateUserSaleProduct($id){
+        $id_user_product = UserProduct::find($id);
+        if($id_user_product->status == 'active'){
+            $update_user = DB::table('user_products')->where('id', '=', $id)
+                ->update([
+                    'status' => 'stop',
+                ]);
+        }elseif($id_user_product->status == 'stop'){
+            $update_user = DB::table('user_products')->where('id', '=', $id)
+                ->update([
+                    'status' => 'active',
+                ]);
+        }
+        $notification = array(
+            'message' => 'Thay đổi thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
     }
 }

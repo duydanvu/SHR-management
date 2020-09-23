@@ -125,7 +125,9 @@
 {{--                                        </div>--}}
 {{--                                        <!-- Message End -->--}}
 {{--                                    </a>--}}
-                                    @if(\Illuminate\Support\Facades\Auth::user()->type == 'systems')
+                                    @if(\Illuminate\Support\Facades\Auth::user()->type == 'systems'
+                                        || \Illuminate\Support\Facades\Auth::user()->position_id == 1
+                                        || \Illuminate\Support\Facades\Auth::user()->position_id == 3)
                                     <a href="/admin2/view_information" class="dropdown-item" >
                                         <!-- Message Start -->
                                         <div class="media">

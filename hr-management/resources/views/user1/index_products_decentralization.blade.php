@@ -76,76 +76,39 @@
                     <th style="width:10%">Loại Sản Phẩm</th>
                     <th style="width:10%">Giá Nhập</th>
                     <th style="width:10%">Giá Bán</th>
-                    <th style="width:10%">Hình Thức Hoa Hồng</th>
+                    <th style="width:10%">Giá Khuyến Mại</th>
                     <th style="width:10%">Mức Hoa Hồng</th>
-                    <th style="width:10%">Nhà Cung Cấp</th>
-                    <th style="width:10%">Loại Hình Hợp Tác</th>
-                    <th style="width:10%">Hợp Đồng Tham Chiếu</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
-                    <tr>
-                        <td>1</td>
-                        <td class="text-center">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-primary">Phân Quyền</button>
-                                <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <div class="dropdown-menu" role="menu">
-                                    <a href="" data-remote="false"
-                                       data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
-                                        <i class="fas fa-edit"> Khu Vực</i>
-                                    </a>
-                                    <a href=""  class="btn dropdown-item"><i class="fas fa-users"> Thành Phố</i>
-                                    </a>
-                                    <a href="" data-remote="false" data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">
-                                        <i class="fas fa-image"> Quận Huyện</i></a>
-                                    <a href="" data-remote="false" data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">
-                                        <i class="fas fa-image"> Cửa hàng</i></a>
-                                    <a href="" data-remote="false" data-toggle="modal" data-target="#modal-admin-action-update-image" class="btn dropdown-item">
-                                        <i class="fas fa-image"> Nhân Viên</i></a>
-                                </div>
-                            </div>
-
-                        </td>
-                        <td>Sản Phẩm 1</td>
-                        <td>PDS001</td>
-                        <td>Dịch Vụ</td>
-                        <td>1000000</td>
-                        <td>1300000</td>
-                        <td>ti le</td>
-                        <td>15%</td>
-                        <td>SP001</td>
-                        <td>Mua bán</td>
-                        <td>023</td>
-                    </tr>
-{{--                @if(count($list_user) > 0)--}}
-{{--                    @foreach($list_user as $key => $value)--}}
-{{--                        <tr>--}}
-{{--                            <td>{{$key+1}}</td>--}}
-{{--                            <td class="text-center">--}}
-{{--                                        <a href="{{route('search_view_update_user',['id'=>$value->id])}}" data-remote="false"--}}
-{{--                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">--}}
-{{--                                                <i class="fas fa-edit"> Sửa</i>--}}
-{{--                                        </a>--}}
-{{--                            </td>--}}
-{{--                            <td>{{$value->last_name}}</td>--}}
-{{--                            <td>{{$value->email}}</td>--}}
-{{--                            <td>{{$value->dob}}</td>--}}
-{{--                            <td>{{$value->phone}}</td>--}}
-{{--                            @if($value->position_name == 'ASM')--}}
-{{--                            <td>{{$value->position_name}}</td>--}}
-{{--                            @else--}}
-{{--                            <td>UserLV2</td>--}}
-{{--                            @endif--}}
-{{--                        </tr>--}}
-{{--                    @endforeach--}}
-{{--                @else--}}
-{{--                    <td colspan="8" style="text-align: center">--}}
-{{--                        <h3>Không có Thông Tin</h3>--}}
-{{--                    </td>--}}
-{{--                @endif--}}
+                @if(count($list_product) > 0)
+                    @foreach($list_product as $key => $value)
+                        <tr>
+                            <td>{{$key+1}}</td>
+                            <td class="text-center">
+                                <a href="{{route('view_user_with_sale_product',['id'=>$value->id])}}" data-remote="false"
+                                   data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                    <i class="fas fa-street-view"> Xem Chi Tiết</i>
+                                </a>
+                            </td>
+                            <td>{{$value->name}}</td>
+                            <td>{{$value->product_code}}</td>
+                            <td>{{$value->type}}</td>
+                            <td>{{$value->price_in}}</td>
+                            <td>{{$value->price_out}}</td>
+                            <td>{{$value->price_sale}}</td>
+                            @if($value->hh_default == null)
+                            <td>{{$value->hh_percent}} %</td>
+                            @elseif($value->hh_percent == null)
+                            <td>{{$value->hh_default}}</td>
+                            @endif
+                        </tr>
+                    @endforeach
+                @else
+                    <td colspan="8" style="text-align: center">
+                        <h3>Không có Thông Tin</h3>
+                    </td>
+                @endif
 
                 </tbody>
             </table>
@@ -154,22 +117,21 @@
     </div>
 
     {{--    --}}{{-- modal --}}
-    <div class="modal fade" id="modal-admin-action-update">
-        <div class="modal-dialog" >
-            <div class="modal-content">
+    <div class="modal fade" id="modal-admin-action-update" >
+        <div class="modal-dialog" style="max-width: 1000px">
+            <div class="modal-content" >
                 <div class="modal-header">
-                    <h4 class="modal-title">Cập nhật thông tin</h4>
+                    <h4 class="modal-title">Danh sách Nhân Viên</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form action="{{route('update_account_user_sts')}}" method="post">
+                <form action="" method="post">
                     <div class="modal-body">
                         @csrf
 
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Lưu</button>
                     </div>
                 </form>
             </div>
@@ -177,10 +139,6 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-
-    {{--     modal --}}
-
-    {{--    --}}{{-- modal --}}
 
     {{--     modal --}}
     <div class="modal fade"  id="modal-create-member" >

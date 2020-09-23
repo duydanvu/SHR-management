@@ -78,7 +78,8 @@ class Admin2Controller extends Controller
                 'phone' => $request['txtPhone'],
                 'dob' => $request['txtDob'],
                 'position_id' => $position,
-                'type'=>'systems'
+                'type'=>'systems',
+                'activation_key'=> 'active'
             ]);
             if($request['txtAccUser'] == 'user1' ){
                 $insert = DB::table('user_action')->insert([
@@ -264,6 +265,18 @@ class Admin2Controller extends Controller
                         'group_id' => $id_group,
                     ]);
             }
+            $list_product = DB::table('user_products')->where('id_group','=',$id_group)
+                ->select('id_product')->distinct()->get();
+            foreach ($list_product as $values){
+                foreach ($arr_id as $value_id) {
+                    $insert_user_products = DB::table('user_products')->insert([
+                        'id_user' => $value_id,
+                        'id_product' => $values->id_product,
+                        'id_group' => $id_group,
+                        'status' => 'active',
+                    ]);
+                }
+            }
         }catch (QueryException $ex){
             $notification = array(
                 'message' => 'Lỗi ! Vui lòng nhập lại ',
@@ -293,6 +306,16 @@ class Admin2Controller extends Controller
                     ->update([
                         'group_id' => null,
                     ]);
+            }
+            foreach ($arr_id as $key=>$values){
+                if($key == 0) {
+                    $id_user_product = UserProduct::where('id_user', '=', $values)
+                        ->where('id_group', '=', $id_group);
+                }$id_user_product = UserProduct::where('id_user', '=', $values)
+                    ->where('id_group', '=', $id_group)->union($id_user_product);
+            }
+            foreach ($id_user_product->get() as $value_dele){
+                DB::table('user_products')->delete($value_dele->id);
             }
         }catch (QueryException $ex){
             $notification = array(
@@ -1525,7 +1548,7 @@ class Admin2Controller extends Controller
         $list_w2w = W2W::join('warehouses as w1','w1.id','=','w2w.id_warehouse_from')
                     ->join('warehouses as w2','w2.id','=','w2w.id_warehouse_to')
                     ->join('products','w2w.id_product','=','products.id')
-                    ->select('w2w.id','products.id','products.name','w1.name as name_from','w2.name as name_to','quatity','time')
+                    ->select('w2w.id','products.id as product_id','products.name','w1.name as name_from','w2.name as name_to','quatity','time')
                     ->where('w2w.status','=','sendding')->get();
         return view('admin2.tiep_nhan_san_pham',compact('list_w2w'));
     }
