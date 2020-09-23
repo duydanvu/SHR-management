@@ -19,16 +19,13 @@ class User1Controller extends Controller
             if($key == 0){
                 $user = User::where('group_id','=',$value->id)->where('activation_key','<>',null);
             }
-            if($key == 1){
-                $user = User::where('group_id','=',$value->id)
-                    ->where('activation_key','<>',null)
-                    ->union($user);
+            $str_group = [];
+            foreach ($id_group as $key=>$value){
+                array_push($str_group,$value->id);
+
             }
-            if($key > 1){
-                $user = User::where('group_id','=',$value->id)
-                    ->where('activation_key','<>',null)
-                    ->union($user);
-            }
+            //$str_group = "[".$str_group."]";
+            $user = DB::table('users')->whereIn('group_id',$str_group)->where('activation_key','<>',null);
         }
         try {
             $list_user = $user->get();
