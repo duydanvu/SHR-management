@@ -83,6 +83,30 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/admin2/transporter/status/{id}','Admin2Controller@updateStatusTransporter')->name('update_status_transporter');
     Route::post('/admin2/transporter/update','Admin2Controller@updateTransporter')->name('update_transporter');
 
+    //admin2/chuong trinh khuyen mai
+    Route::get('/admin2/sales_product','Admin2Controller@indexSaleProduct')->name('home_sales_product');
+    Route::post('/admin2/add_sales_product','Admin2Controller@addSaleProduct')->name('add_sale_product');
+    Route::get('/admin2/list_sales_product','Admin2Controller@listSaleProduct')->name('list_sale_product');
+    Route::get('/admin2/search_sales_product/{id}','Admin2Controller@searchSalesProduct')->name('search_sales_product');
+    Route::post('/admin2/update_sale_product','Admin2Controller@updateSaleProduct')->name('update_sale_product');
+
+
+    //admin2/chuong trinh thi dua
+    Route::get('/admin2/emulation_product','Admin2Controller@indexEmulationProduct')->name('home_emulation_product');
+    Route::post('/admin2/add_emulation_product','Admin2Controller@addEmulationProduct')->name('add_emulation_product');
+    Route::get('/admin2/list_emulation_product','Admin2Controller@listEmulationProduct')->name('list_emulation_product');
+    Route::get('/admin2/add_product_to_emulation/{id}','Admin2Controller@addProductToEmulation')->name('add_product_to_emulation');
+    Route::post('/admin2/update_add_product_emulation','Admin2Controller@updateAddProductEmulation')->name('update_add_product_emulation');
+
+    //admin2/giao muc tieu ban hang
+    Route::get('/admin2/goal_product','Admin2Controller@indexGoalProduct')->name('home_goal_product');
+    Route::post('/admin2/add_goal-product','Admin2Controller@addGoalProduct')->name('add_goal_product');
+    Route::get('/admin2/list_goal_product','Admin2Controller@listGoalProduct')->name('list_goal_product');
+    Route::get('/admin2/add_product_to_goal/{id}','Admin2Controller@addProductToGoal')->name('add_product_to_goal');
+    Route::get('/admin2/add_asm_to_goal/{id}','Admin2Controller@addAsmToGoal')->name('add_asm_to_goal');
+    Route::post('/admin2/update_add_product_goal','Admin2Controller@updateAddProductGoal')->name('update_add_product_goal');
+    Route::post('/admin2/update_add_asm_goal','Admin2Controller@updateAddAsmGoal')->name('update_add_asm_goal');
+
     //admin2/product
     Route::get('/admin2/product','Admin2Controller@index_products')->name('home_manager_product');
     Route::get('/admin2/product/add/new','Admin2Controller@indexAddNewProducts')->name('add_new_product');
