@@ -25,7 +25,8 @@ class User1Controller extends Controller
 
             }
             //$str_group = "[".$str_group."]";
-            $user = DB::table('users')->whereIn('group_id',$str_group)->where('activation_key','<>',null);
+            $user = DB::table('users')->whereIn('group_id',$str_group)
+                ->where('activation_key','<>',null);
         }
         try {
             $list_user = $user->get();
@@ -39,42 +40,20 @@ class User1Controller extends Controller
         $id_group = Group::where('manager','like','%'.\Auth::id().'%')->get();
 
         if ($request->name_user == null){
+            $str_group = [];
             foreach ($id_group as $key=>$value){
-                if($key == 0){
-                    $user = User::where('group_id','=',$value->id)
-                        ->where('activation_key','<>',null);
-                }
-                if($key == 1){
-                    $user = User::where('group_id','=',$value->id)
-                        ->where('activation_key','<>',null)
-                        ->union($user);
-                }
-                if($key > 1){
-                    $user = User::where('group_id','=',$value->id)
-                        ->where('activation_key','<>',null)
-                        ->union($user);
-                }
+                array_push($str_group,$value->id);
             }
+            $user = DB::table('users')->whereIn('group_id',$str_group)
+                ->where('activation_key','<>',null);
         }else{
+            $str_group = [];
             foreach ($id_group as $key=>$value){
-                if($key == 0){
-                    $user1 = User::where('group_id','=',$value->id)
-                        ->where('last_name','like','%'.$request->name_user.'%')
-                        ->where('activation_key','<>',null);
-                }
-                if($key == 1){
-                    $user = User::where('group_id','=',$value->id)
-                        ->where('activation_key','<>',null)
-                        ->where('last_name','like','%'.$request->name_user.'%')
-                        ->union($user1);
-                }
-                if($key > 1){
-                    $user = User::where('group_id','=',$value->id)
-                        ->where('activation_key','<>',null)
-                        ->where('last_name','like','%'.$request->name_user.'%')
-                        ->union($user);
-                }
+                array_push($str_group,$value->id);
             }
+            $user = DB::table('users')->whereIn('group_id',$str_group)
+                ->where('last_name','like','%'.$request->name_user.'%')
+                ->where('activation_key','<>',null);
         }
         $result = null;
 
@@ -95,28 +74,18 @@ class User1Controller extends Controller
     }
     public function phanQuyenSanPham(){
         $id_group = Group::where('manager','like','%'.\Auth::id().'%')->get();
+        $str_group = [];
         foreach ($id_group as $key=>$value){
-            if($key == 0) {
-                $id_product = UserProduct::where('id_group', '=', $value->id)
-                ->select('id_product','id_group')
-                ->groupBy('id_product','id_group');
-            }
-            $id_product = UserProduct::where('id_group', '=', $value->id)
-                ->select('id_product','id_group')
-                ->groupBy('id_product','id_group')
-                ->union($id_product);
+            array_push($str_group,$value->id);
         }
+        $id_product = UserProduct::whereIn('id_group',$str_group)
+            ->select('id_product','id_group')
+            ->groupBy('id_product','id_group');
+        $str_id_product = [];
         foreach ($id_product->get() as $key=> $values){
-            if($key == 0){
-                $product = Products::where('id','=',$values->id_product);
-            }
-            if($key == 1){
-                $product = Products::where('id','=',$values->id_product)->union($product);
-            }
-            if($key > 1){
-                $product = Products::where('id','=',$values->id_product)->union($product);
-            }
+            array_push($str_id_product,$values->id_product);
         }
+        $product = Products::whereIn('id',$str_id_product);
         $list_product = $product->get();
         return view('user1.index_products_decentralization',compact('list_product'));
     }
