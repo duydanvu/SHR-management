@@ -6,6 +6,7 @@ use App\Area;
 use App\Emulation;
 use App\EmulationProducts;
 use App\Gift;
+use App\GoalProduct;
 use App\GoalSales;
 use App\Group;
 use App\Imports\UsersImport;
@@ -14,6 +15,7 @@ use App\Products;
 use App\Reward;
 use App\SalesProducts;
 use App\Supplier;
+use App\TotalProductEmulation;
 use App\Transports;
 use App\User;
 use App\UserProduct;
@@ -1745,13 +1747,12 @@ class Admin2Controller extends Controller
             ->leftJoin('gifts','sales.id_gifts','=','gifts.id')
             ->select('sales.id','sales.name','sales.qdtc','products.name as name_product','products.product_code'
                 ,'groups.name as name_group','sales.price_sale as sal_price','sales.type as sale_type','sales.sale_off'
-                ,'sales.id_gifts','gifts.name as name_gifts')
+                ,'sales.id_gifts','gifts.name as name_gifts','sales_products.id_product','sales_products.id_group')
             ->where('sales.id','=',$id)->get();
         return view('admin2.sales.edit_sale_product',compact('product','group','gift','list'));
     }
 
     public function updateSaleProduct(Request $request){
-        dd($request);
         $validator = \Validator::make($request->all(),[
             'txtNameProduct' => 'required',
             'txtName' => 'required',
@@ -1806,13 +1807,18 @@ class Admin2Controller extends Controller
                 );
                 return Redirect::back()->with($notification);
             }else{
-                $id_spd = SalesProducts::where('id_sales','=',$request->id_sale)->get();
-
-                $insert_saleproduct = DB::table('sales_products')->insert([
-                    'id_sales'=>$create_pdu,
-                    'id_product'=>$request['txtNameProduct'],
-                    'id_group'=>$request['txtGroup'],
-                ]);
+                $id_spd = SalesProducts::where('id_sales','=',$request->id_sale)
+                    ->where('id_product','=',$request->id_pdu)
+                    ->where('id_group','=',$request->id_grp)->get();
+                foreach ($id_spd as $value) {
+                    $insert_saleproduct = DB::table('sales_products')
+                        ->where('id','=',$value->id)
+                        ->update([
+                        'id_sales' => $request['id_sale'],
+                        'id_product' => $request['txtNameProduct'],
+                        'id_group' => $request['txtGroup'],
+                    ]);
+                }
             }
         }
         catch (QueryException $ex){
@@ -1910,6 +1916,77 @@ class Admin2Controller extends Controller
         return view('admin2.emulation.list_emulation_product',compact('emulation','reward'));
     }
 
+    public function editInformationEmulation($id){
+        $emula = Emulation::join('emulation_products','emulation_products.id_emulation','=','emulations.id')
+             -> where('emulation_products.id','=',$id)->get();
+        $gift = Reward::all();
+        return view('admin2.emulation.update_infor_emulation',compact('emula','gift'));
+    }
+
+    public function updateInformationProductEmulation(Request $request){
+        $validator = \Validator::make($request->all(),[
+            'txtName' => 'required',
+            'txtQdtc' => 'required',
+            'txtType' => 'required',
+            'txtReward' => 'required',
+        ]);
+        $notification= array(
+            'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+            if($request->txtType == 'doanhso'){
+                $update_product = DB::table('emulations')
+                    ->where('id', '=', $request->id_emulation)
+                    ->update([
+                        'name'=> $request['txtName'],
+                        'qdtc' => $request['txtQdtc'],
+                        'type'=> $request['txtType'],
+                        'total'=> null,
+                        'revenue'=> 1,
+                    ]);
+                $update_eml_pdu = DB::table('emulation_products')
+                    ->where('id', '=', $request->id_emulation_pdu)
+                    ->update([
+                        'id_reward'=> $request['txtReward'],
+                    ]);
+            }
+            elseif($request->txtType == 'sanluong'){
+                $update_product = DB::table('emulations')->where('id', '=', $request->id_emulation)
+                    ->update([
+                        'name'=> $request['txtName'],
+                        'qdtc' => $request['txtQdtc'],
+                        'type'=> $request['txtType'],
+                        'total'=> 1,
+                        'revenue'=> null,
+                    ]);
+                $update_eml_pdu = DB::table('emulation_products')
+                    ->where('id', '=', $request->id_emulation_pdu)
+                    ->update([
+                        'id_reward'=> $request['txtReward'],
+                    ]);
+            }
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Cập nhật thông tin thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+
     public function addProductToEmulation($id){
         $product = Products::all();
         $supplier = Supplier::all();
@@ -1919,28 +1996,61 @@ class Admin2Controller extends Controller
     }
 
     public function updateAddProductEmulation(Request $request){
-        $arr = $request->toArray();
+
         $arr_id_group = explode('_',$request->id_emulation_product);
         $id_emulation_product = $arr_id_group[0];
-        $arr_id = '';
-        foreach ($arr as $value){
-            if(is_numeric($value)){
-                $arr_id .= ','.$value;
-            }
-        }
+        $id_product = EmulationProducts::find($id_emulation_product);
+        $arr_id = explode(',',$id_product->id_product);
         try {
-            if (strlen($arr_id) == 0) {
+            if ($arr_id[0] == "") {
                 $update_w2w = DB::table('emulation_products')
                     ->where('id', '=', $id_emulation_product)
                     ->update([
-                        'id_product' => null,
+                        'id_product' => $request['txtProduct'],
+                    ]);
+                $insert_total_pdu_emu = DB::table('total_product_emulations')
+                    ->insert([
+                        'id_emu_pdu' => $id_emulation_product,
+                        'id_product' => $request['txtProduct'],
+                        'total' => $request['txtTotal']
                     ]);
             } else {
+                $x = 0;
+                foreach($arr_id as $value_check){
+                    if($value_check === $request['txtProduct']){
+                        $x = 1;
+                    }
+                }
+                if($x == 1){
+                    $arr_id_rs = $id_product->id_product;
+                }else {
+                    $arr_id_rs = $id_product->id_product . ',' . $request['txtProduct'];
+                }
                 $update_w2w = DB::table('emulation_products')
                     ->where('id', '=',  $id_emulation_product)
                     ->update([
-                        'id_product' => substr($arr_id, 1),
+                        'id_product' => $arr_id_rs,
                     ]);
+                $total_pdu_eml = TotalProductEmulation::where('id_emu_pdu','=',$id_emulation_product)
+                    ->where('id_product','=',$request['txtProduct'])->get();
+                if(sizeof($total_pdu_eml) == 0){
+                    $insert_total_pdu_emu = DB::table('total_product_emulations')
+                        ->insert([
+                            'id_emu_pdu' => $id_emulation_product,
+                            'id_product' => $request['txtProduct'],
+                            'total' => $request['txtTotal']
+                        ]);
+                }else{
+                    foreach ($total_pdu_eml as $value){
+                        if($value->id_product == $request['txtProduct']){
+                            $update_total_pdu_emu = DB::table('total_product_emulations')
+                                ->where('id','=',$value->id)
+                                ->update([
+                                    'total' => $request['txtTotal']
+                                ]);
+                        }
+                    }
+                }
             }
         }catch (QueryException $ex){
             $notification = array(
@@ -2050,16 +2160,10 @@ class Admin2Controller extends Controller
     }
 
     public function addAsmToGoal($id){
-//        $asm = User::join('positions','positions.position_id','=','users.position_id')
-//                    ->where('positions.position_name','=','ASM');
         $asm_result = Group::all();
         $supplier = Supplier::all();
         $list_goal_sales = GoalSales::find($id);
         $arr = explode(',',$list_goal_sales->id_group);
-//        foreach ($arr as $value ){
-//            $asm = $asm->where('users.id','<>',$value);
-//        }
-//        $asm_result = $asm->get();
         return view('admin2.goal.list_asm_add_goal',compact('asm_result','supplier','id','arr'));
     }
 
@@ -2134,6 +2238,74 @@ class Admin2Controller extends Controller
         }
         $notification = array(
             'message' => 'Thực hiện thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+
+    public function viewUpdateInformationGoal($id){
+        $goal_product = GoalProduct::find($id);
+        return view('admin2.goal.update_information_goal',compact('goal_product'));
+    }
+
+    public function updateInformationGoal(Request $request){
+        $validator = \Validator::make($request->all(),[
+            'txtName' => 'required',
+            'txtType' => 'required',
+            'txtGoal' => 'required',
+            'txtStart' => 'required',
+            'txtEnd' => 'required',
+        ]);
+        $notification= array(
+            'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+            if($request->txtType == 'sanluong'){
+                $create_pdu = DB::table('goal_products')
+                    ->where('id','=',$request['id_goal'])
+                    ->update([
+                    'name'=> $request['txtName'],
+                    'type'=> $request['txtType'],
+                    'sl'=> $request['txtGoal'],
+                    'dt'=> null,
+                    'start_time'=> $request['txtStart'],
+                    'end_time'=> $request['txtEnd'],
+                ]);
+            }elseif($request->txtType == 'doanhthu'){
+                $create_pdu = DB::table('goal_products')
+                    ->where('id','=',$request['id_goal'])
+                    ->update([
+                    'name'=> $request['txtName'],
+                    'type'=> $request['txtType'],
+                    'sl'=> null,
+                    'dt'=> $request['txtGoal'],
+                    'start_time'=> $request['txtStart'],
+                    'end_time'=> $request['txtEnd'],
+                ]);
+            }else{
+                $notification = array(
+                    'message' => 'Chọn loại mục tiêu và kiểm tra thông tin!',
+                    'alert-type' => 'error'
+                );
+                return Redirect::back()->with($notification);
+            }
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Cập nhật thông tin thành công!',
             'alert-type' => 'success'
         );
         return Redirect::back()->with($notification);

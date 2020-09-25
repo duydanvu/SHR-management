@@ -92,22 +92,15 @@ class User1Controller extends Controller
 
     public function view_user_with_sale_product($id){
         $id_group = Group::where('manager','like','%'.\Auth::id().'%')->get();
+        $str_group = [];
         foreach ($id_group as $key => $value){
-            if($key == 0){
-                $user = UserProduct::join('users','users.id','=','user_products.id_user')
-                    ->where('users.activation_key','=','active')
-                    ->where('id_group','=',$value->id)
-                    ->where('id_product','=',$id)
-                    ->select('user_products.*','users.last_name','users.email');
-            }
-            $user = UserProduct::join('users','users.id','=','user_products.id_user')
-                ->where('users.activation_key','=','active')
-                ->where('id_group','=',$value->id)
-                ->where('id_product','=',$id)
-                ->select('user_products.*','users.last_name','users.email')
-                ->union($user);
-
+            array_push($str_group,$value->id);
         }
+        $user = UserProduct::join('users','users.id','=','user_products.id_user')
+            ->where('users.activation_key','=','active')
+            ->whereIn('id_group',$str_group)
+            ->where('id_product','=',$id)
+            ->select('user_products.*','users.last_name','users.email');
         $list_user = $user->get();
         $list_group = Group::all();
         return view('user1.list_user_sale_product',compact('list_user','list_group','id'));

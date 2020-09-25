@@ -85,7 +85,6 @@
                     <th style="width:10%">Mức Hoa Hồng</th>
                     <th style="width:10%">Nhà Cung Cấp</th>
                     <th style="width:10%">Loại Hình Hợp Tác</th>
-                    <th style="width:10%">Hợp Đồng Tham Chiếu</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
@@ -112,7 +111,6 @@
                                 @endif
                             @endforeach
                             <td>{{$value->cooperation}}</td>
-                            <td>{{$value->contract}}</td>
                         </tr>
                     @endforeach
                 @else

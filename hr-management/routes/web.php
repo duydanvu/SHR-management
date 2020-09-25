@@ -96,7 +96,10 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::post('/admin2/add_emulation_product','Admin2Controller@addEmulationProduct')->name('add_emulation_product');
     Route::get('/admin2/list_emulation_product','Admin2Controller@listEmulationProduct')->name('list_emulation_product');
     Route::get('/admin2/add_product_to_emulation/{id}','Admin2Controller@addProductToEmulation')->name('add_product_to_emulation');
+    Route::get('/admin2/edit_information_emulation/{id}','Admin2Controller@editInformationEmulation')->name('edit_information_emulation');
     Route::post('/admin2/update_add_product_emulation','Admin2Controller@updateAddProductEmulation')->name('update_add_product_emulation');
+    Route::post('/admin2/update_information_product_emulation','Admin2Controller@updateInformationProductEmulation')
+        ->name('update_information_product_emulation');
 
     //admin2/giao muc tieu ban hang
     Route::get('/admin2/goal_product','Admin2Controller@indexGoalProduct')->name('home_goal_product');
@@ -106,6 +109,9 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/admin2/add_asm_to_goal/{id}','Admin2Controller@addAsmToGoal')->name('add_asm_to_goal');
     Route::post('/admin2/update_add_product_goal','Admin2Controller@updateAddProductGoal')->name('update_add_product_goal');
     Route::post('/admin2/update_add_asm_goal','Admin2Controller@updateAddAsmGoal')->name('update_add_asm_goal');
+    Route::get('/admin2/view_update_information_goal/{id}','Admin2Controller@viewUpdateInformationGoal')
+        ->name('view_update_information_goal');
+    Route::post('/admin2/update_information_goal','Admin2Controller@updateInformationGoal')->name('update_information_goal');
 
     //admin2/product
     Route::get('/admin2/product','Admin2Controller@index_products')->name('home_manager_product');
@@ -165,6 +171,8 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
 
     //user2/danh sach san pham kha dung
     Route::get('/user2/list_product','User2Controller@list_product')->name('danh_sach_san_pham_kha_dung');
+    Route::get('/user2/list_view_product','User2Controller@list_view_product')->name('view_danh_sach_san_pham');
+    Route::get('/user2/view_detail_product_user2/{id}','User2Controller@view_detail_product_user2')->name('view_detail_product_user2');
 
     // route area
     Route::get('/admin/area','AreaController@listArea')->name('show_list_area');

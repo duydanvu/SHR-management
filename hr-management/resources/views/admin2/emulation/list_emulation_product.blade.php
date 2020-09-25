@@ -55,8 +55,8 @@
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <div class="dropdown-menu" role="menu">
-                                        <a href="#" data-remote="false"
-                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                        <a href="{{route('edit_information_emulation',['id'=>$value->id])}}" data-remote="false"
+                                           data-toggle="modal" data-target="#modal-admin-action-edit" class="btn dropdown-item">
                                             <i class="fas fa-edit"> Sửa</i>
                                         </a>
                                         <a href="{{route('add_product_to_emulation',['id'=>$value->id])}}" data-remote="false"
@@ -104,7 +104,7 @@
 
     {{--    --}}{{-- modal --}}
     <div class="modal fade" id="modal-admin-action-update">
-        <div class="modal-dialog" style="max-width: 800px" >
+        <div class="modal-dialog" style="max-width: 600px" >
             <div class="modal-content" >
                 <div class="modal-header">
                     <h4 class="modal-title">Thêm Sản Phẩm </h4>
@@ -114,7 +114,6 @@
                 <form action="{{route('update_add_product_emulation')}}" method="post">
                     <div class="modal-body">
                         @csrf
-
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -126,10 +125,28 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-
-    {{--     modal --}}
-
-    {{--    --}}{{-- modal --}}
+    <div class="modal fade" id="modal-admin-action-edit">
+        <div class="modal-dialog" style="max-width: 600px" >
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <h4 class="modal-title">Sửa Thông Tin </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form action="{{route('update_information_product_emulation')}}" method="post">
+                    <div class="modal-body">
+                        @csrf
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 
     {{--     modal --}}
     <div class="modal fade"  id="modal-create-member" >
@@ -272,7 +289,7 @@
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });
-        $("#modal-admin-action-update-detail").on("show.bs.modal", function(e) {
+        $("#modal-admin-action-edit").on("show.bs.modal", function(e) {
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });

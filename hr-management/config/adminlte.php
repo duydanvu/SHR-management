@@ -418,13 +418,11 @@ return [
                     'submenu' =>[
                         [
                             'text'    => 'Tạo khuyến mại',
-                            'icon'    => 'fas fa-clipboard-list',
                             'url'     => '/admin2/sales_product',
                             'can'     => 'admin_lv2'
                         ],
                         [
                             'text'    => 'Danh Sách khuyến mại',
-                            'icon'    => 'fas fa-clipboard-list',
                             'url'     => '/admin2/list_sales_product',
                             'can'     => 'admin_lv2'
                         ],
@@ -438,13 +436,11 @@ return [
 
                         [
                             'text'    => 'Tạo chương trình thi đua',
-                            'icon'    => 'fas fa-clipboard-list',
                             'url'     => '/admin2/emulation_product',
                             'can'     => 'admin_lv2'
                         ],
                         [
                             'text'    => 'Danh sách chương trình',
-                            'icon'    => 'fas fa-clipboard-list',
                             'url'     => '/admin2/list_emulation_product',
                             'can'     => 'admin_lv2'
                         ],
@@ -456,14 +452,12 @@ return [
                     'can'     => 'admin_lv2',
                     'submenu' => [
                         [
-                        'text'    => 'Giao mục tiêu bán hàng',
-                        'icon'    => 'fas fa-clipboard-list',
-                        'url'     => '/admin2/goal_product',
-                        'can'     => 'admin_lv2'
+                            'text'    => 'Giao mục tiêu bán hàng',
+                            'url'     => '/admin2/goal_product',
+                            'can'     => 'admin_lv2'
                         ],
                         [
                             'text'    => 'Quản lý mục tiêu ',
-                            'icon'    => 'fas fa-clipboard-list',
                             'url'     => '/admin2/list_goal_product',
                             'can'     => 'admin_lv2'
                         ],
@@ -501,6 +495,11 @@ return [
                         [
                             'text'    => 'Quản lý Sản Phẩm',
                             'url'     => '/user2/list_product',
+                            'can'     => 'user_lv2',
+                        ] ,
+                        [
+                            'text'    => 'Bán Hàng',
+                            'url'     => '/user2/list_view_product',
                             'can'     => 'user_lv2',
                         ] ,
                     ]

@@ -2,8 +2,8 @@
 @foreach($list as $value)
 <div class="row">
     <div id = "url_image1"><input name="id_sale" value="{{$value->id}}" hidden></div>
-{{--    <div id = "url_image2"><input name="id_pdu" value="{{$value->id_group}}" ></div>--}}
-{{--    <div id = "url_image3"><input name="id_grp" value="{{$value->id_group}}" ></div>--}}
+    <div id = "url_image2"><input name="id_pdu" value="{{$value->id_product}}" hidden></div>
+    <div id = "url_image3"><input name="id_grp" value="{{$value->id_group}}" hidden></div>
     <div class="col-lg-12 col-sm-12">
         <div class="col-lg-6 float-left">
             <div class="form-group">

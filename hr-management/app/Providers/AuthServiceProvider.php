@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\User;
 use App\UserAction;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
@@ -85,9 +86,9 @@ class AuthServiceProvider extends ServiceProvider
         });
         Gate::define('user_lv2',function ($user){
             $action = UserAction::where('user_id','=',$user->id)->get();
-            $user_system = User::where('id','=',$user->id)->where('type','<>','systems')->get();
+            $user_system = User::where('id','=',$user->id)->where('type','=','systems')->get();
             if(sizeof($user_system) > 0 ) {
-                if (count($action) == 1) {
+                if (count($action) == 1 && Auth::user()->position_id == 3) {
                     return true;
                 } else {
                     return false;
