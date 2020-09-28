@@ -51,6 +51,7 @@ class User2Controller extends Controller
     }
 
     public function add_new_sell_product(Request $request){
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
         $curDate = date("Y-m-d");
         $curDateTime = date("Y-m-d H:i:s");
         $table = 'spd_log_'.substr($curDate,5,2).substr($curDate,0,4).'s';
