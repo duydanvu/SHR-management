@@ -35,4 +35,15 @@ class User2Controller extends Controller
         $product = Products::find($id);
         return view('user2.view_detail_product',compact('product'));
     }
+
+    public function view_list_product_user2(){
+        $id_product = UserProduct::where('id_user','=',Auth::id())->get();
+        $arr = [];
+        foreach ($id_product as $value){
+            array_push($arr,$value->id_product);
+        }
+        $product = Products::whereIn('id',$arr)->get();
+        $supplier = Supplier::all();
+        return view('user2.view_list_detail_product',compact('product','supplier'));
+    }
 }

@@ -65,222 +65,129 @@
     </style>
 @stop
 @section('content')
-        <!-- Info boxes -->
-        <section class="home_banner_area">
-            <div class="banner_inner d-flex align-items-center">
-                <div class="container">
-                    <div class="banner_content row " style="padding-top: 10px">
-                        <div class="col-lg-5">
-                            <h3>Danh Sách Sản Phẩm <br />Bán Chạy!</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                            <a class="white_bg_btn" href="{{route('view_list_product_detail')}}">Xem Danh Sách</a>
+    <h2 style="text-align: center">Danh Sách Sản Phẩm</h2>
+    <!--================Category Product Area =================-->
+    <section class="cat_product_area p_40">
+        <div class="container">
+            <div class="row flex-row-reverse">
+                <div class="col-lg-9">
+                    <div class="product_top_bar">
+                    </div>
+                    <div class="latest_product_inner row">
+                            @foreach($product as $value)
+                        <div class="col-lg-4 col-md-4 col-sm-6">
+                            <div class="f_p_item">
+                                <a href="{{route('view_detail_product_user2',['id'=>$value->id])}}">
+                                <div class="f_p_img">
+                                    <img class="img-fluid" src="../upload/product/feature-product/f-p-5.jpg" alt="">
+                                    <div class="p_icon">
+                                        <a href="#"><i class="lnr lnr-heart"></i></a>
+                                    </div>
+                                </div>
+                                </a>
+                                <a href="{{route('view_detail_product_user2',['id'=>$value->id])}}"><h4>{{$value->name}}</h4></a>
+                                <h5 style="text-decoration-line: line-through">{{$value->price_out}}<sup>VND</sup></h5>
+                                <h5>{{$value->price_sale}}<sup>VND</sup></h5>
+                            </div>
                         </div>
-                        <div class="col-lg-7">
-                            <div class="halemet_img">
-                                <img src="../upload/banner/helmat.png" alt="">
+                            @endforeach
+                        <div class="col-lg-4 col-md-4 col-sm-6">
+                            <div class="f_p_item">
+                                <div class="f_p_img">
+                                    <img class="img-fluid" src="../upload/product/feature-product/f-p-2.jpg" alt="">
+                                    <div class="p_icon">
+                                        <a href="#"><i class="lnr lnr-heart"></i></a>
+                                        <a href="#"><i class="lnr lnr-cart"></i></a>
+                                    </div>
+                                </div>
+                                <a href="#"><h4>Long Sleeve TShirt</h4></a>
+                                <h5>$150.00</h5>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6">
+                            <div class="f_p_item">
+                                <div class="f_p_img">
+                                    <img class="img-fluid" src="../upload/product/feature-product/f-p-3.jpg" alt="">
+                                    <div class="p_icon">
+                                        <a href="#"><i class="lnr lnr-heart"></i></a>
+                                        <a href="#"><i class="lnr lnr-cart"></i></a>
+                                    </div>
+                                </div>
+                                <a href="#"><h4>Long Sleeve TShirt</h4></a>
+                                <h5>$150.00</h5>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6">
+                            <div class="f_p_item">
+                                <div class="f_p_img">
+                                    <img class="img-fluid" src="../upload/product/feature-product/f-p-4.jpg" alt="">
+                                    <div class="p_icon">
+                                        <a href="#"><i class="lnr lnr-heart"></i></a>
+                                        <a href="#"><i class="lnr lnr-cart"></i></a>
+                                    </div>
+                                </div>
+                                <a href="#"><h4>Long Sleeve TShirt</h4></a>
+                                <h5>$150.00</h5>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6">
+                            <div class="f_p_item">
+                                <div class="f_p_img">
+                                    <img class="img-fluid" src="../upload/product/feature-product/f-p-5.jpg" alt="">
+                                    <div class="p_icon">
+                                        <a href="#"><i class="lnr lnr-heart"></i></a>
+                                        <a href="#"><i class="lnr lnr-cart"></i></a>
+                                    </div>
+                                </div>
+                                <a href="#"><h4>Long Sleeve TShirt</h4></a>
+                                <h5>$150.00</h5>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-        <!--================Feature Product Area =================-->
-        <section class="feature_product_area">
-            <div class="main_box">
-                <div class="container">
-                    <div class="row hot_product_inner">
-                        <div class="col-lg-6">
-                            <div class="hot_p_item">
-                                <img class="img-fluid" src="../upload/product/hot-product/hot-p-1.jpg" alt="">
-                                <div class="product_text">
-                                    <h4>Ưu Đãi Hấp Dẫn <br />Trong Tháng</h4>
-                                    <a href="{{route('view_list_product_detail')}}">Xem Ngay</a>
-                                </div>
+                <div class="col-lg-3">
+                    <div class="left_sidebar_area">
+                        <aside class="left_widgets cat_widgets">
+                            <div class="l_w_title">
+                                <h3>Nhà Cung Cấp</h3>
                             </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="hot_p_item">
-                                <img class="img-fluid" src="../upload/product/hot-product/hot-p-2.jpg" alt="">
-                                <div class="product_text">
-                                    <h4>Ưu Đãi Hấp Dẫn<br />Trong Tháng</h4>
-                                    <a href="{{route('view_list_product_detail')}}">Xem Ngay</a>
-                                </div>
+                            <div class="widgets_inner">
+                                <ul class="list">
+                                    @foreach($supplier as $values)
+                                    <li><a href="#">{{$values->name}}</a></li>
+                                    @endforeach
+                                </ul>
                             </div>
-                        </div>
-                    </div>
-                    <div class="feature_product_inner">
-                        <div class="main_title">
-                            <h2>Sản Phẩm Nổi Bật</h2>
-                            <p>Sản Phẩm Được Nhiều Nhất .</p>
-                        </div>
-                        <div class="feature_p_slider owl-carousel">
-                            @foreach($product as $value)
-                            <div class="item">
-                                <div class="f_p_item">
-                                    <a href="{{route('view_detail_product_user2',['id'=>$value->id])}}">
-                                    <div class="f_p_img">
-                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-1.jpg" alt="">
-                                        <div class="p_icon">
-                                            <a href="#"><i class="lnr lnr-heart"></i></a>
-{{--                                            <a href="#"><i class="lnr lnr-cart"></i></a>--}}
-                                        </div>
-                                    </div>
-                                    </a>
-                                    <a href="{{route('view_detail_product_user2',['id'=>$value->id])}}"><h4>{{$value->name}}</h4></a>
-                                    <h5 style="text-decoration-line: line-through">{{$value->price_out}}<sup>VND</sup></h5>
-                                    <h5>{{$value->price_sale}}<sup>VND</sup></h5>
-                                </div>
+                        </aside>
+                        <aside class="left_widgets p_filter_widgets">
+                            <div class="l_w_title">
+                                <h3>Product Chi Tiết Sản Phẩm</h3>
                             </div>
-                            @endforeach
-                            <div class="item">
-                                <div class="f_p_item">
-                                    <div class="f_p_img">
-                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-2.jpg" alt="">
-                                        <div class="p_icon">
-                                            <a href="#"><i class="lnr lnr-heart"></i></a>
-                                            <a href="#"><i class="lnr lnr-cart"></i></a>
-                                        </div>
-                                    </div>
-                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>
-                                    <h5>$150.00</h5>
-                                </div>
+                            <div class="widgets_inner">
+                                <h4>Màu Sắc</h4>
+                                <ul class="list">
+                                    <li><a href="#">Đen</a></li>
+                                    <li><a href="#">Xanh</a></li>
+                                    <li class="active"><a href="#">Vàng</a></li>
+                                </ul>
                             </div>
-                            <div class="item">
-                                <div class="f_p_item">
-                                    <div class="f_p_img">
-                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-3.jpg" alt="">
-                                        <div class="p_icon">
-                                            <a href="#"><i class="lnr lnr-heart"></i></a>
-                                            <a href="#"><i class="lnr lnr-cart"></i></a>
-                                        </div>
-                                    </div>
-                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>
-                                    <h5>$150.00</h5>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="f_p_item">
-                                    <div class="f_p_img">
-                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-4.jpg" alt="">
-                                        <div class="p_icon">
-                                            <a href="#"><i class="lnr lnr-heart"></i></a>
-                                            <a href="#"><i class="lnr lnr-cart"></i></a>
-                                        </div>
-                                    </div>
-                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>
-                                    <h5>$150.00</h5>
-                                </div>
-                            </div>
-                        </div>
-{{--                        <div class="feature_p_slider owl-carousel">--}}
-{{--                            <div class="row">--}}
-{{--                                @foreach($product as $value)--}}
-{{--                                <div class="item col-lg-3 col-md-4 col-sm-6 col-12" >--}}
-{{--                                    <div class="f_p_item">--}}
-{{--                                        <a href="{{route('view_detail_product_user2',['id'=>$value->id])}}">--}}
-{{--                                        <div class="f_p_img">--}}
-{{--                                            <img class="img-fluid" src="../upload/product/feature-product/f-p-1.jpg" alt="">--}}
-{{--                                        </div></a>--}}
-{{--                                        <a href="{{route('view_detail_product_user2',['id'=>$value->id])}}" style="text-align: center"><h5>{{$value->name}}</h5></a>--}}
-{{--                                        <div style="text-align: center"><p><a style="text-decoration-line: line-through">{{$value->price_out}}</a> ~{{$value->price_sale}}</p>--}}
-{{--                                           </div>--}}
+{{--                            <div class="widgets_inner">--}}
+{{--                                <h4>Price</h4>--}}
+{{--                                <div class="range_item">--}}
+{{--                                    <div id="slider-range"></div>--}}
+{{--                                    <div class="row m0">--}}
+{{--                                        <label for="amount">Price : </label>--}}
+{{--                                        <input type="text" id="amount" >--}}
 {{--                                    </div>--}}
 {{--                                </div>--}}
-{{--                                @endforeach--}}
 {{--                            </div>--}}
-{{--                        </div>--}}
+                        </aside>
                     </div>
                 </div>
             </div>
-        </section>
-        <!--================End Feature Product Area =================-->
-
-        <!--================Latest Product Area =================-->
-        <section class="feature_product_area latest_product_area">
-            <div class="main_box">
-                <div class="container">
-                    <div class="feature_product_inner">
-                        <div class="main_title">
-                            <h2>Sản Phẩm Mới </h2>
-                            <p>Những sản phẩm mới được bán</p>
-                        </div>
-                        <div class="latest_product_inner row">
-                            @foreach($product as $value)
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="f_p_item">
-                                    <a href="{{route('view_detail_product_user2',['id'=>$value->id])}}">
-                                    <div class="f_p_img">
-                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-3.jpg" alt="">
-                                        <div class="p_icon">
-                                            <a href="#"><i class="lnr lnr-heart"></i></a>
-                                        </div>
-                                    </div>
-                                    </a>
-                                    <a href="{{route('view_detail_product_user2',['id'=>$value->id])}}"><h4>{{$value->name}}</h4></a>
-                                    <h5 style="text-decoration-line: line-through">{{$value->price_out}}<sup>VND</sup></h5>
-                                    <h5>{{$value->price_sale}}<sup>VND</sup></h5>
-                                </div>
-                            </div>
-                            @endforeach
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="f_p_item">
-                                    <div class="f_p_img">
-                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-1.jpg" alt="">
-                                        <div class="p_icon">
-                                            <a href="#"><i class="lnr lnr-heart"></i></a>
-                                            <a href="#"><i class="lnr lnr-cart"></i></a>
-                                        </div>
-                                    </div>
-                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>
-                                    <h5>$150.00</h5>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="f_p_item">
-                                    <div class="f_p_img">
-                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-2.jpg" alt="">
-                                        <div class="p_icon">
-                                            <a href="#"><i class="lnr lnr-heart"></i></a>
-                                            <a href="#"><i class="lnr lnr-cart"></i></a>
-                                        </div>
-                                    </div>
-                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>
-                                    <h5>$150.00</h5>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="f_p_item">
-                                    <div class="f_p_img">
-                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-3.jpg" alt="">
-                                        <div class="p_icon">
-                                            <a href="#"><i class="lnr lnr-heart"></i></a>
-                                            <a href="#"><i class="lnr lnr-cart"></i></a>
-                                        </div>
-                                    </div>
-                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>
-                                    <h5>$150.00</h5>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="f_p_item">
-                                    <div class="f_p_img">
-                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-4.jpg" alt="">
-                                        <div class="p_icon">
-                                            <a href="#"><i class="lnr lnr-heart"></i></a>
-                                            <a href="#"><i class="lnr lnr-cart"></i></a>
-                                        </div>
-                                    </div>
-                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>
-                                    <h5>$150.00</h5>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!--================End Latest Product Area =================-->
+        </div>
+    </section>
+    <!--================End Category Product Area =================-->
 
         <!--================Most Product Area =================-->
         <section class="most_product_area">

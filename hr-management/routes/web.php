@@ -173,6 +173,7 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/user2/list_product','User2Controller@list_product')->name('danh_sach_san_pham_kha_dung');
     Route::get('/user2/list_view_product','User2Controller@list_view_product')->name('view_danh_sach_san_pham');
     Route::get('/user2/view_detail_product_user2/{id}','User2Controller@view_detail_product_user2')->name('view_detail_product_user2');
+    Route::get('/user2/view_list_detail_product','User2Controller@view_list_product_user2')->name('view_list_product_detail');
 
     // route area
     Route::get('/admin/area','AreaController@listArea')->name('show_list_area');
