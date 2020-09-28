@@ -100,7 +100,9 @@
                             <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Phasellus id nisi quis justo tempus mollis sed et dui. In hac habitasse platea dictumst. Suspendisse ultrices mauris diam. Nullam sed aliquet elit. Mauris consequat nisi ut mauris efficitur lacinia.</p>
                         </div>
 
-                        <!-- Product Quantity -->
+                        <div class="card_area">
+                            <button class="main_btn" data-toggle="modal" data-target="#modal-create-store">Bán Sản Phẩm</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -119,7 +121,98 @@
     </div>
 
 @stop
-
+{{--     modal --}}
+<div class="modal fade" id="modal-create-store">
+    <div class="modal-dialog" style="max-width: 800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Bán Sản Phẩm</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="form-horizontal" action="{{route('add_new_sell_product')}}" method="post">
+                <div class="modal-body" >
+                    @csrf
+                    <div class="row" >
+                        <div class="col-sm-12">
+                            <div class="col-sm-6 float-left">
+                                <div class="form-group">
+                                    <div class="details_image" style="height: 200px;width: 150px">
+                                        <div class="details_image_large" style="height: 300px;width: 250px">
+                                            <img src="/upload/product/feature-product/f-p-1.jpg" alt="" style="height: 300px;width: 250px">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="details_image" style="height: 100px;width: 100px">
+                                        <div class="details_image_large" >
+                                            <img src="/upload/qr-code_vinacheck.jpg" alt="" style="height: 100px;width: 100px">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 float-left">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="name">Tên Sản Phẩm</label>
+                                        <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value="{{$product->name}}"  autocomplete="number" required readonly>
+                                        @error('txtName')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Giá Sản Phẩm</label>
+                                        <input id="price_product" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtPriceProduct" value="{{$product->price_sale}}"  autocomplete="number" readonly>
+                                        <input id="product_id" type="text" class="form-control @error('txtProductID') is-invalid @enderror" name="txtProductID" value="{{$product->id}}"  autocomplete="number" hidden>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Số Lượng </label>
+                                        <input id="totalProduct" type="number" class="form-control @error('txtAddress') is-invalid @enderror" name="totalProduct" value="0"  autocomplete="number" required>
+                                        @error('txtAddress')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Đường Dẫn Sản Phẩm</label>
+                                        <input id="linkLandPage" type="text" class="form-control @error('txtLinkLandding')
+                                            is-invalid @enderror" name="txtLinkLandding" value="http://www.example.com/product_1/landdingpage/#bird"  autocomplete="number" required readonly>
+                                        @error('txtLinkLandding')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                        <button onclick="myFunction()">Sao Chép Đường Dẫn</button>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Tổng tiền</label>
+                                        <input id="tongTien" type="text" class="form-control @error('txtTongTien') is-invalid @enderror" name="txtTongTien" value=""  autocomplete="number">
+                                        @error('txtTongTien')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button id="create_member" type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+{{--    --}}{{-- modal --}}
 @section('css')
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
 @stop
@@ -131,25 +224,22 @@
 
     <script>
         $(function () {
-            $("#example1").DataTable({
-                aoColumnDefs: [
-                    {
-                        bSortable: false,
-                        aTargets: ['noSort'],
-
-                    } // Disable sorting on columns marked as so
-                ],
-                "oLanguage": {
-                    "sSearch": "Tìm Kiếm",
-                    "sLengthMenu": "Hiển Thị _MENU_ Bản Ghi",
-                },
-                "language": {
-                    "info": "Đang hiển thị _START_ tới _END_ trong _TOTAL_ kết quả",
-                }
+            $("#totalProduct").keyup( function () {
+                let price = $("#price_product").val();
+                let total = $("#totalProduct").val();
+                $("#tongTien").val(price*total);
+                console.log(price*total);
             });
-            // fix table
-            $("#example1").parent().css({"overflow": "auto"});
         });
+    </script>
+    <script>
+        function myFunction() {
+            var copyText = document.getElementById("linkLandPage");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999)
+            document.execCommand("copy");
+            alert("Sao chép đường dẫn thành công .");
+        }
     </script>
 @stop
 
