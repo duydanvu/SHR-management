@@ -125,7 +125,9 @@ class User2Controller extends Controller
                 );
                 return Redirect::back()->with($notification);
             }else{
-                $select_warehouse = DB::table('warehouse_products')->orderBy('id','DESC')->first();
+                $select_warehouse = DB::table('warehouse_products')
+                    ->where('id_product','=',$request['txtProductID'])
+                    ->orderBy('id','DESC')->first();
                 $update_warehouse = DB::table('warehouse_products')->insert([
                     'id_product'=>$select_warehouse->id_product,
                     'id_warehouse'=>$select_warehouse->id_warehouse,
