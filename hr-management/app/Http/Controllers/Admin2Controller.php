@@ -2310,4 +2310,69 @@ class Admin2Controller extends Controller
         );
         return Redirect::back()->with($notification);
     }
+
+    public function listHoanUng(){
+        $curDate = date("Y-m-d");
+        $table = 'spd_'.substr($curDate,5,2).substr($curDate,0,4).'s';
+        $list_hoan_ung = DB::table($table)
+            ->join('products','id_product','=','products.id')
+            ->join('users','id_user','=','users.id')
+            ->where('status_transport','=','done')
+            ->where('status_payment','=','done')
+            ->where('status_kt','=','done')
+            ->where('status_admin2','=','wait')
+            ->select(''.$table.'.*','products.*')
+            ->addSelect(''.$table.'.id as id_order')
+            ->addSelect('users.last_name')
+            ->addSelect('users.email')
+            ->get();
+        $product = Products::all();
+        return view('admin2.hoan_ung.list_hoan_ung',compact('list_hoan_ung','product'));
+    }
+
+    public function view_detail_hoan_ung($id){
+        $curDate = date("Y-m-d");
+        $table = 'spd_'.substr($curDate,5,2).substr($curDate,0,4).'s';
+        $order_hoan_ung = DB::table($table)->find($id);
+        $product = Products::find($order_hoan_ung->id_product);
+        return view('admin2.hoan_ung.detail_order_hoan_ung',compact('order_hoan_ung','product'));
+    }
+
+    public function action_update_hoan_ung_admin2(Request $request){
+        $id_order = $request->id_hoan_ung;
+        $curDate = date("Y-m-d");
+        $table1 = 'spd_'.substr($curDate,5,2).substr($curDate,0,4).'s';
+        try {
+            $update_hoan_ung = DB::table($table1)->where('id','=',$id_order)
+                ->update([
+                    'status_admin2'=>'done',
+                ]);
+            if($update_hoan_ung == 0){
+                $notification = array(
+                    'message' => 'Kiểm tra lại thông tin hoàn ứng!',
+                    'alert-type' => 'error'
+                );
+                return Redirect::back()->with($notification);
+            }else{
+                $id_user = DB::table($table1)->find($id_order);
+                $han_muc_now = DB::table('users')->find($id_user->id_user)->han_muc;
+                $update_hoan_ung_user = DB::table('users')
+                    ->where('id','=',$id_user->id_user)
+                    ->update([
+                        'han_muc'=>$han_muc_now + $request->txtTotalPrice,
+                    ]);
+            }
+        }catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Kiểm tra lại thông tin hoàn ứng!',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Hoàn ứng thành công !',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
 }

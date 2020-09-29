@@ -19,7 +19,7 @@ class checkLogOut
     {
         if (Auth::check()) {
             $user =  Auth::user();
-            if($user->position_id == 1 || $user->position_id == 2 || $user->position_id == 3){
+            if($user->position_id == 1 || $user->position_id == 2 || $user->position_id == 3 || $user->position_id == 6){
                 return $next($request);
             }else{
                 $notification = array(

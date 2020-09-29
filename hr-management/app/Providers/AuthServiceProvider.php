@@ -96,5 +96,21 @@ class AuthServiceProvider extends ServiceProvider
             }
             return false;
         });
+
+        Gate::define('ktkt',function ($user){
+           $action = UserAction::where('user_id','=',$user->id)->get();
+            $user_system = User::where('id','=',$user->id)->where('type','=','systems')->get();
+            foreach ($action as $value) {
+                if (sizeof($user_system) > 0) {
+                    if ($value->action_id == 7) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                return false;
+            }
+            });
+
     }
 }

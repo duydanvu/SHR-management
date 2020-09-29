@@ -141,6 +141,12 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
         ->name('list_product_decentralization_with_group');
     Route::post('/admin2/add_product_for_group','Admin2Controller@addProductForGroup')->name('add_group_to_sell_product');
 
+    // route hoan ung tien
+    Route::get('admin2/danh_sach_hoan_ung','Admin2Controller@listHoanUng')->name('danh_sach_hoan_ung_admin2');
+    Route::get('admin2/view_detail_hoan_ung/{id}','Admin2Controller@view_detail_hoan_ung')->name('view_detail_hoan_ung_admin2');
+    Route::post('admin2/action_update_hoan_ung_admin2','Admin2Controller@action_update_hoan_ung_admin2')
+        ->name('action_update_hoan_ung_admin2');
+
     //import lock acc and han muc
     Route::post('/admin2/import_lock_acc','Admin2Controller@import_lock_acc')->name('import_lock_acc');
     Route::post('/admin2/import_han_muc','Admin2Controller@import_han_muc')->name('import_han_muc');
@@ -175,6 +181,19 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/user2/view_detail_product_user2/{id}','User2Controller@view_detail_product_user2')->name('view_detail_product_user2');
     Route::get('/user2/view_list_detail_product','User2Controller@view_list_product_user2')->name('view_list_product_detail');
     Route::post('/user2/add_new_sell_product','User2Controller@add_new_sell_product')->name('add_new_sell_product');
+
+    Route::get('user2/danh_sach_hoan_ung','User2Controller@hoan_ung')->name('danh_sach_hoan_ung');
+    Route::get('user2/danh_sach_giao_hang','User2Controller@shippingProduct')->name('danh_sach_giao_hang');
+    Route::get('user2/view_detail_hoan_ung/{id}','User2Controller@view_detail_hoan_ung')->name('view_detail_hoan_ung');
+    Route::get('user2/view_detail_shipping/{id}','User2Controller@view_detail_shipping')->name('view_detail_shipping');
+    Route::post('user2/action_update_hoan_ung_user2','User2Controller@action_update_hoan_ung_user2')->name('action_update_hoan_ung_user2');
+
+    //route ktkt
+    Route::get('ktkt/danh_sach_hoan_ung','KtktController@listHoanUng')->name('danh_sach_hoan_ung_kt');
+    Route::get('ktkt/view_detail_hoan_ung/{id}','KtktController@view_detail_hoan_ung')->name('view_detail_hoan_ung_kt');
+    Route::post('ktkt/action_update_hoan_ung_ktkt','KtktController@action_update_hoan_ung_ktkt')
+        ->name('action_update_hoan_ung_ktkt');
+
 
     // route area
     Route::get('/admin/area','AreaController@listArea')->name('show_list_area');

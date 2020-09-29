@@ -481,6 +481,12 @@ return [
                     'url'     => '/admin2/lock_acc_user',
                     'can'     => 'admin_lv2'
                 ],
+                [
+                    'text'    => 'Quản lý Hoàn Ứng',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => 'admin2/danh_sach_hoan_ung',
+                    'can'     => 'admin_lv2'
+                ],
 //                [
 //                    'text'    => 'Truy cập Thông tin cá nhân',
 //                    'icon'    => 'fas fa-clipboard-list',
@@ -502,6 +508,16 @@ return [
                             'url'     => '/user2/list_view_product',
                             'can'     => 'user_lv2',
                         ] ,
+                        [
+                            'text'    => 'Hoàn Trả Ứng Tiền',
+                            'url'     => 'user2/danh_sach_hoan_ung',
+                            'can'     => 'user_lv2',
+                        ] ,
+                        [
+                            'text'    => 'Giao Hàng',
+                            'url'     => 'user2/danh_sach_giao_hang',
+                            'can'     => 'user_lv2',
+                        ] ,
                     ]
                 ],
                 [
@@ -515,6 +531,12 @@ return [
                     'icon'    => 'fas fa-clipboard-list',
                     'url'     => '/user1/phan_quyen_san_pham',
                     'can'     => 'user_lv1'
+                ],
+                [
+                    'text'    => 'Kiểm tra hoàn ứng',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => 'ktkt/danh_sach_hoan_ung',
+                    'can'     => 'ktkt'
                 ],
 
             ]
