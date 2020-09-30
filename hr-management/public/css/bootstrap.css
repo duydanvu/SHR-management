@@ -1782,6 +1782,7 @@ pre code {
 }
 
 @media (max-width: 575px) {
+
   .table-responsive-sm {
     display: block;
     width: 100%;

@@ -1996,59 +1996,43 @@ class Admin2Controller extends Controller
     }
 
     public function updateAddProductEmulation(Request $request){
-
+        $arr = $request->toArray();
         $arr_id_group = explode('_',$request->id_emulation_product);
-        $id_emulation_product = $arr_id_group[0];
-        $id_product = EmulationProducts::find($id_emulation_product);
-        $arr_id = explode(',',$id_product->id_product);
+        $id_goal_product = $arr_id_group[0];
+        $arr_id = '';
+        foreach ($arr as $value){
+            if(is_numeric($value)){
+                $arr_id .= ','.$value;
+            }
+        }
         try {
-            if ($arr_id[0] == "") {
+            if (strlen($arr_id) == 0) {
                 $update_w2w = DB::table('emulation_products')
-                    ->where('id', '=', $id_emulation_product)
+                    ->where('id', '=', $id_goal_product)
                     ->update([
-                        'id_product' => $request['txtProduct'],
+                        'id_product' => null,
                     ]);
-                $insert_total_pdu_emu = DB::table('total_product_emulations')
-                    ->insert([
-                        'id_emu_pdu' => $id_emulation_product,
-                        'id_product' => $request['txtProduct'],
-                        'total' => $request['txtTotal']
-                    ]);
+                $id_total_product = TotalProductEmulation::where('id_emu_pdu','=',$id_goal_product)->get();
+                foreach ($id_total_product as $value){
+                    $delete_total = TotalProductEmulation::destroy($value->id);
+                }
             } else {
-                $x = 0;
-                foreach($arr_id as $value_check){
-                    if($value_check === $request['txtProduct']){
-                        $x = 1;
-                    }
-                }
-                if($x == 1){
-                    $arr_id_rs = $id_product->id_product;
-                }else {
-                    $arr_id_rs = $id_product->id_product . ',' . $request['txtProduct'];
-                }
                 $update_w2w = DB::table('emulation_products')
-                    ->where('id', '=',  $id_emulation_product)
+                    ->where('id', '=',  $id_goal_product)
                     ->update([
-                        'id_product' => $arr_id_rs,
+                        'id_product' => substr($arr_id, 1),
                     ]);
-                $total_pdu_eml = TotalProductEmulation::where('id_emu_pdu','=',$id_emulation_product)
-                    ->where('id_product','=',$request['txtProduct'])->get();
-                if(sizeof($total_pdu_eml) == 0){
-                    $insert_total_pdu_emu = DB::table('total_product_emulations')
-                        ->insert([
-                            'id_emu_pdu' => $id_emulation_product,
-                            'id_product' => $request['txtProduct'],
-                            'total' => $request['txtTotal']
+                $id_total_product = TotalProductEmulation::where('id_emu_pdu','=',$id_goal_product)->get();
+                foreach ($id_total_product as $value){
+                    $delete_total = TotalProductEmulation::destroy($value->id);
+                }
+                foreach ($arr as $values){
+                    if(is_numeric($values)){
+                        $insert_total_product = DB::table('total_product_emulations')->insert([
+                           'id_emu_pdu'=>$id_goal_product,
+                            'id_product'=>$values,
+                            'total'=>0
                         ]);
-                }else{
-                    foreach ($total_pdu_eml as $value){
-                        if($value->id_product == $request['txtProduct']){
-                            $update_total_pdu_emu = DB::table('total_product_emulations')
-                                ->where('id','=',$value->id)
-                                ->update([
-                                    'total' => $request['txtTotal']
-                                ]);
-                        }
                     }
                 }
             }
@@ -2061,6 +2045,72 @@ class Admin2Controller extends Controller
         }
         $notification = array(
             'message' => 'Thực hiện thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+
+    public function listProductDetailEmulation($id){
+        $emu_product = EmulationProducts::find($id);
+        $arr_id_product = explode(',',$emu_product->id_product);
+        $total_product = TotalProductEmulation::
+            join('products','products.id','=','total_product_emulations.id_product')
+            ->where('id_emu_pdu','=',$id)
+            ->whereIn('id_product',$arr_id_product)
+            ->get();
+        return view('admin2.emulation.list_detail_product_emulation',compact('total_product','id'));
+    }
+
+    public function updateTotalProductEmulation($id,$id_emu){
+        $product_emulation = TotalProductEmulation::
+            join('products','products.id','=','total_product_emulations.id_product')
+            ->where('id_emu_pdu','=',$id_emu)
+            ->where('id_product','=',$id)
+            ->get();
+        $id_total_product_emulation = TotalProductEmulation::
+            join('products','products.id','=','total_product_emulations.id_product')
+            ->addSelect('total_product_emulations.id as id_tt')
+            ->where('id_emu_pdu','=',$id_emu)
+            ->where('id_product','=',$id)
+            ->get();
+        $x = 0;
+        foreach ($id_total_product_emulation as $value){
+            $x = $value;
+        }
+        return view('admin2.emulation.edit_total_product_emulation',compact('product_emulation','x'));
+    }
+
+    public function edit_total_product_emulation(Request $request){
+        $validator = \Validator::make($request->all(),[
+            'txtTotal' => 'required',
+        ]);
+        $notification= array(
+            'message' => ' Nhập Số lượng Sản Phẩm!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+                $update_product = DB::table('total_product_emulations')
+                    ->where('id', '=', $request->id_emulation_pdu)
+                    ->update([
+                        'total'=> $request->txtTotal,
+                    ]);
+
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Cập Nhật không thành công! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Cập nhật thông tin thành công!',
             'alert-type' => 'success'
         );
         return Redirect::back()->with($notification);

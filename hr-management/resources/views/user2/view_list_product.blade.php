@@ -121,7 +121,6 @@
                                     <div class="f_p_img">
                                         <img class="img-fluid" src="../upload/product/feature-product/f-p-1.jpg" alt="">
                                         <div class="p_icon">
-                                            <a href="#"><i class="lnr lnr-heart"></i></a>
 {{--                                            <a href="#"><i class="lnr lnr-cart"></i></a>--}}
                                         </div>
                                     </div>
@@ -137,8 +136,6 @@
                                     <div class="f_p_img">
                                         <img class="img-fluid" src="../upload/product/feature-product/f-p-2.jpg" alt="">
                                         <div class="p_icon">
-                                            <a href="#"><i class="lnr lnr-heart"></i></a>
-                                            <a href="#"><i class="lnr lnr-cart"></i></a>
                                         </div>
                                     </div>
                                     <a href="#"><h4>Long Sleeve TShirt</h4></a>
@@ -150,8 +147,6 @@
                                     <div class="f_p_img">
                                         <img class="img-fluid" src="../upload/product/feature-product/f-p-3.jpg" alt="">
                                         <div class="p_icon">
-                                            <a href="#"><i class="lnr lnr-heart"></i></a>
-                                            <a href="#"><i class="lnr lnr-cart"></i></a>
                                         </div>
                                     </div>
                                     <a href="#"><h4>Long Sleeve TShirt</h4></a>
@@ -163,8 +158,6 @@
                                     <div class="f_p_img">
                                         <img class="img-fluid" src="../upload/product/feature-product/f-p-4.jpg" alt="">
                                         <div class="p_icon">
-                                            <a href="#"><i class="lnr lnr-heart"></i></a>
-                                            <a href="#"><i class="lnr lnr-cart"></i></a>
                                         </div>
                                     </div>
                                     <a href="#"><h4>Long Sleeve TShirt</h4></a>

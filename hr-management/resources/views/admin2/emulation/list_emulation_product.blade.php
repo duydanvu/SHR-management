@@ -63,6 +63,9 @@
                                            data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
                                             <i class="fas fa-edit"> Thêm Sản Phẩm</i>
                                         </a>
+                                        <a href="{{route('list_product_detail_to_emulation',['id'=>$value->id])}}" class="btn dropdown-item">
+                                            <i class="fas fa-edit"> Chi tiết Sản Phẩm</i>
+                                        </a>
 {{--                                        @if($value->status == 'active')--}}
 {{--                                            <a href="{{route('update_status_product',['id'=>$value->id])}}"  class="btn dropdown-item">--}}
 {{--                                                <i class="fas fa-users"> Tạm Dừng</i>--}}
@@ -80,7 +83,11 @@
                             <td>{{$value->name}}</td>
                             <td>{{$value->qdtc}}</td>
                             <td>{{$value->type}}</td>
+                            @if($value->id_product === null)
+                                <td>0</td>
+                            @else
                             <td>{{count(explode(',',$value->id_product))}}</td>
+                            @endif
                             <td>{{$value->name_reward}}</td>
                             <td>{{$value->values}}</td>
                             @if($value->type == 'sanluong')
@@ -108,6 +115,28 @@
             <div class="modal-content" >
                 <div class="modal-header">
                     <h4 class="modal-title">Thêm Sản Phẩm </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form action="{{route('update_add_product_emulation')}}" method="post">
+                    <div class="modal-body">
+                        @csrf
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <div class="modal fade" id="modal-admin-action-detail-product">
+        <div class="modal-dialog" style="max-width: 600px" >
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <h4 class="modal-title">Danh Sách Sản Phẩm </h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
@@ -293,7 +322,7 @@
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });
-        $("#modal-nhap-san-pham").on("show.bs.modal", function(e) {
+        $("#modal-admin-action-detail-product").on("show.bs.modal", function(e) {
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });

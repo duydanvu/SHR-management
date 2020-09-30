@@ -77,43 +77,74 @@
             <div class="row details_row">
 
                 <!-- Product Image -->
-                <div class="col-lg-6 col-md-4 col-sm-4">
-                    <div class="details_image" style="height: 100%">
-                        <div class="details_image_large" style="height: 100%">
-                            <img src="/upload/product/feature-product/f-p-1.jpg" alt="">
-                    </div>
-                    </div>
+                <div class="col-xl-6 col-lg-8 col-md-8 col-sm-8 pt-3">
+                        <div class="col-xl-8 col-lg-9 col-md-8 float-left " style="max-height: 100%;padding: inherit">
+                            <img style="width: 100%"  src="/upload/product/feature-product/f-p-1.jpg" alt="">
+                        </div>
+                        <div class="col-xl-4 col-lg-3 col-md-4 float-left mt-3" >
+                                    <div class="col-lg-6 col-md-3 col-3" data-image="images/details_1.jpg">
+                                        <img src="/upload/product/feature-product/f-p-1.jpg" alt="" style="max-width: 90px;max-height: 90px; padding: 10px"></div>
+                                    <div class="col-lg-6 col-md-3 col-3" data-image="images/details_2.jpg">
+                                        <img src="/upload/product/feature-product/f-p-1.jpg" alt="" style="max-width: 90px;max-height: 90px; padding: 10px"></div>
+                                    <div class="col-lg-6 col-md-3 col-3 " data-image="images/details_3.jpg">
+                                        <img src="/upload/product/feature-product/f-p-1.jpg" alt="" style="max-width: 90px;max-height: 90px; padding: 10px"></div>
+                                    <div class="col-lg-6 col-md-3 col-3 " data-image="images/details_4.jpg">
+                                        <img src="/upload/product/feature-product/f-p-1.jpg" alt="" style="max-width: 90px;max-height: 90px; padding: 10px"></div>
+
+                        </div>
                 </div>
 
                 <!-- Product Content -->
-                <div class="col-lg-6">
-                    <div class="details_content">
-                        <div class="details_name pt-2" style="font-size: 25px">{{$product->name}}</div>
-                        <div class="details_discount" style="color: red;text-decoration-line: line-through">{{$product->price_out}} VND</div>
-                        <div class="details_price">{{$product->price_sale}} VND</div>
-
+                <div class="col-xl-6 col-lg-4 col-md-4">
+                    <div class="details_content pt-4" style="height: 100%">
+                        <div class="details_name pt-2 pl-4" style="font-size: 35px; font-weight: bolder">{{$product->name}}</div>
+                        <div class="col-12 m-0 p-0" style="max-height: 100px;float: left">
+                            <p class="details_discount col-4 float-left" style="font-size: 20px">Giá Bán </p>
+                            <p class="details_discount col-8 pt-3 float-left"
+                               style="color: red;text-decoration-line: line-through;font-size: 25px">{{$product->price_out}} VND</p>
+                        </div>
+                        <div class="col-12 m-0 p-0" style="max-height: 100px;float: left">
+                            <div class="details_price col-4 float-left" style="font-size: 20px">Giá Khuyến Mại</div>
+                            <div class="details_price col-8 pt-3 float-left" style="font-size: 25px">{{$product->price_sale}} VND</div>
+                        </div>
                         <!-- In Stock -->
-                        <div class="in_stock_container">
-                            <div class="availability">Chi tiết Sản Phẩm:</div>
+                        <div class="p-review pl-4 pt-4" >
+                            <i class="fas fa-star"  style="color: yellow; font-size: 25px"></i>
+                            <i class="fas fa-star" style="color: yellow; font-size: 25px"></i>
+                            <i class="fas fa-star" style="color: yellow; font-size: 25px"></i>
+                            <i class="fas fa-star" style="color: yellow; font-size: 25px"></i>
+                            <i class="far fa-star" style="font-size: 25px"></i>
                         </div>
-                        <div class="details_text">
-                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Phasellus id nisi quis justo tempus mollis sed et dui. In hac habitasse platea dictumst. Suspendisse ultrices mauris diam. Nullam sed aliquet elit. Mauris consequat nisi ut mauris efficitur lacinia.</p>
+                        <div class="p-review pl-4 pt-3" >
+                            <i class="fab fa-facebook-square" style="font-size: 25px" ></i>
+                            <i class="fab fa-facebook-messenger" style="font-size: 25px"></i>
+                            <i class="fab fa-twitter-square" style="font-size: 25px"></i>
+                            <i class="fab fa-twitch" style="font-size: 25px"></i>
+                            <i class="fab fa-amazon" style="font-size: 25px"></i>
+                        </div>
+                        <div class="card_area col-12 pt-2" >
+                            <button style="font-size: 20px;background-color: blue;border-radius: 8px;color: white; border: none"
+                                    class="main_btn" data-toggle="modal" data-target="#modal-create-store">Bán Sản Phẩm</button>
                         </div>
 
-                        <div class="card_area">
-                            <button class="main_btn" data-toggle="modal" data-target="#modal-create-store">Bán Sản Phẩm</button>
+                        <div class="form-group m-0" >
+                            <input id="linkLandPage" type="text" class="form-control @error('txtLinkLandding')
+                                is-invalid @enderror" name="txtLinkLandding" value="http://www.example.com/product_1/landdingpage/#bird"  autocomplete="number" required hidden>
+                            <button style="font-size: 15px;background-color: #cf5f02;border-radius: 8px;color: white;border: none;
+                            margin-left: 17px;margin-top: 10px"
+                                    onclick="myFunction()">Sao Chép Đường Dẫn Sản Phẩm</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="row description_row">
+            <div class="row description_row pt-3" >
                 <div class="col">
                     <div class="description_title_container">
-                        <div class="reviews_title"><a href="#">Reviews <span>(1)</span></a></div>
+                        <div class="reviews_title"><a href="#" style="font-size: 35px">Chi tiết Sản Phẩm</a></div>
                     </div>
-                    <div class="description_text">
-                        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Phasellus id nisi quis justo tempus mollis sed et dui. In hac habitasse platea dictumst. Suspendisse ultrices mauris diam. Nullam sed aliquet elit. Mauris consequat nisi ut mauris efficitur lacinia.</p>
+                    <div class="description_text" >
+                        <p style="font-size: 30px">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Phasellus id nisi quis justo tempus mollis sed et dui. In hac habitasse platea dictumst. Suspendisse ultrices mauris diam. Nullam sed aliquet elit. Mauris consequat nisi ut mauris efficitur lacinia.</p>
                     </div>
                 </div>
             </div>
@@ -170,7 +201,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Số Lượng </label>
-                                        <input id="totalProduct" type="number" class="form-control @error('txtAddress') is-invalid @enderror" name="totalProduct" value="0"  autocomplete="number" required>
+                                        <input id="totalProduct" type="number" class="form-control @error('txtAddress') is-invalid @enderror" name="totalProduct" value="1"  autocomplete="number" required>
                                         @error('txtAddress')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -178,19 +209,8 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label for="name">Đường Dẫn Sản Phẩm</label>
-                                        <input id="linkLandPage" type="text" class="form-control @error('txtLinkLandding')
-                                            is-invalid @enderror" name="txtLinkLandding" value="http://www.example.com/product_1/landdingpage/#bird"  autocomplete="number" required readonly>
-                                        @error('txtLinkLandding')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                        <button onclick="myFunction()">Sao Chép Đường Dẫn</button>
-                                    </div>
-                                    <div class="form-group">
                                         <label for="name">Tổng tiền</label>
-                                        <input id="tongTien" type="text" class="form-control @error('txtTongTien') is-invalid @enderror" name="txtTongTien" value=""  autocomplete="number">
+                                        <input id="tongTien" type="text" class="form-control @error('txtTongTien') is-invalid @enderror" name="txtTongTien" value="{{$product->price_sale}}"  autocomplete="number">
                                         @error('txtTongTien')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -204,7 +224,7 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                    <button id="create_member" type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+                    <button id="create_member" type="submit" class="btn btn-primary">Xác Nhận</button>
                 </div>
             </form>
         </div>
@@ -221,7 +241,6 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.5/js/swiper.min.js"></script>
-
     <script>
         $(function () {
             $("#totalProduct").keyup( function () {
@@ -238,7 +257,7 @@
             copyText.select();
             copyText.setSelectionRange(0, 99999)
             document.execCommand("copy");
-            alert("Sao chép đường dẫn thành công .");
+            alert("Sao chép đường dẫn : "+ copyText.value +" - thành công . ");
         }
     </script>
 @stop

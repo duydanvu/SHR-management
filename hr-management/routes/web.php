@@ -100,6 +100,10 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::post('/admin2/update_add_product_emulation','Admin2Controller@updateAddProductEmulation')->name('update_add_product_emulation');
     Route::post('/admin2/update_information_product_emulation','Admin2Controller@updateInformationProductEmulation')
         ->name('update_information_product_emulation');
+    Route::get('/admin2/list_product_detail_to_emulation/{id}','Admin2Controller@listProductDetailEmulation')->name('list_product_detail_to_emulation');
+    Route::get('/admin2/update_total_product_emulation/{id}/{id_emu}','Admin2Controller@updateTotalProductEmulation')
+        ->name('update_total_product_emulation');
+    Route::post('/admin2/edit_total_product_emulation','Admin2Controller@edit_total_product_emulation')->name('edit_total_product_emulation');
 
     //admin2/giao muc tieu ban hang
     Route::get('/admin2/goal_product','Admin2Controller@indexGoalProduct')->name('home_goal_product');

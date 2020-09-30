@@ -741,6 +741,8 @@ pre code {
 }
 
 .col-3 {
+    float: left;
+    padding: unset;
   -webkit-box-flex: 0;
           flex: 0 0 25%;
   max-width: 25%;
@@ -1158,6 +1160,8 @@ pre code {
   }
 
   .col-md-3 {
+      float: none;
+      padding: unset;
     -webkit-box-flex: 0;
             flex: 0 0 25%;
     max-width: 25%;
