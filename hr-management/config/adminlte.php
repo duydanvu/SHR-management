@@ -232,12 +232,17 @@ return [
 
     'menu' => [
         [
-            'text'        => 'Trang Chủ',
+            'text'        => 'Hệ Thống',
             'url'         => '/home',
             'icon'        => 'fas fa-tachometer-alt',
             'can'         => 'not_system',
             'submenu' => [
-//
+                [
+                    'text'        => 'Trang Chủ',
+                    'url'         => '/home',
+                    'icon'        => 'fas fa-tachometer-alt',
+                    'can'         => 'not_system',
+                ],
             [
                 'text'    => 'Quản Lý Nhân Sự',
                 'icon'    => 'fas fa-users',
@@ -282,6 +287,10 @@ return [
 
                 ],
             ],
+                [
+                    'text' => 'Tính Lương',
+                    'icon'    => 'fas fa-clipboard-list',
+                ],
 //
             [
                 'text'    => 'THỐNG KÊ ',

@@ -19,15 +19,31 @@ class ExportController extends Controller implements FromCollection,WithHeadings
     //
     public function collection()
     {
-        $users1 = User::join('stores','users.store_id','=','stores.store_id')
-            ->join('positions','users.position_id','=','positions.position_id')
-            ->join('contracts','users.contract_id','=','contracts.contract_id')
-            ->join('departments','users.department_id','=','departments.id')
-            ->join('services','users.service_id','=','services.id')
-            ->select('stores.store_address','positions.description as ps_description'
-                ,'contracts.description as ct_description','departments.description as dp_description',
-                'services.description as sv_description')
+        if($this->request->area_export == '' || $this->request->area_export == 'all'){
+            $users1 = User::join('stores','users.store_id','=','stores.store_id')
+                ->join('positions','users.position_id','=','positions.position_id')
+                ->join('contracts','users.contract_id','=','contracts.contract_id')
+                ->join('departments','users.department_id','=','departments.id')
+                ->join('services','users.service_id','=','services.id')
+                ->join('area','area.id','=','stores.area_id')
+                ->select('users.*','stores.store_name','positions.position_name',
+                    'contracts.name as ct_name','departments.name as dp_name',
+                    'services.name as sv_name','area.area_name')
             ;
+        }else{
+            $users1 = User::join('stores','users.store_id','=','stores.store_id')
+                ->join('positions','users.position_id','=','positions.position_id')
+                ->join('contracts','users.contract_id','=','contracts.contract_id')
+                ->join('departments','users.department_id','=','departments.id')
+                ->join('services','users.service_id','=','services.id')
+                ->join('area','area.id','=','stores.area_id')
+                ->select('users.*','stores.store_name','positions.position_name',
+                    'contracts.name as ct_name','departments.name as dp_name',
+                    'services.name as sv_name','area.area_name')
+                ->where('area.id','=',$this->request->area_export)
+                ->where('type','<>','systems');
+        }
+
         if($this->request->store_export == 'all' || $this->request->store_export == null){
             $users_store = $users1;
         }else{
@@ -54,7 +70,32 @@ class ExportController extends Controller implements FromCollection,WithHeadings
         }else{
             $users_service = $users_department->where('users.service_id','=',$this->request->service_export);
         }
-        $users = $users_service;
+
+        if($this->request->status_action_user_export === 'active'){
+            $user_status_action = $users_service->where('activation_key','=','active');
+        }elseif ($this->request->status_action_user_export === 'reproduction'){
+            $user_status_action = $users_service->where('reproduction','=',1);
+        }else{
+            $user_status_action = $users_service->where('activation_key','=',null);
+        }
+
+        if($this->request->start_date_export == null && $this->request->end_date_export == null){
+            $user_time = $user_status_action;
+        }elseif ($this->request->start_date_export == null && $this->request->end_date_export != null){
+            $user_time = $user_status_action->where('users.end_time','<=',$this->request->end_date_export);
+        }elseif ($this->request->start_date_export != null && $this->request->end_date_export == null){
+            $user_time = $user_status_action->where('users.start_time','>',$this->request->start_date_export);
+        }else{
+            if(strtotime($this->request->start_date_export) < strtotime($this->request->end_date_export)){
+                $user_time = $user_status_action->whereBetween('users.end_time',[$this->request->start_date_export,$this->request->end_date_export]);
+            } else if (strtotime($this->request->start_date_export) === strtotime($this->request->end_date_export)){
+                $user_time = $user_status_action->whereBetween('users.end_time',[$this->request->start_date_export,$this->request->end_date_export]);
+            }else{
+                $user_time = $user_status_action;
+            }
+        }
+
+        $users = $user_time;
         $arr = [];
         if ($this->request->name_ex != null){
             $users = $users->addSelect('users.first_name','users.last_name');
@@ -132,10 +173,21 @@ class ExportController extends Controller implements FromCollection,WithHeadings
             $users = $users->addSelect('users.address_now');
             array_push($arr,'address_now');
         };
+        array_push($arr,'store_name','position_name','ct_name','area_name','reproduction','activation_key');
         $users_arr = [];
         $export =[];
         foreach ($users->get() as $item => $row) {
             foreach ($arr as $value) {
+                if($row->reproduction == 0){
+                    $row->reproduction = 'Bình Thường';
+                }elseif($row->reproduction != 0){
+                    $row->reproduction = 'Nghỉ Thai Sản';
+                }
+                if($row->activation_key === 'active'){
+                    $row->activation_key = 'Đang Làm Việc';
+                }else{
+                    $row->activation_key = 'Đã Nghỉ';
+                }
                 array_push($users_arr,$row->$value);
             }
             $export[$item]=$users_arr;
@@ -204,6 +256,7 @@ class ExportController extends Controller implements FromCollection,WithHeadings
         if($this->request->add_now_ex != null){
             array_push($arr,'Nơi ở hiện tại');
         };
+        array_push($arr,'Tên Cửa Hàng','Vị Trí','Hợp Đồng','Khu Vực','Tình Trạng Thai Sản','Tình Trạng Hoạt Động');
         return $arr;
     }
 }

@@ -37,11 +37,9 @@
                     <th style="width:5%" class="noSort">Action</th>
                     <th style="width:20%" >Tên Chương trình thi đua</th>
                     <th style="width:15%" >Quyết định tham chiếu</th>
-                    <th style="width:10%">Hình thức thi đua</th>
                     <th style="width:10%">Tổng số sản phẩm</th>
                     <th style="width:10%">Giải Thưởng</th>
                     <th style="width:10%">Giá trị giải thưởng</th>
-                    <th style="width:10%">Số lượng yêu cầu</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
@@ -82,7 +80,6 @@
                             </td>
                             <td>{{$value->name}}</td>
                             <td>{{$value->qdtc}}</td>
-                            <td>{{$value->type}}</td>
                             @if($value->id_product === null)
                                 <td>0</td>
                             @else
@@ -90,11 +87,6 @@
                             @endif
                             <td>{{$value->name_reward}}</td>
                             <td>{{$value->values}}</td>
-                            @if($value->type == 'sanluong')
-                                <td>{{$value->sl_min}}</td>
-                            @elseif($value->type == 'doanhso')
-                                <td>{{$value->ds_min}}</td>
-                            @endif
                         </tr>
                     @endforeach
                 @else

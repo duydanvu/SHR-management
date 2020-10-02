@@ -34,7 +34,7 @@
                 @csrf
                 <input name="id_emulation" value="{{$id}}" hidden>
                 <table id="example1" class="table table-bordered table-striped">
-                    <thead>
+                    <thead style="text-align: center">
                     <tr>
                         <th style="width:5%">STT</th>
                         {{--                    <th style="width:20%">Image</th>--}}
@@ -45,6 +45,7 @@
                         {{--                    <th style="width:10%">Gender</th>--}}
                         {{--                    <th style="width:10%">Chuyên Môn</th>--}}
                         <th style="width:10%">Số lượng yêu cầu</th>
+                        <th style="width:10%">Doanh số yêu cầu</th>
                         <th style="width:10%">Action</th>
                     </tr>
                     </thead>
@@ -56,6 +57,7 @@
                                 <td>{{$value->name}}</td>
                                 <td>{{$value->product_code}}</td>
                                 <td>{{$value->total}}</td>
+                                <td>{{$value->revenue}}</td>
                                 <td><a href="{{route('update_total_product_emulation',['id'=>$value->id,'id_emu'=>$id])}}"
                                        data-remote="false"  data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
                                         <i class="fas fa-edit"> Sửa số lượng</i>

@@ -22,6 +22,12 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/home', 'HomeController@index')->name('dashboard');
     Route::get('/home1', 'HomeController@index_system')->name('dashboard2');
 
+    //route home quan ly nhan su
+    Route::get('/home/detail_staff_of_company/{id}','HomeController@detail_nv_of_company')->name('detail_nv_of_company');
+    Route::get('/home/detail_KAM_of_company/{id}','HomeController@detail_KAM_of_company')->name('detail_KAM_of_company');
+    Route::get('/home/detail_AM_of_company/{id}','HomeController@detail_AM_of_company')->name('detail_AM_of_company');
+    Route::get('/home/detail_GDV_of_company/{id}','HomeController@detail_GDV_of_company')->name('detail_GDV_of_company');
+
     //admin1
     Route::get('/admin1/view','Admin1Controller@index')->name('view_list_account_admin_lv2');
     Route::get('/admin1/search_update/{id}','Admin1Controller@search_user_update')->name('search_view_update_admin_lv2');

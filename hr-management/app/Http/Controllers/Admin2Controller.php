@@ -1844,7 +1844,6 @@ class Admin2Controller extends Controller
         $validator = \Validator::make($request->all(),[
             'txtName' => 'required',
             'txtQdtc' => 'required',
-            'txtType' => 'required',
         ]);
         $notification= array(
             'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
@@ -1857,27 +1856,12 @@ class Admin2Controller extends Controller
                 ->withInput();
         }
         try{
-            if($request->txtType == 'sanluong'){
                 $create_pdu = DB::table('emulations')->insertGetId([
                     'name'=> $request['txtName'],
                     'qdtc' => $request['txtQdtc'],
-                    'type'=> $request['txtType'],
-                    'total'=> 1,
+                    'total'=> null,
+                    'revenue'=> null,
                 ]);
-            }elseif($request->txtType == 'doanhso'){
-                $create_pdu = DB::table('emulations')->insertGetId([
-                    'name'=> $request['txtName'],
-                    'qdtc' => $request['txtQdtc'],
-                    'type'=> $request['txtType'],
-                    'revenue'=> 1,
-                ]);
-            }else{
-                $notification = array(
-                    'message' => 'Chọn hình thức thi đua và kiểm tra thông tin!',
-                    'alert-type' => 'error'
-                );
-                return Redirect::back()->with($notification);
-            }
 
             if(!is_numeric($create_pdu)){
                 $notification = array(
@@ -1910,7 +1894,7 @@ class Admin2Controller extends Controller
         $reward = Reward::all();
         $emulation = Emulation::join('emulation_products','emulations.id','=','emulation_products.id_emulation')
             ->join('rewards','rewards.id','=','emulation_products.id_reward')
-            ->select('emulation_products.id','emulations.name','emulations.qdtc','emulations.type','emulation_products.id_product',
+            ->select('emulation_products.id','emulations.name','emulations.qdtc','emulation_products.id_product',
                 'rewards.name as name_reward','rewards.values','rewards.sl_min','rewards.ds_min')
             ->get();
         return view('admin2.emulation.list_emulation_product',compact('emulation','reward'));
@@ -2031,7 +2015,8 @@ class Admin2Controller extends Controller
                         $insert_total_product = DB::table('total_product_emulations')->insert([
                            'id_emu_pdu'=>$id_goal_product,
                             'id_product'=>$values,
-                            'total'=>0
+                            'total' => 0,
+                            'revenue' => 0,
                         ]);
                     }
                 }
@@ -2081,24 +2066,26 @@ class Admin2Controller extends Controller
     }
 
     public function edit_total_product_emulation(Request $request){
-        $validator = \Validator::make($request->all(),[
-            'txtTotal' => 'required',
-        ]);
-        $notification= array(
-            'message' => ' Nhập Số lượng Sản Phẩm!',
-            'alert-type' => 'error'
-        );
-        if ($validator ->fails()) {
-            return Redirect::back()
-                ->with($notification)
-                ->withErrors($validator)
-                ->withInput();
-        }
+//        $validator = \Validator::make($request->all(),[
+//            'txtTotal' => 'required',
+//            'txtRevenue' => 'required',
+//        ]);
+//        $notification= array(
+//            'message' => ' Nhập Số lượng Sản Phẩm!',
+//            'alert-type' => 'error'
+//        );
+//        if ($validator ->fails()) {
+//            return Redirect::back()
+//                ->with($notification)
+//                ->withErrors($validator)
+//                ->withInput();
+//        }
         try{
                 $update_product = DB::table('total_product_emulations')
                     ->where('id', '=', $request->id_emulation_pdu)
                     ->update([
                         'total'=> $request->txtTotal,
+                        'revenue'=> $request->txtRevenue,
                     ]);
 
         }

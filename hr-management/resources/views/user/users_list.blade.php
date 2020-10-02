@@ -29,7 +29,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="row">
+            <div class="row ml-2" >
                 <div class="col-md-3 ml-4">
                     <div class="form-group">
                         <meta name="csrf-token2" content="{{ csrf_token() }}">
@@ -66,7 +66,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-12 col-xl-12 float-left">
-                <div class="col-md-3 col-3 col-xl-2 float-left" >
+                <div class="col-md-3 col-3 col-xl-2 float-left ml-4" >
                     <div class="form-group">
                         <label for="exampleInputEmail1">Chức Vụ</label>
                         <select id="position_search" name = "position_search" class="form-control select2"  value="{{ old('position_search') }}" autocomplete="position_search" style="width: 100%;">
@@ -77,7 +77,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3 col-3 col-xl-2 float-left">
+                <div class="col-md-3 col-3 col-xl-2 float-left" hidden>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Phòng Ban</label>
                         <select id="department_search" name = "department_search" class="form-control select2"  value="{{ old('department_search') }}" autocomplete="department_search" style="width: 100%;">
@@ -88,7 +88,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3 col-3 col-xl-2 float-left">
+                <div class="col-md-3 col-3 col-xl-2 float-left" hidden>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Dịch Vụ</label>
                         <select id="service_search" name = "service_search" class="form-control select2"  value="{{ old('service_search') }}" autocomplete="service_search" style="width: 100%;">
@@ -99,7 +99,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3 col-3 col-xl-2 float-left">
+                <div class="col-md-3 col-3 col-xl-2 ml-4 float-left">
                     <div class="form-group">
                         <label for="exampleInputEmail1" >Hợp Đồng</label>
                         <select id="contract_search" name = "contract_search" class="form-control select2"  value="{{ old('contract_search') }}" autocomplete="contract_search" style="width: 100%;">
@@ -110,7 +110,17 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3 col-4 col-xl-2 float-left">
+                <div class="col-md-3 col-3 col-xl-2 ml-4 float-left">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1" >Tình Trạng Nhân Sự</label>
+                        <select id="status_action_user" name = "status_action_user" class="form-control select2"  value="{{ old('contract_search') }}" autocomplete="contract_search" style="width: 100%;">
+                            <option value="active" selected>Đang Làm Việc</option>
+                            <option value="reproduction" >Nghỉ Sinh Sản</option>
+                            <option value="out" >Nghỉ Việc</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3 col-4 col-xl-2 ml-4 float-left">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Thời Gian Bắt đầu</label>
                         <input id="start_date" type="date" class="form-control @error('txtComment') is-invalid @enderror"  name="txtStartDate"  autocomplete="number" required >
@@ -121,7 +131,7 @@
                         @enderror
                     </div>
                 </div>
-                <div class="col-md-3 col-4 col-xl-2 float-left">
+                <div class="col-md-3 col-4 col-xl-2 ml-4 float-left">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Thời Gian Kết Thúc</label>
                         <input id="end_date" type="date" class="form-control @error('txtComment') is-invalid @enderror"  name="txtEndDate"  autocomplete="number" required >
@@ -840,7 +850,26 @@
 {{--                                            </select>--}}
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" >
+                                        <label for="name">Trạng Thái Nhân Sự</label>
+                                        <div class="col-sm-10 p-0">
+                                            <input id="status_action_user_export" name = "status_action_user_export" autocomplete="area_export" style="width: 100%;" hidden>
+                                            <input id="status_action_user_export_text" name = "status_action_user_export_text" autocomplete="status_action_user_export" style="width: 100%;" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" >
+                                        <label for="name">Thời gian bắt đầu</label>
+                                        <div class="col-sm-6 p-0 float-right">
+                                            <input id="start_date_export" name = "start_date_export" autocomplete="area_export" style="width: 100%;" hidden>
+                                            <input id="start_date_export_text" name = "start_date_export_text" autocomplete="start_date_export_text" style="width: 100%;" readonly>
+                                        </div>
+                                        <label for="name">Thời gian kết thúc</label>
+                                        <div class="col-sm-6 p-0 float-right">
+                                            <input id="end_date_export" name = "end_date_export" autocomplete="area_export" style="width: 100%;" hidden>
+                                            <input id="end_date_export_text" name = "end_date_export_text" autocomplete="end_date_export_text" style="width: 100%;" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" hidden>
                                         <label for="name">Bộ Phận</label>
                                         <div class="col-sm-10 p-0">
                                             <input id="department_export" name = "department_export" autocomplete="area_export" style="width: 100%;" hidden>
@@ -851,8 +880,8 @@
 {{--                                                @endforeach--}}
 {{--                                            </select>--}}
                                         </div>
-                                    </div>
-                                    <div class="form-group">
+                                    </div >
+                                    <div class="form-group" hidden>
                                         <label for="name">Dịch Vụ</label>
                                         <div class="col-sm-10 p-0">
                                             <input id="service_export" name = "service_export" autocomplete="area_export" style="width: 100%;" hidden>
@@ -977,7 +1006,7 @@
             fill_datatable();
 
             function fill_datatable(area = '',store_search='all',name_user ='',
-                                    position_search='all',department_search='all',service_search='all',
+                                    position_search='all',department_search='all',service_search='all',status_action_user='active',
                                     contract_search='all',start_date='',end_date='') {
                 var table = $('#example1').DataTable({
                     processing: true,
@@ -988,7 +1017,7 @@
                         url: "{{ route('ajaxuser.index') }}",
                         data:{area:area,store_search:store_search,name_user :name_user,
                             position_search : position_search,department_search:department_search,service_search : service_search,
-                            contract_search : contract_search,start_date :start_date,end_date : end_date}
+                            status_action_user: status_action_user, contract_search : contract_search,start_date :start_date,end_date : end_date}
                     },
                     columns: [
 
@@ -1021,12 +1050,14 @@
                 let position_search = $('#position_search').val();
                 let department_search = $('#position_search').val();
                 let service_search = $('#service_search').val();
+                let status_action_user = $('#status_action_user').val();
                 let contract_search = $('#contract_search').val();
                 let start_date = $('#start_date').val();
                 let end_date = $('#end_date').val();
                 if(area != ''){
                     $('#example1').DataTable().destroy();
-                    fill_datatable(area,store_search,name_user,position_search,department_search,service_search,contract_search,start_date,end_date);
+                    fill_datatable(area,store_search,name_user,position_search,department_search,service_search,
+                        status_action_user,contract_search,start_date,end_date);
                 }
             });
             $("#example1").parent().css({"overflow": "auto"});
@@ -1034,41 +1065,6 @@
 
     </script>
 
-{{--    <script>--}}
-{{--        $(document).ready(function()    {--}}
-{{--            $('#fillter_date').click(function () {--}}
-{{--                let area = $("#area_search").val();--}}
-{{--                let store_search = $('#store_search').val();--}}
-{{--                let name_user = $('#name_user').val();--}}
-{{--                let position_search = $('#position_search').val();--}}
-{{--                let department_search = $('#position_search').val();--}}
-{{--                let service_search = $('#service_search').val();--}}
-{{--                let contract_search = $('#contract_search').val();--}}
-{{--                let start_date = $('#start_date').val();--}}
-{{--                let end_date = $('#end_date').val();--}}
-{{--                let _token = $('meta[name="csrf-token-2"]').attr('content');--}}
-{{--                var dt = {_token,area,store_search,name_user,position_search,department_search,--}}
-{{--                    service_search,contract_search,start_date,end_date};--}}
-{{--                console.log(dt);--}}
-{{--                $.ajaxSetup({--}}
-{{--                    headers: {--}}
-{{--                        'X-CSRF-TOKEN': $('meta[name="csrf-token-2"]').attr('content')--}}
-{{--                    }--}}
-{{--                });--}}
-{{--                $.ajax({--}}
-{{--                    type:'POST',--}}
-{{--                    url:'{{route('search_user_with_store')}}',--}}
-{{--                    data:dt,--}}
-{{--                    success:function(resultData){--}}
-{{--                        // // $('.effort').val(resultData);--}}
-{{--                        $('#table_body').html(resultData['result']);--}}
-{{--                        $('#sum_result').html(resultData['sum']);--}}
-{{--                        // console.log(resultData);--}}
-{{--                    }--}}
-{{--                });--}}
-{{--            });--}}
-{{--        });--}}
-{{--    </script>--}}
 
     <script>
         $(document).ready(function () {
@@ -1081,15 +1077,28 @@
                 let store_search = $('#store_search').val();
                 let store_text = $('#store_search option:selected').html();
                 $("#store_export").val(store_search);
-                $("#store_export_text").val(store_text)
+                $("#store_export_text").val(store_text);
+
+                let status_action_user = $('#status_action_user').val();
+                let status_action_user_text = $('#status_action_user option:selected').html();
+                $("#status_action_user_export").val(status_action_user);
+                $("#status_action_user_export_text").val(status_action_user_text);
 
                 let position_search = $('#position_search').val();
                 let position_text = $('#position_search option:selected').html();
                 $("#position_export").val(position_search);
-                $("#position_export_text").val(position_text)
+                $("#position_export_text").val(position_text);
 
-                let department_search = $('#position_search').val();
-                let department_text = $('#position_search option:selected').html();
+                let start_date = $('#start_date').val();
+                $("#start_date_export").val(start_date);
+                $("#start_date_export_text").val(start_date);
+
+                let end_date = $('#end_date').val();
+                $("#end_date_export").val(end_date);
+                $("#end_date_export_text").val(end_date);
+
+                let department_search = $('#department_search').val();
+                let department_text = $('#department_search option:selected').html();
                 $("#department_export").val(department_search);
                 $("#department_export_text").val(department_text)
 

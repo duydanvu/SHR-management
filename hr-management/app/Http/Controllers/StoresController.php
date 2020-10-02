@@ -35,7 +35,13 @@ class StoresController extends Controller
                     ->groupBy('stores.store_id','stores.store_address','stores.store_name','area.id','area.area_name')
                     ->get();
             }
-            return DataTables::of($stores)->addIndexColumn()
+            return DataTables::of($stores)
+                    ->editColumn('sum',function ($row){
+                        $results = '<a href="'.route('view_user_of_store',['id'=>$row->store_id]).'><i class="fas fa-users">'.$row->sum.'</i>
+                                            </a>';
+                        return $results;
+                    })
+                    ->addIndexColumn()
                     ->addColumn('action',function ($row){
                         $result = '<div class="btn-group">
                                         <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
@@ -53,7 +59,7 @@ class StoresController extends Controller
 
                                     </div>';
                         return $result;
-                    })->rawColumns(['action'])->make(true);
+                    })->rawColumns(['sum','action'])->make(true);
         }
 
         $area = Area::all();

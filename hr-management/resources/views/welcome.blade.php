@@ -77,8 +77,8 @@
                     <th style="width:10%">GDV</th>
                     <th style="width:10%">AM</th>
                     <th style="width:10%">KAM</th>
-                    <th style="width:10%">Chính Thức</th>
-                    <th style="width:10%">Thử Việc</th>
+{{--                    <th style="width:10%">Chính Thức</th>--}}
+{{--                    <th style="width:10%">Thử Việc</th>--}}
                     <th style="width:10%">Tổng số Nhân Viên</th>
                 </tr>
                 </thead>
@@ -89,12 +89,12 @@
                             <td>{{$key+1}}</td>
                             <td>{{$value->name}}</td>
                             <td>{{$value->sum}}</td>
-                            <td>{{$value->GDV}}</td>
-                            <td>{{$value->AM}}</td>
-                            <td>{{$value->KAM}}</td>
-                            <td>{{$value->CT}}</td>
-                            <td>{{$value->TV}}</td>
-                            <td>{{($value->CT)+($value->TV)}}</td>
+                            <td><a href="{{route('detail_GDV_of_company',['id'=>$value->id])}}">{{$value->GDV}}</a></td>
+                            <td><a href="{{route('detail_AM_of_company',['id'=>$value->id])}}">{{$value->AM}}</a></td>
+                            <td><a href="{{route('detail_KAM_of_company',['id'=>$value->id])}}">{{$value->KAM}}</a></td>
+{{--                            <td>{{$value->CT}}</td>--}}
+{{--                            <td>{{$value->TV}}</td>--}}
+                            <td> <a href="{{route('detail_nv_of_company',['id'=>$value->id])}}">{{($value->CT)+($value->TV)}}</a></td>
                         </tr>
                     @endforeach
                 @else

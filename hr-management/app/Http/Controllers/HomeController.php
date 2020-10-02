@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Area;
+use App\Contract;
+use App\Department;
 use App\PoolAction;
+use App\Position;
+use App\Services;
+use App\Store;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\DB;
@@ -43,7 +48,7 @@ class HomeController extends Controller
             ->join('area','stores.area_id','=','area.id')
             ->join('company','area.company_id','=','company.id')
             ->select('company.id','company.name',DB::raw('COUNT(users.position_id) AS sum_gdv'))
-            ->where('position_id','=',3)
+            ->where('position_id','=',4)
             ->groupBy('company.id','company.name')
             ->get();
 
@@ -111,6 +116,153 @@ class HomeController extends Controller
             }
         }
         return view('welcome',compact('area'));
+    }
+
+    public function detail_nv_of_company($id){
+        $store = Store::all();
+        $position = Position::all();
+        $contract = Contract::all();
+        $department = Department::all();
+        $service = Services::all();
+        $store1 = Store::all();
+        $position1 = Position::all();
+        $contract1 = Contract::all();
+        $department1 = Department::all();
+        $service1 = Services::all();
+        $area = Area::all();
+        $user = User::join('stores','users.store_id','=','stores.store_id')
+            ->join('positions','users.position_id','=','positions.position_id')
+            ->join('area','area.id','=','stores.area_id')
+            ->join('company','company.id','=','area.company_id')
+            ->select('users.*','stores.store_name')
+            ->where('company.id','=',$id)
+            ->get();
+        $company_name = DB::table('company')->find($id)->name;
+        return view('home_detail.detail_company')->with([
+            'user'=>$user,
+            'store'=>$store,
+            'position'=>$position,
+            'contract'=>$contract,
+            'department'=>$department,
+            'service' =>$service,
+            'store_name'=>'Company - '.$company_name,
+            'store1'=>$store1,
+            'position1'=>$position1,
+            'contract1'=>$contract1,
+            'department1'=>$department1,
+            'service1' =>$service1,
+            'area' => $area]);
+    }
+
+    public function detail_KAM_of_company($id){
+        $store = Store::all();
+        $position = Position::all();
+        $contract = Contract::all();
+        $department = Department::all();
+        $service = Services::all();
+        $store1 = Store::all();
+        $position1 = Position::all();
+        $contract1 = Contract::all();
+        $department1 = Department::all();
+        $service1 = Services::all();
+        $area = Area::all();
+        $user = User::join('stores','users.store_id','=','stores.store_id')
+            ->join('positions','users.position_id','=','positions.position_id')
+            ->join('area','area.id','=','stores.area_id')
+            ->join('company','company.id','=','area.company_id')
+            ->select('users.*','stores.store_name')
+            ->where('company.id','=',$id)
+            ->where('positions.position_name','=','KAM')
+            ->get();
+        $company_name = DB::table('company')->find($id)->name;
+        return view('home_detail.detail_company')->with([
+            'user'=>$user,
+            'store'=>$store,
+            'position'=>$position,
+            'contract'=>$contract,
+            'department'=>$department,
+            'service' =>$service,
+            'store_name'=>'Company - '.$company_name,
+            'store1'=>$store1,
+            'position1'=>$position1,
+            'contract1'=>$contract1,
+            'department1'=>$department1,
+            'service1' =>$service1,
+            'area' => $area]);
+    }
+
+    public function detail_AM_of_company($id){
+        $store = Store::all();
+        $position = Position::all();
+        $contract = Contract::all();
+        $department = Department::all();
+        $service = Services::all();
+        $store1 = Store::all();
+        $position1 = Position::all();
+        $contract1 = Contract::all();
+        $department1 = Department::all();
+        $service1 = Services::all();
+        $area = Area::all();
+        $user = User::join('stores','users.store_id','=','stores.store_id')
+            ->join('positions','users.position_id','=','positions.position_id')
+            ->join('area','area.id','=','stores.area_id')
+            ->join('company','company.id','=','area.company_id')
+            ->select('users.*','stores.store_name')
+            ->where('company.id','=',$id)
+            ->where('positions.position_name','=','AM')
+            ->get();
+        $company_name = DB::table('company')->find($id)->name;
+        return view('home_detail.detail_company')->with([
+            'user'=>$user,
+            'store'=>$store,
+            'position'=>$position,
+            'contract'=>$contract,
+            'department'=>$department,
+            'service' =>$service,
+            'store_name'=>'Company - '.$company_name,
+            'store1'=>$store1,
+            'position1'=>$position1,
+            'contract1'=>$contract1,
+            'department1'=>$department1,
+            'service1' =>$service1,
+            'area' => $area]);
+    }
+
+    public function detail_GDV_of_company($id){
+        $store = Store::all();
+        $position = Position::all();
+        $contract = Contract::all();
+        $department = Department::all();
+        $service = Services::all();
+        $store1 = Store::all();
+        $position1 = Position::all();
+        $contract1 = Contract::all();
+        $department1 = Department::all();
+        $service1 = Services::all();
+        $area = Area::all();
+        $user = User::join('stores','users.store_id','=','stores.store_id')
+            ->join('positions','users.position_id','=','positions.position_id')
+            ->join('area','area.id','=','stores.area_id')
+            ->join('company','company.id','=','area.company_id')
+            ->select('users.*','stores.store_name')
+            ->where('company.id','=',$id)
+            ->where('positions.position_name','=','GDV')
+            ->get();
+        $company_name = DB::table('company')->find($id)->name;
+        return view('home_detail.detail_company')->with([
+            'user'=>$user,
+            'store'=>$store,
+            'position'=>$position,
+            'contract'=>$contract,
+            'department'=>$department,
+            'service' =>$service,
+            'store_name'=>'Company - '.$company_name,
+            'store1'=>$store1,
+            'position1'=>$position1,
+            'contract1'=>$contract1,
+            'department1'=>$department1,
+            'service1' =>$service1,
+            'area' => $area]);
     }
 
     public function index_system(){

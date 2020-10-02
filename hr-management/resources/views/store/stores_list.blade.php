@@ -152,7 +152,7 @@
                                         <div class="col-sm-10">
                                             <select id="area_id" name = "area_id" class="form-control select2"  value="{{ old('area') }}" autocomplete="type" style="width: 100%;">
                                                 @foreach ($area1 as $area)
-                                                    <option value="{{$area['id']}}">{{$area['area_name']}}</option>
+                                                    <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

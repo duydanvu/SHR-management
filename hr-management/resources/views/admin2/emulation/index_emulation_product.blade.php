@@ -49,19 +49,19 @@
                                         </span>
                                             @enderror
                                         </div>
-                                        <div class="form-group">
-                                            <label for="name">Hình Thức Thi Đua</label>
-                                            <div class="form-check">
-                                                <input id="sanluong" type="radio" class="form-check-input" name="txtType" value="sanluong"  autocomplete="number" required>
-                                                <label class="form-check-label " for="sanluong">
-                                                    Sản Lượng
-                                                </label>
-                                                <input id="doanhso" type="radio" class="form-check-input ml-4" name="txtType" value="doanhso"  autocomplete="number" required>
-                                                <label class="form-check-label ml-5 " for="doanhso">
-                                                    Doanh Số
-                                                </label>
-                                            </div>
-                                        </div>
+{{--                                        <div class="form-group">--}}
+{{--                                            <label for="name">Hình Thức Thi Đua</label>--}}
+{{--                                            <div class="form-check">--}}
+{{--                                                <input id="sanluong" type="radio" class="form-check-input" name="txtType" value="sanluong"  autocomplete="number" required>--}}
+{{--                                                <label class="form-check-label " for="sanluong">--}}
+{{--                                                    Sản Lượng--}}
+{{--                                                </label>--}}
+{{--                                                <input id="doanhso" type="radio" class="form-check-input ml-4" name="txtType" value="doanhso"  autocomplete="number" required>--}}
+{{--                                                <label class="form-check-label ml-5 " for="doanhso">--}}
+{{--                                                    Doanh Số--}}
+{{--                                                </label>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
                                         <div class="form-group">
                                             <meta name="csrf-token2" content="{{ csrf_token() }}">
                                             <label for="exampleInputEmail1">Giải Thưởng</label>

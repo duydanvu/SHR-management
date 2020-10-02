@@ -62,7 +62,8 @@ class UserController extends Controller
                     ->select('users.*','stores.store_name','positions.position_name',
                         'contracts.name as ct_name','departments.name as dp_name',
                         'services.name as sv_name','area.area_name')
-                    ->where('area.id','=',$request->area);
+                    ->where('area.id','=',$request->area)
+                    ->where('type','<>','systems');
             }
             if($request->store_search == '' || $request->store_search == 'all'){
                 $user_store = $user;
@@ -92,10 +93,18 @@ class UserController extends Controller
                 $user_department = $user_contract->where('users.department_id','=',$request->department_search);
             }
 
-            if($request->service_search === 'all'){
-                $user_service = $user_department;
+            if($request->status_action_user === 'active'){
+                $user_status_action = $user_department->where('activation_key','=','active');
+            }elseif ($request->status_action_user === 'reproduction'){
+                $user_status_action = $user_department->where('reproduction','=',1);
             }else{
-                $user_service = $user_department->where('users.service_id','=',$request->service_search);
+                $user_status_action = $user_department->where('activation_key','=',null);
+            }
+
+            if($request->service_search === 'all'){
+                $user_service = $user_status_action;
+            }else{
+                $user_service = $user_status_action->where('users.service_id','=',$request->service_search);
             }
             if($request->start_date == null && $request->end_date == null){
                 $user_time = $user_service;
@@ -814,94 +823,102 @@ class UserController extends Controller
         return $name;
     }
 
-
     public function import(Request $request){
         $path1 = $request->file('file')->store('temp');
         $path=storage_path('app').'/'.$path1;
         $data = \Excel::toArray(new UsersImport,$path);
         if(count($data[0]) > 0){
-            foreach ($data as $key =>$value){
-                foreach ($value as $key1 => $row) {
-                    if($key1 > 0) {
-                        if ($row[24] == null) {
-                            $convert_name = $this->convert_name($row[4]);
-                            $login = $this->createUserLogin($convert_name).substr($row[10],-1);
-                        }elseif ($row[24] != null){
-                            $login = $row[24];
+            foreach ($data[0] as $key =>$row){
+                    if($key > 0) {
+
+                        if ($row[29] == null) {
+                            $convert_name = $this->convert_name($row[2]);
+                            $login = $this->createUserLogin($convert_name) . substr($row[5], -2);
+                        } elseif ($row[29] != null) {
+                            $login = $row[29];
                         }
-                        if ($row[23] == null) {
+
+                        if ($row[28] == null) {
                             $password = Hash::make('11111111');
-                        }elseif ($row[23] != null){
-                            $password = Hash::make($row[23]);
+                        } elseif ($row[28] != null) {
+                            $password = Hash::make($row[28]);
                         }
-                        if(is_numeric($row[28]) == 1){
-                            $ban = $row[28];
-                        }elseif (is_numeric($row[28]) !=1){
+
+                        if (is_numeric($row[15]) == 1) {
+                            $ban = $row[15];
+                        } elseif (is_numeric($row[15]) != 1) {
                             $ban = null;
                         }
-                        if($row[16] == '' || $row[16] == ' '){
+
+                        if ($row[10] === '' || $row[10] == ' ') {
                             $tin = 0;
-                        }else{
-                            $tin = $row[16];
+                        } else {
+                            $tin = $row[10];
                         }
-                        if(is_numeric($row[13]) == 1){
-                            $ssc_number = $row[13];
-                        }else{
+                        if (is_numeric($row[35]) == 1) {
+                            $ssc_number = $row[35];
+                        } else {
                             $ssc_number = 0;
                         }
+                        if ($row[25] === null) {
+                            $end_time = null;
+                        } else {
+                            $end_time = date("Y-m-d", strtotime(str_replace("/", ".", $row[25])));
+                        }
+
                         $insert_data[] = array(
                             'login' => $login,
                             'password' => $password,
                             'first_name' => '',
-                            'last_name' => $row[4],
-                            'email' => $row[24],
-                            'phone' => $row[23],
-                            'dob' => date("Y-m-d", strtotime(str_replace("/", ".", $row[6]))),
+                            'last_name' => $row[2],
+                            'email' => $row[29],
+                            'phone' => $row[28],
+                            'dob' => date("Y-m-d", strtotime(str_replace("/", ".", $row[5]))),
                             'address' => '',
-                            'gender' => $request->txtGender,
+                            'gender' => $row[6],
                             'url_image' => '',
-                            'line' => $row[19],
-                            'store_id' => $request->store_import,
-                            'department_id' => $request->department_import,
-                            'service_id' => $request->service_import,
-                            'position_id' => $request->position_import,
-                            'contract_id' => $request->contract_import,
-                            'contract_number' => $row[37],
-                            'start_time' => date("Y-m-d", strtotime(str_replace("/", ".", $row[39]))),
-                            'end_time' => date("Y-m-d", strtotime(str_replace("/", ".", $row[40]))),
-                            'identity_number' => $row[10],
+                            'line' => $row[13],
+                            'store_id' => null,
+                            'department_id' => null,
+                            'service_id' => null,
+                            'position_id' => null,
+                            'contract_id' => null,
+                            'contract_number' => $row[20],
+                            'start_time' => date("Y-m-d", strtotime(str_replace("/", ".", $row[21]))),
+                            'end_time' => $end_time,
+                            'identity_number' => $tin,
                             'tin' => $tin,
                             'idn_date' => date("Y-m-d", strtotime(str_replace("/", ".", $row[11]))),
                             'idn_address' => $row[12],
                             'ssc_number' => $ssc_number,
-                            'hospital' => $row[14],
+                            'hospital' => $row[36],
                             'ban' => $ban,
-                            'bank' => $row[29],
-                            'noi_address' => $row[17],
-                            'address_now' => $row[18],
+                            'bank' => $row[16],
+                            'noi_address' => $row[26],
+                            'address_now' => $row[27],
+                            'data' => 'real',
                         );
                     }
                 }
             }
-//            dd($insert_data);
             if(!empty($insert_data))
             {
-//                try {
-                DB::table('users')->insert($insert_data);
-//                }catch ( \Illuminate\Database\QueryException $exception){
+                try {
+                $x = DB::table('users_02')->insert($insert_data);
+                }catch ( \Illuminate\Database\QueryException $exception){
+                    dd($exception);
 //                    $notification = array(
 //                        'message' => 'Import not success!',
 //                        'alert-type' => 'error'
 //                    );
 //                    return back()->with($notification);
-//                }
+                }
                 $notification = array(
-                    'message' => 'Import not success!',
+                    'message' => 'Import success!',
                     'alert-type' => 'success'
                 );
 
             }
-        }
         return back()->with($notification);
     }
 }

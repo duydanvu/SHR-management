@@ -15,13 +15,23 @@
                 @enderror
             </div>
             <div class="form-group">
-                <label for="name">Số Lượng sản Phẩm</label>
+                <label for="name">Số Lượng sản phẩm</label>
                 <input id="total" type="text" class="form-control @error('txtTotal') is-invalid
                 @enderror" name="txtTotal" value="{{$value['total']}}"  autocomplete="number" required>
                 @error('txtTotal')
                 <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="name">Doanh số sản phẩm</label>
+                <input id="total" type="text" class="form-control @error('txtRevenue') is-invalid
+                @enderror" name="txtRevenue" value="{{$value['revenue']}}"  autocomplete="number" required>
+                @error('txtRevenue')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
                 @enderror
             </div>
         </div>

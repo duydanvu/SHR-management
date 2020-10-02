@@ -196,4 +196,6 @@ class AreaController extends Controller
     public function export_Area(){
         return Excel::download(new ExportAreaController(),'Area.xlsx');
     }
+
+
 }
