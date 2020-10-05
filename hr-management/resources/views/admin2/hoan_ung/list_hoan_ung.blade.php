@@ -37,6 +37,7 @@
                 <thead>
                 <tr>
                     <th style="width:5%">#</th>
+                    <th style="width: 10%">Chi tiết</th>
                     <th style="width:10%">Tên Sản Phẩm</th>
                     <th style="width:10%">Mã Sản Phẩm</th>
                     <th style="width:10%">Giá Sản Phẩm</th>
@@ -52,6 +53,8 @@
                     @foreach($list_hoan_ung as $key => $value)
                         <tr>
                             <td>{{$key+1}}</td>
+                            <td><a href="{{route('view_detail_hoan_ung_admin2',['id'=>$value->id_order])}}" data-remote="false"
+                                   data-toggle="modal" data-target="#modal-admin-action-update">Chi tiết</a></td>
                             <td>{{$value->name}}</td>
                             <td>{{$value->product_code}}</td>
                             <td>{{$value->price_sale}}</td>
@@ -59,8 +62,13 @@
                             <td>{{$value->total_price}}</td>
                             <td>{{$value->last_name}}</td>
                             <td>{{$value->email}}</td>
-                            <td><a href="{{route('view_detail_hoan_ung_admin2',['id'=>$value->id_order])}}" data-remote="false"
-                                   data-toggle="modal" data-target="#modal-admin-action-update">Hoàn ứng</a></td>
+                            @if($value->status_kt === 'wait' && $value->status_payment === 'done')
+                                <td style="background-color: #3FF52F;color: white">Chờ xác nhận hoa hồng</td>
+                            @elseif($value->status_kt === 'wait' && $value->status_payment === 'wait')
+                                <td style="background-color: #DE55FA;color: white">Chờ duyệt hoa hồng</td>
+                            @elseif($value->status_kt === 'done' && $value->status_admin2 === 'done')
+                                <td style="background-color: blue;color: white">Đã Hoàn Thành</td>
+                            @endif
                         </tr>
                     @endforeach
                 @else
@@ -91,7 +99,7 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Hoàn ứng</button>
+{{--                        <button type="submit" class="btn btn-primary">Hoàn ứng</button>--}}
                     </div>
                 </form>
             </div>

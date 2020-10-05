@@ -10,7 +10,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item "><a href="/home1">Trang Chủ</a></li>
-                    <li class="breadcrumb-item "><a >Quản lý Hoàn ứng</a></li>
+                    <li class="breadcrumb-item "><a >Quản lý Hoàn Ứng</a></li>
                 </ol>
             </div>
         </div>
@@ -44,8 +44,7 @@
                     <th style="width:10%">Tổng số Tiền ứng</th>
                     <th style="width:10%">Tên NV bán hàng</th>
                     <th style="width:10%">Email</th>
-                    <th style="width:10%">Trạng Thái</th>
-                    <th style="width:10%">Action</th>
+                    <th style="width:10%">Hoàn ứng</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
@@ -53,6 +52,8 @@
                     @foreach($list_hoan_ung as $key => $value)
                         <tr>
                             <td>{{$key+1}}</td>
+{{--                            <td><a href="{{route('view_detail_hoan_ung_admin2',['id'=>$value->id_order])}}" data-remote="false"--}}
+{{--                                   data-toggle="modal" data-target="#modal-admin-action-update">Chi tiết</a></td>--}}
                             <td>{{$value->name}}</td>
                             <td>{{$value->product_code}}</td>
                             <td>{{$value->price_sale}}</td>
@@ -60,17 +61,12 @@
                             <td>{{$value->total_price}}</td>
                             <td>{{$value->last_name}}</td>
                             <td>{{$value->email}}</td>
-                            @if($value->status_kt === 'done' && $value->status_admin2 === 'done')
-                                <td>Đã Xác Nhận</td>
-                            @else
-                                <td>Chờ Duyệt</td>
-                            @endif
-
-                            @if($value->status_kt === 'done' && $value->status_admin2 === 'done')
-                                <td></td>
-                            @else
-                            <td><a href="{{route('view_detail_hoan_ung_kt',['id'=>$value->id_order])}}" data-remote="false"
-                                   data-toggle="modal" data-target="#modal-admin-action-update">Xác Nhận</a></td>
+                            @if($value->status_kt === 'wait' && $value->status_payment === 'done')
+                                <td style="background-color: #3FF52F;color: white">Chờ xác nhận hoa hồng</td>
+                            @elseif($value->status_kt === 'wait' && $value->status_payment === 'wait')
+                                <td style="background-color: #DE55FA;color: white">Chờ duyệt hoa hồng</td>
+                            @elseif($value->status_kt === 'done' && $value->status_admin2 === 'done')
+                                <td style="background-color: blue;color: white">Đã Hoàn Thành</td>
                             @endif
                         </tr>
                     @endforeach
@@ -95,14 +91,14 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form action="{{route('action_update_hoan_ung_ktkt')}}" method="post">
+                <form action="{{route('action_update_hoan_ung_admin2')}}" method="post">
                     <div class="modal-body">
                         @csrf
 
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Xác Nhận</button>
+{{--                        <button type="submit" class="btn btn-primary">Hoàn ứng</button>--}}
                     </div>
                 </form>
             </div>
@@ -176,81 +172,6 @@
         });
     </script>
 
-    <script>
-        $(document).ready(function () {
-            $("#area_search").change(function () {
-                var area = $("#area_search").val();
-                $.ajax({
-                    headers:{'X-CSRF-Token':$('meta[name="csrf-token2"]').attr('content')},
-                    url:"{{url('admin/user/area_store')}}",
-                    type:"POST",
-                    data: {
-                        area : area
-                    },
-                    success:function (data) {
-
-                        $('#store_search').empty();
-                        $.each(data.stores,function(index,store){
-                            // console.log(index);
-                            // console.log(store);
-                            $('#store_search').append('<option value="'+store.store_id+'">'+store.store_name+'-'+store.store_address+'</option>');
-                        })
-                    }
-                })
-            })
-        })
-    </script>
-    <script>
-        $(document).ready(function(){
-
-            $('#select_file').on('change',function(event){
-                console.log("da vao day");
-                var reader = new FileReader();
-
-                var filedata = this.files[0];
-                var imgtype = filedata.type;
-
-                var match = ['image/jpeg','image/jpg','image/png']
-
-                if(!(imgtype == match[0])||(imgtype == match[1])||(imgtype == match[2])){
-                    $('#mgs_ta').html('<p style = "color:red">Chọn đúng kiểu cho ảnh ... chỉ có jpeg, jpg và png</p>');
-                }
-                else {
-                    $('#mgs_ta').empty();
-                    //preview image
-                    reader.onload = function (event) {
-                        $('#img_prv1').attr('src', event.target.result).css('width', '150').css('height', '200');
-                    }
-                    reader.readAsDataURL(this.files[0]);
-                    //end preview
-
-                    // upload file
-                    var postData = new FormData();
-                    postData.append('file',this.files[0]);
-
-                    var url = "{{url('file/upload_file')}}";
-
-                    $.ajax({
-                        headers:{'X-CSRF-Token':$('meta[name="csrf-token1"]').attr('content')},
-                        url:url,
-                        type:"post",
-                        async:true,
-                        contentType: false,
-                        data: postData,
-                        processData: false,
-                        success:function(dataresult)
-                        {
-                            console.log(dataresult);
-                            $("#url_image1").html(dataresult['url']);
-                        }
-                    })
-
-                }
-
-            });
-
-        });
-    </script>
 @stop
 
 

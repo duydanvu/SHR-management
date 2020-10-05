@@ -18,8 +18,8 @@ class KtktController extends Controller
             ->join('users','id_user','=','users.id')
             ->where('status_transport','=','done')
             ->where('status_payment','=','done')
-            ->where('status_kt','=','wait')
-            ->where('status_admin2','=','wait')
+//            ->where('status_kt','=','wait')
+//            ->where('status_admin2','=','wait')
             ->select(''.$table.'.*','products.*')
             ->addSelect(''.$table.'.id as id_order')
             ->addSelect('users.last_name')
@@ -45,6 +45,7 @@ class KtktController extends Controller
             $update_hoan_ung = DB::table($table1)->where('id','=',$id_order)
                 ->update([
                     'status_kt'=>'done',
+                    'status_admin2'=>'done',
                 ]);
         }catch (QueryException $ex){
             $notification = array(

@@ -80,7 +80,8 @@
                     <th style="width:10%">Giá Sản Phẩm</th>
                     <th style="width:10%">Số Lượng Sản Phẩm</th>
                     <th style="width:10%">Tổng số Tiền ứng</th>
-                    <th style="width:10%">Hoàn ứng</th>
+                    <th style="width:10%">Trạng Thái</th>
+                    <th style="width:10%">Action</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
@@ -93,8 +94,22 @@
                             <td>{{$value->price_sale}}</td>
                             <td>{{$value->total_product}}</td>
                             <td>{{$value->total_price}}</td>
-                            <td><a href="{{route('view_detail_hoan_ung',['id'=>$value->id_order])}}" data-remote="false"
-                                   data-toggle="modal" data-target="#modal-admin-action-update">Hoàn ứng</a></td>
+                            @if($value->status_kt === 'done' && $value->status_admin2 === 'done')
+                                <td style="background-color: blue;font-size: 17px;color: white">Đã Hoàn Thành</td>
+                            @elseif($value->status_payment === 'done' && $value->status_kt === 'wait')
+                                <td style="background-color: #d39e00;font-size: 20px">Chờ Duyệt</td>
+                            @else
+                                <td style="background-color: #b73867;font-size: 20px;color: white">Đã Bán</td>
+                            @endif
+
+                            @if($value->status_payment === 'done' && $value->status_kt === 'wait' && $value->status_admin2 === 'wait')
+                                <td>Chờ Xác Nhận</td>
+                            @elseif($value->status_kt === 'done' && $value->status_admin2 === 'done')
+                                <td></td>
+                            @else
+                            <td><a class="btn btn-primary" href="{{route('view_detail_hoan_ung',['id'=>$value->id_order])}}" data-remote="false"
+                                   data-toggle="modal" data-target="#modal-admin-action-update">Duyệt Hoa Hồng</a></td>
+                            @endif
                         </tr>
                     @endforeach
                 @else
@@ -125,7 +140,7 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Hoàn ứng</button>
+                        <button type="submit" class="btn btn-primary">Duyệt Hoa Hồng</button>
                     </div>
                 </form>
             </div>

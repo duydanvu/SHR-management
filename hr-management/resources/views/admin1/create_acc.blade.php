@@ -18,17 +18,17 @@
 @stop
 
 @section('content')
-    <div class="card card-outline card-primary-dashboard">
-        <meta name="csrf-token-2" content="{{ csrf_token() }}">
-        <div class="card-header">
-            <h3 class="card-title">Tìm Kiếm</h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                    <i class="fas fa-minus"></i></button>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="row">
+{{--    <div class="card card-outline card-primary-dashboard">--}}
+{{--        <meta name="csrf-token-2" content="{{ csrf_token() }}">--}}
+{{--        <div class="card-header">--}}
+{{--            <h3 class="card-title">Tìm Kiếm</h3>--}}
+{{--            <div class="card-tools">--}}
+{{--                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">--}}
+{{--                    <i class="fas fa-minus"></i></button>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--        <div class="card-body">--}}
+{{--            <div class="row">--}}
 {{--                <div class="col-md-3 ml-4">--}}
 {{--                    <div class="form-group">--}}
 {{--                        <meta name="csrf-token2" content="{{ csrf_token() }}">--}}
@@ -41,28 +41,28 @@
 {{--                        </select>--}}
 {{--                    </div>--}}
 {{--                </div>--}}
-                <div class="col-md-3 ml-4">
-                    <div class="form-group">
-                        <meta name="csrf-token2" content="{{ csrf_token() }}">
-                        <label for="exampleInputEmail1">Tên Tài Khoản</label>
-                        <input id="name_user" type="text" class="form-control @error('txtNameUser') is-invalid @enderror" name="txtFName" value=""  autocomplete="number" required>
-                        @error('txtNameUser')
-                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-md-2 ml-4 mt-md-2">
-                    <button type="submit" id="fillter_date" class="btn btn-primary mt-4" style="float: left"><i class="fas fa-search-minus">Tìm Kiếm</i></button>
-                </div>
-                <div class="col-md-3 ml-4 mt-md-2 " style="float: left">
-                    <button id = "" type="button" class="btn btn-info mt-4" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Thêm Tài Khoản</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
+{{--                <div class="col-md-3 ml-4">--}}
+{{--                    <div class="form-group">--}}
+{{--                        <meta name="csrf-token2" content="{{ csrf_token() }}">--}}
+{{--                        <label for="exampleInputEmail1">Tên Tài Khoản</label>--}}
+{{--                        <input id="name_user" type="text" class="form-control @error('txtNameUser') is-invalid @enderror" name="txtFName" value=""  autocomplete="number" required>--}}
+{{--                        @error('txtNameUser')--}}
+{{--                        <span class="invalid-feedback" role="alert">--}}
+{{--                                            <strong>{{ $message }}</strong>--}}
+{{--                                        </span>--}}
+{{--                        @enderror--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="col-md-2 ml-4 mt-md-2">--}}
+{{--                    <button type="submit" id="fillter_date" class="btn btn-primary mt-4" style="float: left"><i class="fas fa-search-minus">Tìm Kiếm</i></button>--}}
+{{--                </div>--}}
+{{--                <div class="col-md-3 ml-4 mt-md-2 " style="float: left">--}}
+{{--                    <button id = "" type="button" class="btn btn-info mt-4" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Thêm Tài Khoản</button>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+
     <div class="card">
         <div class="card-header">
             <div class="button-group-card-header">
@@ -70,6 +70,7 @@
                 {{--                @if($role_use_number == 1)--}}
                 {{--                @endif--}}
                 {{--<a href="{{route('export_to_file_csv')}}" class="btn btn-success btn-xs offset-lg-10" style="float: right;">export</a>--}}
+                    <button id = "" type="button" class="btn btn-info ml-5" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Thêm Tài Khoản</button>
             </div>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -305,14 +306,14 @@
         });
 
         $(function () {
-            // $("#example1").DataTable({
-            //     aoColumnDefs: [
-            //         {
-            //             bSortable: false,
-            //             aTargets: ['noSort']
-            //         } // Disable sorting on columns marked as so
-            //     ]
-            // });
+            $("#example1").DataTable({
+                aoColumnDefs: [
+                    {
+                        bSortable: false,
+                        aTargets: ['noSort']
+                    } // Disable sorting on columns marked as so
+                ]
+            });
             // fix table
             $("#example1").parent().css({"overflow": "auto"});
         });

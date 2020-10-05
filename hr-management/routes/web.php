@@ -182,6 +182,9 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/user1/view_user_with_sale_product/{id}','User1Controller@view_user_with_sale_product')->name('view_user_with_sale_product');
     Route::get('/user1/update_user_to_sale_product/{id}','User1Controller@updateUserSaleProduct')->name('update_user_to_sale_product');
 
+    //user1/danh_sach_hoan_ung
+    Route::get('/user1/danh_sach_hoan_ung','User1Controller@danhSachHoanUng')->name('dannh_sach_hoan_ung');
+
     //user1/phan_quyen_san_pham
     Route::get('/user1/phan_quyen_san_pham','User1Controller@phanQuyenSanPham')->name('phan_quyen_san_pham');
 

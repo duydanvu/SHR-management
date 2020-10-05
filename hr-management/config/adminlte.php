@@ -522,11 +522,11 @@ return [
                             'url'     => 'user2/danh_sach_hoan_ung',
                             'can'     => 'user_lv2',
                         ] ,
-                        [
-                            'text'    => 'Giao Hàng',
-                            'url'     => 'user2/danh_sach_giao_hang',
-                            'can'     => 'user_lv2',
-                        ] ,
+//                        [
+//                            'text'    => 'Giao Hàng',
+//                            'url'     => 'user2/danh_sach_giao_hang',
+//                            'can'     => 'user_lv2',
+//                        ] ,
                     ]
                 ],
                 [
@@ -539,6 +539,12 @@ return [
                     'text'    => 'Phân Quyền Sản Phẩm',
                     'icon'    => 'fas fa-clipboard-list',
                     'url'     => '/user1/phan_quyen_san_pham',
+                    'can'     => 'user_lv1'
+                ],
+                [
+                    'text'    => 'Quản lý đơn hàng',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/user1/danh_sach_hoan_ung',
                     'can'     => 'user_lv1'
                 ],
                 [

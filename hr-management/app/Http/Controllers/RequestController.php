@@ -457,9 +457,9 @@ class RequestController extends Controller
                     ,DB::raw("'0' as D31")
                     ,'users.id')
                 ->where('position_id','=','2')
-                ->whereBetween('date',[substr($date, 0, 8).'01',substr($date, 0, 8).'31'])
+//                ->whereBetween('date',[substr($date, 0, 8).'01',substr($date, 0, 8).'31'])
                 ->get();
-
+//                dd($staff);
                 foreach ($staff as $values) {
                     for($i = 1; $i <=31; $i++) {
                     if($i <10){
@@ -525,7 +525,7 @@ class RequestController extends Controller
                 ->where('position_id','<>','1')
                 ->where('position_id','<>','2')
                 ->where('users.store_id','=',$roles->store_id)
-                ->whereBetween('date',[substr($date, 0, 8).'01',substr($date, 0, 8).'31'])
+//                ->whereBetween('date',[substr($date, 0, 8).'01',substr($date, 0, 8).'31'])
                 ->get();
 
             foreach ($staff as $values) {

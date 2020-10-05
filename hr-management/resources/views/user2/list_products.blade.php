@@ -200,6 +200,14 @@
     </script>
 
     <script>
+        $(document).ready(function () {
+            @foreach($product as $value)
+            console.log('{{$value->name}}')
+            @endforeach
+        })
+    </script>
+
+    <script>
         $(document).ready(function(){
             $('#fillter_date').click(function () {
                 let area_search = $('#area_search').val();

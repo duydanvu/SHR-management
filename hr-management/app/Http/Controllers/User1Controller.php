@@ -125,4 +125,23 @@ class User1Controller extends Controller
         );
         return Redirect::back()->with($notification);
     }
+
+    public function danhSachHoanUng(){
+        $curDate = date("Y-m-d");
+        $table = 'spd_'.substr($curDate,5,2).substr($curDate,0,4).'s';
+        $list_hoan_ung = DB::table($table)
+            ->join('products','id_product','=','products.id')
+            ->join('users','id_user','=','users.id')
+//            ->where('status_transport','=','done')
+//            ->where('status_payment','=','done')
+//            ->where('status_kt','=','done')
+//            ->where('status_admin2','=','wait')
+            ->select(''.$table.'.*','products.*')
+            ->addSelect(''.$table.'.id as id_order')
+            ->addSelect('users.last_name')
+            ->addSelect('users.email')
+            ->get();
+        $product = Products::all();
+        return view('user1.list_hoan_ung',compact('list_hoan_ung','product'));
+    }
 }

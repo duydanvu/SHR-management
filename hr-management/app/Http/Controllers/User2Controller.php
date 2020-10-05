@@ -7,10 +7,12 @@ use App\Supplier;
 use App\User;
 use App\UserProduct;
 use Illuminate\Database\QueryException;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Schema;
 
 class User2Controller extends Controller
 {
@@ -82,6 +84,27 @@ class User2Controller extends Controller
                 return Redirect::back()->with($notification);
             }else {
                 if ($product->hh_default != null) {
+                    $check = Schema::hasTable($table);
+                    if($check != true){
+                        $create_table = Schema::create($table, function (Blueprint $tables) {
+                            $tables->increments('id');
+                            $tables->integer('id_product');
+                            $tables->integer('total_product');
+                            $tables->integer('id_user');
+                            $tables->string('email_guest')->nullable();
+                            $tables->string('phone_guest')->nullable();
+                            $tables->integer('bonus_pr');
+                            $tables->integer('total_price');
+                            $tables->integer('total_bonus');
+                            $tables->dateTime('time');
+                            $tables->string('status_transport');
+                            $tables->string('status_payment');
+                            $tables->string('status_kt');
+                            $tables->string('status_admin2');
+                            $tables->timestamps();
+                        });
+                    }
+
                     $create_sell_product = DB::table($table)->insertGetId([
                         'id_product' => $request['txtProductID'],
                         'id_user' => $id_Auth,
@@ -90,12 +113,33 @@ class User2Controller extends Controller
                         'total_price' => $product->price_sale * $request['totalProduct'],
                         'total_bonus' => $product->hh_default * $request['totalProduct'],
                         'time' => $curDateTime,
-                        'status_transport' => 'wait',
+                        'status_transport' => 'done',
                         'status_payment' => 'wait',
                         'status_kt' => 'wait',
                         'status_admin2' => 'wait',
                     ]);
                 } elseif ($product->hh_percent != null) {
+                    $check = Schema::hasTable($table);
+                    if($check != true){
+                        $create_table = Schema::create($table, function (Blueprint $tables) {
+                            $tables->increments('id');
+                            $tables->integer('id_product');
+                            $tables->integer('total_product');
+                            $tables->integer('id_user');
+                            $tables->string('email_guest')->nullable();
+                            $tables->string('phone_guest')->nullable();
+                            $tables->integer('bonus_pr');
+                            $tables->integer('total_price');
+                            $tables->integer('total_bonus');
+                            $tables->dateTime('time');
+                            $tables->string('status_transport');
+                            $tables->string('status_payment');
+                            $tables->string('status_kt');
+                            $tables->string('status_admin2');
+                            $tables->timestamps();
+                        });
+                    }
+
                     $create_sell_product = DB::table($table)->insertGetId([
                         'id_product' => $request['txtProductID'],
                         'id_user' => $id_Auth,
@@ -104,7 +148,7 @@ class User2Controller extends Controller
                         'total_price' => $product->price_sale * $request['totalProduct'],
                         'total_bonus' => $product->price_sale * $request['totalProduct'] * $product->hh_percent / 100,
                         'time' => $curDateTime,
-                        'status_transport' => 'wait',
+                        'status_transport' => 'done',
                         'status_payment' => 'wait',
                         'status_kt' => 'wait',
                         'status_admin2' => 'wait',
@@ -140,6 +184,23 @@ class User2Controller extends Controller
                     ->update([
                        'han_muc'=>$han_muc_now-($product->price_sale * $request['totalProduct']),
                     ]);
+                $table1 = 'spd_'.substr($curDate,5,2).substr($curDate,0,4).'s';
+                $order = DB::table($table)->find($create_sell_product);
+                $id_insert =DB::table($table1)->insertGetId([
+                    'id_product'=>$order->id_product,
+                    'total_product'=>$order->total_product,
+                    'id_user'=>$order->id_user,
+                    'email_guest'=>$order->email_guest,
+                    'phone_guest'=>$order->phone_guest,
+                    'bonus_pr'=>$order->bonus_pr,
+                    'total_price'=>$order->total_price,
+                    'total_bonus'=>$order->total_bonus,
+                    'time'=>$order->time,
+                    'status_transport'=>'done',
+                    'status_payment'=>'wait',
+                    'status_kt'=>'wait',
+                    'status_admin2'=>'wait',
+                ]);
             }
         }
         catch (QueryException $ex){
@@ -176,10 +237,10 @@ class User2Controller extends Controller
         $table = 'spd_'.substr($curDate,5,2).substr($curDate,0,4).'s';
         $list_hoan_ung = DB::table($table)
             ->join('products','id_product','=','products.id')
-            ->where('status_transport','=','done')
-            ->where('status_payment','=','wait')
-            ->where('status_kt','=','wait')
-            ->where('status_admin2','=','wait')
+//            ->where('status_transport','=','done')
+//            ->where('status_payment','=','wait')
+//            ->where('status_kt','=','wait')
+//            ->where('status_admin2','=','wait')
             ->select(''.$table.'.*','products.*')
             ->addSelect(''.$table.'.id as id_order')
             ->get();
@@ -200,6 +261,26 @@ class User2Controller extends Controller
         $table1 = 'spd_'.substr($curDate,5,2).substr($curDate,0,4).'s';
         try {
             $order = DB::table($table)->find($id);
+            $check = Schema::hasTable($table1);
+            if($check != true){
+                $create_table = Schema::create($table1, function (Blueprint $tables) {
+                    $tables->increments('id');
+                    $tables->integer('id_product');
+                    $tables->integer('total_product');
+                    $tables->integer('id_user');
+                    $tables->string('email_guest')->nullable();
+                    $tables->string('phone_guest')->nullable();
+                    $tables->integer('bonus_pr');
+                    $tables->integer('total_price');
+                    $tables->integer('total_bonus');
+                    $tables->dateTime('time');
+                    $tables->string('status_transport');
+                    $tables->string('status_payment');
+                    $tables->string('status_kt');
+                    $tables->string('status_admin2');
+                    $tables->timestamps();
+                });
+            }
             $id_insert =DB::table($table1)->insertGetId([
                 'id_product'=>$order->id_product,
                 'total_product'=>$order->total_product,
