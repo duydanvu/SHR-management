@@ -24,11 +24,13 @@ use App\Warehouse;
 use App\WarehouseProduct;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Schema;
 
 class Admin2Controller extends Controller
 {
@@ -1577,7 +1579,7 @@ class Admin2Controller extends Controller
         $tablename1 = substr($date,0,4);
         $tablename2 = substr($date,5,2);
         $tablename = 'iep_'.$tablename1.$tablename2;
-        try{
+//        try{
             $id_last_from = DB::table('warehouse_products')
                 ->where('id_product','=',$request->id_product)
                 ->where('id_warehouse','=',$request->id_WarehouseFrom)
@@ -1590,22 +1592,56 @@ class Admin2Controller extends Controller
                 ->where('time','<',$date)
                 ->orderBy('id','desc')
                 ->first();
-            $sub_warehouse_from= DB::table('warehouse_products')->insertGetId([
-                'id_product'=>$request->id_product,
-                'id_warehouse'=> $request->id_WarehouseFrom,
-                'contract_tc' => '0000',
-                'time'=> Carbon::now(),
-                'total'=>$id_last_from->total - $request->txtTotalWarehouse,
-                'type'=> 'w2w',
-            ]);
-            $add_warehouse_to = DB::table('warehouse_products')->insertGetId([
-                'id_product'=>$request->id_product,
-                'id_warehouse'=> $request->id_WarehouseTo,
-                'contract_tc' => '0000',
-                'time'=> Carbon::now(),
-                'total'=>$id_last_to->total + $request->txtTotalWarehouse,
-                'type'=> 'w2w',
-            ]);
+
+            if($id_last_to == null){
+                $sub_warehouse_from = DB::table('warehouse_products')->insertGetId([
+                    'id_product' => $request->id_product,
+                    'id_warehouse' => $request->id_WarehouseFrom,
+                    'contract_tc' => '0000',
+                    'time' => Carbon::now(),
+                    'total' => $id_last_from->total - $request->txtTotalWarehouse,
+                    'type' => 'w2w',
+                ]);
+                $add_warehouse_to = DB::table('warehouse_products')->insertGetId([
+                    'id_product' => $request->id_product,
+                    'id_warehouse' => $request->id_WarehouseTo,
+                    'contract_tc' => '0000',
+                    'time' => Carbon::now(),
+                    'total' => $request->txtTotalWarehouse,
+                    'type' => 'w2w',
+                ]);
+            }else {
+                $sub_warehouse_from = DB::table('warehouse_products')->insertGetId([
+                    'id_product' => $request->id_product,
+                    'id_warehouse' => $request->id_WarehouseFrom,
+                    'contract_tc' => '0000',
+                    'time' => Carbon::now(),
+                    'total' => $id_last_from->total - $request->txtTotalWarehouse,
+                    'type' => 'w2w',
+                ]);
+                $add_warehouse_to = DB::table('warehouse_products')->insertGetId([
+                    'id_product' => $request->id_product,
+                    'id_warehouse' => $request->id_WarehouseTo,
+                    'contract_tc' => '0000',
+                    'time' => Carbon::now(),
+                    'total' => $id_last_to->total + $request->txtTotalWarehouse,
+                    'type' => 'w2w',
+                ]);
+            }
+            $check = Schema::hasTable($tablename);
+            if($check != true){
+                $create_table = Schema::create($tablename, function (Blueprint $tables) {
+                    $tables->increments('id');
+                    $tables->integer('id_product');
+                    $tables->integer('id_warehouse');
+                    $tables->integer('import_total')->nullable();
+                    $tables->integer('export_total')->nullable();
+                    $tables->dateTime('time');
+                    $tables->integer('total');
+                    $tables->string('type')->nullable();
+                    $tables->timestamps();
+                });
+            }
             $sub_warehouse= DB::table($tablename)->insertGetId([
                 'id_product'=>$request->id_product,
                 'id_warehouse'=> $request->id_WarehouseFrom,
@@ -1627,14 +1663,14 @@ class Admin2Controller extends Controller
                 ->update([
                     'status'=>'done',
                 ]);
-        }
-        catch (QueryException $ex){
-            $notification = array(
-                'message' => 'Thông tin không chính xác! Vui lòng kiểm tra lại ',
-                'alert-type' => 'error'
-            );
-            return Redirect::back()->with($notification);
-        }
+//        }
+//        catch (QueryException $ex){
+//            $notification = array(
+//                'message' => 'Thông tin không chính xác! Vui lòng kiểm tra lại ',
+//                'alert-type' => 'error'
+//            );
+//            return Redirect::back()->with($notification);
+//        }
         $notification = array(
             'message' => 'Thực hiện thành công!',
             'alert-type' => 'success'
