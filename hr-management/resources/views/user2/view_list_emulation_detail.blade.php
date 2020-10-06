@@ -133,66 +133,17 @@
                         <aside class="single_sidebar_widget post_category_widget">
                             <h4 class="widget_title">Danh Sách Thi Đua</h4>
                             <ul class="list cat-list">
+                                @foreach($result as $key => $values )
                                 <li>
                                     <a href="#" class="d-flex justify-content-between">
-                                        <p>Technology</p>
-                                        <p>37</p>
+                                        <p>@foreach($list_name_user as $values1) @if($values1->id == $key) {{$values1->last_name}} @endif @endforeach</p>
+                                        <p>{{$values}}</p>
+                                        <p>{{$key}}</p>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="#" class="d-flex justify-content-between">
-                                        <p>Lifestyle</p>
-                                        <p>24</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="d-flex justify-content-between">
-                                        <p>Fashion</p>
-                                        <p>59</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="d-flex justify-content-between">
-                                        <p>Art</p>
-                                        <p>29</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="d-flex justify-content-between">
-                                        <p>Food</p>
-                                        <p>15</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="d-flex justify-content-between">
-                                        <p>Architecture</p>
-                                        <p>09</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="d-flex justify-content-between">
-                                        <p>Adventure</p>
-                                        <p>44</p>
-                                    </a>
-                                </li>
+                                @endforeach
                             </ul>
                             <div class="br"></div>
-                        </aside>
-                        <aside class="single-sidebar-widget tag_cloud_widget">
-                            <h4 class="widget_title">Tag Clouds</h4>
-                            <ul class="list">
-                                <li><a href="#">Nguyen Van A</a></li>
-                                <li><a href="#">Nguyen Van b</a></li>
-                                <li><a href="#">Nguyen Van D</a></li>
-                                <li><a href="#">Nguyen Van E</a></li>
-                                <li><a href="#">Nguyen Van G</a></li>
-                                <li><a href="#">Nguyen Van H</a></li>
-                                <li><a href="#">Nguyen Van I</a></li>
-                                <li><a href="#">Adventure</a></li>
-                                <li><a href="#">Food</a></li>
-                                <li><a href="#">Lifestyle</a></li>
-                                <li><a href="#">Adventure</a></li>
-                            </ul>
                         </aside>
                     </div>
                 </div>

@@ -461,6 +461,7 @@ class User2Controller extends Controller
         // $key - id user
         // $key_1 - id product
         // $value2 - tong so san pham ban
+        $result = [];
         foreach ($arr as $key => $value1){
             foreach ($value1 as $key_1 => $value2){
                 if($value2 >= $total_tt[$key_1] && $value2 >= $total_rv[$key_1]){
@@ -468,9 +469,9 @@ class User2Controller extends Controller
                 }
             }
         }
-        $list_name_user = DB::table('users')->select('last_name','email')->get();
-//        dd($list_name_user);
 
-        return view('user2.view_list_emulation_detail',compact('emulation_detail','list_product',));
+        $list_name_user = DB::table('users')->select('id','last_name','email')->get();
+//        dd($list_name_user);
+        return view('user2.view_list_emulation_detail',compact('emulation_detail','list_product','list_name_user','result'));
     }
 }
