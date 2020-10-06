@@ -190,13 +190,20 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
 
     //user2/danh sach san pham kha dung
     Route::get('/user2/list_product','User2Controller@list_product')->name('danh_sach_san_pham_kha_dung');
+    Route::get('/user2/view_manage_goal','User2Controller@view_manage_goal')->name('view_manage_goal_user2');
+    Route::get('/user2/chi_tiet_muc_tieu_ban_hang/{id}','User2Controller@chi_tiet_muc_tieu_ban_hang')->name('chi_tiet_muc_tieu_ban_hang');
+
+    Route::get('/user2/view_manage_emulation','User2Controller@view_manage_emulation')->name('view_manage_emulation_user2');
     Route::get('/user2/list_view_product','User2Controller@list_view_product')->name('view_danh_sach_san_pham');
     Route::get('/user2/view_detail_product_user2/{id}','User2Controller@view_detail_product_user2')->name('view_detail_product_user2');
     Route::get('/user2/view_list_detail_product','User2Controller@view_list_product_user2')->name('view_list_product_detail');
+    Route::get('/view_list_emulation_detail/{id}','User2Controller@view_list_emulation_detail')->name('view_list_emulation_detail');
+
     Route::post('/user2/add_new_sell_product','User2Controller@add_new_sell_product')->name('add_new_sell_product');
+    Route::get('/user2/chi_tiet_hoa_hong_san_pham/{id}','User2Controller@detail_hoa_hong')->name('chi_tiet_hoa_hong_san_pham');
 
     Route::get('user2/danh_sach_hoan_ung','User2Controller@hoan_ung')->name('danh_sach_hoan_ung');
-    Route::get('user2/danh_sach_giao_hang','User2Controller@shippingProduct')->name('danh_sach_giao_hang');
+    Route::get('user2/danh_sach_hoa_hong','User2Controller@shippingProduct')->name('danh_sach_giao_hang');
     Route::get('user2/view_detail_hoan_ung/{id}','User2Controller@view_detail_hoan_ung')->name('view_detail_hoan_ung');
     Route::get('user2/view_detail_shipping/{id}','User2Controller@view_detail_shipping')->name('view_detail_shipping');
     Route::post('user2/action_update_hoan_ung_user2','User2Controller@action_update_hoan_ung_user2')->name('action_update_hoan_ung_user2');

@@ -10,7 +10,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item "><a href="/home1">Trang Chủ</a></li>
-                    <li class="breadcrumb-item "><a >Quản lý Sản Phẩm</a></li>
+                    <li class="breadcrumb-item "><a >Quản lý Hoàn ứng</a></li>
                 </ol>
             </div>
         </div>
@@ -18,44 +18,6 @@
 @stop
 
 @section('content')
-{{--    <div class="card card-outline card-primary-dashboard">--}}
-{{--        <meta name="csrf-token-2" content="{{ csrf_token() }}">--}}
-{{--        <div class="card-header">--}}
-{{--            <h3 class="card-title">Tìm Kiếm</h3>--}}
-{{--            <div class="card-tools">--}}
-{{--                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">--}}
-{{--                    <i class="fas fa-minus"></i></button>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="card-body">--}}
-{{--            <div class="row">--}}
-{{--                <div class="col-md-3 ml-4">--}}
-{{--                    <div class="form-group">--}}
-{{--                        <meta name="csrf-token2" content="{{ csrf_token() }}">--}}
-{{--                        <label for="exampleInputEmail1">Tên Sản Phẩm</label>--}}
-{{--                        <input id="name_user" type="text" class="form-control @error('txtNameUser') is-invalid @enderror" name="txtFName" value=""  autocomplete="number" required>--}}
-{{--                        @error('txtNameUser')--}}
-{{--                        <span class="invalid-feedback" role="alert">--}}
-{{--                                            <strong>{{ $message }}</strong>--}}
-{{--                                        </span>--}}
-{{--                        @enderror--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="col-md-2 ml-4 mt-md-2">--}}
-{{--                    <button type="submit" id="fillter_date" class="btn btn-primary mt-4" style="float: left"><i class="fas fa-search-minus">Tìm Kiếm</i></button>--}}
-{{--                </div>--}}
-{{--                <div class="col-md-2 ml-4 mt-md-2 " style="float: left">--}}
-{{--                    <button id = "" type="button" class="btn btn-info mt-4" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Thêm Sản Phẩm</button>--}}
-{{--                </div>--}}
-{{--                <div class="col-md-2 ml-2 mt-md-2 " style="float: left">--}}
-{{--                    <button id = "" type="button" class="btn btn-info mt-4" data-toggle="modal" data-target="#modal-nhap-san-pham"><i class="fas fa-plus-circle"></i> Nhập Sản Phẩm</button>--}}
-{{--                </div>--}}
-{{--                <div class="col-md-2 ml-2 mt-md-2 " style="float: left">--}}
-{{--                    <button id = "" type="button" class="btn btn-info mt-4" data-toggle="modal" data-target="#modal-tra-san-pham"><i class="fas fa-plus-circle"></i> Trả Sản Phẩm</button>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
     <div class="card">
         <div class="card-header">
             <div class="button-group-card-header">
@@ -75,44 +37,33 @@
                 <thead>
                 <tr>
                     <th style="width:5%">#</th>
-                    <th style="width:10%">Tên Sản Phẩm</th>
-                    <th style="width:10%">Mã Sản Phẩm</th>
-                    <th style="width:10%">Loại Sản Phẩm</th>
-                    <th style="width:10%">Giá Nhập</th>
-                    <th style="width:10%">Giá Bán</th>
-                    <th style="width:10%">Giá Khuyến Mại</th>
-                    <th style="width:10%">Hình Thức Hoa Hồng</th>
-                    <th style="width:10%">Mức Hoa Hồng</th>
-                    <th style="width:10%">Nhà Cung Cấp</th>
-                    <th style="width:10%">Loại Hình Hợp Tác</th>
+                    <th style="width:10%">Tên Mục Tiêu</th>
+                    <th style="width:10%">Thời Gian Bắt Đầu</th>
+                    <th style="width:10%">Thời Gian Kết Thức</th>
+                    <th style="width:10%">Thể Loại</th>
+                    <th style="width:10%">Giá trị</th>
+                    <th style="width:10%">Quá trình</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
-                @if(count($product) > 0)
-                    @foreach($product as $key => $value)
+                @if(count($list_goal) > 0)
+                    @foreach($list_goal as $key => $value)
                         <tr>
                             <td>{{$key+1}}</td>
                             <td>{{$value->name}}</td>
-                            <td>{{$value->product_code}}</td>
+                            <td>{{$value->start_time}}</td>
+                            <td>{{$value->end_time}}</td>
                             <td>{{$value->type}}</td>
-                            <td>{{number_format($value->price_in)}}</td>
-                            <td>{{number_format($value->price_out)}}</td>
-                            <td>{{number_format($value->price_sale)}}</td>
-                            @if($value->hh_default == null)
-                                <td>Tỉ Lệ</td>
-                                <td>{{$value->hh_percent}} %</td>
-                                @elseif($value->hh_default != null)
-                                <td>Mức Cố Định</td>
-                                <td>{{number_format($value->hh_default)}}</td>
+                            @if($value->sl == null)
+                                <td>{{($value->dt)}}</td>
+                            @else
+                                <td>{{($value->st)}}</td>
                             @endif
-                            @foreach($supplier as $value_sup)
-                                @if($value_sup->id == $value->id_supplier)
-                                    <td>{{$value_sup->name}}</td>
-                                @endif
-                            @endforeach
-                            <td>{{$value->cooperation}}</td>
+                            <td><a href="{{route('chi_tiet_muc_tieu_ban_hang',['id'=>$value->id])}}" data-remote="false"
+                                   data-toggle="modal" data-target="#modal-admin-action-update" >Chi tiết</a></td>
                         </tr>
                     @endforeach
+
                 @else
                     <td colspan="8" style="text-align: center">
                         <h3>Không có Thông Tin</h3>
@@ -127,21 +78,20 @@
 
     {{--    --}}{{-- modal --}}
     <div class="modal fade" id="modal-admin-action-update">
-        <div class="modal-dialog" >
+        <div class="modal-dialog" style="max-width: 900px">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Cập nhật thông tin</h4>
+                    <h4 class="modal-title">Chi tiết quá trình </h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form action="{{route('update_product')}}" method="post">
+                <form action="" method="post">
                     <div class="modal-body">
                         @csrf
 
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Lưu</button>
                     </div>
                 </form>
             </div>
@@ -158,6 +108,7 @@
 @stop
 
 @section('js')
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.21/api/sum().js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
@@ -171,40 +122,28 @@
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });
-        $("#modal-admin-action-update-detail").on("show.bs.modal", function(e) {
-            var link = $(e.relatedTarget);
-            $(this).find(".modal-body").load(link.attr("href"));
-        });
-        $("#modal-nhap-san-pham").on("show.bs.modal", function(e) {
-            var link = $(e.relatedTarget);
-            $(this).find(".modal-body").load(link.attr("href"));
-        });
-        $("#modal-tra-san-pham").on("show.bs.modal", function(e) {
-            var link = $(e.relatedTarget);
-            $(this).find(".modal-body").load(link.attr("href"));
-        });
 
         $(function () {
-            $("#example1").DataTable({
+            var table = $("#example1").DataTable({
                 aoColumnDefs: [
                     {
                         bSortable: false,
                         aTargets: ['noSort']
                     } // Disable sorting on columns marked as so
-                ]
+                ],
+                footerCallback: function( tfoot, data, start, end, display ) {
+                    var api = this.api();
+                    $(api.column(4).footer()).html(
+                        api.column(4).data().reduce(function ( a, b ) {
+                            return a + b;
+                        }, 0)
+                    );
+                }
             });
             // fix table
             $("#example1").parent().css({"overflow": "auto"});
         });
 
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            @foreach($product as $value)
-            console.log('{{$value->name}}')
-            @endforeach
-        })
     </script>
 
     <script>

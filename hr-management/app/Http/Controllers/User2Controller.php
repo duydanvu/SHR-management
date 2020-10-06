@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Emulation;
+use App\EmulationProducts;
+use App\GoalProduct;
+use App\GoalSales;
 use App\Products;
 use App\Supplier;
+use App\TotalProductEmulation;
 use App\User;
 use App\UserProduct;
 use Illuminate\Database\QueryException;
@@ -219,19 +224,48 @@ class User2Controller extends Controller
 
     public function shippingProduct(){
         $curDate = date("Y-m-d");
-        $table = 'spd_log_'.substr($curDate,5,2).substr($curDate,0,4).'s';
+        $table = 'spd_'.substr($curDate,5,2).substr($curDate,0,4).'s';
         $list_hoan_ung = DB::table($table)
             ->join('products','id_product','=','products.id')
-            ->where('status_transport','=','wait')
-            ->where('status_payment','=','wait')
-            ->where('status_kt','=','wait')
-            ->where('status_admin2','=','wait')
+            ->where('status_transport','=','done')
+            ->where('status_payment','=','done')
+            ->where('status_kt','=','done')
+            ->where('status_admin2','=','done')
             ->select(''.$table.'.*','products.*')
             ->addSelect(''.$table.'.id as id_order')
             ->get();
         $product = Products::all();
         return view('user2.list_shipping_product',compact('list_hoan_ung','product'));
     }
+
+    public function detail_hoa_hong($id){
+        $curDate = date("Y-m-d");
+        $table = 'spd_'.substr($curDate,5,2).substr($curDate,0,4).'s';
+        $product_name = Products::find($id)->name;
+        $total_product = DB::table($table)
+            ->where('id_product','=',$id)
+            ->where('status_transport','=','done')
+            ->where('status_payment','=','done')
+            ->where('status_kt','=','done')
+            ->where('status_admin2','=','done')
+            ->sum('total_product');
+        $total_price = DB::table($table)
+            ->where('id_product','=',$id)
+            ->where('status_transport','=','done')
+            ->where('status_payment','=','done')
+            ->where('status_kt','=','done')
+            ->where('status_admin2','=','done')
+            ->sum('total_price');
+        $total_bonus = DB::table($table)
+            ->where('id_product','=',$id)
+            ->where('status_transport','=','done')
+            ->where('status_payment','=','done')
+            ->where('status_kt','=','done')
+            ->where('status_admin2','=','done')
+            ->sum('total_bonus');
+        return view('user2.detail_hoa_hong',compact('total_product','total_bonus','total_price','product_name'));
+    }
+
     public function hoan_ung(){
         $curDate = date("Y-m-d");
         $table = 'spd_'.substr($curDate,5,2).substr($curDate,0,4).'s';
@@ -341,5 +375,102 @@ class User2Controller extends Controller
             'alert-type' => 'success'
         );
         return Redirect::back()->with($notification);
+    }
+
+    public function view_manage_goal(){
+        $find_id_group = Auth::user()->group_id;
+        $find_id_goal_sale = GoalSales::where('id_group','like','%'.$find_id_group.'%')->get();
+        $arr_id_goal = [];
+        foreach ($find_id_goal_sale as $value){
+            array_push($arr_id_goal,$value->id_goal) ;
+        }
+        $list_goal = GoalProduct::whereIn('id',$arr_id_goal)->get();
+        return view('user2.manage_goal',compact('list_goal'));
+    }
+
+    public function chi_tiet_muc_tieu_ban_hang($id){
+        $total_goal = GoalProduct::find($id)->sl;
+        if($total_goal == null){
+            $total_goal = GoalProduct::find($id)->dt;
+        }
+
+        $start_time = GoalProduct::find($id)->start_time;
+        $end_time = GoalProduct::find($id)->end_time;
+
+        $find_id_goal_sale = GoalSales::where('id_goal','=',$id)->get();
+        foreach ($find_id_goal_sale as $value){
+            $str_id_product = $value->id_product;
+        }
+        $arr_id_product = explode(',',$str_id_product);
+        $list_product = Products::whereIn('id',$arr_id_product)->get();
+
+        if(substr($start_time,5,2) === substr($end_time,5,2)){
+            $name_table = 'spd_'.substr($start_time,5,2).substr($start_time,0,4).'s';
+            $arr = [];
+            foreach ($list_product as $key => $value){
+                $arr[$value->id] = DB::table($name_table)
+                    ->where('id_user','=',Auth::id())
+                    ->where('id_product','=',$value->id)
+                    ->sum('total_product');
+            }
+        }
+        return view('user2.detail_muc_tieu_ban_hang',compact('list_product','arr','total_goal','start_time','end_time'));
+    }
+
+    public function view_manage_emulation(){
+        $emulation_new = DB::table('emulations')->orderByDesc('id')->first();
+
+        $list_emulation = DB::table('emulations')->orderByDesc('id')->get();
+        return view('user2.manage_emulation',compact('emulation_new','list_emulation'));
+    }
+
+    public function view_list_emulation_detail($id){
+        $emulation_detail = Emulation::find($id);
+
+        $emu_product = EmulationProducts::where('id_emulation','=',$id)->get();
+        foreach ($emu_product as $value){
+            $id_product = $value->id_product;
+        }
+        $arr_id = explode(',',$id_product);
+        $list_product = Products::whereIn('id',$arr_id)->get();
+
+        $curDate = date("Y-m-d");
+        $table1 = 'spd_'.substr($curDate,5,2).substr($curDate,0,4).'s';
+
+        $id_user = DB::table($table1)->select('id_user')->groupBy('id_user')->get();
+
+        foreach ($id_user as $value) {
+            foreach ($list_product as $key => $values) {
+                $arr[$value->id_user][$values->id] = DB::table($table1)
+                    ->where('id_product', '=', $values->id)
+                    ->where('id_user', '=', $value->id_user)
+                    ->sum('total_product');
+            }
+        }
+
+        foreach ($arr_id as $value_id_pdu){
+            $total = TotalProductEmulation::where('id_emu_pdu','=',$id)->where('id_product','=',$value_id_pdu)->get();
+            foreach ($total as $value_tt){
+                $total_tt[$value_id_pdu] = $value_tt->total;
+            }
+            foreach ($total as $value_tt){
+                $total_rv[$value_id_pdu] = $value_tt->revenue;
+            }
+        }
+
+        // $key - id user
+        // $key_1 - id product
+        // $value2 - tong so san pham ban
+        foreach ($arr as $key => $value1){
+            foreach ($value1 as $key_1 => $value2){
+                if($value2 >= $total_tt[$key_1] && $value2 >= $total_rv[$key_1]){
+                    $result[$key] = $value2;
+                }
+            }
+        }
+        $list_name_user = DB::table('users')->select('last_name','email')->get();
+//        dd($list_name_user);
+
+        return view('user2.view_list_emulation_detail',compact('emulation_detail','list_product',));
     }
 }

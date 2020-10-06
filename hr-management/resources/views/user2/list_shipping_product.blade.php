@@ -42,7 +42,8 @@
                     <th style="width:10%">Giá Sản Phẩm</th>
                     <th style="width:10%">Số Lượng Sản Phẩm</th>
                     <th style="width:10%">Tổng số Tiền ứng</th>
-                    <th style="width:10%">Hoàn ứng</th>
+                    <th style="width:10%">Thời Gian</th>
+                    <th style="width:10%">Hoa Hồng</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
@@ -50,14 +51,18 @@
                     @foreach($list_hoan_ung as $key => $value)
                         <tr>
                             <td>{{$key+1}}</td>
-                            <td>{{$value->name}}</td>
+                            <td><a href="{{route('chi_tiet_hoa_hong_san_pham',['id'=>$value->id_product])}}"
+                                   data-remote="false" data-toggle="modal" data-target="#modal-admin-action-update">{{$value->name}}</a></td>
                             <td>{{$value->product_code}}</td>
-                            <td>{{$value->price_sale}}</td>
+                            <td>{{number_format($value->price_sale)}}</td>
                             <td>{{$value->total_product}}</td>
-                            <td>{{$value->total_price}}</td>
-                            <td><a href="{{route('view_detail_shipping',['id'=>$value->id_order])}}" >Cập Nhật</a></td>
+                            <td>{{number_format($value->total_price)}}</td>
+                            <td>{{($value->time)}}</td>
+                            <td>{{number_format($value->total_bonus)}}</td>
+{{--                            <td><a href="{{route('view_detail_shipping',['id'=>$value->id_order])}}" >Cập Nhật</a></td>--}}
                         </tr>
                     @endforeach
+
                 @else
                     <td colspan="8" style="text-align: center">
                         <h3>Không có Thông Tin</h3>
@@ -75,18 +80,17 @@
         <div class="modal-dialog" >
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Thông tin Hóa Đơn</h4>
+                    <h4 class="modal-title">Thông tin Hoa Hồng</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form action="{{route('action_update_hoan_ung_user2')}}" method="post">
+                <form action="" method="post">
                     <div class="modal-body">
                         @csrf
 
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Hoàn ứng</button>
                     </div>
                 </form>
             </div>
@@ -103,6 +107,7 @@
 @stop
 
 @section('js')
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.21/api/sum().js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
@@ -118,13 +123,21 @@
         });
 
         $(function () {
-            $("#example1").DataTable({
+            var table = $("#example1").DataTable({
                 aoColumnDefs: [
                     {
                         bSortable: false,
                         aTargets: ['noSort']
                     } // Disable sorting on columns marked as so
-                ]
+                ],
+                footerCallback: function( tfoot, data, start, end, display ) {
+                    var api = this.api();
+                    $(api.column(4).footer()).html(
+                        api.column(4).data().reduce(function ( a, b ) {
+                            return a + b;
+                        }, 0)
+                    );
+                }
             });
             // fix table
             $("#example1").parent().css({"overflow": "auto"});

@@ -91,15 +91,15 @@
                             <td>{{$key+1}}</td>
                             <td>{{$value->name}}</td>
                             <td>{{$value->product_code}}</td>
-                            <td>{{$value->price_sale}}</td>
+                            <td>{{number_format($value->price_sale)}}</td>
                             <td>{{$value->total_product}}</td>
-                            <td>{{$value->total_price}}</td>
+                            <td>{{number_format($value->total_price)}}</td>
                             @if($value->status_kt === 'done' && $value->status_admin2 === 'done')
                                 <td style="background-color: blue;font-size: 17px;color: white">Đã Hoàn Thành</td>
                             @elseif($value->status_payment === 'done' && $value->status_kt === 'wait')
-                                <td style="background-color: #d39e00;font-size: 20px">Chờ Duyệt</td>
+                                <td style="background-color: #855eca;font-size: 20px;color: white">Chờ Duyệt</td>
                             @else
-                                <td style="background-color: #b73867;font-size: 20px;color: white">Đã Bán</td>
+                                <td style="background-color: #cf5f02;font-size: 20px;color: white">Đã Bán</td>
                             @endif
 
                             @if($value->status_payment === 'done' && $value->status_kt === 'wait' && $value->status_admin2 === 'wait')

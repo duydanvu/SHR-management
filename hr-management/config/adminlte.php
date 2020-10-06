@@ -522,13 +522,23 @@ return [
                             'url'     => 'user2/danh_sach_hoan_ung',
                             'can'     => 'user_lv2',
                         ] ,
-//                        [
-//                            'text'    => 'Giao Hàng',
-//                            'url'     => 'user2/danh_sach_giao_hang',
-//                            'can'     => 'user_lv2',
-//                        ] ,
+                        [
+                            'text'    => 'Hoa Hồng',
+                            'url'     => 'user2/danh_sach_hoa_hong',
+                            'can'     => 'user_lv2',
+                        ] ,
                     ]
                 ],
+                [
+                    'text'    => 'Quản lý mục tiêu',
+                    'url'     => '/user2/view_manage_goal',
+                    'can'     => 'user_lv2',
+                ] ,
+                [
+                    'text'    => 'Chương trình thi đua',
+                    'url'     => '/user2/view_manage_emulation',
+                    'can'     => 'user_lv2',
+                ] ,
                 [
                     'text'    => 'Khóa Tài Khoản Người Dùng',
                     'icon'    => 'fas fa-clipboard-list',
