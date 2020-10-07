@@ -111,5 +111,16 @@
                                         </span>
             @enderror
         </div>
+        <div class="form-group">
+            <label for="name">Chi tiết Sản Phẩm</label>
+            <textarea name="editor1" id="editor1" rows="10" cols="80">
+                {{$product->detail}}
+             </textarea>
+        </div>
     </div>
 </div>
+
+<script src="{{asset("../ckeditor/ckeditor.js")}}"></script>
+<script>
+    CKEDITOR.replace( 'editor1' );
+</script>

@@ -49,6 +49,26 @@
                                         </span>
                                             @enderror
                                         </div>
+                                        <div class="form-group">
+                                            <label for="name"> Sản Lượng Yêu Cầu</label>
+                                            <input id="sl_min" type="number" class="form-control @error('txtSl_min') is-invalid
+                                                          @enderror" name="txtSl_min" value=""  autocomplete="number" required>
+                                            @error('txtSl_min')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="name"> Doanh Số Yêu Cầu</label>
+                                            <input id="ds_min" type="number" class="form-control @error('txtDs_min') is-invalid
+                                                          @enderror" name="txtDs_min" value=""  autocomplete="number" required>
+                                            @error('txtDs_min')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
 {{--                                        <div class="form-group">--}}
 {{--                                            <label for="name">Hình Thức Thi Đua</label>--}}
 {{--                                            <div class="form-check">--}}
@@ -65,10 +85,10 @@
                                         <div class="form-group">
                                             <meta name="csrf-token2" content="{{ csrf_token() }}">
                                             <label for="exampleInputEmail1">Giải Thưởng</label>
-                                            <select id="reward" name = "txtReward" class="form-control select2"  value="{{ old('txtReward') }}" autocomplete="txtReward" style="width: 100%;">
+                                            <select id="reward" name = "txtReward[]" class="form-control select2" multiple  value="{{ old('txtReward') }}" autocomplete="txtReward" style="width: 100%;">
                                                 @foreach ($reward as $reward)
                                                     <option value="{{$reward['id']}}">{{$reward['name']}}-{{$reward['values']}}
-                                                        -SL:{{$reward['sl_min']}}-DS:{{$reward['ds_min']}}</option>
+                                                        | SL-{{$reward['sl_min']}} | DS-{{$reward['ds_min']}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

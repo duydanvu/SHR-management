@@ -1,6 +1,7 @@
 @extends('adminlte::page')
 @section('title', 'Pool List')
 
+
 @section('content_header')
     <div class="container-fluid">
         <div class="row mb-2">
@@ -22,6 +23,24 @@
         <meta name="csrf-token-2" content="{{ csrf_token() }}">
         <div >
             <div class="col-lg-10 m-auto" >
+                <form>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="card-body col-lg-6 float-left">
+                                <span id="uploaded_image"><img id="img_prv1" src="{{URL::to('/')}}/upload/picture-icon-.jpg" style="max-width: 150px;max-height: 200px; width: 150px;height: 200px"></span>
+                                <div class="form-group col-8 float-right">
+                                    <label for="name">Upload Ảnh</label>
+                                    <form id="upload_form" enctype="multipart/form-data" method="post">
+                                        <meta name="csrf-token1" content="{{ csrf_token() }}">
+                                        <input id="select_file" type="file" name="select_file" required="true" class="pb-3">
+                                        <input type="submit" name="upload" id="upload" class="btn btn-primary" value="Upload Image">
+                                    </form>
+                                    <span id="mgs_ta"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 <div class=" col-lg-12 ">
                     <form class="form-horizontal" action="{{route('add_product')}}" method="post">
                         <div class="modal-body">
@@ -139,6 +158,14 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <div class="col-lg-12 float-left">
+                                        <div class="form-group">
+                                            <label for="name">Chi tiết Sản Phẩm</label>
+                                            <textarea name="editor1" id="editor1" rows="10" cols="80">
+
+                                            </textarea>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -212,8 +239,9 @@
 @section('js')
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-
+    <script src="{{asset("../ckeditor/ckeditor.js")}}"></script>
     <script>
+        CKEDITOR.replace( 'editor1' );
 
         $("#modal-admin-action-update").on("show.bs.modal", function(e) {
             var link = $(e.relatedTarget);
@@ -279,6 +307,57 @@
         });
     </script>
 
+    <script>
+        $(document).ready(function(){
+
+            $('#select_file').on('change',function(event){
+                console.log("da vao day");
+                var reader = new FileReader();
+
+                var filedata = this.files[0];
+                var imgtype = filedata.type;
+
+                var match = ['image/jpeg','image/jpg','image/png']
+
+                if(!(imgtype == match[0])||(imgtype == match[1])||(imgtype == match[2])){
+                    $('#mgs_ta').html('<p style = "color:red">Chọn đúng kiểu cho ảnh ... chỉ có jpeg, jpg và png</p>');
+                }
+                else {
+                    $('#mgs_ta').empty();
+                    //preview image
+                    reader.onload = function (event) {
+                        $('#img_prv1').attr('src', event.target.result).css('width', '150').css('height', '200');
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                    //end preview
+
+                    // upload file
+                    var postData = new FormData();
+                    postData.append('file',this.files[0]);
+
+                    var url = "{{url('file/upload_file')}}";
+
+                    $.ajax({
+                        headers:{'X-CSRF-Token':$('meta[name="csrf-token1"]').attr('content')},
+                        url:url,
+                        type:"post",
+                        async:true,
+                        contentType: false,
+                        data: postData,
+                        processData: false,
+                        success:function(dataresult)
+                        {
+                            console.log(dataresult);
+                            $("#url_image1").html(dataresult['url']);
+                        }
+                    })
+
+                }
+
+            });
+
+        });
+    </script>
 @stop
 
 

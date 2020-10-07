@@ -119,7 +119,7 @@
                                 <div class="f_p_item">
                                     <a href="{{route('view_detail_product_user2',['id'=>$value->id])}}">
                                     <div class="f_p_img">
-                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-1.jpg" alt="">
+                                        <img class="img-fluid" src="..{{$value->link}}" alt="">
                                         <div class="p_icon">
 {{--                                            <a href="#"><i class="lnr lnr-cart"></i></a>--}}
                                         </div>

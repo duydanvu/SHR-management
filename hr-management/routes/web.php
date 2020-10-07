@@ -96,6 +96,9 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/admin2/search_sales_product/{id}','Admin2Controller@searchSalesProduct')->name('search_sales_product');
     Route::post('/admin2/update_sale_product','Admin2Controller@updateSaleProduct')->name('update_sale_product');
 
+    //admin2/tao giai thuong thi dua
+    Route::get('/admin2/add_reward_emulation','Admin2Controller@addRewardEmulation')->name('add_reward_emulation');
+    Route::post('/admin2/add_reward_for_emulation','Admin2Controller@insertRewardEmulation')->name('add_reward_for_emulation');
 
     //admin2/chuong trinh thi dua
     Route::get('/admin2/emulation_product','Admin2Controller@indexEmulationProduct')->name('home_emulation_product');

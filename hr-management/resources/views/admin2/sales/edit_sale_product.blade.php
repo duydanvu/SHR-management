@@ -72,7 +72,7 @@
                     </label>
                 </div>
             </div>
-            <div class="form-group" >
+            <div class="form-group" id="gia_tri" @if($value->sale_off == null) style="display: none" @endif>
                 <label for="name">Giá trị khuyến mại</label>
                 <input id="PriceSale" type="number" class="form-control @error('txtPriceSale') is-invalid @enderror"
                        name="txtPriceSale" value="{{$value->sale_off}}"  autocomplete="number">
@@ -82,18 +82,55 @@
                                             </span>
                 @enderror
             </div>
-            <div class="form-group">
+            <div class="form-group" id="gift_1" @if($value->id_gifts == null) style="display: none" @endif>
                 <meta name="csrf-token2" content="{{ csrf_token() }}">
-                <label for="exampleInputEmail1">Quà Tặng</label>
-                <select id="gift" name = "txtGift" class="form-control select2"  value="{{ old('txtGift') }}" autocomplete="txtGift" style="width: 100%;">
-                    @foreach ($gift as $gift)
-                        <option value="{{$gift['id']}}">{{$gift['name']}}-{{$gift['code_gift']}}</option>
+                <label for="exampleInputEmail1">Quà Tặng 1</label>
+                <select id="gift_r1" name = "txtGift_r1" class="form-control select2"  value="{{ old('txtGift') }}" autocomplete="txtGift" style="width: 100%;">
+                    <option value="no_choice" selected>Quà Tặng 1</option>
+                    @foreach ($product_1 as $product_1)
+                        <option value="{{$product_1->id}}">{{$product_1->name}}-{{$product_1->product_code}}</option>
                     @endforeach
-                    @if($value->id_gifts == null)
-                    <option selected></option>@endif
+                </select>
+            </div>
+            <div class="form-group" id="gift_2" @if($value->id_gifts == null) style="display: none" @endif>
+                <meta name="csrf-token2" content="{{ csrf_token() }}">
+                <label for="exampleInputEmail1">Quà Tặng 2</label>
+                <select id="gift_r2" name = "txtGift_r2" class="form-control select2"  value="{{ old('txtGift') }}" autocomplete="txtGift" style="width: 100%;">
+                    <option value="no_choice" selected>Quà Tặng 2</option>
+                    @foreach ($product_2 as $product_2)
+                        <option value="{{$product_2->id}}">{{$product_2->name}}-{{$product_2->product_code}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group" id="gift_3" @if($value->id_gifts == null) style="display: none" @endif>
+                <meta name="csrf-token2" content="{{ csrf_token() }}">
+                <label for="exampleInputEmail1">Quà Tặng 3</label>
+                <select id="gift_r3" name = "txtGift_r3" class="form-control select2"  value="{{ old('txtGift') }}" autocomplete="txtGift" style="width: 100%;">
+                    <option value="no_choice" selected>Quà Tặng 3</option>
+                    @foreach ($product_3 as $product_3)
+                        <option value="{{$product_3->id}}">{{$product_3->name}}-{{$product_3->product_code}}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
     </div>
 </div>
 @endforeach
+
+
+<script>
+    $(document).ready(function () {
+        $("#giamgia").change(function () {
+            document.getElementById("gia_tri").style.display = "block";
+            document.getElementById("gift_1").style.display = "none";
+            document.getElementById("gift_2").style.display = "none";
+            document.getElementById("gift_3").style.display = "none";
+        });
+        $("#tangqua").change(function () {
+            document.getElementById("gia_tri").style.display = "none";
+            document.getElementById("gift_1").style.display = "block";
+            document.getElementById("gift_2").style.display = "block";
+            document.getElementById("gift_3").style.display = "block";
+        })
+    })
+</script>

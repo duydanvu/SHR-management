@@ -453,6 +453,11 @@ return [
                             'url'     => '/admin2/list_emulation_product',
                             'can'     => 'admin_lv2'
                         ],
+                        [
+                            'text'    => 'Tạo giải thưởng thi đua',
+                            'url'     => '/admin2/add_reward_emulation',
+                            'can'     => 'admin_lv2'
+                        ],
                     ]
                 ],
                 [

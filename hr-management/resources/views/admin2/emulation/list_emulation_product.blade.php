@@ -38,8 +38,9 @@
                     <th style="width:20%" >Tên Chương trình thi đua</th>
                     <th style="width:15%" >Quyết định tham chiếu</th>
                     <th style="width:10%">Tổng số sản phẩm</th>
-                    <th style="width:10%">Giải Thưởng</th>
-                    <th style="width:10%">Giá trị giải thưởng</th>
+                    <th style="width:10%">Số lượng yêu cầu</th>
+                    <th style="width:10%">Doanh số yêu cầu</th>
+                    <th style="width:25%">Giải Thưởng</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
@@ -85,8 +86,13 @@
                             @else
                             <td>{{count(explode(',',$value->id_product))}}</td>
                             @endif
-                            <td>{{$value->name_reward}}</td>
-                            <td>{{$value->values}}</td>
+                            <td>{{$value->total}}</td>
+                            <td>{{$value->revenue}}</td>
+                            <td>@foreach($reward as $values)
+                                    @if(strlen(strstr($value->id_reward,''.$values->id.'')) > 0)
+                                        {{$values->name}}-{{$values->quantity}}-{{$values->values}} <br>
+                                    @endif
+                                @endforeach</td>
                         </tr>
                     @endforeach
                 @else

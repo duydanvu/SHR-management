@@ -1042,7 +1042,6 @@ class Admin2Controller extends Controller
     }
 
     public function addProduct(Request $request){
-
         $validator = \Validator::make($request->all(),[
             'txtName' => 'required|max:50',
             'txtType' => 'required|max:250',
@@ -1054,6 +1053,7 @@ class Admin2Controller extends Controller
             'txtHH' => 'required',
             'txtPriceHH' => 'required',
             'txtPriceSale' => 'required',
+            'url_image'=> 'required',
         ]);
         $notification= array(
             'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
@@ -1070,6 +1070,8 @@ class Admin2Controller extends Controller
                 $create_pdu = DB::table('products')->insertGetId([
                     'name'=> $request['txtName'],
                     'type' => $request['txtType'],
+                    'detail' => $request['editor1'],
+                    'link'=> $request['url_image'],
                     'id_supplier'=> $request['txtSupplier'],
                     'contract'=> $request['txtContract'],
                     'cooperation'=> $request['txtTypeHT'],
@@ -1083,6 +1085,7 @@ class Admin2Controller extends Controller
                 $create_pdu = DB::table('products')->insertGetId([
                     'name'=> $request['txtName'],
                     'type' => $request['txtType'],
+                    'link'=> $request['url_image'],
                     'id_supplier'=> $request['txtSupplier'],
                     'contract'=> $request['txtContract'],
                     'cooperation'=> $request['txtTypeHT'],
@@ -1192,6 +1195,7 @@ class Admin2Controller extends Controller
                     ->update([
                         'name'=> $request['txtName'],
                         'type' => $request['txtType'],
+                        'detail' => $request['editor1'],
                         'id_supplier'=> $request['txtSupplier'],
                         'contract'=> $request['txtContract'],
                         'cooperation'=> $request['txtTypeHT'],
@@ -1207,6 +1211,7 @@ class Admin2Controller extends Controller
                     ->update([
                         'name'=> $request['txtName'],
                         'type' => $request['txtType'],
+                        'detail' => $request['editor1'],
                         'id_supplier'=> $request['txtSupplier'],
                         'contract'=> $request['txtContract'],
                         'cooperation'=> $request['txtTypeHT'],
@@ -1680,9 +1685,12 @@ class Admin2Controller extends Controller
 
     public function indexSaleProduct(){
         $product = Products::all();
+        $product_1 = Products::all();
+        $product_2 = Products::all();
+        $product_3 = Products::all();
         $group = Group::all();
         $gift = Gift::all();
-        return view('admin2.sales.index_sale_product',compact('product','group','gift'));
+        return view('admin2.sales.index_sale_product',compact('product','product_1','product_2','product_3','group','gift'));
     }
 
     public function addSaleProduct(Request $request){
@@ -1715,13 +1723,30 @@ class Admin2Controller extends Controller
                     'id_gifts'=> null,
                 ]);
             }elseif($request->txtType == 'tangqua'){
+                if($request['txtGift_r1'] === 'no_choice' ){
+                    $gift = null;
+                }else{
+                    $gift = $request['txtGift_r1'];
+                }
+
+                if($request['txtGift_r2'] === 'no_choice' ){
+                    $gift_2 = $gift;
+                }else{
+                    $gift_2 = $gift.','.$request['txtGift_r2'];
+                }
+
+                if($request['txtGift_r3'] === 'no_choice' ){
+                    $gift_3 = $gift_2;
+                }else{
+                    $gift_3 = $gift_2.','.$request['txtGift_r3'];
+                }
                 $create_pdu = DB::table('sales')->insertGetId([
                     'name'=> $request['txtName'],
                     'qdtc' => $request['txtQdtc'],
                     'price_sale'=> $request['txtPrice'],
                     'type'=> $request['txtType'],
                     'sale_off'=> null,
-                    'id_gifts'=> $request['txtGift'],
+                    'id_gifts'=> $gift_3,
                 ]);
             }else{
                 $notification = array(
@@ -1761,6 +1786,9 @@ class Admin2Controller extends Controller
 
     public function listSaleProduct(){
         $product = Products::all();
+        $product_1 = Products::all();
+        $product_2 = Products::all();
+        $product_3 = Products::all();
         $group = Group::all();
         $gift = Gift::all();
         $list_sale_product = SalesProducts::join('sales','sales.id','=','sales_products.id_sales')
@@ -1770,11 +1798,14 @@ class Admin2Controller extends Controller
             ->select('sales.id','sales.name','sales.qdtc','products.name as name_product','products.product_code'
                 ,'groups.id as id_group','groups.name as name_group','sales.price_sale as sal_price','sales.type as sale_type','sales.sale_off'
             ,'sales.id_gifts','gifts.name as name_gifts')->get();
-        return view('admin2.sales.list_sale_product',compact('list_sale_product','product','group','gift'));
+        return view('admin2.sales.list_sale_product',compact('list_sale_product','product','product_1','product_2','product_3','group','gift'));
     }
 
     public function searchSalesProduct($id){
         $product = Products::all();
+        $product_1 = Products::all();
+        $product_2 = Products::all();
+        $product_3 = Products::all();
         $group = Group::all();
         $gift = Gift::all();
         $list = SalesProducts::join('sales','sales.id','=','sales_products.id_sales')
@@ -1785,7 +1816,53 @@ class Admin2Controller extends Controller
                 ,'groups.name as name_group','sales.price_sale as sal_price','sales.type as sale_type','sales.sale_off'
                 ,'sales.id_gifts','gifts.name as name_gifts','sales_products.id_product','sales_products.id_group')
             ->where('sales.id','=',$id)->get();
-        return view('admin2.sales.edit_sale_product',compact('product','group','gift','list'));
+        return view('admin2.sales.edit_sale_product',compact('product','product_1','product_2','product_3','group','gift','list'));
+    }
+
+    public function addRewardEmulation(){
+        return view('admin2.emulation.create_reward');
+    }
+
+    public function insertRewardEmulation(Request $request){
+        $validator = \Validator::make($request->all(),[
+            'txtName' => 'required|max:250',
+            'txtQuatity' => 'required',
+            'txtLevel' => 'required',
+            'txtValues' => 'required',
+        ]);
+        $notification= array(
+            'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+                $create_reward = DB::table('rewards')->insertGetId([
+                    'name'=> $request['txtName'],
+                    'quantity' => $request['txtQuatity'],
+                    'values'=> $request['txtValues'],
+                    'level'=> $request['txtLevel'],
+                    'sl_min'=> $request['txtSl_min'],
+                    'ds_min'=> $request['txtDs_min'],
+                ]);
+
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Thêm thông tin thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
     }
 
     public function updateSaleProduct(Request $request){
@@ -1819,6 +1896,23 @@ class Admin2Controller extends Controller
                     'id_gifts'=> null,
                 ]);
             }elseif($request->txtType == 'tangqua'){
+                if($request['txtGift_r1'] === 'no_choice' ){
+                    $gift = null;
+                }else{
+                    $gift = $request['txtGift_r1'];
+                }
+
+                if($request['txtGift_r2'] === 'no_choice' ){
+                    $gift_2 = $gift;
+                }else{
+                    $gift_2 = $gift.','.$request['txtGift_r2'];
+                }
+
+                if($request['txtGift_r3'] === 'no_choice' ){
+                    $gift_3 = $gift_2;
+                }else{
+                    $gift_3 = $gift_2.','.$request['txtGift_r3'];
+                }
                 $create_pdu = DB::table('sales')->where('id','=',$request->id_sale)
                     ->update([
                     'name'=> $request['txtName'],
@@ -1826,7 +1920,7 @@ class Admin2Controller extends Controller
                     'price_sale'=> $request['txtPrice'],
                     'type'=> $request['txtType'],
                     'sale_off'=> null,
-                    'id_gifts'=> $request['txtGift'],
+                    'id_gifts'=> $gift_3,
                 ]);
             }else{
                 $notification = array(
@@ -1895,8 +1989,8 @@ class Admin2Controller extends Controller
                 $create_pdu = DB::table('emulations')->insertGetId([
                     'name'=> $request['txtName'],
                     'qdtc' => $request['txtQdtc'],
-                    'total'=> null,
-                    'revenue'=> null,
+                    'total'=> $request['txtSl_min'],
+                    'revenue'=> $request['txtDs_min'],
                 ]);
 
             if(!is_numeric($create_pdu)){
@@ -1906,9 +2000,14 @@ class Admin2Controller extends Controller
                 );
                 return Redirect::back()->with($notification);
             }else{
+                $str_reward = '';
+                foreach ($request['txtReward'] as $value){
+                    $str_reward = $str_reward.','.$value;
+                }
+                $rs_str_reward = substr($str_reward,1,strlen($str_reward)-1);
                 $insert_emulation_product = DB::table('emulation_products')->insert([
                     'id_emulation'=>$create_pdu,
-                    'id_reward'=>$request['txtReward'],
+                    'id_reward'=>$rs_str_reward,
                 ]);
             }
         }
@@ -1929,9 +2028,9 @@ class Admin2Controller extends Controller
     public function listEmulationProduct(){
         $reward = Reward::all();
         $emulation = Emulation::join('emulation_products','emulations.id','=','emulation_products.id_emulation')
-            ->join('rewards','rewards.id','=','emulation_products.id_reward')
+//            ->join('rewards','rewards.id','=','emulation_products.id_reward')
             ->select('emulation_products.id','emulations.name','emulations.qdtc','emulation_products.id_product',
-                'rewards.name as name_reward','rewards.values','rewards.sl_min','rewards.ds_min')
+                'emulations.total','emulations.revenue','emulation_products.id_reward')
             ->get();
         return view('admin2.emulation.list_emulation_product',compact('emulation','reward'));
     }
@@ -1947,8 +2046,7 @@ class Admin2Controller extends Controller
         $validator = \Validator::make($request->all(),[
             'txtName' => 'required',
             'txtQdtc' => 'required',
-            'txtType' => 'required',
-            'txtReward' => 'required',
+            'txtReward'=> 'required'
         ]);
         $notification= array(
             'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
@@ -1961,37 +2059,25 @@ class Admin2Controller extends Controller
                 ->withInput();
         }
         try{
-            if($request->txtType == 'doanhso'){
                 $update_product = DB::table('emulations')
                     ->where('id', '=', $request->id_emulation)
                     ->update([
                         'name'=> $request['txtName'],
                         'qdtc' => $request['txtQdtc'],
-                        'type'=> $request['txtType'],
-                        'total'=> null,
-                        'revenue'=> 1,
+                        'total'=> $request['txtSl_min'],
+                        'revenue'=> $request['txtDs_min'],
                     ]);
+            $str_reward = '';
+
+            foreach ($request['txtReward'] as $value){
+                $str_reward = $str_reward.','.$value;
+            }
+            $rs_str_reward = substr($str_reward,1,strlen($str_reward)-1);
                 $update_eml_pdu = DB::table('emulation_products')
                     ->where('id', '=', $request->id_emulation_pdu)
                     ->update([
-                        'id_reward'=> $request['txtReward'],
+                        'id_reward'=> $rs_str_reward,
                     ]);
-            }
-            elseif($request->txtType == 'sanluong'){
-                $update_product = DB::table('emulations')->where('id', '=', $request->id_emulation)
-                    ->update([
-                        'name'=> $request['txtName'],
-                        'qdtc' => $request['txtQdtc'],
-                        'type'=> $request['txtType'],
-                        'total'=> 1,
-                        'revenue'=> null,
-                    ]);
-                $update_eml_pdu = DB::table('emulation_products')
-                    ->where('id', '=', $request->id_emulation_pdu)
-                    ->update([
-                        'id_reward'=> $request['txtReward'],
-                    ]);
-            }
         }
         catch (QueryException $ex){
             $notification = array(

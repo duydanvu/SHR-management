@@ -85,7 +85,11 @@
                             <td>{{$value->sal_price}}</td>
                             @if($value->sale_off == null)
                                 <td>Tặng Quà</td>
-                                <td>{{$value->name_gifts}}</td>
+                                <td>@foreach($product_1 as $values)
+                                        @if(strlen(strstr($value->id_gifts,''.$values->id.'')) > 0)
+                                            {{$values->name}}-{{$values->product_code}} <br>
+                                        @endif
+                                    @endforeach</td>
                             @elseif($value->sale_off != null)
                                 <td>Giảm Giá</td>
                                 <td>{{$value->sale_off}}</td>
