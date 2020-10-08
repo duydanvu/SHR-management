@@ -133,15 +133,15 @@
                         <aside class="single_sidebar_widget post_category_widget">
                             <h4 class="widget_title">Danh Sách Thi Đua</h4>
                             <ul class="list cat-list">
-                                @foreach($result as $key => $values )
-                                <li>
-                                    <a href="#" class="d-flex justify-content-between">
-                                        <p>@foreach($list_name_user as $values1) @if($values1->id == $key) {{$values1->last_name}} @endif @endforeach</p>
-                                        <p>{{$values}}</p>
-                                        <p>{{$key}}</p>
-                                    </a>
-                                </li>
-                                @endforeach
+{{--                                @foreach($result as $key => $values )--}}
+{{--                                <li>--}}
+{{--                                    <a href="#" class="d-flex justify-content-between">--}}
+{{--                                        <p>@foreach($list_name_user as $values1) @if($values1->id == $key) {{$values1->last_name}} @endif @endforeach</p>--}}
+{{--                                        <p>{{$values}}</p>--}}
+{{--                                        <p>{{$key}}</p>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                                @endforeach--}}
                             </ul>
                             <div class="br"></div>
                         </aside>

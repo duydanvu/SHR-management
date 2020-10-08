@@ -23,25 +23,37 @@
         <meta name="csrf-token-2" content="{{ csrf_token() }}">
         <div >
             <div class="col-lg-10 m-auto" >
-                <form>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="card-body col-lg-6 float-left">
-                                <span id="uploaded_image"><img id="img_prv1" src="{{URL::to('/')}}/upload/picture-icon-.jpg" style="max-width: 150px;max-height: 200px; width: 150px;height: 200px"></span>
-                                <div class="form-group col-8 float-right">
-                                    <label for="name">Upload Ảnh</label>
-                                    <form id="upload_form" enctype="multipart/form-data" method="post">
-                                        <meta name="csrf-token1" content="{{ csrf_token() }}">
-                                        <input id="select_file" type="file" name="select_file" required="true" class="pb-3">
-                                        <input type="submit" name="upload" id="upload" class="btn btn-primary" value="Upload Image">
-                                    </form>
-                                    <span id="mgs_ta"></span>
+                <div class="col-md-8 float-left">
+                    <form>
+                        <div class="modal-body col-md-12">
+                            <div class="row">
+                                <div class="card-body col-lg-12 float-left">
+                                    <span id="uploaded_image"><img id="img_prv1" src="{{URL::to('/')}}/upload/picture-icon-.jpg" style="max-width: 150px;max-height: 200px; width: 150px;height: 200px"></span>
+                                    <div class="form-group col-8 float-right">
+                                        <label for="name">Tải Ảnh Đại Diện</label>
+                                        <form id="upload_form" enctype="multipart/form-data" method="post">
+                                            <meta name="csrf-token1" content="{{ csrf_token() }}">
+                                            <input id="select_file" type="file" name="select_file" required="true" class="pb-3">
+                                        </form>
+                                        <span id="mgs_ta"></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </form>
-                <div class=" col-lg-12 ">
+                    </form>
+                </div>
+                <div class="col-md-4 float-right">
+                    <form action="{{ url('user2/add_more_image') }}" enctype="multipart/form-data" method="POST" style="padding-top: 35px">
+                        {{ csrf_field() }}
+                        <label for="name">Tải Nhiều Ảnh Chi tiết</label>
+                        <input type="file" name="filesTest[]" multiple required="true">
+                        <br/>
+                        <input type="submit" value="Tải Nhiều Ảnh" style="margin-top: 20px">
+                        <br>
+                        <span id="mgs_ta_1" style="color: red"> * Cần Nhấn " Tải Nhiều Ảnh " Trước Khi Lưu Sản Phẩm </span>
+                    </form>
+                </div>
+                <div class=" col-lg-12 float-left ">
                     <form class="form-horizontal" action="{{route('add_product')}}" method="post">
                         <div class="modal-body">
                             @csrf
@@ -292,17 +304,17 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token-2"]').attr('content')
                     }
                 });
-                $.ajax({
-                    type:'POST',
-                    url:'{{route('search_list_acc_with_area_name')}}',
-                    data:dt,
-                    success:function(resultData){
-                        // // $('.effort').val(resultData);
-                        $('#table_body').html(resultData);
-                        // $('#sum_result').html(resultData['sum']);
-                        // console.log(resultData);
-                    }
-                });
+                {{--$.ajax({--}}
+                {{--    type:'POST',--}}
+                {{--    url:'{{route('search_list_acc_with_area_name')}}',--}}
+                {{--    data:dt,--}}
+                {{--    success:function(resultData){--}}
+                {{--        // // $('.effort').val(resultData);--}}
+                {{--        $('#table_body').html(resultData);--}}
+                {{--        // $('#sum_result').html(resultData['sum']);--}}
+                {{--        // console.log(resultData);--}}
+                {{--    }--}}
+                {{--});--}}
             });
         });
     </script>

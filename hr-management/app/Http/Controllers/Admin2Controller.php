@@ -1066,6 +1066,15 @@ class Admin2Controller extends Controller
                 ->withInput();
         }
         try{
+            $link_id_more_images = DB::table('link_image_wait_add_products')->get();
+            if(sizeof($link_id_more_images) > 0){
+                foreach ($link_id_more_images as $values_link){
+                    $link_more_image = $values_link->link_wait;
+                    $id_link_wait = $values_link->id;
+                }
+            }else{
+                $link_more_image = null;
+            }
             if($request->txtHH == 'codinh'){
                 $create_pdu = DB::table('products')->insertGetId([
                     'name'=> $request['txtName'],
@@ -1079,6 +1088,7 @@ class Admin2Controller extends Controller
                     'price_out'=> $request['txtPriceOut'],
                     'price_sale'=> $request['txtPriceSale'],
                     'hh_default'=> $request['txtPriceHH'],
+                    'id_link_detail'=>$link_more_image,
                     'hh_percent'=> null,
                 ]);
             }elseif($request->txtHH == 'tile' && $request->txtPriceHH > 0 && $request->txtPriceHH < 100){
@@ -1094,6 +1104,7 @@ class Admin2Controller extends Controller
                     'price_sale'=> $request['txtPriceSale'],
                     'hh_default'=> null,
                     'hh_percent'=> $request['txtPriceHH'],
+                    'id_link_detail'=>$link_more_image,
                 ]);
             }else{
                 $notification = array(
@@ -1104,12 +1115,18 @@ class Admin2Controller extends Controller
             }
 
             if(!is_numeric($create_pdu)){
+                if($link_more_image != null){
+                    $delete_id = DB::table('link_image_wait_add_products')->delete($id_link_wait);
+                }
                 $notification = array(
                     'message' => 'Cần nhập đúng tỉ lệ hoa hồng cho sản phẩm! Vui lòng nhập lại ',
                     'alert-type' => 'error'
                 );
                 return Redirect::back()->with($notification);
             }else{
+                if($link_more_image != null){
+                    $delete_id = DB::table('link_image_wait_add_products')->delete($id_link_wait);
+                }
                 $product_code = 'PDU_'.$create_pdu;
                 $update_user = DB::table('products')->where('id', '=', $create_pdu)
                     ->update([

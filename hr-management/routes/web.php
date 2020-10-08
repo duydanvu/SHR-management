@@ -211,6 +211,10 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('user2/view_detail_shipping/{id}','User2Controller@view_detail_shipping')->name('view_detail_shipping');
     Route::post('user2/action_update_hoan_ung_user2','User2Controller@action_update_hoan_ung_user2')->name('action_update_hoan_ung_user2');
 
+    Route::post('user2/add_more_image','FileImageController@uploadMoreImage')->name('add_more_image');
+    Route::get('analysis/goal-product','User2Controller@viewAnalysisGoal')->name('view_list_analys_goal');
+    Route::get('analysis/emulation-product','User2Controller@viewAnalysisEmulation')->name('view_list_analys_emulation');
+
     //route ktkt
     Route::get('ktkt/danh_sach_hoan_ung','KtktController@listHoanUng')->name('danh_sach_hoan_ung_kt');
     Route::get('ktkt/view_detail_hoan_ung/{id}','KtktController@view_detail_hoan_ung')->name('view_detail_hoan_ung_kt');

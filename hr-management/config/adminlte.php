@@ -545,6 +545,23 @@ return [
                     'can'     => 'user_lv2',
                 ] ,
                 [
+                    'text'    => 'Thống Kê',
+                    'url'     => '/user2/view_manage_emulation',
+                    'can'     => 'user_lv2',
+                    'submenu' =>[
+                        [
+                            'text'    => 'Mục Tiêu',
+                            'url'     => 'analysis/goal-product',
+                            'can'     => 'user_lv2',
+                        ] ,
+                        [
+                            'text'    => 'Thi Đua',
+                            'url'     => 'analysis/emulation-product',
+                            'can'     => 'user_lv2',
+                        ] ,
+                    ]
+                ] ,
+                [
                     'text'    => 'Khóa Tài Khoản Người Dùng',
                     'icon'    => 'fas fa-clipboard-list',
                     'url'     => '/user1/lock_acc_user',

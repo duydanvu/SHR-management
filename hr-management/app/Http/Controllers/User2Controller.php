@@ -11,6 +11,8 @@ use App\Supplier;
 use App\TotalProductEmulation;
 use App\User;
 use App\UserProduct;
+use App\Warehouse;
+use App\WarehouseProduct;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
@@ -37,7 +39,7 @@ class User2Controller extends Controller
         foreach ($id_product as $value){
             array_push($arr,$value->id_product);
         }
-        $product = Products::whereIn('id',$arr)->get();
+        $product = Products::whereIn('id',$arr)->orderBy('id','DESC')->get();
         $supplier = Supplier::all();
         return view('user2.view_list_product',compact('product','supplier'));
     }
@@ -53,7 +55,7 @@ class User2Controller extends Controller
         foreach ($id_product as $value){
             array_push($arr,$value->id_product);
         }
-        $product = Products::whereIn('id',$arr)->get();
+        $product = Products::whereIn('id',$arr) ->get();
         $supplier = Supplier::all();
         return view('user2.view_list_detail_product',compact('product','supplier'));
     }
@@ -81,9 +83,10 @@ class User2Controller extends Controller
         try{
             $han_muc_now = User::find(Auth::id())->han_muc;
             $product = Products::find($request['txtProductID']);
-            if(($product->price_sale * $request['totalProduct']) > $han_muc_now){
+            $ware_house = WarehouseProduct::find($request['txtProductID'])->orderBy('id')->first()->total;
+            if(($product->price_sale * $request['totalProduct']) > $han_muc_now || $ware_house > 0){
                 $notification = array(
-                    'message' => 'hạn mức của bạn không đủ để thanh toán!',
+                    'message' => 'hạn mức của bạn không đủ để thanh toán hoặc đã hết sản phẩm!',
                     'alert-type' => 'error'
                 );
                 return Redirect::back()->with($notification);
@@ -461,17 +464,97 @@ class User2Controller extends Controller
         // $key - id user
         // $key_1 - id product
         // $value2 - tong so san pham ban
-        $result = [];
-        foreach ($arr as $key => $value1){
-            foreach ($value1 as $key_1 => $value2){
-                if($value2 >= $total_tt[$key_1] && $value2 >= $total_rv[$key_1]){
-                    $result[$key] = $value2;
-                }
-            }
-        }
+//        $result = [];
+//        foreach ($arr as $key => $value1){
+//            foreach ($value1 as $key_1 => $value2){
+//                if($value2 >= $total_tt[$key_1] && $value2 >= $total_rv[$key_1]){
+//                    $result[$key] = $value2;
+//                }
+//            }
+//        }
 
         $list_name_user = DB::table('users')->select('id','last_name','email')->get();
 //        dd($list_name_user);
-        return view('user2.view_list_emulation_detail',compact('emulation_detail','list_product','list_name_user','result'));
+        return view('user2.view_list_emulation_detail',compact('emulation_detail','list_product','list_name_user'));
+    }
+
+    public function viewAnalysisEmulation(){
+        $list_emulation = EmulationProducts:: join('emulations','emulations.id','=','emulation_products.id_emulation')->get();
+        $arr = [];
+        foreach ($list_emulation as $key => $value_detail){
+                $str = '"'.$value_detail->id_product.'"';
+                $str_rs = "select * from (select a.id_user, sum(a.total_product) as b, sum(a.total_price) as c from spd_092020s as a
+                where a.id_product IN (".$value_detail->id_product.") group by a.id_user
+                ) as d
+                where d.b > ".$value_detail->total." and d.c > ".$value_detail->revenue."
+                order by c desc limit 10";
+                $query  = DB::select($str_rs);
+                $arr[$value_detail->name] = $query;
+        }
+        $name = User::select('id','last_name')->get();
+        return view('user2.analys_emulation',compact('arr','name'));
+    }
+
+    public function viewAnalysisGoal(){
+        $find_id_group = Auth::user()->group_id;
+        $find_id_goal_sale = GoalSales::where('id_group','like','%'.$find_id_group.'%')->get();
+        $arr_id_goal = [];
+        foreach ($find_id_goal_sale as $value){
+            array_push($arr_id_goal,$value->id_goal) ;
+        }
+        $list_goal = GoalProduct::whereIn('id',$arr_id_goal)->get();
+        $sl_rq = [];
+        $dt_rq = [];
+        foreach ($list_goal as $values){
+            $sl_rq[$values->id] = $values->sl;
+            $dt_rq[$values->id] = $values->dt;
+        }
+
+        $arr_result_sl= [];
+        $arr_result_dt= [];
+        foreach ($list_goal as $value_goal){
+            $find_id_goal_sale = GoalSales::where('id_goal','=',$value_goal->id)->get();
+            foreach ($find_id_goal_sale as $value){
+                $str_id_product = $value->id_product;
+            }
+            $sl_goal = GoalProduct::find($value_goal->id)->sl;
+            $dt_goal = GoalProduct::find($value_goal->id)->dt;
+            $start_time = GoalProduct::find($value_goal->id)->start_time;
+            $arr_id_product = explode(',',$str_id_product);
+            $list_product = Products::whereIn('id',$arr_id_product)->get();
+
+            $name_table = 'spd_'.substr($start_time,5,2).substr($start_time,0,4).'s';
+
+            $result = [];
+            $sl_con_thieu = $sl_goal;
+            $dt_con_thieu = $dt_goal;
+            foreach ($list_product as $key => $value){
+                $arr_sl = DB::table($name_table)
+                    ->where('id_user','=',Auth::id())
+                    ->where('id_product','=',$value->id)
+                    ->sum('total_product');
+                $arr_dt = DB::table($name_table)
+                    ->where('id_user','=',Auth::id())
+                    ->where('id_product','=',$value->id)
+                    ->sum('total_price');
+                if ($sl_goal == null){
+                    $result[$value->name] = $arr_dt ;
+                    $dt_con_thieu = $dt_con_thieu - $arr_dt;
+                }
+                if($dt_goal == null){
+                    $result[$value->name] = $arr_sl ;
+                    $sl_con_thieu = $sl_con_thieu - $arr_sl;
+                }
+            }
+            if($dt_con_thieu > 0){
+                $result['Doanh Thu Còn Thiếu'] = $dt_con_thieu;
+            }
+            if($sl_con_thieu > 0){
+                $result['Sản Lượng Còn Thiếu'] = $sl_con_thieu;
+            }
+
+            $arr_result_sl[$value_goal->id] = $result;
+        }
+        return view('user2.analys_goal',compact('arr_result_sl'));
     }
 }
