@@ -71,13 +71,13 @@
                 <div class="container">
                     <div class="banner_content row " style="padding-top: 10px">
                         <div class="col-lg-5">
-                            <h3>Danh Sách Sản Phẩm <br />Bán Chạy!</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                            <a class="white_bg_btn" href="{{route('view_list_product_detail')}}">Xem Danh Sách</a>
+                            <h3>Combo Toán+Tiếng Việt</h3>
+                            <p> Ưu đãi đặc biệt dành tặng đến KH khi mua gói học Online cho các bạn Tiểu học, THCS tại MobiFone Plus.</p>
+                            <a class="white_bg_btn" href="http://hr.mobifoneplus.vn/user2/view_detail_product_user2/14">Xem Thông tin</a>
                         </div>
                         <div class="col-lg-7">
                             <div class="halemet_img">
-                                <img src="../upload/banner/helmat.png" alt="">
+                                <img src="../upload/banner/unnamed.png" alt="">
                             </div>
                         </div>
                     </div>
@@ -90,22 +90,24 @@
                 <div class="container">
                     <div class="row hot_product_inner">
                         <div class="col-lg-6">
+                            <a href="#">
                             <div class="hot_p_item">
-                                <img class="img-fluid" src="../upload/product/hot-product/hot-p-1.jpg" alt="">
+                                <img class="img-fluid" src="../upload/product/hot-product/post.jpeg" alt="">
                                 <div class="product_text">
-                                    <h4>Ưu Đãi Hấp Dẫn <br />Trong Tháng</h4>
-                                    <a href="{{route('view_list_product_detail')}}">Xem Ngay</a>
+                                    <h4>Chương trình thi đua<br />Tháng 10</h4>
                                 </div>
                             </div>
+                            </a>
                         </div>
                         <div class="col-lg-6">
-                            <div class="hot_p_item">
-                                <img class="img-fluid" src="../upload/product/hot-product/hot-p-2.jpg" alt="">
-                                <div class="product_text">
-                                    <h4>Ưu Đãi Hấp Dẫn<br />Trong Tháng</h4>
-                                    <a href="{{route('view_list_product_detail')}}">Xem Ngay</a>
+                            <a href="#">
+                                <div class="hot_p_item">
+                                    <img class="img-fluid" src="../upload/product/hot-product/post.jpeg" alt="">
+                                    <div class="product_text">
+                                        <h4>Chương trình thi đua<br />Tháng 9</h4>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                     <div class="feature_product_inner">
