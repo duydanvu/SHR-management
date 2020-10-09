@@ -17,6 +17,7 @@ use App\SalesProducts;
 use App\Supplier;
 use App\TotalProductEmulation;
 use App\Transports;
+use App\TypeCode;
 use App\User;
 use App\UserProduct;
 use App\W2W;
@@ -1038,7 +1039,8 @@ class Admin2Controller extends Controller
     }
     public function indexAddNewProducts(){
         $supplier = Supplier::where('status','=','active')->get();
-        return view('admin2.index_add_products',compact('supplier'));
+        $type_code = TypeCode::all();
+        return view('admin2.index_add_products',compact('supplier','type_code'));
     }
 
     public function addProduct(Request $request){
@@ -1080,7 +1082,10 @@ class Admin2Controller extends Controller
                     'name'=> $request['txtName'],
                     'type' => $request['txtType'],
                     'detail' => $request['editor1'],
+                    'type_sale'=> $request['txtTypeCode'],
+                    'type_sale_code'=> $request['txtTypeSaleCode'],
                     'link'=> $request['url_image'],
+                    'forcus'=>$request['txtForcus'],
                     'id_supplier'=> $request['txtSupplier'],
                     'contract'=> $request['txtContract'],
                     'cooperation'=> $request['txtTypeHT'],
@@ -1095,7 +1100,11 @@ class Admin2Controller extends Controller
                 $create_pdu = DB::table('products')->insertGetId([
                     'name'=> $request['txtName'],
                     'type' => $request['txtType'],
+                    'detail' => $request['editor1'],
+                    'type_sale'=> $request['txtTypeCode'],
+                    'type_sale_code'=> $request['txtTypeSaleCode'],
                     'link'=> $request['url_image'],
+                    'forcus'=>$request['txtForcus'],
                     'id_supplier'=> $request['txtSupplier'],
                     'contract'=> $request['txtContract'],
                     'cooperation'=> $request['txtTypeHT'],

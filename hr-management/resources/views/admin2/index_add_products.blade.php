@@ -110,6 +110,29 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
+                                            <label for="name">Hình Thức Sản Phẩm</label>
+                                            <div class="form-check">
+                                                <input id="code" type="radio" class="form-check-input" name="txtTypeCode" value="code"  autocomplete="number" required>
+                                                <label class="form-check-label " for="muaban">
+                                                    Mã Code
+                                                </label>
+                                                <input id="vatly" type="radio" class="form-check-input ml-4" name="txtTypeCode" value="vatly"  autocomplete="number" required>
+                                                <label class="form-check-label ml-5 " for="kigui">
+                                                    Sản Phẩm Vật Lý
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="type_code" style="display: none">
+                                            <meta name="csrf-token2" content="{{ csrf_token() }}">
+                                            <label for="exampleInputEmail1">Kiểu Mã Code</label>
+                                            <select id="typeCode" name = "txtTypeSaleCode" class="form-control select2"  value="{{ old('txtTypeSaleCode') }}" autocomplete="txtTypeSaleCode" style="width: 100%;">
+                                                @foreach ($type_code as $type_code)
+                                                    <option value="{{$type_code->type_code}}">{{$type_code->type_code}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
                                             <label for="name">Hợp Đồng Tham Chiếu</label>
                                             <input id="contract" type="text" class="form-control @error('txtContract') is-invalid @enderror" name="txtContract" value=""  autocomplete="number" required>
                                             @error('txtContract')
@@ -120,6 +143,19 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6 float-left">
+                                        <div class="form-group">
+                                            <label for="name">Sản Phẩm Nổi Bật</label>
+                                            <div class="form-check">
+                                                <input id="hot" type="radio" class="form-check-input" name="txtForcus" value="hot"  autocomplete="number" required>
+                                                <label class="form-check-label " for="muaban">
+                                                    Có
+                                                </label>
+                                                <input id="nohot" type="radio" class="form-check-input ml-4" name="txtForcus" value="nohot"  autocomplete="number" required>
+                                                <label class="form-check-label ml-5 " for="kigui">
+                                                    Không
+                                                </label>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <label for="name">Giá Nhập</label>
                                             <input id="PriceIn" type="number" class="form-control @error('txtPriceIn') is-invalid @enderror" name="txtPriceIn" value=""  autocomplete="number" required>
@@ -289,6 +325,18 @@
             $("#example1").parent().css({"overflow": "auto"});
         });
 
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#code").change(function () {
+                document.getElementById("type_code").style.display = "block";
+            });
+            $("#vatly").change(function () {
+                document.getElementById("type_code").style.display = "none";
+            });
+
+        })
     </script>
 
     <script>

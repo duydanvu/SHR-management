@@ -133,40 +133,6 @@
                                 </div>
                             </div>
                             @endforeach
-                            <div class="item">
-                                <div class="f_p_item">
-                                    <div class="f_p_img">
-                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-2.jpg" alt="">
-                                        <div class="p_icon">
-                                        </div>
-                                    </div>
-                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>
-                                    <h5>$150.00</h5>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="f_p_item">
-                                    <div class="f_p_img">
-                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-3.jpg" alt="">
-                                        <div class="p_icon">
-                                        </div>
-                                    </div>
-                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>
-                                    <h5>$150.00</h5>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="f_p_item">
-                                    <div class="f_p_img">
-                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-4.jpg" alt="">
-                                        <div class="p_icon">
-                                        </div>
-                                    </div>
-                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>
-                                    <h5>$150.00</h5>
-                                </div>
-                            </div>
-                        </div>
 {{--                        <div class="feature_p_slider owl-carousel">--}}
 {{--                            <div class="row">--}}
 {{--                                @foreach($product as $value)--}}

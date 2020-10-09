@@ -71,7 +71,14 @@
 @stop
 @section('content')
     <!-- Product Details -->
-
+    @if(session()->has('message_listcode'))
+        <div class="alert alert-success">
+            <h4>Mã Code mà bạn mua là :</h4>
+            @foreach(session()->get('message_listcode') as $values_list_code)
+                <p>{{$values_list_code->code}}<p>
+            @endforeach
+        </div>
+    @endif
     <div class="product_details">
         <div class="container">
             <div class="row details_row">
@@ -79,8 +86,9 @@
                 <!-- Product Image -->
                 <div class="col-xl-6 col-lg-8 col-md-8 col-sm-8 pt-3">
                         <div class="col-xl-8 col-lg-9 col-md-8 float-left " style="max-height: 100%;padding: inherit">
-                            <img style="width: 100%"  src="/upload/product/feature-product/f-p-1.jpg" alt="">
+                            <img style="width: 100%"  src="{{$product->link}}" alt="">
                         </div>
+                    @if($product->id_link_detail != null)
                         <div class="col-xl-4 col-lg-3 col-md-4 float-left mt-3" >
                                     <div class="col-lg-6 col-md-3 col-3" data-image="images/details_1.jpg">
                                         <img src="/upload/product/feature-product/f-p-1.jpg" alt="" style="max-width: 90px;max-height: 90px; padding: 10px"></div>
@@ -92,6 +100,7 @@
                                         <img src="/upload/product/feature-product/f-p-1.jpg" alt="" style="max-width: 90px;max-height: 90px; padding: 10px"></div>
 
                         </div>
+                    @endif
                 </div>
 
                 <!-- Product Content -->
@@ -162,7 +171,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="form-horizontal" action="{{route('add_new_sell_product')}}" method="post">
+            <form class="form-horizontal" @if($product->type_sale == 'code') action="{{route('add_new_sell_product_code')}}"  @else action="{{route('add_new_sell_product')}}" @endif method="post">
                 <div class="modal-body" >
                     @csrf
                     <div class="row" >
@@ -224,7 +233,11 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                    <button id="create_member" type="submit" class="btn btn-primary">Xác Nhận</button>
+                    @if($product->type_sale == 'code')
+                        <button id="create_member" type="submit"  class="btn btn-primary">Xác Nhận</button>
+                    @else
+                        <button id="create_member" type="submit" class="btn btn-primary">Xác Nhận</button>
+                    @endif
                 </div>
             </form>
         </div>
@@ -233,6 +246,31 @@
     <!-- /.modal-dialog -->
 </div>
 {{--    --}}{{-- modal --}}
+
+{{--    --}}{{-- modal --}}
+<div class="modal fade" id="modal-sell-product-code">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Thông tin Mã Code Sản Phẩm</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form action="" method="post">
+                <div class="modal-body">
+                    @csrf
+
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+{{--     modal --}}
 @section('css')
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
 @stop
@@ -241,6 +279,12 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.5/js/swiper.min.js"></script>
+    <script>
+        $("#modal-sell-product-code").on("show.bs.modal", function(e) {
+            var link = $(e.relatedTarget);
+            $(this).find(".modal-body").load(link.attr("href"));
+        });
+    </script>
     <script>
         $(function () {
             $("#totalProduct").keyup( function () {

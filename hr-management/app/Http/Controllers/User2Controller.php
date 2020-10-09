@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Code;
 use App\Emulation;
 use App\EmulationProducts;
 use App\GoalProduct;
@@ -218,10 +219,202 @@ class User2Controller extends Controller
             );
             return Redirect::back()->with($notification);
         }
+        $type_sales_product = Products::find($order->id_product)->type_sale;
+
         $notification = array(
             'message' => 'Thêm thông tin thành công!',
             'alert-type' => 'success'
         );
+        return Redirect::back()->with($notification);
+    }
+    public function add_new_sell_product_code(Request $request){
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $curDate = date("Y-m-d");
+        $curDateTime = date("Y-m-d H:i:s");
+        $table = 'spd_log_'.substr($curDate,5,2).substr($curDate,0,4).'s';
+        $id_Auth = Auth::id();
+        $validator = \Validator::make($request->all(),[
+            'txtProductID' => 'required',
+            'totalProduct' => 'required',
+        ]);
+        $notification= array(
+            'message' => ' Kiểm tra nhập số lượng sản phẩm!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+            $han_muc_now = User::find(Auth::id())->han_muc;
+            $product = Products::find($request['txtProductID']);
+
+            $ware_house = WarehouseProduct::where('id_product','=',$request['txtProductID'])->orderBy('id')->first()->total;
+            if(($product->price_sale * $request['totalProduct']) > $han_muc_now || $ware_house < 0){
+                $notification = array(
+                    'message' => 'hạn mức của bạn không đủ để thanh toán hoặc đã hết sản phẩm!',
+                    'alert-type' => 'error'
+                );
+                return Redirect::back()->with($notification);
+            }else {
+                $type_sales_product = Products::find($request['txtProductID'])->type_sale_code;
+                $list_code = Code::where('type_code','=',$type_sales_product)->limit($request['totalProduct'])->select('code')->get();
+                $str_code = '';
+                foreach ($list_code as $value_list){
+                    $str_code = $str_code.','.$value_list->code;
+                }
+                $str_code_rs = substr($str_code,1,strlen($str_code)-1);
+                if ($product->hh_default != null) {
+                    $check = Schema::hasTable($table);
+                    if($check != true){
+                        $create_table = Schema::create($table, function (Blueprint $tables) {
+                            $tables->increments('id');
+                            $tables->integer('id_product');
+                            $tables->integer('total_product');
+                            $tables->integer('id_user');
+                            $tables->string('email_guest')->nullable();
+                            $tables->string('phone_guest')->nullable();
+                            $tables->string('list_code')->nullable();
+                            $tables->integer('bonus_pr');
+                            $tables->integer('total_price');
+                            $tables->integer('total_bonus');
+                            $tables->dateTime('time');
+                            $tables->string('status_transport');
+                            $tables->string('status_payment');
+                            $tables->string('status_kt');
+                            $tables->string('status_admin2');
+                            $tables->timestamps();
+                        });
+                    }
+
+                    $create_sell_product = DB::table($table)->insertGetId([
+                        'id_product' => $request['txtProductID'],
+                        'id_user' => $id_Auth,
+                        'total_product' => $request['totalProduct'],
+                        'list_code'=>$str_code_rs,
+                        'bonus_pr' => $product->hh_default,
+                        'total_price' => $product->price_sale * $request['totalProduct'],
+                        'total_bonus' => $product->hh_default * $request['totalProduct'],
+                        'time' => $curDateTime,
+                        'status_transport' => 'done',
+                        'status_payment' => 'wait',
+                        'status_kt' => 'wait',
+                        'status_admin2' => 'wait',
+                    ]);
+                } elseif ($product->hh_percent != null) {
+                    $check = Schema::hasTable($table);
+                    if($check != true){
+                        $create_table = Schema::create($table, function (Blueprint $tables) {
+                            $tables->increments('id');
+                            $tables->integer('id_product');
+                            $tables->integer('total_product');
+                            $tables->integer('id_user');
+                            $tables->string('email_guest')->nullable();
+                            $tables->string('phone_guest')->nullable();
+                            $tables->string('list_code')->nullable();
+                            $tables->integer('bonus_pr');
+                            $tables->integer('total_price');
+                            $tables->integer('total_bonus');
+                            $tables->dateTime('time');
+                            $tables->string('status_transport');
+                            $tables->string('status_payment');
+                            $tables->string('status_kt');
+                            $tables->string('status_admin2');
+                            $tables->timestamps();
+                        });
+                    }
+
+                    $create_sell_product = DB::table($table)->insertGetId([
+                        'id_product' => $request['txtProductID'],
+                        'id_user' => $id_Auth,
+                        'total_product' => $request['totalProduct'],
+                        'list_code'=>$str_code_rs,
+                        'bonus_pr' => $product->hh_percent,
+                        'total_price' => $product->price_sale * $request['totalProduct'],
+                        'total_bonus' => $product->price_sale * $request['totalProduct'] * $product->hh_percent / 100,
+                        'time' => $curDateTime,
+                        'status_transport' => 'done',
+                        'status_payment' => 'wait',
+                        'status_kt' => 'wait',
+                        'status_admin2' => 'wait',
+                    ]);
+                } else {
+                    $notification = array(
+                        'message' => 'Sản phẩm không phù hợp hoặc đã hết!',
+                        'alert-type' => 'error'
+                    );
+                    return Redirect::back()->with($notification);
+                }
+            }
+            if(!is_numeric($create_sell_product)){
+                $notification = array(
+                    'message' => 'Kiểm tra lại thông tin ',
+                    'alert-type' => 'error'
+                );
+                return Redirect::back()->with($notification);
+            }else{
+                $select_warehouse = DB::table('warehouse_products')
+                    ->where('id_product','=',$request['txtProductID'])
+                    ->orderBy('id','DESC')->first();
+                $update_warehouse = DB::table('warehouse_products')->insert([
+                    'id_product'=>$select_warehouse->id_product,
+                    'id_warehouse'=>$select_warehouse->id_warehouse,
+                    'contract_tc'=>1111,
+                    'time'=>$curDateTime,
+                    'total'=>$select_warehouse->total-$request['totalProduct'],
+                    'type'=>'selling'
+                ]);
+                $sub_han_muc = DB::table('users')->where('id','=',Auth::id())
+                    ->update([
+                       'han_muc'=>$han_muc_now-($product->price_sale * $request['totalProduct']),
+                    ]);
+                $table1 = 'spd_'.substr($curDate,5,2).substr($curDate,0,4).'s';
+                $order = DB::table($table)->find($create_sell_product);
+                $id_insert =DB::table($table1)->insertGetId([
+                    'id_product'=>$order->id_product,
+                    'total_product'=>$order->total_product,
+                    'id_user'=>$order->id_user,
+                    'list_code'=>$order->list_code,
+                    'email_guest'=>$order->email_guest,
+                    'phone_guest'=>$order->phone_guest,
+                    'bonus_pr'=>$order->bonus_pr,
+                    'total_price'=>$order->total_price,
+                    'total_bonus'=>$order->total_bonus,
+                    'time'=>$order->time,
+                    'status_transport'=>'done',
+                    'status_payment'=>'wait',
+                    'status_kt'=>'wait',
+                    'status_admin2'=>'wait',
+                ]);
+            }
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng kiểm tra lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        try {
+            $type_sales_product = Products::find($request['txtProductID'])->type_sale_code;
+
+            $list_code = Code::where('type_code','=',$type_sales_product)->limit($request['totalProduct'])->select('code')->get();
+            foreach ($list_code as $value_code_delete){
+                $delete_code = Code::where('code','=',$value_code_delete->code)->delete();
+            }
+        }catch(QueryException $ex) {
+            $notification = array(
+                'message' => 'Không còn sản phẩm',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+
+        $notification = array(
+                'message_listcode' => $list_code,
+            );
         return Redirect::back()->with($notification);
     }
 

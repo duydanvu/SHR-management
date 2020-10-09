@@ -203,6 +203,7 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/view_list_emulation_detail/{id}','User2Controller@view_list_emulation_detail')->name('view_list_emulation_detail');
 
     Route::post('/user2/add_new_sell_product','User2Controller@add_new_sell_product')->name('add_new_sell_product');
+    Route::post('/user2/add_new_sell_product_code','User2Controller@add_new_sell_product_code')->name('add_new_sell_product_code');
     Route::get('/user2/chi_tiet_hoa_hong_san_pham/{id}','User2Controller@detail_hoa_hong')->name('chi_tiet_hoa_hong_san_pham');
 
     Route::get('user2/danh_sach_hoan_ung','User2Controller@hoan_ung')->name('danh_sach_hoan_ung');
