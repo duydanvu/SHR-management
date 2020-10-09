@@ -94,13 +94,23 @@
                                     <aside class="single_sidebar_widget post_category_widget">
                                         <h4 class="widget_title">{{$key_name}}</h4>
                                         <ul class="list cat-list">
+                                            <li>
+                                                <a class="d-flex ">
+                                                    <p class="col-2" style="font-weight: bolder">STT</p>
+                                                    <p class="col-3" style="font-weight: bolder">Email</p>
+                                                    <p class="col-2" style="font-weight: bolder">Tên</p>
+                                                    <p class="col-2" style="font-weight: bolder">Sản Lượng</p>
+                                                    <p class="col-3" style="font-weight: bolder">Doanh Thu</p>
+                                                </a>
+                                            </li>
                                             @php $i = 1 @endphp
                                             @foreach($value as $value_detail)
                                             <li>
                                                 <a href="#" class="d-flex "><p></p>
-                                                    <p class="col-3" style="float: left">{{$i}}</p>
-                                                    <p class="col-3">@foreach($name as $value_name) @if($value_name->id == $value_detail->id_user){{$value_name->last_name}} @endif @endforeach</p>
-                                                    <p class="col-3">{{$value_detail->b}}</p>
+                                                    <p class="col-2" style="float: left">{{$i}}</p>
+                                                    <p class="col-3">@foreach($name as $value_name) @if($value_name->id == $value_detail->id_user){{$value_name->email}} @endif @endforeach</p>
+                                                    <p class="col-2">@foreach($name as $value_name) @if($value_name->id == $value_detail->id_user){{$value_name->last_name}} @endif @endforeach</p>
+                                                    <p class="col-2">{{$value_detail->b}}</p>
                                                     <p class="col-3">{{$value_detail->c}}</p>
                                                 </a>
                                             </li>
@@ -108,6 +118,19 @@
                                             @endforeach
                                         </ul>
                                         <div class="br"></div>
+                                        <ul  class="list cat-list" style="background-color: blue">
+                                            <li>@foreach($stt_arr as $key_stt => $stt)
+                                                    @if($key_stt == $key_name)
+                                                        <a class="d-flex justify-content-sm-center p-1 " style="color: white">
+                                                        <p class="col-2" style="float: left">{{$stt}}</p>
+                                                        <p class="col-3">{{\Illuminate\Support\Facades\Auth::user()->email}}</p>
+                                                        <p class="col-2">{{\Illuminate\Support\Facades\Auth::user()->last_name}}</p>
+                                                        <p class="col-2">@foreach($sl_auth as $key_sl=>$sl) @if($key_name == $key_sl) {{$sl}} @endif @endforeach</p>
+                                                        <p class="col-3">@foreach($dt_auth as $key_dt=>$dt) @if($key_name == $key_dt) {{$dt}} @endif @endforeach</p>
+                                                        </a>
+                                                    @endif
+                                                @endforeach</li>
+                                        </ul>
                                     </aside>
                                 </div>
                             </div>

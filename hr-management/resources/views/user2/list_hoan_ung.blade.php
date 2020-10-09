@@ -108,7 +108,7 @@
                                 <td></td>
                             @else
                             <td><a class="btn btn-primary" href="{{route('view_detail_hoan_ung',['id'=>$value->id_order])}}" data-remote="false"
-                                   data-toggle="modal" data-target="#modal-admin-action-update">Duyệt Hoa Hồng</a></td>
+                                   data-toggle="modal" data-target="#modal-admin-action-update">Trả Tiền Công Ty</a></td>
                             @endif
                         </tr>
                     @endforeach

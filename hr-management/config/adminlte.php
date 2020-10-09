@@ -523,7 +523,7 @@ return [
                             'can'     => 'user_lv2',
                         ] ,
                         [
-                            'text'    => 'Hoàn Trả Ứng Tiền',
+                            'text'    => 'Trả Tiền Về Công Ty',
                             'url'     => 'user2/danh_sach_hoan_ung',
                             'can'     => 'user_lv2',
                         ] ,
@@ -536,16 +536,19 @@ return [
                 ],
                 [
                     'text'    => 'Quản lý mục tiêu',
+                    'icon'    => 'fas fa-clipboard-list',
                     'url'     => '/user2/view_manage_goal',
                     'can'     => 'user_lv2',
                 ] ,
                 [
                     'text'    => 'Chương trình thi đua',
+                    'icon'    => 'fas fa-clipboard-list',
                     'url'     => '/user2/view_manage_emulation',
                     'can'     => 'user_lv2',
                 ] ,
                 [
                     'text'    => 'Thống Kê',
+                    'icon'    => 'fas fa-clipboard-list',
                     'url'     => '/user2/view_manage_emulation',
                     'can'     => 'user_lv2',
                     'submenu' =>[

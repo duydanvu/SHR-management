@@ -393,6 +393,7 @@ class User2Controller extends Controller
 
     public function chi_tiet_muc_tieu_ban_hang($id){
         $total_goal = GoalProduct::find($id)->sl;
+        $check_sl = GoalProduct::find($id)->sl;
         if($total_goal == null){
             $total_goal = GoalProduct::find($id)->dt;
         }
@@ -407,17 +408,24 @@ class User2Controller extends Controller
         $arr_id_product = explode(',',$str_id_product);
         $list_product = Products::whereIn('id',$arr_id_product)->get();
 
+        $arr_sl = [];
+        $arr_dt = [];
         if(substr($start_time,5,2) === substr($end_time,5,2)){
             $name_table = 'spd_'.substr($start_time,5,2).substr($start_time,0,4).'s';
-            $arr = [];
             foreach ($list_product as $key => $value){
-                $arr[$value->id] = DB::table($name_table)
+                $arr_sl[$value->id] = DB::table($name_table)
                     ->where('id_user','=',Auth::id())
                     ->where('id_product','=',$value->id)
                     ->sum('total_product');
+                $arr_dt[$value->id] = DB::table($name_table)
+                    ->where('id_user','=',Auth::id())
+                    ->where('id_product','=',$value->id)
+                    ->sum('total_price');
+
             }
         }
-        return view('user2.detail_muc_tieu_ban_hang',compact('list_product','arr','total_goal','start_time','end_time'));
+        return view('user2.detail_muc_tieu_ban_hang',
+            compact('list_product','arr_dt','arr_sl','total_goal','check_sl','start_time','end_time'));
     }
 
     public function view_manage_emulation(){
@@ -481,18 +489,55 @@ class User2Controller extends Controller
     public function viewAnalysisEmulation(){
         $list_emulation = EmulationProducts:: join('emulations','emulations.id','=','emulation_products.id_emulation')->get();
         $arr = [];
+        $stt_arr = [];
+        $sl_auth = [];
+        $dt_auth = [];
         foreach ($list_emulation as $key => $value_detail){
-                $str = '"'.$value_detail->id_product.'"';
                 $str_rs = "select * from (select a.id_user, sum(a.total_product) as b, sum(a.total_price) as c from spd_092020s as a
                 where a.id_product IN (".$value_detail->id_product.") group by a.id_user
                 ) as d
                 where d.b > ".$value_detail->total." and d.c > ".$value_detail->revenue."
                 order by c desc limit 10";
-                $query  = DB::select($str_rs);
+
+                $query = DB::select($str_rs);
                 $arr[$value_detail->name] = $query;
+
+                $str_rs_stt = "select * from (select a.id_user, sum(a.total_product) as b, sum(a.total_price) as c from spd_092020s as a
+                where a.id_product IN (".$value_detail->id_product.") group by a.id_user
+                ) as d
+                order by c desc";
+
+                $query_stt  = DB::select($str_rs_stt);
+                $i = 0;
+                $x = 0;
+                foreach ($query_stt as $value_stt){
+                    if($value_stt->id_user == Auth::id()) {
+                        if($i == 0){
+                            $x = 1;
+                        }
+                        break;
+                    }
+                    $x++;
+                }
+
+
+                $sl_dt_auth = "select * from (select a.id_user, sum(a.total_product) as b, sum(a.total_price) as c from spd_092020s as a
+                where a.id_product IN (".$value_detail->id_product.") group by a.id_user
+                ) as d
+                order by c desc";
+
+                $query_sl_dt_auth  = DB::select($sl_dt_auth);
+                foreach ($query_sl_dt_auth as $value){
+                    if($value->id_user == Auth::id()){
+                        $sl_auth[$value_detail->name] = $value->b;
+                        $dt_auth[$value_detail->name] = $value->c;
+                    }
+                }
+
+                $stt_arr[$value_detail->name] = $x;
         }
-        $name = User::select('id','last_name')->get();
-        return view('user2.analys_emulation',compact('arr','name'));
+        $name = User::select('id','last_name','email')->get();
+        return view('user2.analys_emulation',compact('arr','name','stt_arr','sl_auth','dt_auth'));
     }
 
     public function viewAnalysisGoal(){
@@ -555,6 +600,7 @@ class User2Controller extends Controller
 
             $arr_result_sl[$value_goal->id] = $result;
         }
-        return view('user2.analys_goal',compact('arr_result_sl'));
+        $list_detail_goal = GoalProduct::all();
+        return view('user2.analys_goal',compact('arr_result_sl','list_detail_goal'));
     }
 }

@@ -19,8 +19,13 @@
                     <td>{{$value->name}}</td>
                     <td>{{$start_time}}</td>
                     <td>{{$end_time}}</td>
-                    <td>{{$arr[$value->id]/$total_goal}} %</td>
-                    <td>{{$arr[$value->id]}}</td>
+                    @if($check_sl != null)
+                        <td>{{$arr_sl[$value->id]/$total_goal}} %</td>
+                        <td>{{$arr_sl[$value->id]}}</td>
+                    @elseif($check_sl == null)
+                        <td>{{$arr_dt[$value->id]/$total_goal}} %</td>
+                        <td>{{$arr_dt[$value->id]}}</td>
+                    @endif
                 </tr>
             @endforeach
 

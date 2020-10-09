@@ -57,7 +57,7 @@
                             @if($value->sl == null)
                                 <td>{{($value->dt)}}</td>
                             @else
-                                <td>{{($value->st)}}</td>
+                                <td>{{($value->sl)}}</td>
                             @endif
                             <td><a href="{{route('chi_tiet_muc_tieu_ban_hang',['id'=>$value->id])}}" data-remote="false"
                                    data-toggle="modal" data-target="#modal-admin-action-update" >Chi tiết</a></td>
