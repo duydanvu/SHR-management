@@ -98,15 +98,15 @@
                             <td>{{$value->name}}</td>
                             <td>{{$value->product_code}}</td>
                             <td>{{$value->type}}</td>
-                            <td>{{$value->price_in}}</td>
-                            <td>{{$value->price_out}}</td>
-                            <td>{{$value->price_sale}}</td>
+                            <td>{{number_format($value->price_in)}}</td>
+                            <td>{{number_format($value->price_out)}}</td>
+                            <td>{{number_format($value->price_sale)}}</td>
                             @if($value->hh_default == null)
                                 <td>Tỉ Lệ</td>
                                 <td>{{$value->hh_percent}}</td>
                             @elseif($value->hh_default != null)
                                 <td>Mức Cố Định</td>
-                                <td>{{$value->hh_default}}</td>
+                                <td>{{number_format($value->hh_default)}}</td>
                             @endif
                             <td>{{$value->id_supplier}}</td>
                             <td>{{$value->cooperation}}</td>

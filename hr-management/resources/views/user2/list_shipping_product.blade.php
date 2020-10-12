@@ -41,6 +41,8 @@
                     <th style="width:10%">Mã Sản Phẩm</th>
                     <th style="width:10%">Giá Sản Phẩm</th>
                     <th style="width:10%">Số Lượng Sản Phẩm</th>
+                    <th style="width:10%">Email Khách Hàng</th>
+                    <th style="width:10%">Số Điện Thoại Khách Hàng</th>
                     <th style="width:10%">Tổng số Tiền ứng</th>
                     <th style="width:10%">Thời Gian</th>
                     <th style="width:10%">Hoa Hồng</th>
@@ -56,6 +58,8 @@
                             <td>{{$value->product_code}}</td>
                             <td>{{number_format($value->price_sale)}}</td>
                             <td>{{$value->total_product}}</td>
+                            <td>{{$value->email_guest}}</td>
+                            <td>{{$value->phone_guest}}</td>
                             <td>{{number_format($value->total_price)}}</td>
                             <td>{{($value->time)}}</td>
                             <td>{{number_format($value->total_bonus)}}</td>
@@ -64,7 +68,7 @@
                     @endforeach
 
                 @else
-                    <td colspan="8" style="text-align: center">
+                    <td colspan="10" style="text-align: center">
                         <h3>Không có Thông Tin</h3>
                     </td>
                 @endif

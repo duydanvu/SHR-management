@@ -7,6 +7,7 @@ use App\Emulation;
 use App\EmulationProducts;
 use App\GoalProduct;
 use App\GoalSales;
+use App\LinkImage;
 use App\Products;
 use App\Supplier;
 use App\TotalProductEmulation;
@@ -40,14 +41,16 @@ class User2Controller extends Controller
         foreach ($id_product as $value){
             array_push($arr,$value->id_product);
         }
-        $product = Products::whereIn('id',$arr)->orderBy('id','DESC')->get();
+        $product = Products::whereIn('id',$arr)->orderBy('id','DESC')->limit(8)->get();
+        $product_new = Products::whereIn('id',$arr)->orderBy('id','DESC')->limit(16)->get();
         $supplier = Supplier::all();
-        return view('user2.view_list_product',compact('product','supplier'));
+        return view('user2.view_list_product',compact('product','supplier','product_new'));
     }
 
     public function view_detail_product_user2($id){
         $product = Products::find($id);
-        return view('user2.view_detail_product',compact('product'));
+        $link_image = LinkImage::all();
+        return view('user2.view_detail_product',compact('product','link_image'));
     }
 
     public function view_list_product_user2(){
@@ -70,6 +73,8 @@ class User2Controller extends Controller
         $validator = \Validator::make($request->all(),[
             'txtProductID' => 'required',
             'totalProduct' => 'required',
+            'txtEmailGuest' => 'required',
+            'txtPhoneGuest' => 'required',
         ]);
         $notification= array(
             'message' => ' Kiểm tra nhập số lượng sản phẩm!',
@@ -85,7 +90,7 @@ class User2Controller extends Controller
             $han_muc_now = User::find(Auth::id())->han_muc;
             $product = Products::find($request['txtProductID']);
             $ware_house = WarehouseProduct::find($request['txtProductID'])->orderBy('id')->first()->total;
-            if(($product->price_sale * $request['totalProduct']) > $han_muc_now || $ware_house > 0){
+            if(($product->price_sale * $request['totalProduct']) > $han_muc_now || $ware_house <= 0){
                 $notification = array(
                     'message' => 'hạn mức của bạn không đủ để thanh toán hoặc đã hết sản phẩm!',
                     'alert-type' => 'error'
@@ -118,6 +123,8 @@ class User2Controller extends Controller
                         'id_product' => $request['txtProductID'],
                         'id_user' => $id_Auth,
                         'total_product' => $request['totalProduct'],
+                        'email_guest' => $request['txtEmailGuest'],
+                        'phone_guest' => $request['txtPhoneGuest'],
                         'bonus_pr' => $product->hh_default,
                         'total_price' => $product->price_sale * $request['totalProduct'],
                         'total_bonus' => $product->hh_default * $request['totalProduct'],
@@ -153,6 +160,8 @@ class User2Controller extends Controller
                         'id_product' => $request['txtProductID'],
                         'id_user' => $id_Auth,
                         'total_product' => $request['totalProduct'],
+                        'email_guest' => $request['txtEmailGuest'],
+                        'phone_guest' => $request['txtPhoneGuest'],
                         'bonus_pr' => $product->hh_percent,
                         'total_price' => $product->price_sale * $request['totalProduct'],
                         'total_bonus' => $product->price_sale * $request['totalProduct'] * $product->hh_percent / 100,
@@ -293,6 +302,8 @@ class User2Controller extends Controller
                         'id_product' => $request['txtProductID'],
                         'id_user' => $id_Auth,
                         'total_product' => $request['totalProduct'],
+                        'email_guest' => $request['txtEmailGuest'],
+                        'phone_guest' => $request['txtPhoneGuest'],
                         'list_code'=>$str_code_rs,
                         'bonus_pr' => $product->hh_default,
                         'total_price' => $product->price_sale * $request['totalProduct'],
@@ -330,6 +341,8 @@ class User2Controller extends Controller
                         'id_product' => $request['txtProductID'],
                         'id_user' => $id_Auth,
                         'total_product' => $request['totalProduct'],
+                        'email_guest' => $request['txtEmailGuest'],
+                        'phone_guest' => $request['txtPhoneGuest'],
                         'list_code'=>$str_code_rs,
                         'bonus_pr' => $product->hh_percent,
                         'total_price' => $product->price_sale * $request['totalProduct'],
@@ -469,8 +482,8 @@ class User2Controller extends Controller
             ->join('products','id_product','=','products.id')
 //            ->where('status_transport','=','done')
 //            ->where('status_payment','=','wait')
-//            ->where('status_kt','=','wait')
-//            ->where('status_admin2','=','wait')
+            ->where('status_kt','=','wait')
+            ->where('status_admin2','=','wait')
             ->select(''.$table.'.*','products.*')
             ->addSelect(''.$table.'.id as id_order')
             ->get();

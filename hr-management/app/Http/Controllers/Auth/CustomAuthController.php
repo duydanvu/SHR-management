@@ -54,6 +54,9 @@ class CustomAuthController extends Controller
                 'alert-type' => 'success'
             );
             if($user->type == 'systems'){
+                if($user->position_id == 3){
+                    return \redirect('/user2/list_view_product')->with($notification);
+                }
                 return redirect('/home1')->with($notification);
             }else {
                 return redirect('/home')->with($notification);

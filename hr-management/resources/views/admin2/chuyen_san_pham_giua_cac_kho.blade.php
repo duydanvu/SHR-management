@@ -34,7 +34,7 @@
         </div>
         <div class="form-group">
             <label for="name">Số Lượng Tồn</label>
-            <input id="totalWarehouse" type="number" class="form-control @error('txtTotalWarehouse') is-invalid @enderror" name="txtTotalWarehouse" value=""  autocomplete="number" required readonly>
+            <input id="totalWarehouse" type="number" class="form-control @error('txtTotalWarehouse') is-invalid @enderror" name="txtTotalWarehouse" value="{{$total}}"  autocomplete="number" required readonly>
             @error('txtTotalWarehouse')
             <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>

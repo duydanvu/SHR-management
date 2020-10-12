@@ -90,14 +90,20 @@
                         </div>
                     @if($product->id_link_detail != null)
                         <div class="col-xl-4 col-lg-3 col-md-4 float-left mt-3" >
+                            @foreach(explode(',',$product->id_link_detail) as $values_image)
+                                @foreach($link_image as $values_image_list)
+                                    @if($values_image == $values_image_list->id)
                                     <div class="col-lg-6 col-md-3 col-3" data-image="images/details_1.jpg">
-                                        <img src="/upload/product/feature-product/f-p-1.jpg" alt="" style="max-width: 90px;max-height: 90px; padding: 10px"></div>
-                                    <div class="col-lg-6 col-md-3 col-3" data-image="images/details_2.jpg">
-                                        <img src="/upload/product/feature-product/f-p-1.jpg" alt="" style="max-width: 90px;max-height: 90px; padding: 10px"></div>
-                                    <div class="col-lg-6 col-md-3 col-3 " data-image="images/details_3.jpg">
-                                        <img src="/upload/product/feature-product/f-p-1.jpg" alt="" style="max-width: 90px;max-height: 90px; padding: 10px"></div>
-                                    <div class="col-lg-6 col-md-3 col-3 " data-image="images/details_4.jpg">
-                                        <img src="/upload/product/feature-product/f-p-1.jpg" alt="" style="max-width: 90px;max-height: 90px; padding: 10px"></div>
+                                        <img src="{{$values_image_list->link_image}}" alt="" style="max-width: 90px;max-height: 90px; padding: 10px"></div>
+                                    @endif
+                                @endforeach
+                            @endforeach
+{{--                                    <div class="col-lg-6 col-md-3 col-3" data-image="images/details_2.jpg">--}}
+{{--                                        <img src="/upload/product/feature-product/f-p-1.jpg" alt="" style="max-width: 90px;max-height: 90px; padding: 10px"></div>--}}
+{{--                                    <div class="col-lg-6 col-md-3 col-3 " data-image="images/details_3.jpg">--}}
+{{--                                        <img src="/upload/product/feature-product/f-p-1.jpg" alt="" style="max-width: 90px;max-height: 90px; padding: 10px"></div>--}}
+{{--                                    <div class="col-lg-6 col-md-3 col-3 " data-image="images/details_4.jpg">--}}
+{{--                                        <img src="/upload/product/feature-product/f-p-1.jpg" alt="" style="max-width: 90px;max-height: 90px; padding: 10px"></div>--}}
 
                         </div>
                     @endif
@@ -110,11 +116,11 @@
                         <div class="col-12 m-0 p-0" style="max-height: 100px;float: left">
                             <p class="details_discount col-4 float-left" style="font-size: 20px">Giá Bán </p>
                             <p class="details_discount col-8 pt-3 float-left"
-                               style="color: red;text-decoration-line: line-through;font-size: 25px">{{$product->price_out}} VND</p>
+                               style="color: red;text-decoration-line: line-through;font-size: 25px">{{number_format($product->price_out)}} VND</p>
                         </div>
                         <div class="col-12 m-0 p-0" style="max-height: 100px;float: left">
                             <div class="details_price col-4 float-left" style="font-size: 20px">Giá Khuyến Mại</div>
-                            <div class="details_price col-8 pt-3 float-left" style="font-size: 25px">{{$product->price_sale}} VND</div>
+                            <div class="details_price col-8 pt-3 float-left" style="font-size: 25px">{{number_format($product->price_sale)}} VND</div>
                         </div>
                         <!-- In Stock -->
                         <div class="p-review pl-4 pt-4" >
@@ -205,8 +211,10 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Giá Sản Phẩm</label>
-                                        <input id="price_product" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtPriceProduct" value="{{$product->price_sale}}"  autocomplete="number" readonly>
-                                        <input id="product_id" type="text" class="form-control @error('txtProductID') is-invalid @enderror" name="txtProductID" value="{{$product->id}}"  autocomplete="number" hidden>
+                                        <input id="price_product" type="text" class="form-control @error('txtName')
+                                            is-invalid @enderror" name="txtPriceProduct" value="{{number_format($product->price_sale)}}"  autocomplete="number" readonly>
+                                        <input id="product_id" type="text" class="form-control @error('txtProductID')
+                                            is-invalid @enderror" name="txtProductID" value="{{$product->id}}"  autocomplete="number" hidden>
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Số Lượng </label>
@@ -221,6 +229,26 @@
                                         <label for="name">Tổng tiền</label>
                                         <input id="tongTien" type="text" class="form-control @error('txtTongTien') is-invalid @enderror" name="txtTongTien" value="{{$product->price_sale}}"  autocomplete="number">
                                         @error('txtTongTien')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Email Khách Hàng</label>
+                                        <input id="emailGuest" type="text" class="form-control @error('txtEmailGuest')
+                                            is-invalid @enderror" name="txtEmailGuest" value=""  autocomplete="number" required>
+                                        @error('txtEmailGuest')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Số Điện Thoại Khách Hàng</label>
+                                        <input id="phoneGuest" type="text" class="form-control @error('txtPhoneGuest')
+                                            is-invalid @enderror" name="txtPhoneGuest" value=""  autocomplete="number" required>
+                                        @error('txtPhoneGuest')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

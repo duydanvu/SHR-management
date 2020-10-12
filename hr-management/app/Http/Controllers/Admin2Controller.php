@@ -32,16 +32,60 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Schema;
+use Yajra\DataTables\DataTables;
 
 class Admin2Controller extends Controller
 {
-    public function index(){
-        $list_user = User::leftJoin('positions','positions.position_id','=','users.position_id')
-                    ->select('users.id','users.last_name','users.email','users.dob','users.phone','positions.position_name')
-                    ->where('users.position_id','<>','1')
-                    ->get();
+    public function index(Request $request){
+
+        if($request->ajax()) {
+            if ($request->area == 'all' || $request->area = '') {
+                if($request->name == ''){
+                    $list_user = User::leftJoin('positions', 'positions.position_id', '=', 'users.position_id')
+                        ->select('users.id', 'users.last_name', 'users.email', 'users.dob', 'users.phone', 'positions.position_name')
+                        ->get();
+                }else{
+                    $list_user = User::leftJoin('positions', 'positions.position_id', '=', 'users.position_id')
+                        ->select('users.id', 'users.last_name', 'users.email', 'users.dob', 'users.phone', 'positions.position_name')
+                        ->where('users.last_name','like','%'.$request->name.'%')
+                        ->get();
+                }
+
+            } else {
+                if($request->name == '') {
+                    $list_user = User::leftJoin('positions', 'positions.position_id', '=', 'users.position_id')
+                        ->join('stores', 'stores.store_id', '=', 'users.store_id')
+                        ->select('users.id', 'users.last_name', 'users.email', 'users.dob', 'users.phone', 'positions.position_name', 'stores.area_id')
+                        ->where('stores.area_id', '=', $request->area)
+                        ->get();
+                }else{
+                    $list_user = User::leftJoin('positions', 'positions.position_id', '=', 'users.position_id')
+                        ->join('stores', 'stores.store_id', '=', 'users.store_id')
+                        ->select('users.id', 'users.last_name', 'users.email', 'users.dob', 'users.phone', 'positions.position_name', 'stores.area_id')
+                        ->where('stores.area_id', '=', $request->area)
+                        ->where('users.last_name','like','%'.$request->name.'%')
+                        ->get();
+                }
+            }
+            return DataTables::of($list_user) ->addIndexColumn()
+                ->editColumn('position',function ($row){
+                    if ($row->position_name == 'ASM') {
+                        $results = $row->position_name;
+                    }else{
+                        $results = 'UserLV2';
+                    }
+                    return $results;
+                })
+                ->addColumn('action',function ($row){
+                    $result = '<a href="'.route('search_view_update_user',['id'=>$row->id]).'" data-remote="false"
+                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                                <i class="fas fa-edit"> Sửa</i>
+                                        </a>';
+                    return $result;
+                })->rawColumns(['position','action'])->make(true);
+        }
         $area = Area::all();
-        return view('admin2.create_acc')->with(['list_user'=>$list_user,'area'=>$area]);
+        return view('admin2.create_acc',compact('area'));
     }
 
     public function search_user_update($id){
@@ -197,7 +241,8 @@ class Admin2Controller extends Controller
                 }
             }
         }
-        return view('admin2.group_manage')->with(['group'=>$group]);
+        $list_user = User::all();
+        return view('admin2.group_manage')->with(['group'=>$group,'list_user'=>$list_user]);
     }
 
     public function createGroup(Request $request){
@@ -356,7 +401,7 @@ class Admin2Controller extends Controller
         $user = User::join('positions','users.position_id','=','positions.position_id')
             ->where('positions.position_name','<>','Admin')
             ->where('activation_key','<>',null)
-            ->where('type','=',null)
+//            ->where('type','=',null)
             ->get();
         $area = Area::all();
         return view('admin2.lock_unlock_account')->with(['user'=>$user,'area'=>$area]);
@@ -625,6 +670,7 @@ class Admin2Controller extends Controller
         }
         return back()->with($notification);
     }
+
     public function import_lock_acc(Request $request){
         $path1 = $request->file('file')->store('temp');
         $path=storage_path('app').'/'.$path1;
@@ -1279,7 +1325,16 @@ class Admin2Controller extends Controller
         $date = date("Y-m-d");
         $product = Products::find($id);
         $warehouse = Warehouse::where('status','=','active')->get();
-        return view('admin2.tra_san_pham',compact('product','warehouse','date'));
+        $total_warehouse1 = WarehouseProduct::where('id_product','=',$id)
+            ->where('id_warehouse','=',1)
+            ->orderBy('id','desc')
+            ->first();
+        if($total_warehouse1 == null){
+            $total = 0;
+        }else{
+            $total =  $total_warehouse1->total;
+        }
+        return view('admin2.tra_san_pham',compact('product','warehouse','date','total'));
     }
 
     public function searchTotalProduct(Request $request){
@@ -1361,6 +1416,7 @@ class Admin2Controller extends Controller
         );
         return Redirect::back()->with($notification);
     }
+
     public function exportTotalProduct(Request $request){
         $date = date("Y-m-d");
         $tablename1 = substr($date,0,4);
@@ -1520,7 +1576,16 @@ class Admin2Controller extends Controller
         $product = Products::find($id);
         $warehouse = Warehouse::where('status','=','active')->get();
         $warehouse1 = Warehouse::where('status','=','active')->get();
-        return view('admin2.chuyen_san_pham_giua_cac_kho',compact('product','warehouse','warehouse1'));
+        $total_warehouse1 = WarehouseProduct::where('id_product','=',$id)
+            ->where('id_warehouse','=',1)
+            ->orderBy('id','desc')
+            ->first();
+        if($total_warehouse1 == null){
+            $total = 0;
+        }else{
+            $total =  $total_warehouse1->total;
+        }
+        return view('admin2.chuyen_san_pham_giua_cac_kho',compact('product','warehouse','warehouse1','total'));
     }
 
     public function actionWarehouseToWarehouse(Request $request){
@@ -1606,21 +1671,21 @@ class Admin2Controller extends Controller
     }
 
     public function acceptActionW2W(Request $request){
-        $date = date("Y-m-d");
+        $date = Carbon::tomorrow();
         $tablename1 = substr($date,0,4);
         $tablename2 = substr($date,5,2);
         $tablename = 'iep_'.$tablename1.$tablename2;
-//        try{
+        try{
             $id_last_from = DB::table('warehouse_products')
                 ->where('id_product','=',$request->id_product)
                 ->where('id_warehouse','=',$request->id_WarehouseFrom)
-                ->where('time','<',$date)
+                ->where('time','<=',$date)
                 ->orderBy('id','desc')
                 ->first();
             $id_last_to = DB::table('warehouse_products')
                 ->where('id_product','=',$request->id_product)
                 ->where('id_warehouse','=',$request->id_WarehouseTo)
-                ->where('time','<',$date)
+                ->where('time','<=',$date)
                 ->orderBy('id','desc')
                 ->first();
 
@@ -1659,6 +1724,7 @@ class Admin2Controller extends Controller
                     'type' => 'w2w',
                 ]);
             }
+
             $check = Schema::hasTable($tablename);
             if($check != true){
                 $create_table = Schema::create($tablename, function (Blueprint $tables) {
@@ -1694,14 +1760,14 @@ class Admin2Controller extends Controller
                 ->update([
                     'status'=>'done',
                 ]);
-//        }
-//        catch (QueryException $ex){
-//            $notification = array(
-//                'message' => 'Thông tin không chính xác! Vui lòng kiểm tra lại ',
-//                'alert-type' => 'error'
-//            );
-//            return Redirect::back()->with($notification);
-//        }
+        }
+        catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin không chính xác! Vui lòng kiểm tra lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
         $notification = array(
             'message' => 'Thực hiện thành công!',
             'alert-type' => 'success'

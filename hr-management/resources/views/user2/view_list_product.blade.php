@@ -69,7 +69,8 @@
         <section class="home_banner_area">
             <div class="banner_inner d-flex align-items-center">
                 <div class="container">
-                    <div class="banner_content row " style="padding-top: 10px">
+                    <div class="banner_content" style="padding-top: 10px">
+                        <div class="row">
                         <div class="col-lg-5">
                             <h3>Combo Toán+Tiếng Việt</h3>
                             <p> Ưu đãi đặc biệt dành tặng đến KH khi mua gói học Online cho các bạn Tiểu học, THCS tại MobiFone Plus.</p>
@@ -80,6 +81,35 @@
                                 <img src="../upload/banner/unnamed.png" alt="">
                             </div>
                         </div>
+                        </div>
+                    </div>
+                    <div class="banner_content" style="padding-top: 10px">
+                        <div class="row">
+                        <div class="col-lg-5">
+                            <h3>Combo Toán+Tiếng Việt 2</h3>
+                            <p> Ưu đãi đặc biệt dành tặng đến KH khi mua gói học Online cho các bạn Tiểu học, THCS tại MobiFone Plus.</p>
+                            <a class="white_bg_btn" href="http://hr.mobifoneplus.vn/user2/view_detail_product_user2/14">Xem Thông tin</a>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="halemet_img">
+                                <img src="../upload/banner/unnamed.png" alt="">
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="banner_content row " style="padding-top: 10px">
+                        <div class="row">
+                        <div class="col-lg-5">
+                            <h3>Combo Toán+Tiếng Việt 3</h3>
+                            <p> Ưu đãi đặc biệt dành tặng đến KH khi mua gói học Online cho các bạn Tiểu học, THCS tại MobiFone Plus.</p>
+                            <a class="white_bg_btn" href="http://hr.mobifoneplus.vn/user2/view_detail_product_user2/14">Xem Thông tin</a>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="halemet_img">
+                                <img src="../upload/banner/unnamed.png" alt="">
+                            </div>
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -166,12 +196,12 @@
                             <p>Những sản phẩm mới được bán</p>
                         </div>
                         <div class="latest_product_inner row">
-                            @foreach($product as $value)
+                            @foreach($product_new as $value)
                             <div class="col-lg-3 col-md-4 col-sm-6">
                                 <div class="f_p_item">
                                     <a href="{{route('view_detail_product_user2',['id'=>$value->id])}}">
                                     <div class="f_p_img">
-                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-3.jpg" alt="">
+                                        <img class="img-fluid" src="..{{$value->link}}" alt="">
                                         <div class="p_icon">
                                             <a href="#"><i class="lnr lnr-heart"></i></a>
                                         </div>
@@ -183,58 +213,58 @@
                                 </div>
                             </div>
                             @endforeach
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="f_p_item">
-                                    <div class="f_p_img">
-                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-1.jpg" alt="">
-                                        <div class="p_icon">
-                                            <a href="#"><i class="lnr lnr-heart"></i></a>
-                                            <a href="#"><i class="lnr lnr-cart"></i></a>
-                                        </div>
-                                    </div>
-                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>
-                                    <h5>$150.00</h5>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="f_p_item">
-                                    <div class="f_p_img">
-                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-2.jpg" alt="">
-                                        <div class="p_icon">
-                                            <a href="#"><i class="lnr lnr-heart"></i></a>
-                                            <a href="#"><i class="lnr lnr-cart"></i></a>
-                                        </div>
-                                    </div>
-                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>
-                                    <h5>$150.00</h5>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="f_p_item">
-                                    <div class="f_p_img">
-                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-3.jpg" alt="">
-                                        <div class="p_icon">
-                                            <a href="#"><i class="lnr lnr-heart"></i></a>
-                                            <a href="#"><i class="lnr lnr-cart"></i></a>
-                                        </div>
-                                    </div>
-                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>
-                                    <h5>$150.00</h5>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="f_p_item">
-                                    <div class="f_p_img">
-                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-4.jpg" alt="">
-                                        <div class="p_icon">
-                                            <a href="#"><i class="lnr lnr-heart"></i></a>
-                                            <a href="#"><i class="lnr lnr-cart"></i></a>
-                                        </div>
-                                    </div>
-                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>
-                                    <h5>$150.00</h5>
-                                </div>
-                            </div>
+{{--                            <div class="col-lg-3 col-md-4 col-sm-6">--}}
+{{--                                <div class="f_p_item">--}}
+{{--                                    <div class="f_p_img">--}}
+{{--                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-1.jpg" alt="">--}}
+{{--                                        <div class="p_icon">--}}
+{{--                                            <a href="#"><i class="lnr lnr-heart"></i></a>--}}
+{{--                                            <a href="#"><i class="lnr lnr-cart"></i></a>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>--}}
+{{--                                    <h5>$150.00</h5>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-lg-3 col-md-4 col-sm-6">--}}
+{{--                                <div class="f_p_item">--}}
+{{--                                    <div class="f_p_img">--}}
+{{--                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-2.jpg" alt="">--}}
+{{--                                        <div class="p_icon">--}}
+{{--                                            <a href="#"><i class="lnr lnr-heart"></i></a>--}}
+{{--                                            <a href="#"><i class="lnr lnr-cart"></i></a>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>--}}
+{{--                                    <h5>$150.00</h5>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-lg-3 col-md-4 col-sm-6">--}}
+{{--                                <div class="f_p_item">--}}
+{{--                                    <div class="f_p_img">--}}
+{{--                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-3.jpg" alt="">--}}
+{{--                                        <div class="p_icon">--}}
+{{--                                            <a href="#"><i class="lnr lnr-heart"></i></a>--}}
+{{--                                            <a href="#"><i class="lnr lnr-cart"></i></a>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>--}}
+{{--                                    <h5>$150.00</h5>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-lg-3 col-md-4 col-sm-6">--}}
+{{--                                <div class="f_p_item">--}}
+{{--                                    <div class="f_p_img">--}}
+{{--                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-4.jpg" alt="">--}}
+{{--                                        <div class="p_icon">--}}
+{{--                                            <a href="#"><i class="lnr lnr-heart"></i></a>--}}
+{{--                                            <a href="#"><i class="lnr lnr-cart"></i></a>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>--}}
+{{--                                    <h5>$150.00</h5>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
                         </div>
                     </div>
@@ -244,141 +274,141 @@
         <!--================End Latest Product Area =================-->
 
         <!--================Most Product Area =================-->
-        <section class="most_product_area">
-            <div class="main_box">
-                <div class="container">
-                    <div class="main_title">
-                        <h2>Sản Phẩm Được Tìm Kiếm Nhiều Nhất</h2>
-                    </div>
-                    <div class="row most_product_inner">
-                        <div class="col-lg-3 col-sm-6">
-                            <div class="most_p_list">
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img src="../upload/product/most-product/m-product-1.jpg" alt="">
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#"><h4>Black lace Heels</h4></a>
-                                        <h3>$189.00</h3>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img src="../upload/product/most-product/m-product-2.jpg" alt="">
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#"><h4>Black lace Heels</h4></a>
-                                        <h3>$189.00</h3>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img src="../upload/product/most-product/m-product-3.jpg" alt="">
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#"><h4>Black lace Heels</h4></a>
-                                        <h3>$189.00</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-sm-6">
-                            <div class="most_p_list">
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img src="../upload/product/most-product/m-product-4.jpg" alt="">
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#"><h4>Black lace Heels</h4></a>
-                                        <h3>$189.00</h3>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img src="../upload/product/most-product/m-product-5.jpg" alt="">
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#"><h4>Black lace Heels</h4></a>
-                                        <h3>$189.00</h3>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img src="../upload/product/most-product/m-product-6.jpg" alt="">
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#"><h4>Black lace Heels</h4></a>
-                                        <h3>$189.00</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-sm-6">
-                            <div class="most_p_list">
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img src="../upload/product/most-product/m-product-7.jpg" alt="">
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#"><h4>Black lace Heels</h4></a>
-                                        <h3>$189.00</h3>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img src="../upload/product/most-product/m-product-8.jpg" alt="">
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#"><h4>Black lace Heels</h4></a>
-                                        <h3>$189.00</h3>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img src="../upload/product/most-product/m-product-9.jpg" alt="">
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#"><h4>Black lace Heels</h4></a>
-                                        <h3>$189.00</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-sm-6">
-                            <div class="most_p_list">
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img src="../upload/product/most-product/m-product-10.jpg" alt="">
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#"><h4>Black lace Heels</h4></a>
-                                        <h3>$189.00</h3>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img src="../upload/product/most-product/m-product-11.jpg" alt="">
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#"><h4>Black lace Heels</h4></a>
-                                        <h3>$189.00</h3>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img src="../upload/product/most-product/m-product-12.jpg" alt="">
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#"><h4>Black lace Heels</h4></a>
-                                        <h3>$189.00</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+{{--        <section class="most_product_area">--}}
+{{--            <div class="main_box">--}}
+{{--                <div class="container">--}}
+{{--                    <div class="main_title">--}}
+{{--                        <h2>Sản Phẩm Được Tìm Kiếm Nhiều Nhất</h2>--}}
+{{--                    </div>--}}
+{{--                    <div class="row most_product_inner">--}}
+{{--                        <div class="col-lg-3 col-sm-6">--}}
+{{--                            <div class="most_p_list">--}}
+{{--                                <div class="media">--}}
+{{--                                    <div class="d-flex">--}}
+{{--                                        <img src="../upload/product/most-product/m-product-1.jpg" alt="">--}}
+{{--                                    </div>--}}
+{{--                                    <div class="media-body">--}}
+{{--                                        <a href="#"><h4>Black lace Heels</h4></a>--}}
+{{--                                        <h3>$189.00</h3>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="media">--}}
+{{--                                    <div class="d-flex">--}}
+{{--                                        <img src="../upload/product/most-product/m-product-2.jpg" alt="">--}}
+{{--                                    </div>--}}
+{{--                                    <div class="media-body">--}}
+{{--                                        <a href="#"><h4>Black lace Heels</h4></a>--}}
+{{--                                        <h3>$189.00</h3>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="media">--}}
+{{--                                    <div class="d-flex">--}}
+{{--                                        <img src="../upload/product/most-product/m-product-3.jpg" alt="">--}}
+{{--                                    </div>--}}
+{{--                                    <div class="media-body">--}}
+{{--                                        <a href="#"><h4>Black lace Heels</h4></a>--}}
+{{--                                        <h3>$189.00</h3>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="col-lg-3 col-sm-6">--}}
+{{--                            <div class="most_p_list">--}}
+{{--                                <div class="media">--}}
+{{--                                    <div class="d-flex">--}}
+{{--                                        <img src="../upload/product/most-product/m-product-4.jpg" alt="">--}}
+{{--                                    </div>--}}
+{{--                                    <div class="media-body">--}}
+{{--                                        <a href="#"><h4>Black lace Heels</h4></a>--}}
+{{--                                        <h3>$189.00</h3>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="media">--}}
+{{--                                    <div class="d-flex">--}}
+{{--                                        <img src="../upload/product/most-product/m-product-5.jpg" alt="">--}}
+{{--                                    </div>--}}
+{{--                                    <div class="media-body">--}}
+{{--                                        <a href="#"><h4>Black lace Heels</h4></a>--}}
+{{--                                        <h3>$189.00</h3>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="media">--}}
+{{--                                    <div class="d-flex">--}}
+{{--                                        <img src="../upload/product/most-product/m-product-6.jpg" alt="">--}}
+{{--                                    </div>--}}
+{{--                                    <div class="media-body">--}}
+{{--                                        <a href="#"><h4>Black lace Heels</h4></a>--}}
+{{--                                        <h3>$189.00</h3>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="col-lg-3 col-sm-6">--}}
+{{--                            <div class="most_p_list">--}}
+{{--                                <div class="media">--}}
+{{--                                    <div class="d-flex">--}}
+{{--                                        <img src="../upload/product/most-product/m-product-7.jpg" alt="">--}}
+{{--                                    </div>--}}
+{{--                                    <div class="media-body">--}}
+{{--                                        <a href="#"><h4>Black lace Heels</h4></a>--}}
+{{--                                        <h3>$189.00</h3>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="media">--}}
+{{--                                    <div class="d-flex">--}}
+{{--                                        <img src="../upload/product/most-product/m-product-8.jpg" alt="">--}}
+{{--                                    </div>--}}
+{{--                                    <div class="media-body">--}}
+{{--                                        <a href="#"><h4>Black lace Heels</h4></a>--}}
+{{--                                        <h3>$189.00</h3>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="media">--}}
+{{--                                    <div class="d-flex">--}}
+{{--                                        <img src="../upload/product/most-product/m-product-9.jpg" alt="">--}}
+{{--                                    </div>--}}
+{{--                                    <div class="media-body">--}}
+{{--                                        <a href="#"><h4>Black lace Heels</h4></a>--}}
+{{--                                        <h3>$189.00</h3>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="col-lg-3 col-sm-6">--}}
+{{--                            <div class="most_p_list">--}}
+{{--                                <div class="media">--}}
+{{--                                    <div class="d-flex">--}}
+{{--                                        <img src="../upload/product/most-product/m-product-10.jpg" alt="">--}}
+{{--                                    </div>--}}
+{{--                                    <div class="media-body">--}}
+{{--                                        <a href="#"><h4>Black lace Heels</h4></a>--}}
+{{--                                        <h3>$189.00</h3>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="media">--}}
+{{--                                    <div class="d-flex">--}}
+{{--                                        <img src="../upload/product/most-product/m-product-11.jpg" alt="">--}}
+{{--                                    </div>--}}
+{{--                                    <div class="media-body">--}}
+{{--                                        <a href="#"><h4>Black lace Heels</h4></a>--}}
+{{--                                        <h3>$189.00</h3>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="media">--}}
+{{--                                    <div class="d-flex">--}}
+{{--                                        <img src="../upload/product/most-product/m-product-12.jpg" alt="">--}}
+{{--                                    </div>--}}
+{{--                                    <div class="media-body">--}}
+{{--                                        <a href="#"><h4>Black lace Heels</h4></a>--}}
+{{--                                        <h3>$189.00</h3>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </section>--}}
         <!--================End Most Product Area =================-->
 @stop
 
@@ -426,5 +456,21 @@
             // fix table
             $("#example1").parent().css({"overflow": "auto"});
         });
+    </script>
+    <script>
+        var myIndex = 0;
+        carousel();
+
+        function carousel() {
+            var i;
+            var x = document.getElementsByClassName("banner_content");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            myIndex++;
+            if (myIndex > x.length) {myIndex = 1}
+            x[myIndex-1].style.display = "block";
+            setTimeout(carousel, 3000); // Change image every 2 seconds
+        }
     </script>
 @stop

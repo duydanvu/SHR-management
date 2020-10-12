@@ -58,6 +58,7 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
 
     //admin2
     Route::get('/admin2/view','Admin2Controller@index')->name('view_list_account_user');
+    Route::resource('ajaxUserWebsSellProduct','Admin2Controller');
     Route::get('/admin2/search_update/{id}','Admin2Controller@search_user_update')->name('search_view_update_user');
     Route::post('/admin2/add_user2','Admin2Controller@add_account_user')->name('add_new_acc_user');
     Route::post('/admin2/update_user2','Admin2Controller@update_account_user')->name('update_account_user_sts');

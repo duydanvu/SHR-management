@@ -190,6 +190,10 @@ return [
 
     'dashboard_url' => 'home',
 
+    'dashboard_url1' => 'home1',
+
+    'dashboard_url_sale' => '/user2/list_view_product',
+
     'logout_url' => 'logout',
 
     'login_url' => 'login',
@@ -386,6 +390,7 @@ return [
                     'url'     => '/admin2/transporter',
                     'can'     => 'admin_lv2'
                 ],
+
                 [
                     'text'    => 'Sản Phẩm',
                     'icon'    => 'fas fa-clipboard-list',
@@ -507,6 +512,13 @@ return [
 //                    'url'     => '/user1/view_information',
 //                    'can'     => 'user_lv1'
 //                ],
+
+                [
+                    'text'    => 'Trang Chủ Bán Hàng',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/user2/list_view_product',
+                    'can'     => 'user_lv2',
+                ] ,
                 [
                     'text'    => 'Sản Phẩm',
                     'icon'    => 'fas fa-clipboard-list',
@@ -517,11 +529,11 @@ return [
                             'url'     => '/user2/list_product',
                             'can'     => 'user_lv2',
                         ] ,
-                        [
-                            'text'    => 'Bán Hàng',
-                            'url'     => '/user2/list_view_product',
-                            'can'     => 'user_lv2',
-                        ] ,
+//                        [
+//                            'text'    => 'Bán Hàng',
+//                            'url'     => '/user2/list_view_product',
+//                            'can'     => 'user_lv2',
+//                        ] ,
                         [
                             'text'    => 'Trả Tiền Về Công Ty',
                             'url'     => 'user2/danh_sach_hoan_ung',

@@ -91,7 +91,13 @@
                                             <td>{{$value->id_group}}</td>
                                             <td>{{$value->name}}</td>
                                             <td>{{$value->description}}</td>
-                                            <td>{{$value->name_manager}}</td>
+                                            <td>@foreach($list_user as $value1)
+                                                    @foreach(explode(',',$value->manager) as $value2)
+                                                        @if($value1->id == $value2)
+                                                            {{$value1->last_name}} <br>
+                                                        @endif
+                                                    @endforeach
+                                                @endforeach</td>
                                             <td><a href="{{route('list_user_of_group',['id'=>$value->id])}}">{{$value->sum_user}}</a></td>
                                         </tr>
                                     @endforeach

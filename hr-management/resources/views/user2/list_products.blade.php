@@ -78,13 +78,13 @@
                     <th style="width:10%">Tên Sản Phẩm</th>
                     <th style="width:10%">Mã Sản Phẩm</th>
                     <th style="width:10%">Loại Sản Phẩm</th>
-                    <th style="width:10%">Giá Nhập</th>
+{{--                    <th style="width:10%">Giá Nhập</th>--}}
                     <th style="width:10%">Giá Bán</th>
                     <th style="width:10%">Giá Khuyến Mại</th>
                     <th style="width:10%">Hình Thức Hoa Hồng</th>
                     <th style="width:10%">Mức Hoa Hồng</th>
-                    <th style="width:10%">Nhà Cung Cấp</th>
-                    <th style="width:10%">Loại Hình Hợp Tác</th>
+{{--                    <th style="width:10%">Nhà Cung Cấp</th>--}}
+{{--                    <th style="width:10%">Loại Hình Hợp Tác</th>--}}
                 </tr>
                 </thead>
                 <tbody id="table_body">
@@ -95,7 +95,7 @@
                             <td>{{$value->name}}</td>
                             <td>{{$value->product_code}}</td>
                             <td>{{$value->type}}</td>
-                            <td>{{number_format($value->price_in)}}</td>
+{{--                            <td>{{number_format($value->price_in)}}</td>--}}
                             <td>{{number_format($value->price_out)}}</td>
                             <td>{{number_format($value->price_sale)}}</td>
                             @if($value->hh_default == null)
@@ -105,12 +105,12 @@
                                 <td>Mức Cố Định</td>
                                 <td>{{number_format($value->hh_default)}}</td>
                             @endif
-                            @foreach($supplier as $value_sup)
-                                @if($value_sup->id == $value->id_supplier)
-                                    <td>{{$value_sup->name}}</td>
-                                @endif
-                            @endforeach
-                            <td>{{$value->cooperation}}</td>
+{{--                            @foreach($supplier as $value_sup)--}}
+{{--                                @if($value_sup->id == $value->id_supplier)--}}
+{{--                                    <td>{{$value_sup->name}}</td>--}}
+{{--                                @endif--}}
+{{--                            @endforeach--}}
+{{--                            <td>{{$value->cooperation}}</td>--}}
                         </tr>
                     @endforeach
                 @else

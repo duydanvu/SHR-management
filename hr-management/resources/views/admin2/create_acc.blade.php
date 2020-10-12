@@ -19,7 +19,7 @@
 
 @section('content')
     <div class="card card-outline card-primary-dashboard">
-        <meta name="csrf-token-2" content="{{ csrf_token() }}">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <div class="card-header">
             <h3 class="card-title">Tìm Kiếm</h3>
             <div class="card-tools">
@@ -43,7 +43,6 @@
                 </div>
                 <div class="col-md-3 ml-4">
                     <div class="form-group">
-                        <meta name="csrf-token2" content="{{ csrf_token() }}">
                         <label for="exampleInputEmail1">Tên Tài Khoản</label>
                         <input id="name_user" type="text" class="form-control @error('txtNameUser') is-invalid @enderror" name="txtFName" value=""  autocomplete="number" required>
                         @error('txtNameUser')
@@ -96,32 +95,32 @@
                 </tr>
                 </thead>
                 <tbody id="table_body">
-                @if(count($list_user) > 0)
-                    @foreach($list_user as $key => $value)
-                        <tr>
-                            <td>{{$key+1}}</td>
-                            <td class="text-center">
-                                        <a href="{{route('search_view_update_user',['id'=>$value->id])}}" data-remote="false"
-                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
-                                                <i class="fas fa-edit"> Sửa</i>
-                                        </a>
-                            </td>
-                            <td>{{$value->last_name}}</td>
-                            <td>{{$value->email}}</td>
-                            <td>{{$value->dob}}</td>
-                            <td>{{$value->phone}}</td>
-                            @if($value->position_name == 'ASM')
-                            <td>{{$value->position_name}}</td>
-                            @else
-                            <td>UserLV2</td>
-                            @endif
-                        </tr>
-                    @endforeach
-                @else
-                    <td colspan="8" style="text-align: center">
-                        <h3>Không có Thông Tin</h3>
-                    </td>
-                @endif
+{{--                @if(count($list_user) > 0)--}}
+{{--                    @foreach($list_user as $key => $value)--}}
+{{--                        <tr>--}}
+{{--                            <td>{{$key+1}}</td>--}}
+{{--                            <td class="text-center">--}}
+{{--                                        <a href="{{route('search_view_update_user',['id'=>$value->id])}}" data-remote="false"--}}
+{{--                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">--}}
+{{--                                                <i class="fas fa-edit"> Sửa</i>--}}
+{{--                                        </a>--}}
+{{--                            </td>--}}
+{{--                            <td>{{$value->last_name}}</td>--}}
+{{--                            <td>{{$value->email}}</td>--}}
+{{--                            <td>{{$value->dob}}</td>--}}
+{{--                            <td>{{$value->phone}}</td>--}}
+{{--                            @if($value->position_name == 'ASM')--}}
+{{--                            <td>{{$value->position_name}}</td>--}}
+{{--                            @else--}}
+{{--                            <td>UserLV2</td>--}}
+{{--                            @endif--}}
+{{--                        </tr>--}}
+{{--                    @endforeach--}}
+{{--                @else--}}
+{{--                    <td colspan="8" style="text-align: center">--}}
+{{--                        <h3>Không có Thông Tin</h3>--}}
+{{--                    </td>--}}
+{{--                @endif--}}
 
                 </tbody>
             </table>
@@ -155,9 +154,6 @@
     </div>
 
     {{--     modal --}}
-
-    {{--    --}}{{-- modal --}}
-
     {{--     modal --}}
     <div class="modal fade"  id="modal-create-member" >
         <div class="modal-dialog col-lg-8" >
@@ -281,16 +277,66 @@
         });
 
         $(function () {
-            // $("#example1").DataTable({
-            //     aoColumnDefs: [
-            //         {
-            //             bSortable: false,
-            //             aTargets: ['noSort']
-            //         } // Disable sorting on columns marked as so
-            //     ]
-            // });
-            // fix table
-            $("#example1").parent().css({"overflow": "auto"});
+            $.ajaxSetup({
+
+                headers: {
+
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                }
+
+            });
+            fill_datatable();
+
+            function fill_datatable(area = 'all',name = '') {
+                var table = $('#example1').DataTable({
+                    processing: true,
+
+                    serverSide: true,
+
+                    ajax: {
+                        url: "{{ route('ajaxUserWebsSellProduct.index') }}",
+                        data:{area:area,name:name}
+                    },
+                    columns: [
+
+                        {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+
+                        {data: 'action', name: 'action', orderable: false, searchable: false},
+
+                        {data: 'last_name', name: 'last_name'},
+
+                        {data: 'email', name: 'email'},
+
+                        {data: 'dob', name: 'dob'},
+
+                        {data: 'phone', name: 'phone'},
+
+                        {data: 'position', name: 'position'},
+
+
+                    ],
+                    "oLanguage": {
+                        "sSearch": "Tìm Kiếm",
+                        "sLengthMenu": "Hiển Thị _MENU_ Bản Ghi",
+                    },
+                    "language": {
+                        "info": "Đang hiển thị _START_ tới _END_ trong _TOTAL_ kết quả",
+                    },
+                    "bDestroy": true
+                });
+            }
+
+            $('#fillter_date').click(function () {
+                let area = $("#area_search").val();
+                let name = $("#name_user").val();
+
+                if(area != ''){
+                    $('#example1').DataTable().destroy();
+                    fill_datatable(area,name);
+                }
+            });
+            // $("#example1").parent().css({"overflow": "auto"});
         });
 
     </script>

@@ -131,15 +131,15 @@
                             <td>{{$value->name}}</td>
                             <td>{{$value->product_code}}</td>
                             <td>{{$value->type}}</td>
-                            <td>{{$value->price_in}}</td>
-                            <td>{{$value->price_out}}</td>
-                            <td>{{$value->price_sale}}</td>
+                            <td>{{number_format($value->price_in)}}</td>
+                            <td>{{number_format($value->price_out)}}</td>
+                            <td>{{number_format($value->price_sale)}}</td>
                             @if($value->hh_default == null)
                                 <td>Tỉ Lệ</td>
                                 <td>{{$value->hh_percent}}</td>
                                 @elseif($value->hh_default != null)
                                 <td>Mức Cố Định</td>
-                                <td>{{$value->hh_default}}</td>
+                                <td>{{number_format($value->hh_default)}}</td>
                             @endif
                             <td>{{$value->id_supplier}}</td>
                             <td>{{$value->cooperation}}</td>
@@ -160,7 +160,7 @@
 
     {{--    --}}{{-- modal --}}
     <div class="modal fade" id="modal-admin-action-update">
-        <div class="modal-dialog" >
+        <div class="modal-dialog" style="max-width: 1200px">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Cập nhật thông tin</h4>
@@ -185,11 +185,9 @@
 
     {{--     modal --}}
 
-    {{--    --}}{{-- modal --}}
-
     {{--     modal --}}
     <div class="modal fade"  id="modal-create-member" >
-        <div class="modal-dialog col-lg-8" >
+        <div class="modal-dialog col-lg-8" style="max-width: 1200px">
             <div class="modal-content col-lg-12 ">
                 <div class="modal-header">
                     <h4 class="modal-title">Tạo Sản Phẩm</h4>
@@ -203,112 +201,115 @@
                         <div class="row">
                             <div id = "url_image1"></div>
                             <div class="col-lg-12 col-sm-12">
-
+                                <div class="col-lg-6 float-left">
                                     <div class="form-group">
-                                        <label for="name">Tên Sản Phẩm</label>
-                                        <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
-                                        @error('txtName')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
+                                            <label for="name">Tên Sản Phẩm</label>
+                                            <input id="name" type="text" class="form-control @error('txtName') is-invalid @enderror" name="txtName" value=""  autocomplete="number" required>
+                                            @error('txtName')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    <div class="form-group">
+                                        <label for="name">Loại Sản Phẩm</label>
+                                        <div class="form-check">
+                                            <input id="hanghoa" type="radio" class="form-check-input" name="txtType" value="hanghoa"  autocomplete="number" required>
+                                            <label class="form-check-label " for="hanghoa">
+                                                Hàng Hóa
+                                            </label>
+                                            <input id="dichvu" type="radio" class="form-check-input ml-4" name="txtType" value="dichvu"  autocomplete="number" required>
+                                            <label class="form-check-label ml-5 " for="dichvu">
+                                                Dịch Vụ
+                                            </label>
+                                        </div>
                                     </div>
-                                <div class="form-group">
-                                    <label for="name">Loại Sản Phẩm</label>
-                                    <div class="form-check">
-                                        <input id="hanghoa" type="radio" class="form-check-input" name="txtType" value="hanghoa"  autocomplete="number" required>
-                                        <label class="form-check-label " for="hanghoa">
-                                            Hàng Hóa
-                                        </label>
-                                        <input id="dichvu" type="radio" class="form-check-input ml-4" name="txtType" value="dichvu"  autocomplete="number" required>
-                                        <label class="form-check-label ml-5 " for="dichvu">
-                                            Dịch Vụ
-                                        </label>
+                                    <div class="form-group">
+                                        <meta name="csrf-token2" content="{{ csrf_token() }}">
+                                        <label for="exampleInputEmail1">Nhà Cung Cấp</label>
+                                        <select id="supplier" name = "txtSupplier" class="form-control select2"  value="{{ old('txtSupplier') }}" autocomplete="txtSupplier" style="width: 100%;">
+                                            @foreach ($supplier as $supplier)
+                                                <option value="{{$supplier->id}}">{{$supplier->name}}-{{$supplier->address}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="name">Loại Hình Hợp Tác</label>
+                                        <div class="form-check">
+                                            <input id="muaban" type="radio" class="form-check-input" name="txtTypeHT" value="muaban"  autocomplete="number" required>
+                                            <label class="form-check-label " for="muaban">
+                                                Mua bán
+                                            </label>
+                                            <input id="kigui" type="radio" class="form-check-input ml-4" name="txtTypeHT" value="kigui"  autocomplete="number" required>
+                                            <label class="form-check-label ml-5 " for="kigui">
+                                                Kí Gửi
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                            <label for="name">Hợp Đồng Tham Chiếu</label>
+                                            <input id="contract" type="text" class="form-control @error('txtContract') is-invalid @enderror" name="txtContract" value=""  autocomplete="number" required>
+                                            @error('txtContract')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    <div class="form-group">
+                                            <label for="name">Giá Nhập</label>
+                                            <input id="PriceIn" type="number" class="form-control @error('txtPriceIn') is-invalid @enderror" name="txtPriceIn" value=""  autocomplete="number" required>
+                                            @error('txtPriceIn')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    <div class="form-group">
+                                            <label for="name">Giá bán</label>
+                                            <input id="PriceOut" type="number" class="form-control @error('txtPriceIn') is-invalid @enderror" name="txtPriceOut" value=""  autocomplete="number" required>
+                                            @error('txtPriceIn')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    <div class="form-group">
+                                            <label for="name">Giá Khuyến Mại</label>
+                                            <input id="PriceSale" type="number" class="form-control @error('txtPriceSale') is-invalid @enderror" name="txtPriceSale" value=""  autocomplete="number" required>
+                                            @error('txtPriceSale')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
                                 </div>
-                                <div class="form-group">
-                                    <meta name="csrf-token2" content="{{ csrf_token() }}">
-                                    <label for="exampleInputEmail1">Nhà Cung Cấp</label>
-                                    <select id="supplier" name = "txtSupplier" class="form-control select2"  value="{{ old('txtSupplier') }}" autocomplete="txtSupplier" style="width: 100%;">
-                                        @foreach ($supplier as $supplier)
-                                            <option value="{{$supplier->id}}">{{$supplier->name}}-{{$supplier->address}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Loại Hình Hợp Tác</label>
-                                    <div class="form-check">
-                                        <input id="muaban" type="radio" class="form-check-input" name="txtTypeHT" value="muaban"  autocomplete="number" required>
-                                        <label class="form-check-label " for="muaban">
-                                            Mua bán
-                                        </label>
-                                        <input id="kigui" type="radio" class="form-check-input ml-4" name="txtTypeHT" value="kigui"  autocomplete="number" required>
-                                        <label class="form-check-label ml-5 " for="kigui">
-                                            Kí Gửi
-                                        </label>
-                                        <input id="hoptac" type="radio" class="form-check-input ml-4" name="txtTypeHT" value="hoptac"  autocomplete="number" required>
-                                        <label class="form-check-label ml-5 " for="hoptac">
-                                            Hợp Tác
-                                        </label>
-                                    </div>
-                                </div>
+                                <div class="col-lg-6 float-left">
                                     <div class="form-group">
-                                        <label for="name">Hợp Đồng Tham Chiếu</label>
-                                        <input id="contract" type="text" class="form-control @error('txtContract') is-invalid @enderror" name="txtContract" value=""  autocomplete="number" required>
-                                        @error('txtContract')
+                                        <label for="name">Hình Thức Hoa Hồng</label>
+                                        <div class="form-check">
+                                            <input id="codinh" type="radio" class="form-check-input" name="txtHH" value="codinh"  autocomplete="number" required>
+                                            <label class="form-check-label " for="codinh">
+                                                Mức Cố Định
+                                            </label>
+                                            <input id="tile" type="radio" class="form-check-input ml-4" name="txtHH" value="tile"  autocomplete="number" required>
+                                            <label class="form-check-label ml-5 " for="tile">
+                                                Theo Tỉ lệ
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Mức Hoa Hồng</label>
+                                        <input id="priceHH" type="number" class="form-control @error('txtPriceHH') is-invalid @enderror" name="txtPriceHH" value=""  autocomplete="number" required>
+                                        @error('txtPriceHH')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                                <strong>{{ $message }}</strong>
+                                            </span>
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label for="name">Giá Nhập</label>
-                                        <input id="PriceIn" type="number" class="form-control @error('txtPriceIn') is-invalid @enderror" name="txtPriceIn" value=""  autocomplete="number" required>
-                                        @error('txtPriceIn')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
+                                        <label for="name">Chi tiết Sản Phẩm</label>
+                                        <textarea name="editor1" id="editor1" rows="10" cols="80"></textarea>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="name">Giá bán</label>
-                                        <input id="PriceOut" type="number" class="form-control @error('txtPriceIn') is-invalid @enderror" name="txtPriceOut" value=""  autocomplete="number" required>
-                                        @error('txtPriceIn')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Giá Khuyến Mại</label>
-                                        <input id="PriceSale" type="number" class="form-control @error('txtPriceSale') is-invalid @enderror" name="txtPriceSale" value=""  autocomplete="number" required>
-                                        @error('txtPriceSale')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                <div class="form-group">
-                                    <label for="name">Hình Thức Hoa Hồng</label>
-                                    <div class="form-check">
-                                        <input id="codinh" type="radio" class="form-check-input" name="txtHH" value="codinh"  autocomplete="number" required>
-                                        <label class="form-check-label " for="codinh">
-                                            Mức Cố Định
-                                        </label>
-                                        <input id="tile" type="radio" class="form-check-input ml-4" name="txtHH" value="tile"  autocomplete="number" required>
-                                        <label class="form-check-label ml-5 " for="tile">
-                                            Theo Tỉ lệ
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Mức Hoa Hồng</label>
-                                    <input id="priceHH" type="number" class="form-control @error('txtPriceHH') is-invalid @enderror" name="txtPriceHH" value=""  autocomplete="number" required>
-                                    @error('txtPriceHH')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -381,6 +382,11 @@
 @section('js')
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="{{asset("../ckeditor/ckeditor.js")}}"></script>
+    <script>
+        CKEDITOR.replace( 'editor1' );
+    </script>
+
 
     <script>
 

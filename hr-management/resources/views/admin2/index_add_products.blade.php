@@ -103,10 +103,6 @@
                                                 <label class="form-check-label ml-5 " for="kigui">
                                                     Kí Gửi
                                                 </label>
-                                                <input id="hoptac" type="radio" class="form-check-input ml-4" name="txtTypeHT" value="hoptac"  autocomplete="number" required>
-                                                <label class="form-check-label ml-5 " for="hoptac">
-                                                    Hợp Tác
-                                                </label>
                                             </div>
                                         </div>
                                         <div class="form-group">
