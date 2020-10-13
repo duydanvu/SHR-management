@@ -97,6 +97,42 @@
                                             </label>
                                         </div>
                                     </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-lg-6">
+                                            <label for="name"> Nhóm </label>
+                                            <input id="groups" type="text" class="form-control @error('txtGroups') is-invalid @enderror"
+                                                   name="txtGroups"
+                                                   @foreach($list_group as $value_group)
+                                                       @if(\Illuminate\Support\Facades\Auth::user()->group_id  == $value_group->id)
+                                                            value="{{$value_group->name}} - {{$value_group->id_group}}"
+                                                       @endif
+                                                   @endforeach
+                                                   autocomplete="number" required>
+                                            @error('txtGroups')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group col-lg-6">
+                                            <label for="name"> Khu Vực </label>
+                                            <input id="area" type="text" class="form-control @error('txtArea') is-invalid @enderror"
+                                                   name="txtArea"
+                                                   @foreach($list_area as $value_area)
+                                                        @if(\Illuminate\Support\Facades\Auth::user()->store_id == $value_area->store_id )
+                                                            value="{{$value_area->area_name}} - {{$value_area->area_description}}"
+                                                        @endif
+                                                   @endforeach
+                                                   autocomplete="number" required>
+                                            @error('txtArea')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -342,7 +342,7 @@ return [
         ],
         ],
         [
-            'text'        => 'Trang Chủ',
+            'text'        => 'Menu',
             'url'         => '/home1',
             'icon'        => 'fas fa-tachometer-alt',
             'can'         => 'system',
@@ -498,6 +498,19 @@ return [
                     'text'    => 'Quản lý Người Dùng',
                     'icon'    => 'fas fa-clipboard-list',
                     'url'     => '/admin2/lock_acc_user',
+                    'can'     => 'admin_lv2'
+                ],
+                [
+                    'text'    => 'Quản lý Banner',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/admin2/banner_manager',
+                    'can'     => 'admin_lv2',
+                    
+                ],
+                [
+                    'text'    => 'Danh Sách Banner',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/admin2/manager_list_banner',
                     'can'     => 'admin_lv2'
                 ],
                 [

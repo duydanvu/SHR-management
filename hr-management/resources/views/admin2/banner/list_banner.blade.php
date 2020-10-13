@@ -5,12 +5,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1> Tài khoản người dùng {{\Illuminate\Support\Facades\Auth::user()->last_name}}</h1>
+                <h1>Tài Khoản Admin Cấp 2</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item "><a href="/home1">Trang Chủ</a></li>
-                    <li class="breadcrumb-item "><a >Quản lý Hoàn ứng</a></li>
+                    <li class="breadcrumb-item "><a >Quản lý Khuyến Mại</a></li>
                 </ol>
             </div>
         </div>
@@ -18,51 +18,10 @@
 @stop
 
 @section('content')
-{{--    <div class="card card-outline card-primary-dashboard">--}}
-{{--        <meta name="csrf-token-2" content="{{ csrf_token() }}">--}}
-{{--        <div class="card-header">--}}
-{{--            <h3 class="card-title">Tìm Kiếm</h3>--}}
-{{--            <div class="card-tools">--}}
-{{--                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">--}}
-{{--                    <i class="fas fa-minus"></i></button>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="card-body">--}}
-{{--            <div class="row">--}}
-{{--                <div class="col-md-3 ml-4">--}}
-{{--                    <div class="form-group">--}}
-{{--                        <meta name="csrf-token2" content="{{ csrf_token() }}">--}}
-{{--                        <label for="exampleInputEmail1">Tên Sản Phẩm</label>--}}
-{{--                        <input id="name_user" type="text" class="form-control @error('txtNameUser') is-invalid @enderror" name="txtFName" value=""  autocomplete="number" required>--}}
-{{--                        @error('txtNameUser')--}}
-{{--                        <span class="invalid-feedback" role="alert">--}}
-{{--                                            <strong>{{ $message }}</strong>--}}
-{{--                                        </span>--}}
-{{--                        @enderror--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="col-md-2 ml-4 mt-md-2">--}}
-{{--                    <button type="submit" id="fillter_date" class="btn btn-primary mt-4" style="float: left"><i class="fas fa-search-minus">Tìm Kiếm</i></button>--}}
-{{--                </div>--}}
-{{--                <div class="col-md-2 ml-4 mt-md-2 " style="float: left">--}}
-{{--                    <button id = "" type="button" class="btn btn-info mt-4" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Thêm Sản Phẩm</button>--}}
-{{--                </div>--}}
-{{--                <div class="col-md-2 ml-2 mt-md-2 " style="float: left">--}}
-{{--                    <button id = "" type="button" class="btn btn-info mt-4" data-toggle="modal" data-target="#modal-nhap-san-pham"><i class="fas fa-plus-circle"></i> Nhập Sản Phẩm</button>--}}
-{{--                </div>--}}
-{{--                <div class="col-md-2 ml-2 mt-md-2 " style="float: left">--}}
-{{--                    <button id = "" type="button" class="btn btn-info mt-4" data-toggle="modal" data-target="#modal-tra-san-pham"><i class="fas fa-plus-circle"></i> Trả Sản Phẩm</button>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
     <div class="card">
         <div class="card-header">
             <div class="button-group-card-header">
                 <label class="ml-3">Danh Sách</label>
-                {{--                @if($role_use_number == 1)--}}
-                {{--                @endif--}}
-                {{--<a href="{{route('export_to_file_csv')}}" class="btn btn-success btn-xs offset-lg-10" style="float: right;">export</a>--}}
             </div>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -75,46 +34,40 @@
                 <thead>
                 <tr>
                     <th style="width:5%">#</th>
-                    <th style="width:10%">Tên Sản Phẩm</th>
-                    <th style="width:10%">Mã Sản Phẩm</th>
-                    <th style="width:10%">Giá Sản Phẩm</th>
-                    <th style="width:10%">Email Khách Hàng</th>
-                    <th style="width:10%">Số Điện Thoại Khách Hàng</th>
-                    <th style="width:10%">Số Lượng Sản Phẩm</th>
-                    <th style="width:10%">Tổng số Tiền ứng</th>
-                    <th style="width:10%">Trạng Thái</th>
-                    <th style="width:10%">Action</th>
+                    <th style="width:5%" class="noSort">Action</th>
+                    <th style="width:20%" class="noSort">Image</th>
+                    <th style="width:10%" >Tên Banner</th>
+                    <th style="width:40%" >Nội Dung Banner</th>
+                    <th style="width:20%">Đường Dẫn</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
-                @if(count($list_hoan_ung) > 0)
-                    @foreach($list_hoan_ung as $key => $value)
+                @if(count($list_banner) > 0)
+                    @foreach($list_banner as $key => $value)
                         <tr>
                             <td>{{$key+1}}</td>
-                            <td>{{$value->name}}</td>
-                            <td>{{$value->product_code}}</td>
-                            <td>{{number_format($value->price_sale)}}</td>
-                            <td>{{$value->email_guest}}</td>
-                            <td>{{$value->phone_guest}}</td>
-                            <td>{{$value->total_product}}</td>
-                            <td>{{number_format($value->total_price)}}</td>
-                            @if($value->status_kt === 'done' && $value->status_admin2 === 'done')
-                                <td style="background-color: blue;font-size: 17px;color: white">Đã Hoàn Thành</td>
-                            @elseif($value->status_payment === 'done' && $value->status_kt === 'wait')
-                                <td style="background-color: #855eca;font-size: 20px;color: white">Chờ Duyệt</td>
-                            @else
-                                <td style="background-color: #cf5f02;font-size: 20px;color: white">Đã Bán</td>
-                            @endif
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a href="{{route('view_edit_banner',['id'=>$value->id])}}" data-remote="false"
+                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                            <i class="fas fa-edit"> Sửa</i>
+                                        </a>
+                                        <a href="{{route('search_sales_product',['id'=>$value->id])}}" data-remote="false"
+                                           data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
+                                            <i class="fas fa-edit"> Xóa </i>
+                                        </a>
+                                    </div>
 
-                            @if($value->status_payment === 'done' && $value->status_kt === 'wait' && $value->status_admin2 === 'wait')
-                                <td>Chờ Xác Nhận</td>
-                            @elseif($value->status_kt === 'done' && $value->status_admin2 === 'done')
-                                <td></td>
-                            @else
-                            <td><a class="btn btn-primary" href="{{route('view_detail_hoan_ung',['id'=>$value->id_order])}}" data-remote="false"
-                                   data-toggle="modal" data-target="#modal-admin-action-update">Trả Tiền Công Ty</a></td>
-                            @endif
-                        </tr>
+                                </div>
+                            </td>
+                            <td><img src="..{{$value->image}}" width="200px" height="100px"></td>
+                            <td>{{$value->title}}</td>
+                            <td>{{$value->content}}</td>
+                            <td>{{$value->link}}</td>
                     @endforeach
                 @else
                     <td colspan="8" style="text-align: center">
@@ -130,21 +83,21 @@
 
     {{--    --}}{{-- modal --}}
     <div class="modal fade" id="modal-admin-action-update">
-        <div class="modal-dialog" >
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Thông tin Hóa Đơn</h4>
+                    <h4 class="modal-title">Cập nhật thông tin</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form action="{{route('action_update_hoan_ung_user2')}}" method="post">
+                <form action="{{route('update_infor_banner')}}" method="post">
                     <div class="modal-body">
                         @csrf
 
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Duyệt Hoa Hồng</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
                     </div>
                 </form>
             </div>
@@ -152,6 +105,7 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+    {{--     modal --}}
     {{--     modal --}}
 
 @stop
@@ -170,21 +124,28 @@
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });
-        $("#modal-admin-action-update-image").on("show.bs.modal", function(e) {
+        $("#modal-admin-action-update-detail").on("show.bs.modal", function(e) {
+            var link = $(e.relatedTarget);
+            $(this).find(".modal-body").load(link.attr("href"));
+        });
+        $("#modal-nhap-san-pham").on("show.bs.modal", function(e) {
+            var link = $(e.relatedTarget);
+            $(this).find(".modal-body").load(link.attr("href"));
+        });
+        $("#modal-tra-san-pham").on("show.bs.modal", function(e) {
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });
 
         $(function () {
-            $("#example1").DataTable({
-                aoColumnDefs: [
-                    {
-                        bSortable: false,
-                        aTargets: ['noSort']
-                    } // Disable sorting on columns marked as so
-                ],
-
-            });
+            // $("#example1").DataTable({
+            //     aoColumnDefs: [
+            //         {
+            //             bSortable: false,
+            //             aTargets: ['noSort']
+            //         } // Disable sorting on columns marked as so
+            //     ]
+            // });
             // fix table
             $("#example1").parent().css({"overflow": "auto"});
         });

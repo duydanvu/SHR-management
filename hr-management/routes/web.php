@@ -74,7 +74,11 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::post('/admin2/insert_to_group','Admin2Controller@insertUserToGroup')->name('add_user_group');
     Route::post('/admin2/insert_asm_to_group','Admin2Controller@insertASMforGroup')->name('add_asm_group');
     Route::post('/admin2/leave_user_from_group','Admin2Controller@leave_user_from_group')->name('leave_user_from_group');
+
     Route::get('/admin2/add_asm_to_group/{id}','Admin2Controller@addASMToGroup')->name('add_asm_to_group');
+    Route::get('/admin2/add_wh_to_group/{id}','Admin2Controller@addWarehouseToGroup')->name('add_wh_to_group');
+    Route::get('/admin2/detail_product_on_wh/{id}','Admin2Controller@detailProductOnWh')->name('chi_tiet_san_pham_trong_kho');
+    Route::post('/admin2/insert_wh_for_group','Admin2Controller@insertWHforGroup')->name('add_wh_group');
 
     //admin2/supplier
     Route::get('/admin2/supplier','Admin2Controller@index_supplier')->name('home_manager_supplier');
@@ -82,6 +86,13 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/admin2/supplier/{id}','Admin2Controller@searchSupplier')->name('search_supplier');
     Route::get('/admin2/supplier/status/{id}','Admin2Controller@updateStatusSupplier')->name('update_status_supplier');
     Route::post('/admin2/supplier/update','Admin2Controller@updateSupplier')->name('update_supplier');
+
+    //admin2/banner
+    Route::get('/admin2/banner_manager','Admin2Controller@index_banner')->name('home_mange_banner');
+    Route::get('/admin2/manager_list_banner','Admin2Controller@manager_list_banner')->name('manager_list_banner');
+    Route::get('/admin2/view_edit_banner/{id}','Admin2Controller@view_edit_banner')->name('view_edit_banner');
+    Route::post('/admin2/banner_add','Admin2Controller@add_banner')->name('add_banner');
+    Route::post('/admin2/update_infor_banner','Admin2Controller@update_infor_banner')->name('update_infor_banner');
 
     //admin2/transporter
     Route::get('/admin2/transporter','Admin2Controller@index_transporter')->name('home_manager_transporter');

@@ -192,6 +192,93 @@
                 <div class="container">
                     <div class="feature_product_inner">
                         <div class="main_title">
+                            <h2>Sản Phẩm Khuyến Mại </h2>
+                            <p>Những sản phẩm mới đang được khuyến mại</p>
+                        </div>
+                        <div class="latest_product_inner row">
+                            @foreach($product_nb as $value)
+                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                    <div class="f_p_item">
+                                        <a href="{{route('view_detail_product_user2',['id'=>$value->id])}}">
+                                            <div class="f_p_img">
+                                                <img class="img-fluid" src="..{{$value->link}}" alt="">
+                                                <div class="p_icon">
+                                                    <a href="#"><i class="lnr lnr-heart"></i></a>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="{{route('view_detail_product_user2',['id'=>$value->id])}}"><h4>{{$value->name}}</h4></a>
+                                        <h5 style="text-decoration-line: line-through">{{$value->price_out}}<sup>VND</sup></h5>
+                                        <h5>{{$value->price_sale}}<sup>VND</sup></h5>
+                                    </div>
+                                </div>
+                            @endforeach
+                            {{--                            <div class="col-lg-3 col-md-4 col-sm-6">--}}
+                            {{--                                <div class="f_p_item">--}}
+                            {{--                                    <div class="f_p_img">--}}
+                            {{--                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-1.jpg" alt="">--}}
+                            {{--                                        <div class="p_icon">--}}
+                            {{--                                            <a href="#"><i class="lnr lnr-heart"></i></a>--}}
+                            {{--                                            <a href="#"><i class="lnr lnr-cart"></i></a>--}}
+                            {{--                                        </div>--}}
+                            {{--                                    </div>--}}
+                            {{--                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>--}}
+                            {{--                                    <h5>$150.00</h5>--}}
+                            {{--                                </div>--}}
+                            {{--                            </div>--}}
+                            {{--                            <div class="col-lg-3 col-md-4 col-sm-6">--}}
+                            {{--                                <div class="f_p_item">--}}
+                            {{--                                    <div class="f_p_img">--}}
+                            {{--                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-2.jpg" alt="">--}}
+                            {{--                                        <div class="p_icon">--}}
+                            {{--                                            <a href="#"><i class="lnr lnr-heart"></i></a>--}}
+                            {{--                                            <a href="#"><i class="lnr lnr-cart"></i></a>--}}
+                            {{--                                        </div>--}}
+                            {{--                                    </div>--}}
+                            {{--                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>--}}
+                            {{--                                    <h5>$150.00</h5>--}}
+                            {{--                                </div>--}}
+                            {{--                            </div>--}}
+                            {{--                            <div class="col-lg-3 col-md-4 col-sm-6">--}}
+                            {{--                                <div class="f_p_item">--}}
+                            {{--                                    <div class="f_p_img">--}}
+                            {{--                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-3.jpg" alt="">--}}
+                            {{--                                        <div class="p_icon">--}}
+                            {{--                                            <a href="#"><i class="lnr lnr-heart"></i></a>--}}
+                            {{--                                            <a href="#"><i class="lnr lnr-cart"></i></a>--}}
+                            {{--                                        </div>--}}
+                            {{--                                    </div>--}}
+                            {{--                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>--}}
+                            {{--                                    <h5>$150.00</h5>--}}
+                            {{--                                </div>--}}
+                            {{--                            </div>--}}
+                            {{--                            <div class="col-lg-3 col-md-4 col-sm-6">--}}
+                            {{--                                <div class="f_p_item">--}}
+                            {{--                                    <div class="f_p_img">--}}
+                            {{--                                        <img class="img-fluid" src="../upload/product/feature-product/f-p-4.jpg" alt="">--}}
+                            {{--                                        <div class="p_icon">--}}
+                            {{--                                            <a href="#"><i class="lnr lnr-heart"></i></a>--}}
+                            {{--                                            <a href="#"><i class="lnr lnr-cart"></i></a>--}}
+                            {{--                                        </div>--}}
+                            {{--                                    </div>--}}
+                            {{--                                    <a href="#"><h4>Long Sleeve TShirt</h4></a>--}}
+                            {{--                                    <h5>$150.00</h5>--}}
+                            {{--                                </div>--}}
+                            {{--                            </div>--}}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--================End Latest Product Area =================-->
+
+        <!--================Latest Product Area =================-->
+        <section class="feature_product_area latest_product_area">
+            <div class="main_box">
+                <div class="container">
+                    <div class="feature_product_inner">
+                        <div class="main_title">
                             <h2>Sản Phẩm Mới </h2>
                             <p>Những sản phẩm mới được bán</p>
                         </div>

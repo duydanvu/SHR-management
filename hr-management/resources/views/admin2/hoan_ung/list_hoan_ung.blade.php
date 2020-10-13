@@ -37,15 +37,31 @@
                 <thead>
                 <tr>
                     <th style="width:5%">#</th>
+                    <th style="width:10%">Thời gian</th>
                     <th style="width: 10%">Chi tiết</th>
                     <th style="width:10%">Tên Sản Phẩm</th>
                     <th style="width:10%">Mã Sản Phẩm</th>
                     <th style="width:10%">Giá Sản Phẩm</th>
                     <th style="width:10%">Số Lượng Sản Phẩm</th>
-                    <th style="width:10%">Tổng số Tiền ứng</th>
+                    <th style="width:10%">Tổng số Tiền ứng </th>
                     <th style="width:10%">Tên NV bán hàng</th>
                     <th style="width:10%">Email</th>
                     <th style="width:10%">Hoàn ứng</th>
+                </tr>
+                </thead>
+                <thead>
+                <tr>
+                    <td>Tổng</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> <a style="color: blue">{{number_format($list_sum)}}</a></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 </thead>
                 <tbody id="table_body">
@@ -53,13 +69,14 @@
                     @foreach($list_hoan_ung as $key => $value)
                         <tr>
                             <td>{{$key+1}}</td>
+                            <td>{{$value->time}}</td>
                             <td><a href="{{route('view_detail_hoan_ung_admin2',['id'=>$value->id_order])}}" data-remote="false"
                                    data-toggle="modal" data-target="#modal-admin-action-update">Chi tiết</a></td>
                             <td>{{$value->name}}</td>
                             <td>{{$value->product_code}}</td>
-                            <td>{{$value->price_sale}}</td>
+                            <td>{{number_format($value->price_sale)}}</td>
                             <td>{{$value->total_product}}</td>
-                            <td>{{$value->total_price}}</td>
+                            <td>{{number_format($value->total_price)}}</td>
                             <td>{{$value->last_name}}</td>
                             <td>{{$value->email}}</td>
                             @if($value->status_kt === 'wait' && $value->status_payment === 'done')
@@ -137,8 +154,13 @@
                         bSortable: false,
                         aTargets: ['noSort']
                     } // Disable sorting on columns marked as so
-                ]
+                ],
             });
+
+            var  table = $('#example1').DataTable();
+            table
+                .order( [ 0, 'desc' ] )
+                .draw();
             // fix table
             $("#example1").parent().css({"overflow": "auto"});
         });

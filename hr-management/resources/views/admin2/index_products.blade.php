@@ -87,9 +87,9 @@
                     <th style="width:10%">Giá Khuyến Mại</th>
                     <th style="width:10%">Hình Thức Hoa Hồng</th>
                     <th style="width:10%">Mức Hoa Hồng</th>
-                    <th style="width:10%">Nhà Cung Cấp</th>
-                    <th style="width:10%">Loại Hình Hợp Tác</th>
-                    <th style="width:10%">Hợp Đồng Tham Chiếu</th>
+                    <th style="width:10%">Tổng Sản Phẩm</th>
+{{--                    <th style="width:10%">Loại Hình Hợp Tác</th>--}}
+{{--                    <th style="width:10%">Hợp Đồng Tham Chiếu</th>--}}
                 </tr>
                 </thead>
                 <tbody id="table_body">
@@ -141,9 +141,14 @@
                                 <td>Mức Cố Định</td>
                                 <td>{{number_format($value->hh_default)}}</td>
                             @endif
-                            <td>{{$value->id_supplier}}</td>
-                            <td>{{$value->cooperation}}</td>
-                            <td>{{$value->contract}}</td>
+                            <td>@foreach($arr as $key_sum => $value_sum )
+                                    @if($key_sum == $value->id)
+                                        <a type="button" class="btn btn-info " href="{{route('chi_tiet_san_pham_trong_kho',['id'=>$value->id])}}"
+                                           data-remote="false" data-toggle="modal" data-target="#modal-chi-tiet-san-pham">{{$value_sum}}</a>
+                                    @endif
+                                @endforeach</td>
+{{--                            <td>{{$value->cooperation}}</td>--}}
+{{--                            <td>{{$value->contract}}</td>--}}
                         </tr>
                     @endforeach
                 @else
@@ -175,6 +180,28 @@
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <div class="modal fade" id="modal-chi-tiet-san-pham">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Chi tiết Kho</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form action="{{route('update_product')}}" method="post">
+                    <div class="modal-body">
+                        @csrf
+
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </form>
             </div>
@@ -391,6 +418,10 @@
     <script>
 
         $("#modal-admin-action-update").on("show.bs.modal", function(e) {
+            var link = $(e.relatedTarget);
+            $(this).find(".modal-body").load(link.attr("href"));
+        });
+        $("#modal-chi-tiet-san-pham").on("show.bs.modal", function(e) {
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });

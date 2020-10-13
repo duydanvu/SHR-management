@@ -72,11 +72,13 @@
                     <th style="width:5%">#</th>
                     <th style="width:10%" class="noSort">Thêm Người</th>
                     <th style="width:10%" class="noSort">Thêm Quản Lý</th>
+                    <th style="width:10%" class="noSort">Thêm Kho</th>
                     <th style="width:10%">Mã Nhóm</th>
                     <th style="width:10%">Tên</th>
                     <th style="width:10%">Chi Tiết</th>
-                    <th style="width:10%">Người Quản Lý</th>
-                    <th style="width:10%">NV</th>
+                    <th style="width:15%">Kho</th>
+                    <th style="width:15%">Người Quản Lý</th>
+                    <th style="width:5%">NV</th>
                 </tr>
                 </thead>
                 <tbody id="table_body">
@@ -88,9 +90,17 @@
                                             <td>{{$key+1}}</td>
                                             <td ><a href="{{route('add_user_to_group',['id'=>$value->id])}}">Thêm Người</a></td>
                                             <td ><a href="{{route('add_asm_to_group',['id'=>$value->id])}}">Thêm Quản Lý</a></td>
+                                            <td ><a href="{{route('add_wh_to_group',['id'=>$value->id])}}">Thêm Kho</a></td>
                                             <td>{{$value->id_group}}</td>
                                             <td>{{$value->name}}</td>
                                             <td>{{$value->description}}</td>
+                                            <td>@foreach($list_wh as $value_wh)
+                                                    @foreach(explode(',',$value->warehouses_id) as $value_wh2)
+                                                        @if($value_wh->id == $value_wh2)
+                                                            {{$value_wh->name}} - {{$value_wh->warehouse_code}} <br>
+                                                        @endif
+                                                    @endforeach
+                                                @endforeach</td>
                                             <td>@foreach($list_user as $value1)
                                                     @foreach(explode(',',$value->manager) as $value2)
                                                         @if($value1->id == $value2)

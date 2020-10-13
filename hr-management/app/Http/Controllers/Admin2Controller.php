@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Area;
+use App\Banner;
 use App\Emulation;
 use App\EmulationProducts;
 use App\Gift;
@@ -14,6 +15,7 @@ use App\Position;
 use App\Products;
 use App\Reward;
 use App\SalesProducts;
+use App\Store;
 use App\Supplier;
 use App\TotalProductEmulation;
 use App\Transports;
@@ -242,7 +244,8 @@ class Admin2Controller extends Controller
             }
         }
         $list_user = User::all();
-        return view('admin2.group_manage')->with(['group'=>$group,'list_user'=>$list_user]);
+        $list_wh = Warehouse::all();
+        return view('admin2.group_manage')->with(['group'=>$group,'list_user'=>$list_user,'list_wh'=>$list_wh]);
     }
 
     public function createGroup(Request $request){
@@ -284,8 +287,13 @@ class Admin2Controller extends Controller
     }
 
     public function view_information(){
-        return view('admin2.update_information_auth');
+        $list_area = Store::join('area','stores.area_id','=','area.id')
+            ->select('stores.store_id','stores.store_name','area.area_name','area_description','area.id as area_id')
+            ->get();
+        $list_group = Group::all();
+        return view('admin2.update_information_auth',compact('list_area','list_group'));
     }
+
 
     public function addUserToGroup($id){
         $user = User::select('id','last_name','email','dob','phone')
@@ -295,6 +303,62 @@ class Admin2Controller extends Controller
                 ->where('users.group_id','=',null)
                 ->get();
         return view('admin2.add_user_to_group')->with(['user'=>$user,'id_group'=>$id]);
+    }
+
+    public function addWarehouseToGroup($id){
+        $warehouse = Warehouse::select('warehouses.*')->where('status','=','active');
+        $str_wh = Group::find($id);
+        $arr_id = [];
+        if($str_wh->warehouses_id == null){
+            $list_wh = $warehouse->get();
+        }else{
+            foreach (explode(',',$str_wh->warehouses_id) as $value){
+                array_push($arr_id,$value);
+            }
+            $list_wh = $warehouse->whereNotIn('id',$arr_id)->get();
+        }
+        return view('admin2.add_warehouse_to_group',compact('list_wh','id'));
+    }
+
+    public function insertWHforGroup(Request $request){
+        $arr = $request->toArray();
+        $arr_id_group = explode('_',$request->id_group);
+        $id_group = $arr_id_group[0];
+
+        $arr_id = [];
+        foreach ($arr as $value){
+            if(is_numeric($value)){
+                array_push($arr_id,$value);
+            }
+        }
+        try {
+            $str = null;
+            foreach ($arr_id as $value) {
+                $str = $str.','.$value;
+            }
+            $str_result1 = substr($str,1,strlen($str)-1);
+            $arr_id_group_old = Group::find($id_group)->warehouses_id;
+            if($arr_id_group_old == null){
+                $str_result = $str_result1;
+            }else {
+                $str_result = $arr_id_group_old . ',' . $str_result1;
+            }
+            $update_group = DB::table('groups')->where('id', '=', $id_group)
+                ->update([
+                    'warehouses_id' => $str_result,
+                ]);
+        }catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Lỗi ! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Thêm vào nhóm thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
     }
 
     public function list_user_of_group($id){
@@ -1081,8 +1145,41 @@ class Admin2Controller extends Controller
     public function index_products(){
         $product = Products::all();
         $supplier = Supplier::where('status','=','active')->get();
-        return view('admin2.index_products')->with(['product'=>$product,'supplier'=>$supplier]);
+        $list_id_product = Products::select('id')->get();
+        $list_id_wh = Warehouse::select('id')->get();
+        $arr = [];
+
+        foreach ($list_id_product as $value){
+            $total = 0;
+            foreach ($list_id_wh as $value_2){
+                $x = WarehouseProduct::where('id_product','=',$value->id)
+                    ->where('id_warehouse','=',$value_2->id)
+                    ->orderBy('id','DESC')->first();
+                if($x == null ){ $total = $total;}
+                else {
+                    $total = $total + $x->total;
+                }
+            }
+            $arr[$value->id] = $total;
+        }
+        return view('admin2.index_products')->with(['product'=>$product,'supplier'=>$supplier,'arr'=>$arr]);
     }
+    public function detailProductOnWh($id){
+        $list_id_wh = Warehouse::select('id')->get();
+        $arr = [];
+        foreach ($list_id_wh as $value){
+            $x = WarehouseProduct::where('id_product','=',$id)
+                ->where('id_warehouse','=',$value->id)
+                ->orderBy('id','DESC')->first();
+            if($x == null){ $arr[$value->id] = 0;}
+            else{
+                $arr[$value->id] = $x->total;
+            }
+        }
+        $list_wh = Warehouse::all();
+        return view('admin2.detail_product_with_wh',compact('arr','list_wh'));
+    }
+
     public function indexAddNewProducts(){
         $supplier = Supplier::where('status','=','active')->get();
         $type_code = TypeCode::all();
@@ -2577,8 +2674,9 @@ class Admin2Controller extends Controller
             ->addSelect('users.last_name')
             ->addSelect('users.email')
             ->get();
+        $list_sum = DB::table($table)->sum('total_price');
         $product = Products::all();
-        return view('admin2.hoan_ung.list_hoan_ung',compact('list_hoan_ung','product'));
+        return view('admin2.hoan_ung.list_hoan_ung',compact('list_hoan_ung','product','list_sum'));
     }
 
     public function view_detail_hoan_ung($id){
@@ -2622,6 +2720,97 @@ class Admin2Controller extends Controller
         }
         $notification = array(
             'message' => 'Hoàn ứng thành công !',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+
+    public function index_banner(){
+        return view('admin2.banner.index_banner');
+    }
+
+    public function add_banner(Request $request){
+
+        $validator = \Validator::make($request->all(),[
+            'txtName' => 'required|max:50',
+            'txtContent' => 'required',
+            'txtLink'=> 'required',
+        ]);
+        $notification= array(
+            'message' => ' Đăng ký  lỗi! Hãy kiểm tra lại thông tin!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+            $create_area = DB::table('banners')->insertGetId([
+                'title'=> $request['txtName'],
+                'content' => $request['txtContent'],
+                'image' => $request['url_image'],
+                'link' => $request['txtLink'],
+            ]);
+        }catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin banner không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Thêm thông tin thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+
+    public function manager_list_banner(){
+        $list_banner = Banner::where('active','=','active')->get();
+        return view('admin2.banner.list_banner',compact('list_banner'));
+    }
+
+    public function view_edit_banner($id){
+        $banner = Banner::find($id);
+        return view('admin2.banner.view_edit_banner',compact('banner'));
+    }
+
+    public function update_infor_banner(Request $request){
+        $validator = \Validator::make($request->all(),[
+            'txtName' => 'required',
+            'txtContent' => 'required',
+            'txtLink'=> 'required',
+            'url_image'=> 'required',
+        ]);
+        $notification= array(
+            'message' => ' Thông tin lỗi! Hãy kiểm tra lại thông tin!',
+            'alert-type' => 'error'
+        );
+        if ($validator ->fails()) {
+            return Redirect::back()
+                ->with($notification)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try{
+            $create_area = DB::table('banners')->where('id','=',$request['id_banner'])
+                ->update([
+                'title'=> $request['txtName'],
+                'content' => $request['txtContent'],
+                'image' => $request['url_image'],
+                'link' => $request['txtLink'],
+            ]);
+        }catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thông tin banner không chính xác! Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Thay đổi thông tin thành công!',
             'alert-type' => 'success'
         );
         return Redirect::back()->with($notification);

@@ -43,8 +43,11 @@ class User2Controller extends Controller
         }
         $product = Products::whereIn('id',$arr)->orderBy('id','DESC')->limit(8)->get();
         $product_new = Products::whereIn('id',$arr)->orderBy('id','DESC')->limit(16)->get();
+        $product_nb = Products::whereIn('id',$arr)->orderBy('id','DESC')
+            ->where('price_sale','<>',null)
+            ->limit(16)->get();
         $supplier = Supplier::all();
-        return view('user2.view_list_product',compact('product','supplier','product_new'));
+        return view('user2.view_list_product',compact('product','supplier','product_new','product_nb'));
     }
 
     public function view_detail_product_user2($id){
