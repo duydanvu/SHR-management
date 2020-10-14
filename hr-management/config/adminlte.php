@@ -1,5 +1,4 @@
 <?php
-
 return [
 
     /*
@@ -555,8 +554,15 @@ return [
                     'url'     => '/user2/list_view_product',
                     'can'     => 'user_lv2',
                 ] ,
+//                [
+//                    'text'    => 'Thông báo',
+//                    'icon'    => 'fas fa-clipboard-list',
+//                    'label'   => $count_nt,
+//                    'url'     => '/user2/view_manage_emulation',
+//                    'can'     => 'user_lv2',
+//                ] ,
                 [
-                    'text'    => 'Quản lý Sản Phẩm',
+                    'text'    => 'Sản Phẩm',
                     'icon'    => 'fas fa-clipboard-list',
                     'url'     => '/user2/list_product',
                     'can'     => 'user_lv2',

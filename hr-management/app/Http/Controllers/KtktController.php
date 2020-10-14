@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Products;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,6 +55,15 @@ class KtktController extends Controller
             );
             return Redirect::back()->with($notification);
         }
+        $id_product = DB::table($table1)->find($id_order);
+        $name_product = Products::find($id_product->id_product)->name;
+        $insert_notification = DB::table('notifications')->insert([
+            'name'=>  'Hoàn trả tiền ứng',
+            'user_accept'=> $id_product->id_user ,
+            'content' => 'Đã nhận được tiền và hoàn trả hạn mức khi bán sản phẩm'.$name_product,
+            'status' => 'wait',
+            'time'   => Carbon::now('Asia/Ho_Chi_Minh'),
+        ]);
         $notification = array(
             'message' => 'Hoàn ứng thành công !',
             'alert-type' => 'success'

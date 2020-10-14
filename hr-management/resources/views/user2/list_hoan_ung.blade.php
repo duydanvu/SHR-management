@@ -92,12 +92,12 @@
                     <th style="width:10%"></th>
                     <th style="width:10%"></th>
                     <th style="width:10%"></th>
+                    <th style="width:10%"></th>
+                    <th style="width:10%"></th>
                     <th style="width:10%">{{$sum_total_product}}</th>
-                    <th style="width:10%"></th>
-                    <th style="width:10%"></th>
                     <th style="width:10%">{{number_format($sum_total_price)}}</th>
                     <th style="width:10%"></th>
-                    <th style="width:10%">{{number_format($sum_total_bonus)}}</th>
+                    <th style="width:10%"></th>
                 </tr>
                 </thead>
                 <tbody id="table_body">

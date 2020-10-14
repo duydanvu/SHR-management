@@ -8,6 +8,7 @@ use App\EmulationProducts;
 use App\GoalProduct;
 use App\GoalSales;
 use App\LinkImage;
+use App\Notification;
 use App\Products;
 use App\Supplier;
 use App\TotalProductEmulation;
@@ -15,6 +16,7 @@ use App\User;
 use App\UserProduct;
 use App\Warehouse;
 use App\WarehouseProduct;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
@@ -221,6 +223,14 @@ class User2Controller extends Controller
                     'status_payment'=>'wait',
                     'status_kt'=>'wait',
                     'status_admin2'=>'wait',
+                ]);
+                $name_product = Products::find($request['txtProductID'])->name;
+                $insert_notification = DB::table('notifications')->insert([
+                    'name'=>  'Bán sản phẩm '.$name_product,
+                    'user_accept'=> 'admin2',
+                    'content' => 'Bán sản phẩm '.$name_product,
+                    'status' => 'wait',
+                    'time'   => Carbon::now('Asia/Ho_Chi_Minh'),
                 ]);
             }
         }
@@ -821,5 +831,10 @@ class User2Controller extends Controller
         }
         $list_detail_goal = GoalProduct::all();
         return view('user2.analys_goal',compact('arr_result_sl','list_detail_goal'));
+    }
+
+    public function notification(){
+        $notification = Notification::all();
+        return view('user2.notification',compact('notification'));
     }
 }

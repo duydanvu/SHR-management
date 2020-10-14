@@ -216,6 +216,7 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/user2/list_product','User2Controller@list_product')->name('danh_sach_san_pham_kha_dung');
     Route::get('/user2/view_manage_goal','User2Controller@view_manage_goal')->name('view_manage_goal_user2');
     Route::get('/user2/chi_tiet_muc_tieu_ban_hang/{id}','User2Controller@chi_tiet_muc_tieu_ban_hang')->name('chi_tiet_muc_tieu_ban_hang');
+    Route::get('/user2/notification','User2Controller@notification')->name('notification_user2');
 
     Route::get('/user2/view_manage_emulation','User2Controller@view_manage_emulation')->name('view_manage_emulation_user2');
     Route::get('/user2/list_view_product','User2Controller@list_view_product')->name('view_danh_sach_san_pham');
