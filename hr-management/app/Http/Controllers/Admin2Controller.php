@@ -2815,4 +2815,177 @@ class Admin2Controller extends Controller
         );
         return Redirect::back()->with($notification);
     }
+
+    public function reportSale(){
+        $date = date("Y-m-d");
+        $tablename1 = substr($date,0,4);
+        $tablename2 = substr($date,5,2);
+        $tablename = 'spd_'.$tablename2.$tablename1.'s';
+        $list_report = DB::table($tablename)->join('products',$tablename.'.id_product','=','products.id')
+                    ->join('suppliers','products.id_supplier','=','suppliers.id')
+                    ->join('users',$tablename.'.id_user','=','users.id')
+                    ->select($tablename.'.*','products.name as name_pd','suppliers.name as name_spl','users.last_name as name_user')
+                    ->get();
+        $sum_total_price = DB::table($tablename)->sum('total_price');
+        $sum_total_product = DB::table($tablename)->sum('total_product');
+        $sum_total_bonus = DB::table($tablename)->sum('total_bonus');
+        $list_area = Area::all();
+        $list_group = Group::all();
+        return view('admin2.report.report_sale',
+            compact('list_report','list_area','list_group','sum_total_price','sum_total_product','sum_total_bonus'));
+    }
+
+    public function ajaxSearchReportSale(Request $request){
+        $date = date("Y-m-d");
+        $tablename1 = substr($date,0,4);
+        $tablename2 = substr($date,5,2);
+        $tablename = 'spd_'.$tablename2.$tablename1.'s';
+        $list_report = DB::table($tablename)->join('products',$tablename.'.id_product','=','products.id')
+            ->join('suppliers','products.id_supplier','=','suppliers.id')
+            ->join('users',$tablename.'.id_user','=','users.id')
+            ->select($tablename.'.*','products.name as name_pd','suppliers.name as name_spl','users.last_name as name_user');
+
+
+        if($request->area_search == 'all'){
+            $list_area = $list_report;
+        }else{
+            $list_area = $list_report->join('stores','stores.store_id','=','users.store_id')
+                        ->where('stores.area_id','=',$request->area_search);
+        }
+
+        if($request->group_search == 'all'){
+            $list_group = $list_area;
+        }else{
+            $list_group = $list_area->where('users.group_id','=',$request->group_search);
+        }
+
+        if($request->name_product == null){
+            $list_name = $list_group;
+        }else{
+            $list_name = $list_group->where('products.name','like','%'.$request->name_product.'%');
+        }
+
+        if($request->start_time == null){
+            $list_st_time = $list_name;
+        }else{
+            $list_st_time = $list_name->where('time','>',$request->start_time);
+        }
+
+        if($request->end_time == null){
+            $list_ed_time = $list_st_time;
+        }else{
+            $list_ed_time = $list_st_time->where('time','<',$request->end_time);
+        }
+
+        $sum_total_price = $list_ed_time->sum('total_price');
+        $sum_total_product = $list_ed_time->sum('total_product');
+        $sum_total_bonus = $list_ed_time->sum('total_bonus');
+        $result = null;
+
+        if(count($list_ed_time->get()) > 0){
+            foreach($list_ed_time->get() as $key => $value) {
+                $result .= '<tr>';
+                $result .= '<td>' . ($key + 1) . '</td>';
+                $result .= '<td>' . $value->time . '</td>';
+                $result .= '<td>' . $value->name_pd . '</td>';
+                $result .= '<td>' . $value->name_spl . '</td>';
+                $result .= '<td>' . $value->total_product . '</td>';
+                $result .= '<td>' . $value->total_price . '</td>';
+                $result .= '<td>' . $value->name_user . '</td>';
+                $result .= '<td>' . $value->total_bonus . '</td>';
+                $result .= '<td>' . $value->email_guest . '</td>';
+                $result .= '</tr>';
+            }
+        } else {
+            $result .= '<td colspan="9" style="text-align: center">
+                        <h3>Không có Thông Tin</h3>
+                    </td>';
+        }
+        $arr_rs = [$result,$sum_total_price,$sum_total_product,$sum_total_bonus];
+        return $arr_rs;
+    }
+
+    public function reportWarehouse(){
+        $product = Products::all();
+        $supplier = Supplier::where('status','=','active')->get();
+        $list_id_product = Products::select('id')->get();
+        $list_id_wh = Warehouse::select('id')->get();
+        $arr = [];
+
+        foreach ($list_id_product as $value){
+            $total = 0;
+            foreach ($list_id_wh as $value_2){
+                $x = WarehouseProduct::where('id_product','=',$value->id)
+                    ->where('id_warehouse','=',$value_2->id)
+                    ->orderBy('id','DESC')->first();
+                if($x == null ){ $total = $total;}
+                else {
+                    $total = $total + $x->total;
+                }
+            }
+            $arr[$value->id] = $total;
+        }
+        return view('admin2.report.report_warehouse')->with(['product'=>$product,'supplier'=>$supplier,'arr'=>$arr]);
+    }
+
+    public function searchListProduct(Request $request){
+        $supplier = Supplier::where('status','=','active')->get();
+        if($request->name_product == null){
+            $product = Products::all();
+        }else{
+            $product = Products::where('name','like','%'.$request->name_product.'%')->get();
+        }
+        $list_id_product = Products::select('id')->get();
+        $list_id_wh = Warehouse::select('id')->get();
+        $arr = [];
+
+        foreach ($list_id_product as $value){
+            $total = 0;
+            foreach ($list_id_wh as $value_2){
+                $x = WarehouseProduct::where('id_product','=',$value->id)
+                    ->where('id_warehouse','=',$value_2->id)
+                    ->orderBy('id','DESC')->first();
+                if($x == null ){ $total = $total;}
+                else {
+                    $total = $total + $x->total;
+                }
+            }
+            $arr[$value->id] = $total;
+        }
+        $result = null;
+        if(count($product) > 0) {
+            foreach ($product as $key => $value) {
+                $result .= '<tr >';
+                $result .= '<td >' . ($key + 1) . '</td >';
+                $result .= '<td >' . ($value->name) . '</td >';
+                $result .= '<td >' . ($value->product_code) . '</td >';
+                $result .= '<td >' . ($value->type) . '</td >';
+                $result .= '<td >' . number_format($value->price_in) . '</td >';
+                $result .= '<td >' . number_format($value->price_out) . '</td >';
+                $result .= '<td >' . number_format($value->price_sale) . '</td >';
+                if ($value->hh_default == null) {
+                    $result .= '<td > Tỉ Lệ </td >';
+                    $result .= '<td >' . $value->hh_percent . '</td >';
+                } elseif ($value->hh_default != null) {
+                    $result .= '<td > Mức Cố Định </td >';
+                    $result .= '<td >' . number_format($value->hh_default) . '</td >';
+                }
+                $result .= '<td >';
+                foreach ($arr as $key_sum => $value_sum) {
+                    if ($key_sum == $value->id) {
+                        $result .= '<a type = "button" class="btn btn-info " href = "' . route('chi_tiet_san_pham_trong_kho', ['id' => $value->id]) . '"
+                            data - remote = "false" data - toggle = "modal" data - target = "#modal-chi-tiet-san-pham"
+                            style = "width: 80px;height: 35px" >' . $value_sum . '</a >';
+                    }
+                }
+            }
+        }
+            else{
+                $result .= '<td colspan="8" style="text-align: center">
+                        <h3>Không có Thông Tin</h3>
+                    </td>';
+        }
+
+        return $result;
+    }
 }

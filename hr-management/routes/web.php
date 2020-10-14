@@ -144,6 +144,11 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::post('/admin2/product/add','Admin2Controller@addProduct')->name('add_product');
     Route::get('/admin2/product/{id}','Admin2Controller@searchProduct')->name('search_product');
     Route::get('/admin2/product/update/{id}','Admin2Controller@updateStatusProduct')->name('update_status_product');
+
+    //report admin2
+    Route::get('/admin2/report_sale','Admin2Controller@reportSale')->name('report_sale_product');
+    Route::get('/admin2/report_warehouse','Admin2Controller@reportWarehouse')->name('report_warehouse_product');
+
     // view chuyen san pham gia cac kho
     Route::get('/admin2/product/transport_warehouse/{id}','Admin2Controller@transportProductToWarehouse')->name('view_chuyen_san_pham_warehouse');
     Route::post('/admin2/product/warehouse_to_warehouse','Admin2Controller@actionWarehouseToWarehouse')->name('action_warehouse_to_warehouse');
@@ -179,6 +184,10 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
 
     //ajax
     Route::post('/admin2/search_list_acc_admin_lv2','Admin2Controller@searchListAccAdminLv2')->name('search_list_acc_with_area_name');
+    Route::post('/admin2/searchListProduct','Admin2Controller@searchListProduct')->name('search_list_product_report');
+    Route::post('/admin2/ajaxSearchReportSale','Admin2Controller@ajaxSearchReportSale')->name('search_report_sale_ad2');
+
+
     Route::post('/admin2/search_han_muc_thu_tien','Admin2Controller@search_han_muc_thu_tien')->name('search_han_muc_thu_tien');
     Route::post('/admin2/search_account_active','Admin2Controller@search_account_active')->name('search_account_active');
     Route::post('/admin2/search_group_with_name_or_id_group','Admin2Controller@search_ajax_group_with_infor')->name('search_group_with_name_or_id_group');

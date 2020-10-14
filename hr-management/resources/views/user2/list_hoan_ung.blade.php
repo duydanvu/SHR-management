@@ -86,6 +86,20 @@
                     <th style="width:10%">Action</th>
                 </tr>
                 </thead>
+                <thead style="color: blue">
+                <tr>
+                    <th style="width:5%">Tổng</th>
+                    <th style="width:10%"></th>
+                    <th style="width:10%"></th>
+                    <th style="width:10%"></th>
+                    <th style="width:10%">{{$sum_total_product}}</th>
+                    <th style="width:10%"></th>
+                    <th style="width:10%"></th>
+                    <th style="width:10%">{{number_format($sum_total_price)}}</th>
+                    <th style="width:10%"></th>
+                    <th style="width:10%">{{number_format($sum_total_bonus)}}</th>
+                </tr>
+                </thead>
                 <tbody id="table_body">
                 @if(count($list_hoan_ung) > 0)
                     @foreach($list_hoan_ung as $key => $value)
@@ -112,7 +126,7 @@
                                 <td></td>
                             @else
                             <td><a class="btn btn-primary" href="{{route('view_detail_hoan_ung',['id'=>$value->id_order])}}" data-remote="false"
-                                   data-toggle="modal" data-target="#modal-admin-action-update">Trả Tiền Công Ty</a></td>
+                                   data-toggle="modal" data-target="#modal-admin-action-update">Nộp Tiền Công Ty</a></td>
                             @endif
                         </tr>
                     @endforeach

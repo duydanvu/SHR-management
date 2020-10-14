@@ -437,17 +437,22 @@ class User2Controller extends Controller
     public function shippingProduct(){
         $curDate = date("Y-m-d");
         $table = 'spd_'.substr($curDate,5,2).substr($curDate,0,4).'s';
-        $list_hoan_ung = DB::table($table)
+        $list_hoan_ung_v1 = DB::table($table)
             ->join('products','id_product','=','products.id')
             ->where('status_transport','=','done')
             ->where('status_payment','=','done')
             ->where('status_kt','=','done')
             ->where('status_admin2','=','done')
             ->select(''.$table.'.*','products.*')
-            ->addSelect(''.$table.'.id as id_order')
-            ->get();
+            ->addSelect(''.$table.'.id as id_order');
+
+        $list_hoan_ung = $list_hoan_ung_v1->get();
+        $sum_total_product = $list_hoan_ung_v1->sum('total_product');
+        $sum_total_price = $list_hoan_ung_v1->sum('total_price');
+        $sum_total_bonus = $list_hoan_ung_v1->sum('total_bonus');
         $product = Products::all();
-        return view('user2.list_shipping_product',compact('list_hoan_ung','product'));
+        return view('user2.list_shipping_product',
+            compact('list_hoan_ung','product','sum_total_product','sum_total_price','sum_total_bonus'));
     }
 
     public function detail_hoa_hong($id){
@@ -481,17 +486,22 @@ class User2Controller extends Controller
     public function hoan_ung(){
         $curDate = date("Y-m-d");
         $table = 'spd_'.substr($curDate,5,2).substr($curDate,0,4).'s';
-        $list_hoan_ung = DB::table($table)
+        $list_hoan_ung_v1 = DB::table($table)
             ->join('products','id_product','=','products.id')
 //            ->where('status_transport','=','done')
 //            ->where('status_payment','=','wait')
             ->where('status_kt','=','wait')
             ->where('status_admin2','=','wait')
             ->select(''.$table.'.*','products.*')
-            ->addSelect(''.$table.'.id as id_order')
-            ->get();
+            ->addSelect(''.$table.'.id as id_order');
+
+        $list_hoan_ung = $list_hoan_ung_v1->get();
+        $sum_total_product = $list_hoan_ung_v1->sum('total_product');
+        $sum_total_price = $list_hoan_ung_v1->sum('total_price');
+        $sum_total_bonus = $list_hoan_ung_v1->sum('total_bonus');
         $product = Products::all();
-        return view('user2.list_hoan_ung',compact('list_hoan_ung','product'));
+        return view('user2.list_hoan_ung',
+            compact('list_hoan_ung','product','sum_total_product','sum_total_price','sum_total_bonus'));
     }
 
     public function view_detail_hoan_ung($id){

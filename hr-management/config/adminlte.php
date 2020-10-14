@@ -503,15 +503,38 @@ return [
                 [
                     'text'    => 'Quản lý Banner',
                     'icon'    => 'fas fa-clipboard-list',
-                    'url'     => '/admin2/banner_manager',
                     'can'     => 'admin_lv2',
-                    
+                    'submenu' => [
+                        [
+                            'text'    => 'Thêm Banner',
+                            'icon'    => 'fas fa-clipboard-list',
+                            'url'     => '/admin2/banner_manager',
+                            'can'     => 'admin_lv2'
+                        ],
+                        [
+                            'text'    => 'Danh Sách Banner',
+                            'icon'    => 'fas fa-clipboard-list',
+                            'url'     => '/admin2/manager_list_banner',
+                            'can'     => 'admin_lv2'
+                        ],
+                    ]
                 ],
                 [
-                    'text'    => 'Danh Sách Banner',
+                    'text'    => 'Thống Kê Báo Cáo',
                     'icon'    => 'fas fa-clipboard-list',
-                    'url'     => '/admin2/manager_list_banner',
-                    'can'     => 'admin_lv2'
+                    'can'     => 'admin_lv2',
+                    'submenu' => [
+                        [
+                            'text'    => 'Hoa Hồng Bán Hàng',
+                            'url'     => '/admin2/report_sale',
+                            'can'     => 'admin_lv2'
+                        ],
+                        [
+                            'text'    => 'Quản lý Kho',
+                            'url'     => '/admin2/report_warehouse',
+                            'can'     => 'admin_lv2'
+                        ]
+                    ]
                 ],
                 [
                     'text'    => 'Quản lý Hoàn Ứng',
@@ -533,32 +556,36 @@ return [
                     'can'     => 'user_lv2',
                 ] ,
                 [
-                    'text'    => 'Sản Phẩm',
+                    'text'    => 'Quản lý Sản Phẩm',
                     'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/user2/list_product',
                     'can'     => 'user_lv2',
-                    'submenu' =>[
-                        [
-                            'text'    => 'Quản lý Sản Phẩm',
-                            'url'     => '/user2/list_product',
-                            'can'     => 'user_lv2',
-                        ] ,
+                ] ,
 //                        [
 //                            'text'    => 'Bán Hàng',
 //                            'url'     => '/user2/list_view_product',
 //                            'can'     => 'user_lv2',
 //                        ] ,
-                        [
-                            'text'    => 'Trả Tiền Về Công Ty',
-                            'url'     => 'user2/danh_sach_hoan_ung',
-                            'can'     => 'user_lv2',
-                        ] ,
-                        [
-                            'text'    => 'Hoa Hồng',
-                            'url'     => 'user2/danh_sach_hoa_hong',
-                            'can'     => 'user_lv2',
-                        ] ,
-                    ]
-                ],
+                [
+                    'text'    => 'Nộp Tiền Về Công Ty',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => 'user2/danh_sach_hoan_ung',
+                    'can'     => 'user_lv2',
+                ] ,
+                [
+                    'text'    => 'Hoa Hồng',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => 'user2/danh_sach_hoa_hong',
+                    'can'     => 'user_lv2',
+                ] ,
+//                [
+//                    'text'    => 'Sản Phẩm',
+//                    'icon'    => 'fas fa-clipboard-list',
+//                    'can'     => 'user_lv2',
+//                    'submenu' =>[
+//
+//                    ]
+//                ],
                 [
                     'text'    => 'Quản lý mục tiêu',
                     'icon'    => 'fas fa-clipboard-list',

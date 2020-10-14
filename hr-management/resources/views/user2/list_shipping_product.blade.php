@@ -48,6 +48,20 @@
                     <th style="width:10%">Hoa Hồng</th>
                 </tr>
                 </thead>
+                <thead style="color: blue">
+                <tr>
+                    <th style="width:5%">Tổng</th>
+                    <th style="width:10%"></th>
+                    <th style="width:10%"></th>
+                    <th style="width:10%"></th>
+                    <th style="width:10%">{{$sum_total_product}}</th>
+                    <th style="width:10%"></th>
+                    <th style="width:10%"></th>
+                    <th style="width:10%">{{number_format($sum_total_price)}}</th>
+                    <th style="width:10%"></th>
+                    <th style="width:10%">{{number_format($sum_total_bonus)}}</th>
+                </tr>
+                </thead>
                 <tbody id="table_body">
                 @if(count($list_hoan_ung) > 0)
                     @foreach($list_hoan_ung as $key => $value)
