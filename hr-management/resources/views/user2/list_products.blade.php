@@ -92,7 +92,7 @@
                     @foreach($product as $key => $value)
                         <tr>
                             <td>{{$key+1}}</td>
-                            <td>{{$value->name}}</td>
+                            <td><a href="{{route('view_detail_product_user2',['id'=>$value->id])}}">{{$value->name}}</a></td>
                             <td>{{$value->product_code}}</td>
                             <td>{{$value->type}}</td>
 {{--                            <td>{{number_format($value->price_in)}}</td>--}}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Banner;
 use App\Code;
 use App\Emulation;
 use App\EmulationProducts;
@@ -10,6 +11,7 @@ use App\GoalSales;
 use App\LinkImage;
 use App\Notification;
 use App\Products;
+use App\Reward;
 use App\Supplier;
 use App\TotalProductEmulation;
 use App\User;
@@ -49,7 +51,8 @@ class User2Controller extends Controller
             ->where('price_sale','<>',null)
             ->limit(16)->get();
         $supplier = Supplier::all();
-        return view('user2.view_list_product',compact('product','supplier','product_new','product_nb'));
+        $banner = Banner::all();
+        return view('user2.view_list_product',compact('product','supplier','product_new','product_nb','banner'));
     }
 
     public function view_detail_product_user2($id){
@@ -709,10 +712,14 @@ class User2Controller extends Controller
 //                }
 //            }
 //        }
-
+        $str_reward = EmulationProducts::where('id_emulation','=',$id)->select('id_reward')->get();
+        foreach ($str_reward as $value){
+            $arr_id_reward = explode(',',$value->id_reward);
+        }
+        $list_reward = Reward::whereIn('id',$arr_id_reward)->get();
         $list_name_user = DB::table('users')->select('id','last_name','email')->get();
 //        dd($list_name_user);
-        return view('user2.view_list_emulation_detail',compact('emulation_detail','list_product','list_name_user'));
+        return view('user2.view_list_emulation_detail',compact('emulation_detail','list_product','list_name_user','list_reward'));
     }
 
     public function viewAnalysisEmulation(){
@@ -836,5 +843,142 @@ class User2Controller extends Controller
     public function notification(){
         $notification = Notification::all();
         return view('user2.notification',compact('notification'));
+    }
+
+    public function searchReportHoanUngUser2(Request  $request){
+        $curDate = date("Y-m-d");
+        $table = 'spd_'.substr($curDate,5,2).substr($curDate,0,4).'s';
+        $list_hoan_ung_v1 = DB::table($table)
+            ->join('products','id_product','=','products.id')
+            ->where('status_kt','=','wait')
+            ->where('status_admin2','=','wait')
+            ->select(''.$table.'.*','products.*')
+            ->addSelect(''.$table.'.id as id_order');
+
+        if($request->name_product == null){
+            $list_name = $list_hoan_ung_v1;
+        }else{
+            $list_name = $list_hoan_ung_v1->where('products.name','like','%'.$request->name_product.'%');
+        }
+
+        if($request->start_time == null){
+            $list_st_time = $list_name;
+        }else{
+            $list_st_time = $list_name->where('time','>',$request->start_time);
+        }
+
+        if($request->end_time == null){
+            $list_ed_time = $list_st_time;
+        }else{
+            $list_ed_time = $list_st_time->where('time','<',$request->end_time);
+        }
+        $list_hoan_ung = $list_ed_time->get();
+        $sum_total_product = $list_ed_time->sum('total_product');
+        $sum_total_price = $list_ed_time->sum('total_price');
+        $sum_total_bonus = $list_ed_time->sum('total_bonus');
+
+        $result = null;
+
+        if(count($list_hoan_ung) > 0) {
+            foreach ($list_hoan_ung as $key => $value) {
+                $result .= '<tr>';
+                $result .= '<td>' . ($key + 1) . '</td>';
+                $result .= '<td>' . $value->name . '</td>';
+                $result .= '<td>' . $value->product_code . '</td>';
+                $result .= '<td>' . $value->time . '</td>';
+                $result .= '<td>' . (number_format($value->price_sale)) . '</td>';
+                $result .= '<td>' . $value->email_guest . '</td>';
+                $result .= '<td>' . $value->phone_guest . '</td>';
+                $result .= '<td>' . $value->total_product . '</td>';
+                $result .= '<td>' . (number_format($value->total_price)) . '</td>';
+                if ($value->status_kt === 'done' && $value->status_admin2 === 'done') {
+                    $result .= '<td style="background-color: blue;font-size: 17px;color: white">Đã Hoàn Thành</td>';
+                } elseif ($value->status_payment === 'done' && $value->status_kt === 'wait') {
+                    $result .= '<td style="background-color: #855eca;font-size: 20px;color: white">Chờ Duyệt</td>';
+                } else {
+                    $result .= '<td style="background-color: #cf5f02;font-size: 20px;color: white">Đã Bán</td>';
+                }
+
+                if ($value->status_payment === 'done' && $value->status_kt === 'wait' && $value->status_admin2 === 'wait') {
+                    $result .= '<td>Chờ Xác Nhận</td>';
+                } elseif ($value->status_kt === 'done' && $value->status_admin2 === 'done') {
+                    $result .= '<td></td>';
+                } else {
+                    $result .= '<td><a class="btn btn-primary" href="' . route('view_detail_hoan_ung', ['id' => $value->id_order]) . '" data-remote="false"
+                                   data-toggle="modal" data-target="#modal-admin-action-update">Nộp Tiền Công Ty</a></td>';
+                }
+                $result .= '</tr>';
+            }
+        }
+        else {
+                $result .= '<td colspan="8" style="text-align: center">
+                        <h3>Không có Thông Tin</h3>
+                    </td>';
+        }
+        $rs = [$result,$sum_total_product,$sum_total_price];
+        return $rs;
+
+    }
+    public function searchReportHoaHongUser2(Request  $request){
+        $curDate = date("Y-m-d");
+        $table = 'spd_'.substr($curDate,5,2).substr($curDate,0,4).'s';
+        $list_hoan_ung_v1 = DB::table($table)
+            ->join('products','id_product','=','products.id')
+            ->where('status_transport','=','done')
+            ->where('status_payment','=','done')
+            ->where('status_kt','=','done')
+            ->where('status_admin2','=','done')
+            ->select(''.$table.'.*','products.*')
+            ->addSelect(''.$table.'.id as id_order');
+
+        if($request->name_product == null){
+            $list_name = $list_hoan_ung_v1;
+        }else{
+            $list_name = $list_hoan_ung_v1->where('products.name','like','%'.$request->name_product.'%');
+        }
+
+        if($request->start_time == null){
+            $list_st_time = $list_name;
+        }else{
+            $list_st_time = $list_name->where('time','>',$request->start_time);
+        }
+
+        if($request->end_time == null){
+            $list_ed_time = $list_st_time;
+        }else{
+            $list_ed_time = $list_st_time->where('time','<',$request->end_time);
+        }
+        $list_hoan_ung = $list_ed_time->get();
+        $sum_total_product = $list_ed_time->sum('total_product');
+        $sum_total_price = $list_ed_time->sum('total_price');
+        $sum_total_bonus = $list_ed_time->sum('total_bonus');
+
+        $result = null;
+
+        if(count($list_hoan_ung) > 0) {
+            foreach ($list_hoan_ung as $key => $value) {
+                $result .= '<tr>';
+                $result .= '<td>'.($key+1).'</td>';
+                $result .= '<td><a href="'.route('chi_tiet_hoa_hong_san_pham',['id'=>$value->id_product]).'"
+                                   data-remote="false" data-toggle="modal" data-target="#modal-admin-action-update">'.$value->name.'</a></td>';
+                $result .= '<td>'.$value->product_code.'</td>';
+                $result .= '<td>'.number_format($value->price_sale).'</td>';
+                $result .= '<td>'.$value->total_product.'</td>';
+                $result .= '<td>'.$value->email_guest.'</td>';
+                $result .= '<td>'.$value->phone_guest.'</td>';
+                $result .= '<td>'.number_format($value->total_price).'</td>';
+                $result .= '<td>'.($value->time).'</td>';
+                $result .= '<td>'.number_format($value->total_bonus).'</td>';
+                $result .= '</tr>';
+            }
+        }
+        else {
+                $result .= '<td colspan="8" style="text-align: center">
+                        <h3>Không có Thông Tin</h3>
+                    </td>';
+        }
+        $rs = [$result,$sum_total_product,$sum_total_price,$sum_total_bonus];
+        return $rs;
+
     }
 }

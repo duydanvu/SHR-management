@@ -92,6 +92,7 @@
                     {{--                    <th style="width:10%">Chuyên Môn</th>--}}
                     <th style="width:10%">Ngày Sinh</th>
                     <th style="width:10%">Số Điện Thoại</th>
+                    <th style="width:10%">Người Dùng</th>
                     <th style="width:10%">Tình trạng hoạt động</th>
                 </tr>
                 </thead>
@@ -107,6 +108,7 @@
                             <td>{{$value->email}}</td>
                             <td>{{$value->dob}}</td>
                             <td>{{$value->phone}}</td>
+                            <td>@if($value->position_name == 'ASM') ASM @else NV @endif</td>
                             <td>Đang hoạt động</td>
                         </tr>
                     @endforeach
@@ -231,14 +233,14 @@
         });
 
         $(function () {
-            // $("#example1").DataTable({
-            //     aoColumnDefs: [
-            //         {
-            //             bSortable: false,
-            //             aTargets: ['noSort']
-            //         } // Disable sorting on columns marked as so
-            //     ]
-            // });
+            $("#example1").DataTable({
+                aoColumnDefs: [
+                    {
+                        bSortable: false,
+                        aTargets: ['noSort']
+                    } // Disable sorting on columns marked as so
+                ]
+            });
             // fix table
             $("#example1").parent().css({"overflow": "auto"});
         });

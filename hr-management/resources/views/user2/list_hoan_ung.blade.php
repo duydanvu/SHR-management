@@ -18,44 +18,59 @@
 @stop
 
 @section('content')
-{{--    <div class="card card-outline card-primary-dashboard">--}}
-{{--        <meta name="csrf-token-2" content="{{ csrf_token() }}">--}}
-{{--        <div class="card-header">--}}
-{{--            <h3 class="card-title">Tìm Kiếm</h3>--}}
-{{--            <div class="card-tools">--}}
-{{--                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">--}}
-{{--                    <i class="fas fa-minus"></i></button>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="card-body">--}}
-{{--            <div class="row">--}}
-{{--                <div class="col-md-3 ml-4">--}}
-{{--                    <div class="form-group">--}}
-{{--                        <meta name="csrf-token2" content="{{ csrf_token() }}">--}}
-{{--                        <label for="exampleInputEmail1">Tên Sản Phẩm</label>--}}
-{{--                        <input id="name_user" type="text" class="form-control @error('txtNameUser') is-invalid @enderror" name="txtFName" value=""  autocomplete="number" required>--}}
-{{--                        @error('txtNameUser')--}}
-{{--                        <span class="invalid-feedback" role="alert">--}}
-{{--                                            <strong>{{ $message }}</strong>--}}
-{{--                                        </span>--}}
-{{--                        @enderror--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="col-md-2 ml-4 mt-md-2">--}}
-{{--                    <button type="submit" id="fillter_date" class="btn btn-primary mt-4" style="float: left"><i class="fas fa-search-minus">Tìm Kiếm</i></button>--}}
-{{--                </div>--}}
-{{--                <div class="col-md-2 ml-4 mt-md-2 " style="float: left">--}}
-{{--                    <button id = "" type="button" class="btn btn-info mt-4" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Thêm Sản Phẩm</button>--}}
-{{--                </div>--}}
-{{--                <div class="col-md-2 ml-2 mt-md-2 " style="float: left">--}}
-{{--                    <button id = "" type="button" class="btn btn-info mt-4" data-toggle="modal" data-target="#modal-nhap-san-pham"><i class="fas fa-plus-circle"></i> Nhập Sản Phẩm</button>--}}
-{{--                </div>--}}
-{{--                <div class="col-md-2 ml-2 mt-md-2 " style="float: left">--}}
-{{--                    <button id = "" type="button" class="btn btn-info mt-4" data-toggle="modal" data-target="#modal-tra-san-pham"><i class="fas fa-plus-circle"></i> Trả Sản Phẩm</button>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+    <div class="card card-outline card-primary-dashboard">
+        <meta name="csrf-token-2" content="{{ csrf_token() }}">
+        <div class="card-header">
+            <h3 class="card-title">Tìm Kiếm</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i></button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2 ml-4">
+                    <div class="form-group">
+                        <meta name="csrf-token2" content="{{ csrf_token() }}">
+                        <label for="exampleInputEmail1">Tên Sản Phẩm</label>
+                        <input id="name_product" type="text" class="form-control @error('txtNameUser') is-invalid @enderror" name="txtFName" value=""  autocomplete="number" required>
+                        @error('txtNameUser')
+                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-3 ml-4">
+                    <div class="form-group">
+                        <meta name="csrf-token2" content="{{ csrf_token() }}">
+                        <label for="exampleInputEmail1">Thời Gian Bắt Đầu</label>
+                        <input id="start_time" type="date" class="form-control @error('txtStartTime') is-invalid @enderror" name="txtStartTime" value=""  autocomplete="number" required>
+                        @error('txtStartTime')
+                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-3 ml-4">
+                    <div class="form-group">
+                        <meta name="csrf-token2" content="{{ csrf_token() }}">
+                        <label for="exampleInputEmail1">Thời Gian Kết Thúc </label>
+                        <input id="end_time" type="date" class="form-control @error('txtEndTime') is-invalid @enderror" name="txtEndTime" value=""  autocomplete="number" required>
+                        @error('txtEndTime')
+                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-2 ml-4 mt-md-2">
+                    <button type="submit" id="fillter_date" class="btn btn-primary mt-4" style="float: left"><i class="fas fa-search-minus">Tìm Kiếm</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="card">
         <div class="card-header">
             <div class="button-group-card-header">
@@ -77,6 +92,7 @@
                     <th style="width:5%">#</th>
                     <th style="width:10%">Tên Sản Phẩm</th>
                     <th style="width:10%">Mã Sản Phẩm</th>
+                    <th style="width:10%">Thời gian</th>
                     <th style="width:10%">Giá Sản Phẩm</th>
                     <th style="width:10%">Email Khách Hàng</th>
                     <th style="width:10%">Số Điện Thoại Khách Hàng</th>
@@ -94,8 +110,9 @@
                     <th style="width:10%"></th>
                     <th style="width:10%"></th>
                     <th style="width:10%"></th>
-                    <th style="width:10%">{{$sum_total_product}}</th>
-                    <th style="width:10%">{{number_format($sum_total_price)}}</th>
+                    <th style="width:10%"></th>
+                    <th id="total_price" style="width:10%" >{{$sum_total_product}}</th>
+                    <th id="total_product" style="width:10%">{{number_format($sum_total_price)}}</th>
                     <th style="width:10%"></th>
                     <th style="width:10%"></th>
                 </tr>
@@ -107,6 +124,7 @@
                             <td>{{$key+1}}</td>
                             <td>{{$value->name}}</td>
                             <td>{{$value->product_code}}</td>
+                            <td>{{$value->time}}</td>
                             <td>{{number_format($value->price_sale)}}</td>
                             <td>{{$value->email_guest}}</td>
                             <td>{{$value->phone_guest}}</td>
@@ -208,10 +226,11 @@
     <script>
         $(document).ready(function(){
             $('#fillter_date').click(function () {
-                let area_search = $('#area_search').val();
-                let name_user = $('#name_user').val();
+                let name_product = $('#name_product').val();
+                let end_time = $('#end_time').val();
+                let start_time = $('#start_time').val();
                 let _token = $('meta[name="csrf-token-2"]').attr('content');
-                var dt = {_token,area_search,name_user};
+                var dt = {_token,name_product,end_time,start_time};
                 console.log(dt);
                 $.ajaxSetup({
                     headers: {
@@ -220,12 +239,15 @@
                 });
                 $.ajax({
                     type:'POST',
-                    url:'{{route('search_list_acc_with_area_name')}}',
+                    url:'{{route('search_report_hoan_ung_user2')}}',
                     data:dt,
                     success:function(resultData){
                         // // $('.effort').val(resultData);
-                        $('#table_body').html(resultData);
-                        // $('#sum_result').html(resultData['sum']);
+                        // console.log(resultData)
+                        $('#table_body').html(resultData[0]);
+                        $('#total_product').html(resultData[2]);
+                        $('#total_price').html(resultData[1]);
+                        // $('#total_bonus').html(resultData[3]);
                         // console.log(resultData);
                     }
                 });

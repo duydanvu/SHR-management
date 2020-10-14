@@ -69,48 +69,67 @@
         <section class="home_banner_area">
             <div class="banner_inner d-flex align-items-center">
                 <div class="container">
-                    <div class="banner_content" style="padding-top: 10px">
-                        <div class="row">
-                        <div class="col-lg-5">
-                            <h3>Combo Toán+Tiếng Việt</h3>
-                            <p> Ưu đãi đặc biệt dành tặng đến KH khi mua gói học Online cho các bạn Tiểu học, THCS tại MobiFone Plus.</p>
-                            <a class="white_bg_btn" href="http://hr.mobifoneplus.vn/user2/view_detail_product_user2/14">Xem Thông tin</a>
-                        </div>
-                        <div class="col-lg-7">
-                            <div class="halemet_img">
-                                <img src="../upload/banner/unnamed.png" alt="">
+                    @if(count($banner) == 1 )
+                        @foreach($banner as $value_1)
+                            <div class="banner_content" style="padding-top: 10px">
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <h3>{{$value_1->title}}</h3>
+                                        <p> {{$value_1->content}}</p>
+                                        <a class="white_bg_btn" href="{{$value_1->link}}">Xem Thông tin</a>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <div class="halemet_img">
+                                            <img src="..{{$value_1->image}}" alt="" style="width: 500px;height: 300px">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="banner_content" style="padding-top: 10px">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <h3>Combo Toán+Tiếng Việt</h3>
+                                    <p> Ưu đãi đặc biệt dành tặng đến KH khi mua gói học Online cho các bạn Tiểu học, THCS tại MobiFone Plus.</p>
+                                    <a class="white_bg_btn" href="http://hr.mobifoneplus.vn/user2/view_detail_product_user2/14">Xem Thông tin</a>
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="halemet_img">
+                                        <img src="../upload/banner/unnamed.png" alt="">
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        </div>
-                    </div>
-                    <div class="banner_content" style="padding-top: 10px">
-                        <div class="row">
-                        <div class="col-lg-5">
-                            <h3>Combo Toán+Tiếng Việt 2</h3>
-                            <p> Ưu đãi đặc biệt dành tặng đến KH khi mua gói học Online cho các bạn Tiểu học, THCS tại MobiFone Plus.</p>
-                            <a class="white_bg_btn" href="http://hr.mobifoneplus.vn/user2/view_detail_product_user2/14">Xem Thông tin</a>
-                        </div>
-                        <div class="col-lg-7">
-                            <div class="halemet_img">
-                                <img src="../upload/banner/unnamed.png" alt="">
+                        <div class="banner_content" style="padding-top: 10px">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <h3>Combo Toán+Tiếng Việt 2</h3>
+                                    <p> Ưu đãi đặc biệt dành tặng đến KH khi mua gói học Online cho các bạn Tiểu học, THCS tại MobiFone Plus.</p>
+                                    <a class="white_bg_btn" href="http://hr.mobifoneplus.vn/user2/view_detail_product_user2/14">Xem Thông tin</a>
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="halemet_img">
+                                        <img src="../upload/banner/unnamed.png" alt="">
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        </div>
-                    </div>
-                    <div class="banner_content row " style="padding-top: 10px">
-                        <div class="row">
-                        <div class="col-lg-5">
-                            <h3>Combo Toán+Tiếng Việt 3</h3>
-                            <p> Ưu đãi đặc biệt dành tặng đến KH khi mua gói học Online cho các bạn Tiểu học, THCS tại MobiFone Plus.</p>
-                            <a class="white_bg_btn" href="http://hr.mobifoneplus.vn/user2/view_detail_product_user2/14">Xem Thông tin</a>
-                        </div>
-                        <div class="col-lg-7">
-                            <div class="halemet_img">
-                                <img src="../upload/banner/unnamed.png" alt="">
+                        <div class="banner_content" style="padding-top: 10px">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <h3>Combo Toán+Tiếng Việt 3</h3>
+                                    <p> Ưu đãi đặc biệt dành tặng đến KH khi mua gói học Online cho các bạn Tiểu học, THCS tại MobiFone Plus.</p>
+                                    <a class="white_bg_btn" href="http://hr.mobifoneplus.vn/user2/view_detail_product_user2/14">Xem Thông tin</a>
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="halemet_img">
+                                        <img src="../upload/banner/unnamed.png" alt="">
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </section>
@@ -120,7 +139,7 @@
                 <div class="container">
                     <div class="row hot_product_inner">
                         <div class="col-lg-6">
-                            <a href="#">
+                            <a href="{{route('view_list_emulation_detail',['id'=>1])}}">
                             <div class="hot_p_item">
                                 <img class="img-fluid" src="../upload/product/hot-product/post.jpeg" alt="">
                                 <div class="product_text">
@@ -130,7 +149,7 @@
                             </a>
                         </div>
                         <div class="col-lg-6">
-                            <a href="#">
+                            <a href="{{route('view_list_emulation_detail',['id'=>5])}}">
                                 <div class="hot_p_item">
                                     <img class="img-fluid" src="../upload/product/hot-product/post.jpeg" alt="">
                                     <div class="product_text">
@@ -179,7 +198,7 @@
 {{--                                </div>--}}
 {{--                                @endforeach--}}
 {{--                            </div>--}}
-{{--                        </div>--}}
+                        </div>
                     </div>
                 </div>
             </div>

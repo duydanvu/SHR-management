@@ -45,11 +45,13 @@ class Admin2Controller extends Controller
                 if($request->name == ''){
                     $list_user = User::leftJoin('positions', 'positions.position_id', '=', 'users.position_id')
                         ->select('users.id', 'users.last_name', 'users.email', 'users.dob', 'users.phone', 'positions.position_name')
+                        ->where('activation_key','<>',null)
                         ->get();
                 }else{
                     $list_user = User::leftJoin('positions', 'positions.position_id', '=', 'users.position_id')
                         ->select('users.id', 'users.last_name', 'users.email', 'users.dob', 'users.phone', 'positions.position_name')
                         ->where('users.last_name','like','%'.$request->name.'%')
+                        ->where('activation_key','<>',null)
                         ->get();
                 }
 
@@ -59,6 +61,7 @@ class Admin2Controller extends Controller
                         ->join('stores', 'stores.store_id', '=', 'users.store_id')
                         ->select('users.id', 'users.last_name', 'users.email', 'users.dob', 'users.phone', 'positions.position_name', 'stores.area_id')
                         ->where('stores.area_id', '=', $request->area)
+                        ->where('activation_key','<>',null)
                         ->get();
                 }else{
                     $list_user = User::leftJoin('positions', 'positions.position_id', '=', 'users.position_id')
@@ -66,6 +69,7 @@ class Admin2Controller extends Controller
                         ->select('users.id', 'users.last_name', 'users.email', 'users.dob', 'users.phone', 'positions.position_name', 'stores.area_id')
                         ->where('stores.area_id', '=', $request->area)
                         ->where('users.last_name','like','%'.$request->name.'%')
+                        ->where('activation_key','<>',null)
                         ->get();
                 }
             }
@@ -74,7 +78,7 @@ class Admin2Controller extends Controller
                     if ($row->position_name == 'ASM') {
                         $results = $row->position_name;
                     }else{
-                        $results = 'UserLV2';
+                        $results = 'NV';
                     }
                     return $results;
                 })
@@ -2676,7 +2680,10 @@ class Admin2Controller extends Controller
             ->get();
         $list_sum = DB::table($table)->sum('total_price');
         $product = Products::all();
-        return view('admin2.hoan_ung.list_hoan_ung',compact('list_hoan_ung','product','list_sum'));
+        $list_area = Area::all();
+        $list_group = Group::all();
+        return view('admin2.hoan_ung.list_hoan_ung',
+            compact('list_hoan_ung','product','list_sum','list_area','list_group'));
     }
 
     public function view_detail_hoan_ung($id){
@@ -2987,5 +2994,102 @@ class Admin2Controller extends Controller
         }
 
         return $result;
+    }
+
+    public function searchReportHoanUng(Request $request){
+
+        $date = date("Y-m-d");
+        $tablename1 = substr($date,0,4);
+        $tablename2 = substr($date,5,2);
+        $tablename = 'spd_'.$tablename2.$tablename1.'s';
+        $list_report = DB::table($tablename)->join('products',$tablename.'.id_product','=','products.id')
+            ->join('suppliers','products.id_supplier','=','suppliers.id')
+            ->join('users',$tablename.'.id_user','=','users.id')
+            ->select($tablename.'.*','products.name as name_pd','products.product_code as code_pd','products.price_sale as price_sale',
+                'suppliers.name as name_spl',
+                'users.last_name as name_user','users.email as email_users',''.$tablename.'.id as id_order');
+
+
+        if($request->area_search == 'all'){
+            $list_area = $list_report;
+        }else{
+            $list_area = $list_report->join('stores','stores.store_id','=','users.store_id')
+                ->where('stores.area_id','=',$request->area_search);
+        }
+
+        if($request->group_search == 'all'){
+            $list_group = $list_area;
+        }else{
+            $list_group = $list_area->where('users.group_id','=',$request->group_search);
+        }
+
+        if($request->name_product == null){
+            $list_name = $list_group;
+        }else{
+            $list_name = $list_group->where('products.name','like','%'.$request->name_product.'%');
+        }
+
+        if($request->start_time == null){
+            $list_st_time = $list_name;
+        }else{
+            $list_st_time = $list_name->where('time','>',$request->start_time);
+        }
+
+        if($request->end_time == null){
+            $list_ed_time = $list_st_time;
+        }else{
+            $list_ed_time = $list_st_time->where('time','<',$request->end_time);
+        }
+
+        if($request->name_user == null){
+            $list_name_user = $list_ed_time;
+        }else{
+            $list_name_user = $list_ed_time->where('users.last_name','like','%'.$request->name_user.'%');
+        }
+
+        if($request->trangthai == 'all'){
+            $list_trang_thai = $list_name_user;
+        }elseif($request->trangthai == 'done'){
+            $list_trang_thai = $list_name_user->where('status_kt','=','done');
+        }else{
+            $list_trang_thai = $list_name_user->where('status_kt','<>','done');
+        }
+
+
+        $sum_total_price = $list_trang_thai->sum('total_price');
+        $sum_total_product = $list_trang_thai->sum('total_product');
+        $sum_total_bonus = $list_trang_thai->sum('total_bonus');
+        $result = null;
+        if(count($list_trang_thai->get()) > 0) {
+            foreach ($list_trang_thai->get() as $key => $value) {
+                $result .= '<tr>';
+                $result .= '<td>' . ($key + 1) . '</td>';
+                $result .= '<td>' . $value->time . '</td>';
+                $result .= '<td><a href="' . route('view_detail_hoan_ung_admin2', ['id' => $value->id_order]) . '" data-remote="false"
+                                   data-toggle="modal" data-target="#modal-admin-action-update">Chi tiết</a></td>';
+                $result .= '<td>' . $value->name_pd . '</td>';
+                $result .= '<td>' . $value->code_pd . '</td>';
+                $result .= '<td>' . number_format($value->price_sale) . '</td>';
+                $result .= '<td>' . $value->total_product . '</td>';
+                $result .= '<td>' . number_format($value->total_price) . '</td>';
+                $result .= '<td>' . $value->name_user . '</td>';
+                $result .= '<td>' . $value->email_users . '</td>';
+
+                if ($value->status_kt === 'wait' && $value->status_payment === 'done') {
+                    $result .= '<td style="background-color: #3FF52F;color: white">Chờ xác nhận hoa hồng</td>';
+                } elseif ($value->status_kt === 'wait' && $value->status_payment === 'wait') {
+                    $result .= '<td style="background-color: #DE55FA;color: white">Chờ duyệt hoa hồng</td>';
+                } elseif ($value->status_kt === 'done' && $value->status_admin2 === 'done') {
+                    $result .= '<td style="background-color: blue;color: white">Đã Hoàn Thành</td>';
+                }
+                $result .= '</tr>';
+            }
+        }else {
+            $result .= '<td colspan="11" style="text-align: center">
+                        <h3>Không có Thông Tin</h3>
+                    </td>';
+        }
+        $rs = [$result,$sum_total_price,$sum_total_product,$sum_total_bonus];
+        return $rs;
     }
 }
