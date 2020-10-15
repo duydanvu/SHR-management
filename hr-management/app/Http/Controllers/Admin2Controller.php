@@ -1487,12 +1487,12 @@ class Admin2Controller extends Controller
             $sum_import = DB::table($tablename)
                 ->where('id_product','=',$request['id_product'])
                 ->where('id_warehouse','=',$request['txtWarehouse'])
-                ->where('time','<',$date)
+//                ->where('time','<',$date)
                 ->sum('import_total');
             $sum_export = DB::table($tablename)
                 ->where('id_product','=',$request['id_product'])
                 ->where('id_warehouse','=',$request['txtWarehouse'])
-                ->where('time','<',$date)
+//                ->where('time','<',$date)
                 ->sum('export_total');
             $create_product_warehouse = DB::table('warehouse_products')->insert([
                'id_product'=> $request['id_product'],
@@ -1568,12 +1568,12 @@ class Admin2Controller extends Controller
             $sum_import = DB::table($tablename)
                 ->where('id_product','=',$request['id_product'])
                 ->where('id_warehouse','=',$request['txtWarehouse'])
-                ->where('time','<',$date)
+//                ->where('time','<',$date)
                 ->sum('import_total');
             $sum_export = DB::table($tablename)
                 ->where('id_product','=',$request['id_product'])
                 ->where('id_warehouse','=',$request['txtWarehouse'])
-                ->where('time','<',$date)
+//                ->where('time','<',$date)
                 ->sum('export_total');
             $create_product_warehouse = DB::table('warehouse_products')->insert([
                'id_product'=> $request['id_product'],
