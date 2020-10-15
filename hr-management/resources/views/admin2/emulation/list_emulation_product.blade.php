@@ -62,6 +62,10 @@
                                            data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
                                             <i class="fas fa-edit"> Thêm Sản Phẩm</i>
                                         </a>
+                                        <a href="{{route('add_group_to_emulation',['id'=>$value->id])}}" data-remote="false"
+                                           data-toggle="modal" data-target="#modal-admin-add-group-update" class="btn dropdown-item">
+                                            <i class="fas fa-edit"> Thêm Nhóm</i>
+                                        </a>
                                         <a href="{{route('list_product_detail_to_emulation',['id'=>$value->id])}}" class="btn dropdown-item">
                                             <i class="fas fa-edit"> Chi tiết Sản Phẩm</i>
                                         </a>
@@ -130,6 +134,28 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+    <div class="modal fade" id="modal-admin-add-group-update">
+        <div class="modal-dialog" style="max-width: 600px" >
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <h4 class="modal-title">Thêm Nhóm</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form action="{{route('update_add_group_emulation')}}" method="post">
+                    <div class="modal-body">
+                        @csrf
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
     <div class="modal fade" id="modal-admin-action-detail-product">
         <div class="modal-dialog" style="max-width: 600px" >
             <div class="modal-content" >
@@ -153,7 +179,7 @@
         <!-- /.modal-dialog -->
     </div>
     <div class="modal fade" id="modal-admin-action-edit">
-        <div class="modal-dialog" style="max-width: 600px" >
+        <div class="modal-dialog" style="max-width: 1200px" >
             <div class="modal-content" >
                 <div class="modal-header">
                     <h4 class="modal-title">Sửa Thông Tin </h4>
@@ -309,6 +335,10 @@
     <script>
 
         $("#modal-admin-action-update").on("show.bs.modal", function(e) {
+            var link = $(e.relatedTarget);
+            $(this).find(".modal-body").load(link.attr("href"));
+        });
+        $("#modal-admin-add-group-update").on("show.bs.modal", function(e) {
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });

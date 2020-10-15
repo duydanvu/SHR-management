@@ -99,8 +99,8 @@
                             <td>{{number_format($value->price_out)}}</td>
                             <td>{{number_format($value->price_sale)}}</td>
                             @if($value->hh_default == null)
-                                <td>Tỉ Lệ</td>
-                                <td>{{$value->hh_percent}} %</td>
+                                <td>Tỉ Lệ - {{$value->hh_percent}} %</td>
+                                <td>{{number_format($value->hh_percent*$value->price_sale/100)}}</td>
                                 @elseif($value->hh_default != null)
                                 <td>Mức Cố Định</td>
                                 <td>{{number_format($value->hh_default)}}</td>

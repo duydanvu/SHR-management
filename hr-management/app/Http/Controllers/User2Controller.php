@@ -35,7 +35,7 @@ class User2Controller extends Controller
         foreach ($id_product as $value){
             array_push($arr,$value->id_product);
         }
-        $product = Products::whereIn('id',$arr)->get();
+        $product = Products::whereIn('id',$arr)->where('status','=','active')->get();
         $supplier = Supplier::all();
         return view('user2.list_products',compact('product','supplier'));
     }
@@ -45,14 +45,15 @@ class User2Controller extends Controller
         foreach ($id_product as $value){
             array_push($arr,$value->id_product);
         }
-        $product = Products::whereIn('id',$arr)->orderBy('id','DESC')->limit(8)->get();
-        $product_new = Products::whereIn('id',$arr)->orderBy('id','DESC')->limit(16)->get();
-        $product_nb = Products::whereIn('id',$arr)->orderBy('id','DESC')
+        $product = Products::whereIn('id',$arr)->where('status','=','active')->orderBy('id','DESC')->limit(8)->get();
+        $product_new = Products::whereIn('id',$arr)->where('status','=','active')->orderBy('id','DESC')->limit(16)->get();
+        $product_nb = Products::whereIn('id',$arr)->where('status','=','active')->orderBy('id','DESC')
             ->where('price_sale','<>',null)
             ->limit(16)->get();
         $supplier = Supplier::all();
         $banner = Banner::all();
-        return view('user2.view_list_product',compact('product','supplier','product_new','product_nb','banner'));
+        $emulation = Emulation::orderBy('id','desc')->first();
+        return view('user2.view_list_product',compact('product','supplier','product_new','product_nb','banner','emulation'));
     }
 
     public function view_detail_product_user2($id){
@@ -105,6 +106,7 @@ class User2Controller extends Controller
                 );
                 return Redirect::back()->with($notification);
             }else {
+                $hh = 0;
                 if ($product->hh_default != null) {
                     $check = Schema::hasTable($table);
                     if($check != true){
@@ -142,6 +144,7 @@ class User2Controller extends Controller
                         'status_kt' => 'wait',
                         'status_admin2' => 'wait',
                     ]);
+                    $hh = $product->hh_default * $request['totalProduct'];
                 } elseif ($product->hh_percent != null) {
                     $check = Schema::hasTable($table);
                     if($check != true){
@@ -179,6 +182,7 @@ class User2Controller extends Controller
                         'status_kt' => 'wait',
                         'status_admin2' => 'wait',
                     ]);
+                    $hh = $product->price_sale * $request['totalProduct'] * $product->hh_percent / 100;
                 } else {
                     $notification = array(
                         'message' => 'Sản phẩm không phù hợp hoặc đã hết!',
@@ -247,7 +251,7 @@ class User2Controller extends Controller
         $type_sales_product = Products::find($order->id_product)->type_sale;
 
         $notification = array(
-            'message' => 'Thêm thông tin thành công!',
+            'message' => 'Bán thành công Sản Phẩm! Hoa hồng của bạn là :'.$hh,
             'alert-type' => 'success'
         );
         return Redirect::back()->with($notification);
@@ -377,6 +381,7 @@ class User2Controller extends Controller
                     return Redirect::back()->with($notification);
                 }
             }
+            $hh = 0;
             if(!is_numeric($create_sell_product)){
                 $notification = array(
                     'message' => 'Kiểm tra lại thông tin ',
@@ -417,6 +422,7 @@ class User2Controller extends Controller
                     'status_kt'=>'wait',
                     'status_admin2'=>'wait',
                 ]);
+                $hh = $order->total_bonus;
             }
         }
         catch (QueryException $ex){
@@ -443,6 +449,7 @@ class User2Controller extends Controller
 
         $notification = array(
                 'message_listcode' => $list_code,
+                'msg_hh'=> $hh,
             );
         return Redirect::back()->with($notification);
     }
@@ -841,7 +848,10 @@ class User2Controller extends Controller
     }
 
     public function notification(){
-        $notification = Notification::all();
+        $notification = Notification::
+            where('user_accept','like','%'.Auth::id().'%')
+            ->where('status','=','wait')
+            ->get();
         return view('user2.notification',compact('notification'));
     }
 
@@ -890,6 +900,7 @@ class User2Controller extends Controller
                 $result .= '<td>' . $value->email_guest . '</td>';
                 $result .= '<td>' . $value->phone_guest . '</td>';
                 $result .= '<td>' . $value->total_product . '</td>';
+                $result .= '<td>' . (number_format($value->total_bonus)) . '</td>';
                 $result .= '<td>' . (number_format($value->total_price)) . '</td>';
                 if ($value->status_kt === 'done' && $value->status_admin2 === 'done') {
                     $result .= '<td style="background-color: blue;font-size: 17px;color: white">Đã Hoàn Thành</td>';
@@ -915,7 +926,7 @@ class User2Controller extends Controller
                         <h3>Không có Thông Tin</h3>
                     </td>';
         }
-        $rs = [$result,$sum_total_product,$sum_total_price];
+        $rs = [$result,$sum_total_product,number_format($sum_total_price),number_format($sum_total_bonus)];
         return $rs;
 
     }
@@ -977,7 +988,7 @@ class User2Controller extends Controller
                         <h3>Không có Thông Tin</h3>
                     </td>';
         }
-        $rs = [$result,$sum_total_product,$sum_total_price,$sum_total_bonus];
+        $rs = [$result,$sum_total_product,number_format($sum_total_price),number_format($sum_total_bonus)];
         return $rs;
 
     }

@@ -139,21 +139,21 @@
                 <div class="container">
                     <div class="row hot_product_inner">
                         <div class="col-lg-6">
-                            <a href="{{route('view_list_emulation_detail',['id'=>1])}}">
+                            <a href="{{route('view_list_emulation_detail',['id'=>$emulation->id])}}">
                             <div class="hot_p_item">
                                 <img class="img-fluid" src="../upload/product/hot-product/post.jpeg" alt="">
                                 <div class="product_text">
-                                    <h4>Chương trình thi đua<br />Tháng 10</h4>
+                                    <h4>Chương trình thi đua<br />{{$emulation->name}}</h4>
                                 </div>
                             </div>
                             </a>
                         </div>
                         <div class="col-lg-6">
-                            <a href="{{route('view_list_emulation_detail',['id'=>5])}}">
+                            <a>
                                 <div class="hot_p_item">
-                                    <img class="img-fluid" src="../upload/product/hot-product/post.jpeg" alt="">
                                     <div class="product_text">
-                                        <h4>Chương trình thi đua<br />Tháng 9</h4>
+                                        <h4>Thời gian thực hiện <br />{{$emulation->time}}</h4>
+                                        <h5 style="padding-left: 25px"><?php echo $emulation->content; ?></h5>
                                     </div>
                                 </div>
                             </a>

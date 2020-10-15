@@ -96,7 +96,8 @@
                     <th style="width:10%">Giá Sản Phẩm</th>
                     <th style="width:10%">Email Khách Hàng</th>
                     <th style="width:10%">Số Điện Thoại Khách Hàng</th>
-                    <th style="width:10%">Số Lượng Sản Phẩm</th>
+                    <th style="width:5%">Số Lượng Sản Phẩm</th>
+                    <th style="width:10%">Hoa Hồng</th>
                     <th style="width:10%">Tổng số Tiền ứng</th>
                     <th style="width:10%">Trạng Thái</th>
                     <th style="width:10%">Action</th>
@@ -111,7 +112,8 @@
                     <th style="width:10%"></th>
                     <th style="width:10%"></th>
                     <th style="width:10%"></th>
-                    <th id="total_price" style="width:10%" >{{$sum_total_product}}</th>
+                    <th id="total_price" style="width:5%" >{{$sum_total_product}}</th>
+                    <th id="total_bonus" style="width:10%">{{number_format($sum_total_bonus)}}</th>
                     <th id="total_product" style="width:10%">{{number_format($sum_total_price)}}</th>
                     <th style="width:10%"></th>
                     <th style="width:10%"></th>
@@ -129,6 +131,7 @@
                             <td>{{$value->email_guest}}</td>
                             <td>{{$value->phone_guest}}</td>
                             <td>{{$value->total_product}}</td>
+                            <td>{{number_format($value->total_bonus)}}</td>
                             <td>{{number_format($value->total_price)}}</td>
                             @if($value->status_kt === 'done' && $value->status_admin2 === 'done')
                                 <td style="background-color: blue;font-size: 17px;color: white">Đã Hoàn Thành</td>
@@ -247,7 +250,7 @@
                         $('#table_body').html(resultData[0]);
                         $('#total_product').html(resultData[2]);
                         $('#total_price').html(resultData[1]);
-                        // $('#total_bonus').html(resultData[3]);
+                        $('#total_bonus').html(resultData[3]);
                         // console.log(resultData);
                     }
                 });

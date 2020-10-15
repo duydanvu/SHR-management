@@ -77,6 +77,7 @@
             @foreach(session()->get('message_listcode') as $values_list_code)
                 <p>{{$values_list_code->code}}<p>
             @endforeach
+            <h4>Mức hoa hồng bạn nhận : {{number_format(session()->get('msg_hh'))}} VND</h4>
         </div>
     @endif
     <div class="product_details">
@@ -137,17 +138,20 @@
                             <i class="fab fa-twitch" style="font-size: 25px"></i>
                             <i class="fab fa-amazon" style="font-size: 25px"></i>
                         </div>
-                        <div class="card_area col-12 pt-2" >
+                        <div class="card_area col-6 pt-2" >
                             <button style="font-size: 20px;background-color: blue;border-radius: 8px;color: white; border: none"
                                     class="main_btn" data-toggle="modal" data-target="#modal-create-store">Bán Sản Phẩm</button>
                         </div>
 
-                        <div class="form-group m-0" >
-                            <input id="linkLandPage" type="text" class="form-control @error('txtLinkLandding')
+                        <div class="card_area col-6" >
+                            <input class="float-left" id="linkLandPage" type="text" class="form-control @error('txtLinkLandding')
                                 is-invalid @enderror" name="txtLinkLandding" value="http://www.example.com/product_1/landdingpage/#bird"  autocomplete="number" required hidden>
                             <button style="font-size: 15px;background-color: #cf5f02;border-radius: 8px;color: white;border: none;
-                            margin-left: 17px;margin-top: 10px"
-                                    onclick="myFunction()">Sao Chép Đường Dẫn Sản Phẩm</button>
+                            margin-top: 10px" onclick="myFunction()">Sao Chép Đường Dẫn Sản Phẩm</button>
+                        </div>
+                        <div class="col-12 pt-3">
+                            <p> Miền Bắc : +84 012345678</p>
+                            <p> Miền Nam : +84 012344321</p>
                         </div>
                     </div>
                 </div>

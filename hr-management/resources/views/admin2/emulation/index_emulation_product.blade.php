@@ -21,14 +21,14 @@
     <div class="card card-outline card-primary-dashboard">
         <meta name="csrf-token-2" content="{{ csrf_token() }}">
         <div >
-            <div class="col-lg-6 m-auto" >
+            <div class="col-lg-10 m-auto" >
                 <div class=" col-lg-12 ">
                     <form class="form-horizontal" action="{{route('add_emulation_product')}}" method="post">
                         <div class="modal-body">
                             @csrf
                             <div class="row">
                                 <div id = "url_image1"></div>
-                                <div class="col-lg-12 col-sm-12">
+                                <div class="col-lg-6 col-sm-6">
                                         <div class="form-group">
                                             <label for="name">Tên Chương Trình</label>
                                             <input id="name" type="text" class="form-control @error('txtName') is-invalid
@@ -92,6 +92,24 @@
                                                 @endforeach
                                             </select>
                                         </div>
+                                    <div class="form-group">
+                                        <label for="name">Thời Gian Áp Dụng</label>
+                                        <input id="time" type="date" class="form-control @error('txtTime') is-invalid
+                                                      @enderror" name="txtTime" value=""  autocomplete="number" required>
+                                        @error('txtTime')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label for="name">Chi tiết Chương trình</label>
+                                        <textarea name="editor1" id="editor1" rows="10" cols="60">
+
+                                            </textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -117,9 +135,9 @@
 @section('js')
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-
+    <script src="{{asset("../ckeditor/ckeditor.js")}}"></script>
     <script>
-
+        CKEDITOR.replace( 'editor1' );
         $("#modal-admin-action-update").on("show.bs.modal", function(e) {
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));

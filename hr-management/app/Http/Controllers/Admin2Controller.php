@@ -91,15 +91,18 @@ class Admin2Controller extends Controller
                 })->rawColumns(['position','action'])->make(true);
         }
         $area = Area::all();
-        return view('admin2.create_acc',compact('area'));
+        $area1 = Area::all();
+        return view('admin2.create_acc',compact('area','area1'));
     }
 
     public function search_user_update($id){
         $user = User::leftJoin('positions','positions.position_id','=','users.position_id')
             ->select('users.id','users.login','users.last_name','users.email','users.dob','users.phone','positions.position_name')
             ->find($id);
-//        dd($user);
-        return view('admin2.update_infor_user')->with(['user'=> $user]);
+        $id_store_user = User::find($id)->store_id;
+        $area_id = Store::find($id_store_user)->area_id;
+        $area =Area::all();
+        return view('admin2.update_infor_user')->with(['user'=> $user,'area_id' => $area_id,'area'=>$area]);
     }
     public function add_account_user(Request $request){
         $validator = \Validator::make($request->all(),[
@@ -110,6 +113,7 @@ class Admin2Controller extends Controller
             'txtPhone' => 'required|max:11',
             'txtDob' => 'required',
             'txtAccUser'=> 'required',
+            'txtArea'=> 'required',
         ]);
         $notification= array(
             'message' => ' Đăng ký  lỗi! Hãy kiểm tra lại thông tin!',
@@ -127,12 +131,13 @@ class Admin2Controller extends Controller
             }else{
                 $position = 3;
             }
+            $store_id = Store::where('area_id','=',$request['txtArea'])->first();
             $create_area = DB::table('users')->insertGetId([
                 'login'=> $request['txtName'],
                 'password' => \Hash::make($request['txtPassword']),
                 'last_name' => $request['txtLName'],
                 'email' => $request['txtEmail'],
-                'store_id' => 1,
+                'store_id' => $store_id->store_id,
                 'department_id' => 1,
                 'service_id' => 1,
                 'contract_id' => 1,
@@ -196,6 +201,7 @@ class Admin2Controller extends Controller
             }else{
                 $position = 3;
             }
+            $store_id = Store::where('area_id','=',$request['txtArea'])->first();
             $update_user = DB::table('users')->where('id','=',$request->id_user)
                 ->update([
                     'login'=>$request->txtName,
@@ -205,6 +211,7 @@ class Admin2Controller extends Controller
                     'phone'=> $request->txtPhone,
                     'dob'=> $request->txtDob,
                     'position_id'=> $position,
+                    'store_id'=> $store_id->store_id,
                 ]);
         }catch (QueryException $ex){
             $notification = array(
@@ -297,7 +304,6 @@ class Admin2Controller extends Controller
         $list_group = Group::all();
         return view('admin2.update_information_auth',compact('list_area','list_group'));
     }
-
 
     public function addUserToGroup($id){
         $user = User::select('id','last_name','email','dob','phone')
@@ -1304,6 +1310,30 @@ class Admin2Controller extends Controller
         return Redirect::back()->with($notification);
     }
 
+    public function viewImagePrduct($id){
+        $image = Products::find($id);
+        return view('admin2.product_update_image',compact('image'));
+    }
+
+    public function updateImagePrduct(Request $request){
+        try {
+            $update_image = Products::where('id', '=', $request['product_id'])->update([
+                'link' => $request['url_image']
+            ]);
+        }catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Cập nhật ảnh lỗi, Vui lòng nhập lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Thay đổi ảnh đại diện thành cônng',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+
     public function searchProduct($id){
         $product = Products::find($id);
         $supplier = Supplier::all();
@@ -2167,6 +2197,7 @@ class Admin2Controller extends Controller
         $validator = \Validator::make($request->all(),[
             'txtName' => 'required',
             'txtQdtc' => 'required',
+            'txtTime' => 'required',
         ]);
         $notification= array(
             'message' => ' Nhập thông tin lỗi! Hãy kiểm tra lại thông tin!',
@@ -2184,6 +2215,8 @@ class Admin2Controller extends Controller
                     'qdtc' => $request['txtQdtc'],
                     'total'=> $request['txtSl_min'],
                     'revenue'=> $request['txtDs_min'],
+                    'time'=> $request['txtTime'],
+                    'content'=> $request['editor1'],
                 ]);
 
             if(!is_numeric($create_pdu)){
@@ -2200,6 +2233,7 @@ class Admin2Controller extends Controller
                 $rs_str_reward = substr($str_reward,1,strlen($str_reward)-1);
                 $insert_emulation_product = DB::table('emulation_products')->insert([
                     'id_emulation'=>$create_pdu,
+                    'id_product'=> 0,
                     'id_reward'=>$rs_str_reward,
                 ]);
             }
@@ -2259,6 +2293,8 @@ class Admin2Controller extends Controller
                         'qdtc' => $request['txtQdtc'],
                         'total'=> $request['txtSl_min'],
                         'revenue'=> $request['txtDs_min'],
+                        'time'=> $request['txtTime'],
+                        'content'=> $request['editor1'],
                     ]);
             $str_reward = '';
 
@@ -2292,6 +2328,13 @@ class Admin2Controller extends Controller
         $list_id_product = EmulationProducts::find($id);
         $arr = explode(',',$list_id_product->id_product);
         return view('admin2.emulation.list_product_add_emulation',compact('product','supplier','id','arr'));
+    }
+
+    public function addGroupToEmulation($id){
+        $group = Group::all();
+        $list_id_group = Emulation::find($id)->id_group;
+        $arr = explode(',',$list_id_group);
+        return view('admin2.emulation.list_group_add_emulation',compact('group','id','arr'));
     }
 
     public function updateAddProductEmulation(Request $request){
@@ -2339,6 +2382,43 @@ class Admin2Controller extends Controller
         }catch (QueryException $ex){
             $notification = array(
                 'message' => 'Thêm sản phẩm lỗi, kiểm tra lại ',
+                'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $notification = array(
+            'message' => 'Thực hiện thành công!',
+            'alert-type' => 'success'
+        );
+        return Redirect::back()->with($notification);
+    }
+    public function updateAddGroupEmulation(Request $request){
+        $arr = $request->toArray();
+        $arr_id_group = explode('_',$request->id_emulation_product);
+        $id_goal_product = $arr_id_group[0];
+        $arr_id = '';
+        foreach ($arr as $value){
+            if(is_numeric($value)){
+                $arr_id .= ','.$value;
+            }
+        }
+        try {
+            if (strlen($arr_id) == 0) {
+                $update_gr_eml = DB::table('emulations')
+                    ->where('id', '=', $id_goal_product)
+                    ->update([
+                        'id_group' => null,
+                    ]);
+            } else {
+                $update_gr_eml = DB::table('emulations')
+                    ->where('id', '=',  $id_goal_product)
+                    ->update([
+                        'id_group' => substr($arr_id, 1),
+                    ]);
+            }
+        }catch (QueryException $ex){
+            $notification = array(
+                'message' => 'Thêm Nhóm lỗi, kiểm tra lại ',
                 'alert-type' => 'error'
             );
             return Redirect::back()->with($notification);

@@ -57,6 +57,15 @@
             @enderror
         </div>
         <div class="form-group">
+            <meta name="csrf-token2" content="{{ csrf_token() }}">
+            <label for="exampleInputEmail1">Khu Vực</label>
+            <select id="area_search" name = "txtArea" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
+                @foreach ($area as $area)
+                    <option value="{{$area['id']}}"  @if($area_id == $area['id']) selected @endif>{{$area['area_name']}}-{{$area['area_description']}}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
             <label for="name">Người Dùng</label>
             <div class="form-check">
                 <input id="user1" type="radio" class="form-check-input" name="txtAccUser" value="user1"  autocomplete="number" @if($user->position_name == 'ASM') checked @endif required>

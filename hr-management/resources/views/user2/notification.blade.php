@@ -113,6 +113,11 @@
                             <h3>Thông báo</h3>
                         </tr>
                         <tbody id="table_body">
+                        <tr style="font-weight: bolder; color: blue">
+                            <td colspan="2"> Chọn Tất Cả <p></p> <input id="selectAll" type="checkbox"> </td>
+                            <td>Nội Dung</td>
+                            <td>Thời Gian</td>
+                        </tr>
                         @if(count($notification) > 0)
                             @foreach($notification as $key => $value)
                                 <tr>
@@ -161,6 +166,17 @@
     <script src="../vendor/counter-up/jquery.counterup.js"></script>
     <script src="../js/mail-script.js"></script>
     <script src="../js/theme.js"></script>
+    <script>
+        $("#selectAll").click(function() {
+            $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
+        });
+
+        $("input[type=checkbox]").click(function() {
+            if (!$(this).prop("checked")) {
+                $("#selectAll").prop("checked", false);
+            }
+        });
+    </script>
     <script>
         $(function () {
             $("#example1").DataTable({

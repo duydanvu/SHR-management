@@ -87,7 +87,7 @@
             <div class="row">
                 @foreach($arr as $key_name=> $value)
                     @if(sizeof($value) > 0)
-                <div class="col-md-6">
+                    <div class="col-md-6">
                         <div class="card card-danger">
                             <div class="col-lg-12">
                                 <div class="blog_right_sidebar">
@@ -139,7 +139,36 @@
                         <!-- /.card -->
                 <!-- /.col (RIGHT) -->
             </div>
-                @endif
+                    @else
+                        <div class="col-md-6">
+                            <div class="card card-danger">
+                                <div class="col-lg-12">
+                                    <div class="blog_right_sidebar">
+                                        <aside class="single_sidebar_widget post_category_widget">
+                                            <h4 class="widget_title">{{$key_name}}</h4>
+                                            <ul class="list cat-list">
+                                                <li>
+                                                    <a class="d-flex ">
+                                                        <p class="col-2" style="font-weight: bolder">STT</p>
+                                                        <p class="col-3" style="font-weight: bolder">Email</p>
+                                                        <p class="col-2" style="font-weight: bolder">Tên</p>
+                                                        <p class="col-2" style="font-weight: bolder">Sản Lượng</p>
+                                                        <p class="col-3" style="font-weight: bolder">Doanh Thu</p>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a> Không có thông tin</a>
+                                                </li>
+                                            </ul>
+                                        </aside>
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                            <!-- /.col (RIGHT) -->
+                        </div>
+                    @endif
                 @endforeach
             <!-- /.row -->
         </div><!-- /.container-fluid -->

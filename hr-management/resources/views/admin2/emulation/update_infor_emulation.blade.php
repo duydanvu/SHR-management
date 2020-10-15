@@ -3,7 +3,7 @@
 <div class="row">
     <div id = "url_image1"><input name="id_emulation_pdu" value="{{$emula['id']}}" hidden></div>
     <div id = "url_image1"><input name="id_emulation" value="{{$emula['id_emulation']}}" hidden></div>
-    <div class="col-lg-12 col-sm-12">
+    <div class="col-lg-6 col-sm-6">
         <div class="form-group">
             <label for="name">Tên Chương Trình</label>
             <input id="name" type="text" class="form-control @error('txtName') is-invalid
@@ -55,6 +55,29 @@
                 @endforeach
             </select>
         </div>
+        <div class="form-group">
+            <label for="name">Thời Gian Áp Dụng</label>
+            <input id="time" type="date" class="form-control  @error('txtTime') is-invalid
+            @enderror" name="txtTime" value="{{$emula['time']}}"  autocomplete="number" required>
+            @error('txtTime')
+            <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+            @enderror
+        </div>
+    </div>
+    <div class="col-lg-6 col-sm-6">
+        <div class="form-group">
+            <label for="name">Chi tiết Chương trình</label>
+            <textarea name="editor1" id="editor1" rows="10" cols="60" >
+            {{$emula['content']}}
+            </textarea>
+        </div>
     </div>
 </div>
 @endforeach
+
+<script src="{{asset("../ckeditor/ckeditor.js")}}"></script>
+<script>
+    CKEDITOR.replace( 'editor1' );
+</script>

@@ -117,8 +117,10 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::post('/admin2/add_emulation_product','Admin2Controller@addEmulationProduct')->name('add_emulation_product');
     Route::get('/admin2/list_emulation_product','Admin2Controller@listEmulationProduct')->name('list_emulation_product');
     Route::get('/admin2/add_product_to_emulation/{id}','Admin2Controller@addProductToEmulation')->name('add_product_to_emulation');
+    Route::get('/admin2/add_group_to_emulation/{id}','Admin2Controller@addGroupToEmulation')->name('add_group_to_emulation');
     Route::get('/admin2/edit_information_emulation/{id}','Admin2Controller@editInformationEmulation')->name('edit_information_emulation');
     Route::post('/admin2/update_add_product_emulation','Admin2Controller@updateAddProductEmulation')->name('update_add_product_emulation');
+    Route::post('/admin2/update_add_group_emulation','Admin2Controller@updateAddGroupEmulation')->name('update_add_group_emulation');
     Route::post('/admin2/update_information_product_emulation','Admin2Controller@updateInformationProductEmulation')
         ->name('update_information_product_emulation');
     Route::get('/admin2/list_product_detail_to_emulation/{id}','Admin2Controller@listProductDetailEmulation')->name('list_product_detail_to_emulation');
@@ -144,6 +146,8 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::post('/admin2/product/add','Admin2Controller@addProduct')->name('add_product');
     Route::get('/admin2/product/{id}','Admin2Controller@searchProduct')->name('search_product');
     Route::get('/admin2/product/update/{id}','Admin2Controller@updateStatusProduct')->name('update_status_product');
+    Route::get('/admin2/product/search_image/{id}','Admin2Controller@viewImagePrduct')->name('search_image_product');
+    Route::post('/admin2/product/update_image','Admin2Controller@updateImagePrduct')->name('update_image_product');
 
     //report admin2
     Route::get('/admin2/report_sale','Admin2Controller@reportSale')->name('report_sale_product');

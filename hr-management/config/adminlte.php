@@ -601,7 +601,7 @@ return [
 //                    ]
 //                ],
                 [
-                    'text'    => 'Quản lý mục tiêu',
+                    'text'    => 'Mục tiêu thi đua',
                     'icon'    => 'fas fa-clipboard-list',
                     'url'     => '/user2/view_manage_goal',
                     'can'     => 'user_lv2',
@@ -624,7 +624,7 @@ return [
                             'can'     => 'user_lv2',
                         ] ,
                         [
-                            'text'    => 'Thi Đua',
+                            'text'    => 'Bảng Xếp Hạng',
                             'url'     => 'analysis/emulation-product',
                             'can'     => 'user_lv2',
                         ] ,

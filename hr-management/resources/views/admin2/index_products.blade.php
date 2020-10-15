@@ -77,8 +77,7 @@
                 <tr>
                     <th style="width:5%">#</th>
                     <th style="width:5%" class="noSort">Action</th>
-                    <th style="width:5%" >Nhập Sản Phẩm</th>
-                    <th style="width:5%" >Trả Sản Phẩm</th>
+                    <th style="width:10%" >Ảnh Sản Phẩm</th>
                     <th style="width:10%">Tên Sản Phẩm</th>
                     <th style="width:10%">Mã Sản Phẩm</th>
                     <th style="width:10%">Loại Sản Phẩm</th>
@@ -110,6 +109,17 @@
                                            data-toggle="modal" data-target="#modal-admin-action-update" class="btn dropdown-item">
                                             <i class="fas fa-edit"> Sửa</i>
                                         </a>
+                                        <a href="{{route('search_image_product',['id'=>$value->id])}}" data-remote="false"
+                                           data-toggle="modal" data-target="#modal-anh-dai-dien-san-pham" class="btn dropdown-item">
+                                            <i class="fas fa-edit"> Sửa Ảnh Đại Diện</i>
+                                        </a>
+                                        <a  href="{{route('tim_san_pham_de_nhap',['id'=>$value->id])}}" data-remote="false"
+                                            data-toggle="modal" data-target="#modal-nhap-san-pham" class="btn dropdown-item">
+                                            <i class="fas fa-edit">Nhập Hàng</i>
+                                        </a>
+                                        <a  href="{{route('tim_san_pham_de_tra',['id'=>$value->id])}}" class="btn dropdown-item"
+                                            data-remote="false" data-toggle="modal" data-target="#modal-tra-san-pham">
+                                            <i class="fas fa-edit">Trả Hàng</i></a>
                                         @if($value->status == 'active')
                                             <a href="{{route('update_status_product',['id'=>$value->id])}}"  class="btn dropdown-item">
                                                 <i class="fas fa-users"> Tạm Dừng</i>
@@ -124,10 +134,7 @@
                                 </div>
                             </td>
                             </td>
-                            <td><a type="button" class="btn btn-info " href="{{route('tim_san_pham_de_nhap',['id'=>$value->id])}}"
-                                   data-remote="false" data-toggle="modal" data-target="#modal-nhap-san-pham">Nhập Hàng</a></td>
-                            <td><a type="button" class="btn btn-info " href="{{route('tim_san_pham_de_tra',['id'=>$value->id])}}"
-                                   data-remote="false" data-toggle="modal" data-target="#modal-tra-san-pham">Trả Hàng</a></td>
+                            <td><img src="..{{$value->link}}" style="width: 60px;height: 40px"></td>
                             <td>{{$value->name}}</td>
                             <td>{{$value->product_code}}</td>
                             <td>{{$value->type}}</td>
@@ -147,8 +154,6 @@
                                            data-remote="false" data-toggle="modal" data-target="#modal-chi-tiet-san-pham">{{$value_sum}}</a>
                                     @endif
                                 @endforeach</td>
-{{--                            <td>{{$value->cooperation}}</td>--}}
-{{--                            <td>{{$value->contract}}</td>--}}
                         </tr>
                     @endforeach
                 @else
@@ -163,7 +168,7 @@
         <!-- /.card-body -->
     </div>
 
-    {{--    --}}{{-- modal --}}
+    {{-- modal --}}
     <div class="modal fade" id="modal-admin-action-update">
         <div class="modal-dialog" style="max-width: 1200px">
             <div class="modal-content">
@@ -209,10 +214,28 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-
-    {{--     modal --}}
-
-    {{--     modal --}}
+    <div class="modal fade" id="modal-anh-dai-dien-san-pham">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Ảnh Đại Diện</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form action="{{route('update_image_product')}}" method="post">
+                    <div class="modal-body">
+                        @csrf
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
     <div class="modal fade"  id="modal-create-member" >
         <div class="modal-dialog col-lg-8" style="max-width: 1200px">
             <div class="modal-content col-lg-12 ">
@@ -399,6 +422,7 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+    {{--     modal --}}
 
 @stop
 
@@ -418,6 +442,10 @@
     <script>
 
         $("#modal-admin-action-update").on("show.bs.modal", function(e) {
+            var link = $(e.relatedTarget);
+            $(this).find(".modal-body").load(link.attr("href"));
+        });
+        $("#modal-anh-dai-dien-san-pham").on("show.bs.modal", function(e) {
             var link = $(e.relatedTarget);
             $(this).find(".modal-body").load(link.attr("href"));
         });
@@ -443,14 +471,14 @@
         });
 
         $(function () {
-            // $("#example1").DataTable({
-            //     aoColumnDefs: [
-            //         {
-            //             bSortable: false,
-            //             aTargets: ['noSort']
-            //         } // Disable sorting on columns marked as so
-            //     ]
-            // });
+            $("#example1").DataTable({
+                aoColumnDefs: [
+                    {
+                        bSortable: false,
+                        aTargets: ['noSort']
+                    } // Disable sorting on columns marked as so
+                ]
+            });
             // fix table
             $("#example1").parent().css({"overflow": "auto"});
         });
