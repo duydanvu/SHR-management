@@ -186,6 +186,9 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::post('/admin2/search_list_acc_admin_lv2','Admin2Controller@searchListAccAdminLv2')->name('search_list_acc_with_area_name');
     Route::post('/admin2/searchListProduct','Admin2Controller@searchListProduct')->name('search_list_product_report');
     Route::post('/admin2/ajaxSearchReportSale','Admin2Controller@ajaxSearchReportSale')->name('search_report_sale_ad2');
+    Route::post('/admin2/ajaxSearchReportHoanUng','Admin2Controller@searchReportHoanUng')->name('search_report_hoan_ung');
+    Route::post('/admin2/searchReportHoanUngUser2','User2Controller@searchReportHoanUngUser2')->name('search_report_hoan_ung_user2');
+    Route::post('/admin2/search_report_hoa_hong_user2','User2Controller@searchReportHoaHongUser2')->name('search_report_hoa_hong_user2');
 
 
     Route::post('/admin2/search_han_muc_thu_tien','Admin2Controller@search_han_muc_thu_tien')->name('search_han_muc_thu_tien');

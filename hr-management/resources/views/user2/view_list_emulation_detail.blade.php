@@ -99,33 +99,17 @@
                         <div class="col-lg-9 col-md-9 blog_details">
                             <h2>{{$emulation_detail->name}}</h2>
                             <p class="excert">
-                                Chi tiết về chương trình thi đua : MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
+                                Chi tiết về chương trình thi đua :
                             </p>
-                            <p>
-                                Boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction of the camp price. However, who has the willpower to actually sit through a self-imposed MCSE training. who has the willpower to actually sit through a self-imposed
-                            </p>
+                            @foreach($list_reward as $value_rw)
+                                <p class="excert">
+                                    Giải Thưởng : {{$value_rw->name}}
+                                </p>
+                                <p> Số Lượng Giải : {{$value_rw->quantity}}</p>
+                                <p> Giá trị giải thưởng : {{number_format($value_rw->values)}}</p>
+                            @endforeach
                         </div>
-                        <div class="col-lg-12">
-                            <div class="quotes">
-                                MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction of the camp price. However, who has the willpower to actually sit through a self-imposed MCSE training.
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <img class="img-fluid" src="../upload/product/hot-product/hot-p-1.jpg" alt="">
-                                </div>
-                                <div class="col-6">
-                                    <img class="img-fluid" src="../upload/product/hot-product/hot-p-1.jpg" alt="">
-                                </div>
-                                <div class="col-lg-12 mt-25">
-                                    <p>
-                                        MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction of the camp price. However, who has the willpower.
-                                    </p>
-                                    <p>
-                                        MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction of the camp price. However, who has the willpower.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
                 <div class="col-lg-4">

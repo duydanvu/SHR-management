@@ -372,13 +372,27 @@ return [
 ]
                 ],
                 [
-                    'text'    => 'Tạo  người dùng ',
+                    'text'    => 'Người Dùng ',
                     'icon'    => 'fas fa-clipboard-list',
                     'url'     => 'admin2/view',
-                    'can'     => 'admin_lv2'
+                    'can'     => 'admin_lv2',
+                    'submenu' => [
+                        [
+                            'text'    => 'Tạo  người dùng ',
+                            'url'     => 'admin2/view',
+                            'can'     => 'admin_lv2',
+                        ],
+                        [
+                            'text'    => 'Quản lý Người Dùng',
+                            'url'     => '/admin2/lock_acc_user',
+                            'can'     => 'admin_lv2'
+                        ],
+
+                    ],
+
                 ],
                 [
-                    'text'    => 'Quản lý nhà cung cấp',
+                    'text'    => 'Nhà cung cấp',
                     'icon'    => 'fas fa-clipboard-list',
                     'url'     => '/admin2/supplier',
                     'can'     => 'admin_lv2'
@@ -408,7 +422,7 @@ return [
                     ]
                 ],
                 [
-                    'text'    => 'Quản lý Kho',
+                    'text'    => 'Kho',
                     'icon'    => 'fas fa-clipboard-list',
                     'can'     => 'admin_lv2',
                     'submenu' =>[
@@ -421,6 +435,11 @@ return [
                             'text'    => 'Xác Nhận Sản Phẩm',
                             'url'     => '/admin2/tiep_nhan_san_pham',
                             'can'     => 'admin_lv2',
+                        ],
+                        [
+                            'text'    => 'Quản lý Kho',
+                            'url'     => '/admin2/report_warehouse',
+                            'can'     => 'admin_lv2'
                         ],
                     ]
                 ],
@@ -465,12 +484,12 @@ return [
                     ]
                 ],
                 [
-                    'text'    => 'Giao mục tiêu bán hàng',
+                    'text'    => 'Mục tiêu bán hàng',
                     'icon'    => 'fas fa-clipboard-list',
                     'can'     => 'admin_lv2',
                     'submenu' => [
                         [
-                            'text'    => 'Giao mục tiêu bán hàng',
+                            'text'    => 'Tạo mục tiêu',
                             'url'     => '/admin2/goal_product',
                             'can'     => 'admin_lv2'
                         ],
@@ -482,7 +501,7 @@ return [
                     ]
                 ],
                 [
-                    'text'    => 'Quản lý Nhóm',
+                    'text'    => 'Nhóm',
                     'icon'    => 'fas fa-clipboard-list',
                     'url'     => 'admin2/group',
                     'can'     => 'admin_lv2'
@@ -494,13 +513,7 @@ return [
                     'can'     => 'admin_lv2'
                 ],
                 [
-                    'text'    => 'Quản lý Người Dùng',
-                    'icon'    => 'fas fa-clipboard-list',
-                    'url'     => '/admin2/lock_acc_user',
-                    'can'     => 'admin_lv2'
-                ],
-                [
-                    'text'    => 'Quản lý Banner',
+                    'text'    => 'Banner',
                     'icon'    => 'fas fa-clipboard-list',
                     'can'     => 'admin_lv2',
                     'submenu' => [
@@ -529,18 +542,13 @@ return [
                             'can'     => 'admin_lv2'
                         ],
                         [
-                            'text'    => 'Quản lý Kho',
-                            'url'     => '/admin2/report_warehouse',
+                            'text'    => 'Quản lý Hoàn Ứng',
+                            'url'     => 'admin2/danh_sach_hoan_ung',
                             'can'     => 'admin_lv2'
-                        ]
+                        ],
                     ]
                 ],
-                [
-                    'text'    => 'Quản lý Hoàn Ứng',
-                    'icon'    => 'fas fa-clipboard-list',
-                    'url'     => 'admin2/danh_sach_hoan_ung',
-                    'can'     => 'admin_lv2'
-                ],
+
 //                [
 //                    'text'    => 'Truy cập Thông tin cá nhân',
 //                    'icon'    => 'fas fa-clipboard-list',
