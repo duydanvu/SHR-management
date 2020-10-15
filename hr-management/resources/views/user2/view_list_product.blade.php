@@ -69,7 +69,7 @@
         <section class="home_banner_area">
             <div class="banner_inner d-flex align-items-center">
                 <div class="container">
-                    @if(count($banner) == 1 )
+                    @if(count($banner) >= 1 )
                         @foreach($banner as $value_1)
                             <div class="banner_content" style="padding-top: 10px">
                                 <div class="row">
