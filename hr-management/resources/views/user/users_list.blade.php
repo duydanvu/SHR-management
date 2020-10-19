@@ -1038,7 +1038,7 @@
 
                     ajax: {
                         url: "{{ route('ajaxuser.index') }}",
-                        data:{area:area,store_search:store_search,name_user :name_user,
+                        data:{area:area,company_search:company_search,store_search:store_search,name_user :name_user,
                             position_search : position_search,department_search:department_search,service_search : service_search,
                             status_action_user: status_action_user, contract_search : contract_search,start_date :start_date,end_date : end_date}
                     },
@@ -1068,6 +1068,7 @@
             }
             $('#fillter_date').click(function () {
                 let area = $("#area_search").val();
+                let company_search = $("#company_search").val();
                 let store_search = $('#store_search').val();
                 let name_user = $('#name_user').val();
                 let position_search = $('#position_search').val();
@@ -1079,7 +1080,7 @@
                 let end_date = $('#end_date').val();
                 if(area != ''){
                     $('#example1').DataTable().destroy();
-                    fill_datatable(area,store_search,name_user,position_search,department_search,service_search,
+                    fill_datatable(area,company_search,store_search,name_user,position_search,department_search,service_search,
                         status_action_user,contract_search,start_date,end_date);
                 }
             });

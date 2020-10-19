@@ -10,6 +10,7 @@ use App\Services;
 use App\Store;
 use App\Timesheet;
 use App\User;
+use Carbon\Carbon;
 use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -1045,6 +1046,60 @@ class RequestController extends Controller
         }else{
             $notification = array(
                 'message' => 'Thêm thông tin không thành công!',
+                'alert-type' => 'success'
+            );
+        }
+        return Redirect::back()->with($notification);
+    }
+    public function timeSheetIn(){
+        $data_request_update =DB::table('timesheets')->insertGetId([
+            'user_id'=>Auth::id(),
+            'date'=>Carbon::today('Asia/Ho_Chi_Minh'),
+            'logtime'=>'present',
+            'status'=>'done',
+            'start_time'=>Carbon::now('Asia/Ho_Chi_Minh'),
+            'end_time'=>null
+        ]);
+
+        if($data_request_update > 0){
+            $notification = array(
+                'message' => 'Chấm công vào thành công lúc : '.Carbon::now('Asia/Ho_Chi_Minh').'!',
+                'alert-type' => 'success'
+            );
+        }else{
+            $notification = array(
+                'message' => 'Chấm Công Thất Bại!',
+                'alert-type' => 'success'
+            );
+        }
+        return Redirect::back()->with($notification);
+    }
+    public function timeSheetOut(){
+        $query_search = Timesheet::where('date','=',Carbon::today('Asia/Ho_Chi_Minh'))->where('user_id','=',Auth::id())->get();
+        if(count($query_search) > 0) {
+            foreach ($query_search as $value) {
+                $id = $value->id;
+            }
+        }else{
+            $notification = array(
+            'message' => 'Hay Chấm Công Vào Trước Khi Chấm Công Ra!',
+            'alert-type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
+        $data_request_update =DB::table('timesheets')->where('id','=',$id)
+            ->update([
+            'end_time'=>Carbon::now('Asia/Ho_Chi_Minh'),
+        ]);
+
+        if($data_request_update > 0){
+            $notification = array(
+                'message' => 'Chấm công ra thành công lúc : '.Carbon::now('Asia/Ho_Chi_Minh').'!',
+                'alert-type' => 'success'
+            );
+        }else{
+            $notification = array(
+                'message' => 'Chấm Công Thất Bại!',
                 'alert-type' => 'success'
             );
         }

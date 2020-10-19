@@ -401,6 +401,9 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::post('/timekeeping/add_time_sheets_cht','RequestController@addTimesheetCht')->name('add_logtime_cht');
     Route::get('/timekeeping/view_request_logtime/{id}','RequestController@viewRequestStaff')->name('view_request_staff');
     Route::post('/timekeeping/request/update_with_request','RequestController@updateWithRequest')->name('add_request_with_log_time_sheet');
+    Route::get('/timekeeping/request/logtimesheet_in','RequestController@timeSheetIn')->name('time_sheet_in');
+    Route::get('/timekeeping/request/logtimesheet_out','RequestController@timeSheetOut')->name('time_sheet_out');
+
     Route::post('/timekeeping/time_sheet/update_time_sheet','RequestController@updaeTimeSheetStoreManage')->name('update_time_sheet_for_store_manage');
     Route::get('/request/timesheet/update_request/{id}','RequestController@updateTimesheetWithTime')->name('update_timesheet_with_request_staff');
     Route::post('/request/timesheet/update_request/update_status','RequestController@updateStatusTimesheetWithTime')->name('update_request_with_log_time_sheet');

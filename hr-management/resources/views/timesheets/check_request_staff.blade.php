@@ -47,14 +47,19 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-{{--            <div class="row">--}}
-{{--                <div class="col-md-3">--}}
-{{--                    <div class="form-group">--}}
-{{--                        <label for="exampleInputEmail1"></label>--}}
-{{--                        <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Add New Request </button>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1"></label>
+                        <a class="btn btn-primary" href="{{route('time_sheet_in')}}" id = "1" type="button" ><i class="fas fa-plus-circle"></i> Chấm Công Vào </a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <a class="btn btn-primary" href="{{route('time_sheet_out')}}" id = "2" type="button" ><i class="fas fa-plus-circle"></i> Chấm Công Ra </a>
+                    </div>
+                </div>
+            </div>
             <table id="example1" class="table table-bordered table-striped " style="width: 100%">
                 <thead>
                 <tr>
