@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Area;
+use App\Contract;
+use App\Department;
+use App\Position;
+use App\Services;
+use App\Store;
 use App\User;
 use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Http\Request;
@@ -30,7 +35,7 @@ class AreaController extends Controller
         $user_gdv = User::join('stores','users.store_id','=','stores.store_id')
             ->join('area','stores.area_id','=','area.id')
             ->select('area.id','area.area_name',DB::raw('COUNT(users.position_id) AS sum_gdv'))
-            ->where('position_id','=',3)
+            ->where('position_id','=',4)
             ->groupBy('area.area_name','area.id')
             ->get();
         foreach ($area as $value){
@@ -69,7 +74,7 @@ class AreaController extends Controller
         $user_ct = User::join('stores','users.store_id','=','stores.store_id')
             ->join('area','stores.area_id','=','area.id')
             ->select('area.id','area.area_name',DB::raw('COUNT(users.contract_id) AS sum_ct'))
-            ->where('contract_id','=',1)
+            ->where('position_id','=',8)
             ->groupBy('area.id','area.area_name')
             ->get();
         foreach ($area as $value){
@@ -82,7 +87,7 @@ class AreaController extends Controller
         $user_tv = User::join('stores','users.store_id','=','stores.store_id')
             ->join('area','stores.area_id','=','area.id')
             ->select('area.id','area.area_name',DB::raw('COUNT(users.contract_id) AS sum_tv'))
-            ->where('contract_id','=',2)
+            ->where('position_id','=',9)
             ->groupBy('area.id','area.area_name')
             ->get();
         foreach ($area as $value){
@@ -94,6 +99,182 @@ class AreaController extends Controller
         }
 //        dd($area);
         return view('area.area_list',compact('area'));
+    }
+
+    public function detail_GDV_of_area($id){
+        $store = Store::all();
+        $position = Position::all();
+        $contract = Contract::all();
+        $department = Department::all();
+        $service = Services::all();
+        $store1 = Store::all();
+        $position1 = Position::all();
+        $contract1 = Contract::all();
+        $department1 = Department::all();
+        $service1 = Services::all();
+        $area = Area::all();
+        $user = User::join('stores','users.store_id','=','stores.store_id')
+            ->join('positions','users.position_id','=','positions.position_id')
+            ->join('area','area.id','=','stores.area_id')
+            ->select('users.*','stores.store_name')
+            ->where('area.id','=',$id)
+            ->where('positions.position_name','=','GDV')
+            ->get();
+        $company_name = Area::find($id)->area_name;
+        return view('home_detail.detail_company')->with([
+            'user'=>$user,
+            'store'=>$store,
+            'position'=>$position,
+            'contract'=>$contract,
+            'department'=>$department,
+            'service' =>$service,
+            'store_name'=>'Chi Nhánh - '.$company_name,
+            'store1'=>$store1,
+            'position1'=>$position1,
+            'contract1'=>$contract1,
+            'department1'=>$department1,
+            'service1' =>$service1,
+            'area' => $area]);
+    }
+    public function detail_AM_of_area($id){
+        $store = Store::all();
+        $position = Position::all();
+        $contract = Contract::all();
+        $department = Department::all();
+        $service = Services::all();
+        $store1 = Store::all();
+        $position1 = Position::all();
+        $contract1 = Contract::all();
+        $department1 = Department::all();
+        $service1 = Services::all();
+        $area = Area::all();
+        $user = User::join('stores','users.store_id','=','stores.store_id')
+            ->join('positions','users.position_id','=','positions.position_id')
+            ->join('area','area.id','=','stores.area_id')
+            ->select('users.*','stores.store_name')
+            ->where('area.id','=',$id)
+            ->where('positions.position_name','=','AM')
+            ->get();
+        $company_name = Area::find($id)->area_name;
+        return view('home_detail.detail_company')->with([
+            'user'=>$user,
+            'store'=>$store,
+            'position'=>$position,
+            'contract'=>$contract,
+            'department'=>$department,
+            'service' =>$service,
+            'store_name'=>'Chi Nhánh - '.$company_name,
+            'store1'=>$store1,
+            'position1'=>$position1,
+            'contract1'=>$contract1,
+            'department1'=>$department1,
+            'service1' =>$service1,
+            'area' => $area]);
+    }
+    public function detail_KAM_of_area($id){
+        $store = Store::all();
+        $position = Position::all();
+        $contract = Contract::all();
+        $department = Department::all();
+        $service = Services::all();
+        $store1 = Store::all();
+        $position1 = Position::all();
+        $contract1 = Contract::all();
+        $department1 = Department::all();
+        $service1 = Services::all();
+        $area = Area::all();
+        $user = User::join('stores','users.store_id','=','stores.store_id')
+            ->join('positions','users.position_id','=','positions.position_id')
+            ->join('area','area.id','=','stores.area_id')
+            ->select('users.*','stores.store_name')
+            ->where('area.id','=',$id)
+            ->where('positions.position_name','=','KAM')
+            ->get();
+        $company_name = Area::find($id)->area_name;
+        return view('home_detail.detail_company')->with([
+            'user'=>$user,
+            'store'=>$store,
+            'position'=>$position,
+            'contract'=>$contract,
+            'department'=>$department,
+            'service' =>$service,
+            'store_name'=>'Chi Nhánh - '.$company_name,
+            'store1'=>$store1,
+            'position1'=>$position1,
+            'contract1'=>$contract1,
+            'department1'=>$department1,
+            'service1' =>$service1,
+            'area' => $area]);
+    }
+    public function detail_NVBH_of_area($id){
+        $store = Store::all();
+        $position = Position::all();
+        $contract = Contract::all();
+        $department = Department::all();
+        $service = Services::all();
+        $store1 = Store::all();
+        $position1 = Position::all();
+        $contract1 = Contract::all();
+        $department1 = Department::all();
+        $service1 = Services::all();
+        $area = Area::all();
+        $user = User::join('stores','users.store_id','=','stores.store_id')
+            ->join('positions','users.position_id','=','positions.position_id')
+            ->join('area','area.id','=','stores.area_id')
+            ->select('users.*','stores.store_name')
+            ->where('area.id','=',$id)
+            ->where('positions.position_name','=','NVBH')
+            ->get();
+        $company_name = Area::find($id)->area_name;
+        return view('home_detail.detail_company')->with([
+            'user'=>$user,
+            'store'=>$store,
+            'position'=>$position,
+            'contract'=>$contract,
+            'department'=>$department,
+            'service' =>$service,
+            'store_name'=>'Chi Nhánh - '.$company_name,
+            'store1'=>$store1,
+            'position1'=>$position1,
+            'contract1'=>$contract1,
+            'department1'=>$department1,
+            'service1' =>$service1,
+            'area' => $area]);
+    }
+    public function detail_NVDT_of_area($id){
+        $store = Store::all();
+        $position = Position::all();
+        $contract = Contract::all();
+        $department = Department::all();
+        $service = Services::all();
+        $store1 = Store::all();
+        $position1 = Position::all();
+        $contract1 = Contract::all();
+        $department1 = Department::all();
+        $service1 = Services::all();
+        $area = Area::all();
+        $user = User::join('stores','users.store_id','=','stores.store_id')
+            ->join('positions','users.position_id','=','positions.position_id')
+            ->join('area','area.id','=','stores.area_id')
+            ->select('users.*','stores.store_name')
+            ->where('area.id','=',$id)
+            ->where('positions.position_name','=','NVDT')
+            ->get();
+        $company_name = Area::find($id)->area_name;
+        return view('home_detail.detail_company')->with([
+            'user'=>$user,
+            'store'=>$store,
+            'position'=>$position,
+            'contract'=>$contract,
+            'department'=>$department,
+            'service' =>$service,
+            'store_name'=>'Chi Nhánh - '.$company_name,
+            'store1'=>$store1,
+            'position1'=>$position1,
+            'contract1'=>$contract1,
+            'department1'=>$department1,
+            'service1' =>$service1,
+            'area' => $area]);
     }
 
     public function addNewArea(Request $request){

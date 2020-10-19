@@ -18,35 +18,66 @@ Route::get('/','Auth\CustomAuthController@showLoginForm')->name('login');
 Route::post('/','Auth\CustomAuthController@login')->name('login_process');
 Route::post('/logout','Auth\CustomAuthController@logout')->name('logout');
 
+
+// check login truoc khi truy cap.
 Route::group(['middleware' => ['web','checkLogOut']],function (){
+    // route vao trang chu cua web quan ly nhan su
     Route::get('/home', 'HomeController@index')->name('dashboard');
+    // route vao trang tru cua web ban hang noi bo
     Route::get('/home1', 'HomeController@index_system')->name('dashboard2');
 
-    //route home quan ly nhan su
-    Route::get('/home/detail_staff_of_company/{id}','HomeController@detail_nv_of_company')->name('detail_nv_of_company');
-    Route::get('/home/detail_KAM_of_company/{id}','HomeController@detail_KAM_of_company')->name('detail_KAM_of_company');
-    Route::get('/home/detail_AM_of_company/{id}','HomeController@detail_AM_of_company')->name('detail_AM_of_company');
-    Route::get('/home/detail_GDV_of_company/{id}','HomeController@detail_GDV_of_company')->name('detail_GDV_of_company');
+    //-- route home quan ly nhan su
 
-    //admin1
+    // route chi tiet nhan vien trong cong ty
+    Route::get('/home/detail_staff_of_company/{id}','HomeController@detail_nv_of_company')->name('detail_nv_of_company');
+    // route chi tiet KAM trong cong ty
+    Route::get('/home/detail_KAM_of_company/{id}','HomeController@detail_KAM_of_company')->name('detail_KAM_of_company');
+    // route chi tiet NVBH trong cong ty
+    Route::get('/home/detail_NVBH_of_company/{id}','HomeController@detail_NVBH_of_company')->name('detail_NVBH_of_company');
+    // route chi tiet NVDT trong cong ty
+    Route::get('/home/detail_NVDT_of_company/{id}','HomeController@detail_NVDT_of_company')->name('detail_NVDT_of_company');
+    // route chi tiet AM trong cong ty
+    Route::get('/home/detail_AM_of_company/{id}','HomeController@detail_AM_of_company')->name('detail_AM_of_company');
+    // route chi tiet GDV trong cong ty
+    Route::get('/home/detail_GDV_of_company/{id}','HomeController@detail_GDV_of_company')->name('detail_GDV_of_company');
+    // route chi tiet Chi Nhanh trong cong ty
+    Route::get('/home/detail_area_of_company/{id}','HomeController@detail_area_of_company')->name('detail_area_of_company');
+    //--
+
+    //--- admin1
+    // route danh sach cac tai khai admin lv2
     Route::get('/admin1/view','Admin1Controller@index')->name('view_list_account_admin_lv2');
+    // route xem thong tin admin lv2 theo id cua ho
     Route::get('/admin1/search_update/{id}','Admin1Controller@search_user_update')->name('search_view_update_admin_lv2');
+    // route update thong tin cua admin lv2
     Route::post('/admin1/update_account_user','Admin1Controller@update_account_user')->name('update_account_admin_lv2');
+    // route them tai khoan admin lv2
     Route::post('/admin1/add_account_admin_lv2','Admin1Controller@add_account_user')->name('add_account_admin_lv2');
+    // route query su dung ajax de search admin lv2 theo ten,...
     Route::post('/admin1/search_ajax_admin_lv2','Admin1Controller@search_ajax_admin_lv2')->name('search_ajax_admin_lv2');
 
     //admin1/warehouse
+    // route show trang quan ly kho
     Route::get('/admin1/warehouse','Admin1Controller@index_warehouse')->name('home_manager_warehouse');
+    // route tao mot kho moi
     Route::post('/admin/warehouse','Admin1Controller@addWarehouse')->name('add_warehouse');
+    // route xem thong tin kho theo id cua kho
     Route::get('/admin1/warehouse/{id}','Admin1Controller@searchWarehouse')->name('search_Warehouse');
+    // route cap nhat trang thai hoat dong kho
     Route::get('/admin1/warehouse/status/{id}','Admin1Controller@updateStatusWarehouse')->name('update_status_Warehouse');
+    // route cap nhat lai thong tin kho
     Route::post('/admin1/warehouse/update','Admin1Controller@updateWarehouse')->name('update_Warehouse');
 
     //admin1/connect/landingpage
+    //route hien thi trang quan ly landing page
     Route::get('/admin1/connect/landingpage','Admin1Controller@index_connect_landing_page')->name('connect_landing_page');
+    // xem thong tin ve landing page voi id cua san pham
     Route::get('/admin1/connect/landingpage/product/{id}','Admin1Controller@connect_landing_page')->name('connect_landingpage');
+    // xem thong tin ve doi tac voi id san pham
     Route::get('/admin1/connect/doi_tac/product/{id}','Admin1Controller@connect_doi_tac')->name('connect_doi_tac');
+    // cap nhat lai landing page cua san pham
     Route::post('/admin1/connect/landing_page','Admin1Controller@updateLandingPage')->name('update_landing_page');
+    // cap nhat lai link doi tac theo san pham
     Route::post('/admin1/connect/doi_tac','Admin1Controller@updateDoiTac')->name('update_doi_tac');
 
 
@@ -57,41 +88,71 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::get('/admin2/tiep_nhan_san_pham','Admin2Controller@tiep_nhan_san_pham')->name('tiep_nhan_san_pham');
 
     //admin2
+    // danh sach tai khoan nguoi dung ASM va NV
     Route::get('/admin2/view','Admin2Controller@index')->name('view_list_account_user');
+    // ajax su dung datatable de tim kiem tai khoan nguoi dung
     Route::resource('ajaxUserWebsSellProduct','Admin2Controller');
+    // xem thong tin tai khoan theo id cua tai khoan
     Route::get('/admin2/search_update/{id}','Admin2Controller@search_user_update')->name('search_view_update_user');
+    // tao tai khoan moi
     Route::post('/admin2/add_user2','Admin2Controller@add_account_user')->name('add_new_acc_user');
+    // cap nhat thong tin tai khoan
     Route::post('/admin2/update_user2','Admin2Controller@update_account_user')->name('update_account_user_sts');
 
+    // hien thi danh sach cac nhom
     Route::get('/admin2/group','Admin2Controller@group')->name('view_list_group_user');
+    // tao nhom moi
     Route::post('/admin2/group/create','Admin2Controller@createGroup')->name('create_group_for_user');
+    // them nguoi dung vao nhom
     Route::get('/admin2/add_to_group/{id}','Admin2Controller@addUserToGroup')->name('add_user_to_group');
+    // danh sach chi tiet cac nhan vien trong nhom
     Route::get('/admin2/list_user_of_group/{id}','Admin2Controller@list_user_of_group')->name('list_user_of_group');
+    // xem han muc cua nhan vien
     Route::get('/admin2/han_muc/{id}','Admin2Controller@view_han_muc_user')->name('view_han_muc_tung_user');
+    // cap nhat han muc cho nhan vien
     Route::post('/admin2/update_han_muc_cho_user','Admin2Controller@update_han_muc')->name('update_han_muc_cho_user');
+    // xem tai khoan theo id nhan vien
     Route::get('/admin2/view_lock_account/{id}','Admin2Controller@view_lock_account')->name('view_lock_account');
+    // khoa tai khoan theo id
     Route::post('/admin2/action_lock_account','Admin2Controller@action_lock_account')->name('action_lock_account');
+    // them nhan vien vao nham
     Route::post('/admin2/insert_to_group','Admin2Controller@insertUserToGroup')->name('add_user_group');
+    // them ASM vao nhom
     Route::post('/admin2/insert_asm_to_group','Admin2Controller@insertASMforGroup')->name('add_asm_group');
+    // xoa nhan vien khoi nhom
     Route::post('/admin2/leave_user_from_group','Admin2Controller@leave_user_from_group')->name('leave_user_from_group');
 
+    // xem danh sach asm theo id nhom
     Route::get('/admin2/add_asm_to_group/{id}','Admin2Controller@addASMToGroup')->name('add_asm_to_group');
+    // xem danh sach kho theo id nhom
     Route::get('/admin2/add_wh_to_group/{id}','Admin2Controller@addWarehouseToGroup')->name('add_wh_to_group');
+    // chi tiet san pham trong kho
     Route::get('/admin2/detail_product_on_wh/{id}','Admin2Controller@detailProductOnWh')->name('chi_tiet_san_pham_trong_kho');
+    // them kho cho nhom
     Route::post('/admin2/insert_wh_for_group','Admin2Controller@insertWHforGroup')->name('add_wh_group');
 
     //admin2/supplier
+    // trang quan ly nha cung cap
     Route::get('/admin2/supplier','Admin2Controller@index_supplier')->name('home_manager_supplier');
+    // them nha cung cap
     Route::post('/admin2/supplier/add','Admin2Controller@addSupplier')->name('add_supplier');
+    // xem nha cung cap theo id
     Route::get('/admin2/supplier/{id}','Admin2Controller@searchSupplier')->name('search_supplier');
+    // xem trang thai hoat dong  nha cung cap
     Route::get('/admin2/supplier/status/{id}','Admin2Controller@updateStatusSupplier')->name('update_status_supplier');
+    // cap nhat trang thai hoat dong  nha cung cap
     Route::post('/admin2/supplier/update','Admin2Controller@updateSupplier')->name('update_supplier');
 
     //admin2/banner
+    // quan ly banner
     Route::get('/admin2/banner_manager','Admin2Controller@index_banner')->name('home_mange_banner');
+    // danh sach banner
     Route::get('/admin2/manager_list_banner','Admin2Controller@manager_list_banner')->name('manager_list_banner');
+    // xem chi tiet banner theo id
     Route::get('/admin2/view_edit_banner/{id}','Admin2Controller@view_edit_banner')->name('view_edit_banner');
+    // tao moi banner
     Route::post('/admin2/banner_add','Admin2Controller@add_banner')->name('add_banner');
+    // cap nhat thong tin banner
     Route::post('/admin2/update_infor_banner','Admin2Controller@update_infor_banner')->name('update_infor_banner');
 
     //admin2/transporter
@@ -259,6 +320,11 @@ Route::group(['middleware' => ['web','checkLogOut']],function (){
     Route::post('/admin/area/update','AreaController@updateInforArea')->name('update_information_area');
     Route::get('/admin/area/delete/{id}','AreaController@deleteArea')->name('delete_information_area');
     Route::get('/admin/area/export','AreaController@export_area')->name('export_report_area');
+    Route::get('/admin/area/detail_GDV_of_area/{id}','AreaController@detail_GDV_of_area')->name('detail_GDV_of_area');
+    Route::get('/admin/area/detail_AM_of_area/{id}','AreaController@detail_AM_of_area')->name('detail_AM_of_area');
+    Route::get('/admin/area/detail_KAM_of_area/{id}','AreaController@detail_KAM_of_area')->name('detail_KAM_of_area');
+    Route::get('/admin/area/detail_NVBH_of_area/{id}','AreaController@detail_NVBH_of_area')->name('detail_NVBH_of_area');
+    Route::get('/admin/area/detail_NVDT_of_area/{id}','AreaController@detail_NVDT_of_area')->name('detail_NVDT_of_area');
 
     //route store
     Route::get('/admin/store','StoresController@index')->name('show_list_store');

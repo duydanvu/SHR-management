@@ -73,8 +73,10 @@
                 <tr>
                     <th style="width:5%">#</th>
                     <th style="width:20%">Tên Công Ty</th>
-                    <th style="width:15%">Tổng số khu vực</th>
+                    <th style="width:15%">Tổng số chi nhánh</th>
                     <th style="width:10%">GDV</th>
+                    <th style="width:10%">NVBH</th>
+                    <th style="width:10%">NVDT</th>
                     <th style="width:10%">AM</th>
                     <th style="width:10%">KAM</th>
 {{--                    <th style="width:10%">Chính Thức</th>--}}
@@ -88,8 +90,10 @@
                         <tr>
                             <td>{{$key+1}}</td>
                             <td>{{$value->name}}</td>
-                            <td>{{$value->sum}}</td>
+                            <td><a href="{{route('detail_area_of_company',['id'=>$value->id])}}">{{$value->sum}}</a></td>
                             <td><a href="{{route('detail_GDV_of_company',['id'=>$value->id])}}">{{$value->GDV}}</a></td>
+                            <td><a href="{{route('detail_NVBH_of_company',['id'=>$value->id])}}">{{$value->NVBH}}</a></td>
+                            <td><a href="{{route('detail_NVDT_of_company',['id'=>$value->id])}}">{{$value->NVDT}}</a></td>
                             <td><a href="{{route('detail_AM_of_company',['id'=>$value->id])}}">{{$value->AM}}</a></td>
                             <td><a href="{{route('detail_KAM_of_company',['id'=>$value->id])}}">{{$value->KAM}}</a></td>
 {{--                            <td>{{$value->CT}}</td>--}}

@@ -95,8 +95,8 @@
                         </tr>
                     @endforeach
                 @else
-                    <td colspan="8" style="text-align: center">
-                        <h3>Empty Data</h3>
+                    <td colspan="10" style="text-align: center">
+                        <h3>Không có nhân viên </h3>
                     </td>
                 @endif
 

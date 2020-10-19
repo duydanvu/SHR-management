@@ -13,6 +13,7 @@ use App\User;
 use App\UserDetail;
 use Carbon\Carbon;
 use Doctrine\DBAL\Query\QueryException;
+use Faker\Provider\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -29,6 +30,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $company = DB::table('company')->get();
         $store = Store::all();
         $position = Position::all();
         $contract = Contract::all();
@@ -143,6 +145,7 @@ class UserController extends Controller
                 })->rawColumns(['action'])->make(true);
         }
         return view('user.users_list')->with([
+            'company'=>$company,
             'store'=>$store,
             'position'=>$position,
             'contract'=>$contract,

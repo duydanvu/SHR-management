@@ -23,10 +23,10 @@
         <div class="card-header">
             <div class="button-group-card-header">
                 {{--                @if($role_use_number == 1)--}}
-                <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-store"><i class="fas fa-plus-circle"></i> Tạo Khu Vực Mới </button>
+{{--                <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-store"><i class="fas fa-plus-circle"></i> Tạo Khu Vực Mới </button>--}}
                 {{--                @endif--}}
-{{--                <a href="{{route('export_report_area')}}" class="btn btn-success" type="button"><i class="fas fa-file-download"></i>Export</a>--}}
-{{--                <button id = "" type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-file-download"></i> Export </button>--}}
+                {{--                <a href="{{route('export_report_area')}}" class="btn btn-success" type="button"><i class="fas fa-file-download"></i>Export</a>--}}
+                {{--                <button id = "" type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-file-download"></i> Export </button>--}}
             </div>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -58,13 +58,13 @@
                             <td>{{$value->area_name}}</td>
                             <td>{{$value->area_description}}</td>
                             <td><a href="{{route('view_store_of_area',['id'=>$value->id])}}">{{$value->sum}}</a></td>
-                            <td><a href="{{route('detail_GDV_of_area',['id'=>$value->id])}}">{{$value->GDV}}</a></td>
-                            <td><a href="{{route('detail_AM_of_area',['id'=>$value->id])}}">{{$value->AM}}</a></td>
-                            <td><a href="{{route('detail_KAM_of_area',['id'=>$value->id])}}">{{$value->KAM}}</a></td>
-                            <td><a href="{{route('detail_NVBH_of_area',['id'=>$value->id])}}">{{$value->CT}}</a></td>
-                            <td><a href="{{route('detail_NVDT_of_area',['id'=>$value->id])}}">{{$value->TV}}</a></td>
+                            <td>{{$value->GDV}}</td>
+                            <td>{{$value->AM}}</td>
+                            <td>{{$value->KAM}}</td>
+                            <td>{{$value->CT}}</td>
+                            <td>{{$value->TV}}</td>
                             <td class="text-center">
-{{--                                @if($role_use_number == 1)--}}
+                                {{--                                @if($role_use_number == 1)--}}
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
                                         <span class="sr-only">Toggle Dropdown</span>
@@ -74,13 +74,10 @@
                                            data-toggle="modal" data-target="#modal-area-action-update" class="btn dropdown-item">
                                             <i class="fas fa-edit"> Sửa Khu Vực</i>
                                         </a>
-                                        <a href="{{route('delete_information_area',['id'=> $value->id])}}"  class="btn dropdown-item">
-                                            <i class="fas fa-users"> Xóa Khu Vực</i>
-                                        </a>
                                     </div>
 
                                 </div>
-{{--                                @endif--}}
+                                {{--                                @endif--}}
                             </td>
                         </tr>
                     @endforeach
@@ -96,32 +93,32 @@
         <!-- /.card-body -->
     </div>
 
-{{--         modal--}}
-        <div class="modal fade" id="modal-area-action-update">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Sửa</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <form action="{{route('update_information_area')}}" method="post">
-                        <div class="modal-body">
-                            @csrf
-
-                        </div>
-                        <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                            <button type="submit" class="btn btn-primary">Lưu</button>
-                        </div>
-                    </form>
+    {{--         modal--}}
+    <div class="modal fade" id="modal-area-action-update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Sửa</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
                 </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
+                <form action="{{route('update_information_area')}}" method="post">
+                    <div class="modal-body">
+                        @csrf
 
-{{--         modal--}}
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    {{--         modal--}}
     <div class="modal fade" id="modal-create-store">
         <div class="modal-dialog">
             <div class="modal-content">

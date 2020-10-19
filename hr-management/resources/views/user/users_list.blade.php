@@ -30,10 +30,22 @@
         </div>
         <div class="card-body">
             <div class="row ml-2" >
+                <div class="col-md-2 ml-2">
+                    <div class="form-group">
+                        <meta name="csrf-token2" content="{{ csrf_token() }}">
+                        <label for="exampleInputEmail1">Công ty</label>
+                        <select id="company_search" name = "company_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
+                            @foreach ($company as $company)
+                                <option value="{{$company->id}}">{{$company->name}}</option>
+                            @endforeach
+                            <option value="all" selected>All</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="col-md-3 ml-4">
                     <div class="form-group">
                         <meta name="csrf-token2" content="{{ csrf_token() }}">
-                        <label for="exampleInputEmail1">Khu Vực</label>
+                        <label for="exampleInputEmail1">Chi Nhánh</label>
                         <select id="area_search" name = "area_search" class="form-control select2"  value="{{ old('area_search') }}" autocomplete="area_search" style="width: 100%;">
                             @foreach ($area as $area)
                                 <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>
@@ -66,7 +78,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-12 col-xl-12 float-left">
-                <div class="col-md-3 col-3 col-xl-2 float-left ml-4" >
+                <div class="col-md-3 col-3 col-xl-3 float-left ml-4" >
                     <div class="form-group">
                         <label for="exampleInputEmail1">Chức Vụ</label>
                         <select id="position_search" name = "position_search" class="form-control select2"  value="{{ old('position_search') }}" autocomplete="position_search" style="width: 100%;">
@@ -77,7 +89,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3 col-3 col-xl-2 float-left" hidden>
+                <div class="col-md-3 col-3 col-xl-3 float-left" hidden>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Phòng Ban</label>
                         <select id="department_search" name = "department_search" class="form-control select2"  value="{{ old('department_search') }}" autocomplete="department_search" style="width: 100%;">
@@ -88,7 +100,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3 col-3 col-xl-2 float-left" hidden>
+                <div class="col-md-3 col-3 col-xl-3 float-left" hidden>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Dịch Vụ</label>
                         <select id="service_search" name = "service_search" class="form-control select2"  value="{{ old('service_search') }}" autocomplete="service_search" style="width: 100%;">
@@ -110,17 +122,28 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3 col-3 col-xl-2 ml-4 float-left">
+                <div class="col-md-3 col-3 col-xl-3 ml-4 float-left">
                     <div class="form-group">
                         <label for="exampleInputEmail1" >Tình Trạng Nhân Sự</label>
                         <select id="status_action_user" name = "status_action_user" class="form-control select2"  value="{{ old('contract_search') }}" autocomplete="contract_search" style="width: 100%;">
                             <option value="active" selected>Đang Làm Việc</option>
-                            <option value="reproduction" >Nghỉ Sinh Sản</option>
+                            <option value="reproduction" >Nghỉ Thai Sản</option>
                             <option value="out" >Nghỉ Việc</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3 col-4 col-xl-2 ml-4 float-left">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Tháng Sinh</label>
+                        <input id="month_date" type="month" class="form-control @error('txtComment') is-invalid @enderror"  name="txtStartDate"  autocomplete="number" required >
+                        @error('txtComment')
+                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-4 col-4 col-xl-3 ml-4 float-left">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Thời Gian Bắt đầu</label>
                         <input id="start_date" type="date" class="form-control @error('txtComment') is-invalid @enderror"  name="txtStartDate"  autocomplete="number" required >
@@ -131,7 +154,7 @@
                         @enderror
                     </div>
                 </div>
-                <div class="col-md-3 col-4 col-xl-2 ml-4 float-left">
+                <div class="col-md-4 col-4 col-xl-3 ml-4 float-left">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Thời Gian Kết Thúc</label>
                         <input id="end_date" type="date" class="form-control @error('txtComment') is-invalid @enderror"  name="txtEndDate"  autocomplete="number" required >
@@ -153,7 +176,7 @@
         <div class="card-header">
             <div class="button-group-card-header">
                 {{--                @if($role_use_number == 1)--}}
-                <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Thêm Nhân Sự </button>
+{{--                <button id = "" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create-member"><i class="fas fa-plus-circle"></i> Thêm Nhân Sự </button>--}}
                 <button id = "import_user" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-admin-import-user"><i class="fas fa-plus-circle"></i> Nhập Nhân Sự</button>
                 <button id = "export_user" type="button" class="btn btn-success" data-toggle="modal"
                         data-target="#modal-admin-export-user"><i class="fas fa-plus-circle"></i> Xuất File </button>
@@ -646,69 +669,69 @@
                         <div class="row">
                             <div class="col-lg-12 col-sm-12">
                                 <div class="card-body col-lg-6 float-left">
-                                    <div class="form-group">
-                                        <label for="name">Giới Tính</label>
-                                        <div class="form-check">
-                                            <input id="male_import" type="radio" class="form-check-input" name="txtGender" value="male"  autocomplete="number" required>
-                                            <label class="form-check-label " for="male">
-                                                Nam
-                                            </label>
-                                            <input id="female_import" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>
-                                            <label class="form-check-label ml-5 " for="female">
-                                                Nữ
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group mt-4">
-                                        <label class="pt-1"for="name">Cửa hàng</label>
-                                        <div class="col-sm-10 p-0">
-                                            <select id="store_import" name = "store_import" class="form-control select2"  value="{{ old('store') }}" autocomplete="store_import" style="width: 100%;">
-                                                @foreach ($store1 as $store)
-                                                    <option value="{{$store['store_id']}}">{{$store['store_name']}}-{{$store['store_address']}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Chức Vụ</label>
-                                        <div class="col-sm-10 p-0 ">
-                                            <select id="position_import" name = "position_import" class="form-control select2"  value="{{ old('position') }}" autocomplete="position_import" style="width: 100%;">
-                                                @foreach ($position2 as $position)
-                                                    <option value="{{$position['position_id']}}">{{$position['position_name']}}-{{$position['description']}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Hợp Đồng</label>
-                                        <div class="col-sm-10 p-0">
-                                            <select id="contract_import" name = "contract_import" class="form-control select2"  value="{{ old('contract') }}" autocomplete="contract_import" style="width: 100%;">
-                                                @foreach ($contract1 as $contract)
-                                                    <option value="{{$contract['contract_id']}}">{{$contract['name']}}-{{$contract['description']}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Bộ Phận</label>
-                                        <div class="col-sm-10 p-0">
-                                            <select id="department_import" name = "department_import" class="form-control select2"  value="{{ old('department') }}" autocomplete="department_import" style="width: 100%;">
-                                                @foreach ($department1 as $department)
-                                                    <option value="{{$department['id']}}">{{$department['name']}}-{{$department['description']}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Dịch Vụ</label>
-                                        <div class="col-sm-10 p-0">
-                                            <select id="service_import" name = "service_import" class="form-control select2"  value="{{ old('service') }}" autocomplete="service_import" style="width: 100%;">
-                                                @foreach ($service1 as $service)
-                                                    <option value="{{$service['id']}}">{{$service['name']}}-{{$service['description']}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
+{{--                                    <div class="form-group">--}}
+{{--                                        <label for="name">Giới Tính</label>--}}
+{{--                                        <div class="form-check">--}}
+{{--                                            <input id="male_import" type="radio" class="form-check-input" name="txtGender" value="male"  autocomplete="number" required>--}}
+{{--                                            <label class="form-check-label " for="male">--}}
+{{--                                                Nam--}}
+{{--                                            </label>--}}
+{{--                                            <input id="female_import" type="radio" class="form-check-input ml-4" name="txtGender" value="female"  autocomplete="number" required>--}}
+{{--                                            <label class="form-check-label ml-5 " for="female">--}}
+{{--                                                Nữ--}}
+{{--                                            </label>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="form-group mt-4">--}}
+{{--                                        <label class="pt-1"for="name">Cửa hàng</label>--}}
+{{--                                        <div class="col-sm-10 p-0">--}}
+{{--                                            <select id="store_import" name = "store_import" class="form-control select2"  value="{{ old('store') }}" autocomplete="store_import" style="width: 100%;">--}}
+{{--                                                @foreach ($store1 as $store)--}}
+{{--                                                    <option value="{{$store['store_id']}}">{{$store['store_name']}}-{{$store['store_address']}}</option>--}}
+{{--                                                @endforeach--}}
+{{--                                            </select>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="form-group">--}}
+{{--                                        <label for="name">Chức Vụ</label>--}}
+{{--                                        <div class="col-sm-10 p-0 ">--}}
+{{--                                            <select id="position_import" name = "position_import" class="form-control select2"  value="{{ old('position') }}" autocomplete="position_import" style="width: 100%;">--}}
+{{--                                                @foreach ($position2 as $position)--}}
+{{--                                                    <option value="{{$position['position_id']}}">{{$position['position_name']}}-{{$position['description']}}</option>--}}
+{{--                                                @endforeach--}}
+{{--                                            </select>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="form-group">--}}
+{{--                                        <label for="name">Hợp Đồng</label>--}}
+{{--                                        <div class="col-sm-10 p-0">--}}
+{{--                                            <select id="contract_import" name = "contract_import" class="form-control select2"  value="{{ old('contract') }}" autocomplete="contract_import" style="width: 100%;">--}}
+{{--                                                @foreach ($contract1 as $contract)--}}
+{{--                                                    <option value="{{$contract['contract_id']}}">{{$contract['name']}}-{{$contract['description']}}</option>--}}
+{{--                                                @endforeach--}}
+{{--                                            </select>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="form-group">--}}
+{{--                                        <label for="name">Bộ Phận</label>--}}
+{{--                                        <div class="col-sm-10 p-0">--}}
+{{--                                            <select id="department_import" name = "department_import" class="form-control select2"  value="{{ old('department') }}" autocomplete="department_import" style="width: 100%;">--}}
+{{--                                                @foreach ($department1 as $department)--}}
+{{--                                                    <option value="{{$department['id']}}">{{$department['name']}}-{{$department['description']}}</option>--}}
+{{--                                                @endforeach--}}
+{{--                                            </select>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="form-group">--}}
+{{--                                        <label for="name">Dịch Vụ</label>--}}
+{{--                                        <div class="col-sm-10 p-0">--}}
+{{--                                            <select id="service_import" name = "service_import" class="form-control select2"  value="{{ old('service') }}" autocomplete="service_import" style="width: 100%;">--}}
+{{--                                                @foreach ($service1 as $service)--}}
+{{--                                                    <option value="{{$service['id']}}">{{$service['name']}}-{{$service['description']}}</option>--}}
+{{--                                                @endforeach--}}
+{{--                                            </select>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
                                     <div class="form-group">
                                         <div class="col-sm-10 p-0">
                                             <input type="file" name="file" required="true">
@@ -748,7 +771,7 @@
                                         <label for="name">Khu Vực</label>
                                         <div class="col-sm-10 p-0">
                                             <input id="area_export" name = "area_export" autocomplete="area_export" style="width: 100%;" hidden>
-                                            <input id="area_export_text" name = "area_export_text" autocomplete="area_export" style="width: 100%;" readonly>
+                                            <input id="area_export_text" name = "area_export_text" autocomplete="area_export" style="width: 100%;border: none" readonly>
 {{--                                            <select id="area_export" name = "area_export" class="form-control select2"  value="{{ old('area_export') }}" autocomplete="area_export" style="width: 100%;">--}}
 {{--                                                @foreach ($area1 as $area)--}}
 {{--                                                    <option value="{{$area['id']}}">{{$area['area_name']}}-{{$area['area_description']}}</option>--}}
@@ -759,8 +782,8 @@
                                     <div class="form-group ">
                                         <label for="name">Cửa hàng</label>
                                         <div class="col-sm-10 p-0">
-                                            <input id="store_export" name = "store_export" autocomplete="store_export" style="width: 100%;" hidden>
-                                            <input id="store_export_text" name = "store_export_text" autocomplete="area_export" style="width: 100%;" readonly>
+                                            <input id="store_export" name = "store_export" autocomplete="store_export" style="width: 100%;border: none" hidden>
+                                            <input id="store_export_text" name = "store_export_text" autocomplete="area_export" style="width: 100%;border: none" readonly>
 {{--                                            <select id="store_export" name = "store_export" class="form-control select2"  value="{{ old('store') }}" autocomplete="store_export" style="width: 100%;">--}}
 {{--                                                @foreach ($store1 as $store1)--}}
 {{--                                                    <option value="{{$store1['store_id']}}">{{$store1['store_name']}}-{{$store1['store_address']}}</option>--}}
@@ -771,8 +794,8 @@
                                     <div class="form-group">
                                         <label for="name">Chức Vụ</label>
                                         <div class="col-sm-10 p-0 ">
-                                            <input id="position_export" name = "position_export" autocomplete="area_export" style="width: 100%;" hidden>
-                                            <input id="position_export_text" name = "position_export_text" autocomplete="area_export" style="width: 100%;" readonly>
+                                            <input id="position_export" name = "position_export" autocomplete="area_export" style="width: 100%;border: none" hidden>
+                                            <input id="position_export_text" name = "position_export_text" autocomplete="area_export" style="width: 100%;border: none" readonly>
 {{--                                            <select id="position_export" name = "position_export" class="form-control select2"  value="{{ old('position') }}" autocomplete="position_export" style="width: 100%;">--}}
 {{--                                                @foreach ($position1 as $position1)--}}
 {{--                                                    <option value="{{$position1['position_id']}}">{{$position1['position_name']}}-{{$position1['description']}}</option>--}}
@@ -841,8 +864,8 @@
                                     <div class="form-group">
                                         <label for="name">Hợp Đồng</label>
                                         <div class="col-sm-10 p-0">
-                                            <input id="contract_export" name = "contract_export" autocomplete="area_export" style="width: 100%;" hidden>
-                                            <input id="contract_export_text" name = "contract_export_text" autocomplete="area_export" style="width: 100%;" readonly>
+                                            <input id="contract_export" name = "contract_export" autocomplete="area_export" style="width: 100%;border: none" hidden>
+                                            <input id="contract_export_text" name = "contract_export_text" autocomplete="area_export" style="width: 100%;border: none" readonly>
 {{--                                            <select id="contract_export" name = "contract_export" class="form-control select2"  value="{{ old('contract') }}" autocomplete="contract_export" style="width: 100%;">--}}
 {{--                                                @foreach ($contract1 as $contract1)--}}
 {{--                                                    <option value="{{$contract1['contract_id']}}">{{$contract1['name']}}-{{$contract1['description']}}</option>--}}
@@ -853,27 +876,27 @@
                                     <div class="form-group" >
                                         <label for="name">Trạng Thái Nhân Sự</label>
                                         <div class="col-sm-10 p-0">
-                                            <input id="status_action_user_export" name = "status_action_user_export" autocomplete="area_export" style="width: 100%;" hidden>
-                                            <input id="status_action_user_export_text" name = "status_action_user_export_text" autocomplete="status_action_user_export" style="width: 100%;" readonly>
+                                            <input id="status_action_user_export" name = "status_action_user_export" autocomplete="area_export" style="width: 100%;border: none" hidden>
+                                            <input id="status_action_user_export_text" name = "status_action_user_export_text" autocomplete="status_action_user_export" style="width: 100%;border: none" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group" >
                                         <label for="name">Thời gian bắt đầu</label>
                                         <div class="col-sm-6 p-0 float-right">
-                                            <input id="start_date_export" name = "start_date_export" autocomplete="area_export" style="width: 100%;" hidden>
-                                            <input id="start_date_export_text" name = "start_date_export_text" autocomplete="start_date_export_text" style="width: 100%;" readonly>
+                                            <input id="start_date_export" name = "start_date_export" autocomplete="area_export" style="width: 100%;border: none" hidden>
+                                            <input id="start_date_export_text" name = "start_date_export_text" autocomplete="start_date_export_text" style="width: 100%;border: none" readonly>
                                         </div>
                                         <label for="name">Thời gian kết thúc</label>
                                         <div class="col-sm-6 p-0 float-right">
                                             <input id="end_date_export" name = "end_date_export" autocomplete="area_export" style="width: 100%;" hidden>
-                                            <input id="end_date_export_text" name = "end_date_export_text" autocomplete="end_date_export_text" style="width: 100%;" readonly>
+                                            <input id="end_date_export_text" name = "end_date_export_text" autocomplete="end_date_export_text" style="width: 100%;border: none" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group" hidden>
                                         <label for="name">Bộ Phận</label>
                                         <div class="col-sm-10 p-0">
                                             <input id="department_export" name = "department_export" autocomplete="area_export" style="width: 100%;" hidden>
-                                            <input id="department_export_text" name = "department_export_text" autocomplete="area_export" style="width: 100%;" readonly>
+                                            <input id="department_export_text" name = "department_export_text" autocomplete="area_export" style="width: 100%;border: none" readonly>
 {{--                                            <select id="department_export" name = "department_export" class="form-control select2"  value="{{ old('department') }}" autocomplete="department_export" style="width: 100%;">--}}
 {{--                                                @foreach ($department1 as $department1)--}}
 {{--                                                    <option value="{{$department1['id']}}">{{$department1['name']}}-{{$department1['description']}}</option>--}}
