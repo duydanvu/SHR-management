@@ -797,7 +797,7 @@ S2.define('select2/utils',[
   };
 
   Utils.StoreData = function (element, name, value) {
-    // Stores an item in the cache for a specified element.
+    // StoresController an item in the cache for a specified element.
     // name is the cache key.
     var id = Utils.GetUniqueElementId(element);
     if (!Utils.__cache[id]) {
@@ -1933,7 +1933,7 @@ S2.define('select2/selection/allowClear',[
       return;
     }
 
-    var removeAll = this.options.get('translations').get('removeAllItems');   
+    var removeAll = this.options.get('translations').get('removeAllItems');
 
     var $remove = $(
       '<span class="select2-selection__clear" title="' + removeAll() +'">' +

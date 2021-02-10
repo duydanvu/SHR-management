@@ -36,7 +36,7 @@ class CustomAuthController extends Controller
         }
         $credentials = [
             'login' => $request['login'],
-            'password_hash' => $request['password'],
+            'password' => $request['password'],
         ];
         $password = Hash::make($request['password']);
 //        dd($password);
@@ -53,7 +53,14 @@ class CustomAuthController extends Controller
                 'message' => 'Hello '.$user->last_name.'!',
                 'alert-type' => 'success'
             );
-            return redirect('/home')->with($notification);
+            if($user->type == 'systems'){
+                if($user->position_id == 3){
+                    return \redirect('/user2/list_view_product')->with($notification);
+                }
+                return redirect('/home1')->with($notification);
+            }else {
+                return redirect('/home')->with($notification);
+            }
         }else
         {
             $notification = array(

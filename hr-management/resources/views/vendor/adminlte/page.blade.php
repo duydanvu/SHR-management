@@ -42,7 +42,16 @@
 (config('adminlte.sidebar_scrollbar_theme', 'os-theme-light') != 'os-theme-light' ? 'data-scrollbar-theme=' . config('adminlte.sidebar_scrollbar_theme')  : '') . ' ' . (config('adminlte.sidebar_scrollbar_auto_hide', 'l') != 'l' ? 'data-scrollbar-auto-hide=' . config('adminlte.sidebar_scrollbar_auto_hide')   : ''))
 
 @php( $logout_url = View::getSection('logout_url') ?? config('adminlte.logout_url', 'logout') )
-@php( $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home') )
+@if(\Illuminate\Support\Facades\Auth::user()->type == 'systems')
+    @if(\Illuminate\Support\Facades\Auth::user()->position_id == 3)
+        @php( $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url_sale', 'home_sale') )
+    @else
+        @php( $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url1', 'home1') )
+    @endif
+@else
+    @php( $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home') )
+@endif
+
 
 @if (config('adminlte.use_route_url', false))
     @php( $logout_url = $logout_url ? route($logout_url) : '' )
@@ -116,15 +125,28 @@
                                           </div>
                                           <!-- Message End -->
                                         </a>
-                                    <a href="#" class="dropdown-item" data-remote="false" data-toggle="modal" data-target="#modal-change-password">
+{{--                                    <a href="" class="dropdown-item" data-remote="false" data-toggle="modal" data-target="#modal-change-password">--}}
+{{--                                        <!-- Message Start -->--}}
+{{--                                        <div class="media">--}}
+{{--                                            <div class="media-body">--}}
+{{--                                                    <i class="fa fa-key"> Change Password</i>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                        <!-- Message End -->--}}
+{{--                                    </a>--}}
+                                    @if(\Illuminate\Support\Facades\Auth::user()->type == 'systems'
+                                        || \Illuminate\Support\Facades\Auth::user()->position_id == 1
+                                        || \Illuminate\Support\Facades\Auth::user()->position_id == 3)
+                                    <a href="/admin2/view_information" class="dropdown-item" >
                                         <!-- Message Start -->
-                                        {{--<div class="media">--}}
-                                            {{--<div class="media-body">--}}
-                                                    {{--<i class="fa fa-key"> Change Password</i>--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
+                                        <div class="media">
+                                            <div class="media-body">
+                                                    <i class="fa fa-edit"> Thay Đổi Thông Tin </i>
+                                            </div>
+                                        </div>
                                         <!-- Message End -->
                                     </a>
+                                        @endif
                                 </div>
                             </li>
 

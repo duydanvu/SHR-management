@@ -1,5 +1,4 @@
 <?php
-
 return [
 
     /*
@@ -190,6 +189,10 @@ return [
 
     'dashboard_url' => 'home',
 
+    'dashboard_url1' => 'home1',
+
+    'dashboard_url_sale' => '/user2/list_view_product',
+
     'logout_url' => 'logout',
 
     'login_url' => 'login',
@@ -232,160 +235,428 @@ return [
 
     'menu' => [
         [
-            'text'        => 'Dashboard',
+            'text'        => 'Hệ Thống',
             'url'         => '/home',
             'icon'        => 'fas fa-tachometer-alt',
-//            'submenu' => [
+            'can'         => 'not_system',
+            'submenu' => [
+                [
+                    'text'        => 'Trang Chủ',
+                    'url'         => '/home',
+                    'icon'        => 'fas fa-tachometer-alt',
+                    'can'         => 'not_system',
+                ],
+            [
+                'text'    => 'Quản Lý Nhân Sự',
+                'icon'    => 'fas fa-users',
+                'can'         => 'not_systems',
+                'can' => 'view_menu',
+                'submenu' => [
+                    [
+                        'text' => 'Nhân sự',
+                        'url'  => 'admin/user',
+                    ],
+                    [
+                        'text' => 'Khu Vực',
+                        'url'  => 'admin/area',
+                    ],
 //                [
-//                    'text' => 'Team',
-//                    'url'  => 'dashboard/team',
-//                ],
+//                    'text'    => 'Quản Lý',
+//                    'icon'    => 'fas fa-users',
+//                    'submenu' =>[
+//                        [
+//                            'text' => 'Chi Tiết Nhân Sự',
+//                            'url'  => 'report/report_with_time',
+//                        ],
+//                        [
+//                            'text' => 'Position',
+//                            'url'  => 'admin/position',
+//                        ],
+                    [
+                        'text' => 'Cửa Hàng',
+                        'url'  => 'admin/store',
+                    ],
+//                        [
+//                            'text' => 'Department',
+//                            'url'  => 'admin/department',
+//                        ],
+//                        [
+//                            'text' => 'Service',
+//                            'url'  => 'admin/service',
+//                        ],
+//                    ]
+//                ]
+
+
+                ],
+            ],
+                [
+                    'text' => 'Tính Lương',
+                    'icon'    => 'fas fa-clipboard-list',
+                ],
 //
-//            ],
-        ],
-//        [
-//           'text'    => 'Project',
-//           'icon'    => 'far fa-list-alt',
-//           'submenu' => [
-//               [
-//                   'text' => 'Project List',
-//                   'url'  => 'project/list',
-//               ],
-//               [
-//                   'text' => 'Create Project',
-//                   'url'  => 'project/create',
-//               ],
-//           ],
-//        ],
-        [
-            'text'    => 'Admin User',
-            'icon'    => 'fas fa-users',
-            'submenu' => [
-                [
-                    'text' => 'Admintrator',
-                    'url'  => 'admin/list_use',
-                ],
-                [
-                    'text' => 'Phân Quyền',
-                    'url'  => 'admin/list_role/view',
-                ],
+            [
+                'text'    => 'THỐNG KÊ ',
+                'icon'    => 'fas fa-clipboard-list',
+                'submenu' => [
 //                [
-//                    'text' => 'Cấu Hình',
-//                    'url'  => '#',
+//                    'text' => 'Báo Cáo Theo Thời Gian',
+//                    'url'  => 'report/report_with_time',
 //                ],
+//                [
+//                    'text' => 'Báo Cáo Theo Nhân Viên',
+//                    'url'  => 'report/report_with_user',
+//                ],
+                    [
+                        'text' => '	Thống Kê Chấm Công',
+                        'url'  => 'request/report_view',
+                    ],
+//                [
+//                    'text' => 'Thống Kê Hợp Đồng',
+//                    'url'  => 'admin/contract',
+//                ],
+                ],
+            ],
+            [
+                'text'    => 'QUẢN LÝ CHẤM CÔNG',
+                'icon'    => 'fas fa-blender-phone',
+                'submenu' => [
+
+//                [
+//                    'text' => '	Chấm Công',
+//                    'url'  => 'timekeeping/timekeeping_for_staff',
+//                ],
+                    [
+                        'text' => 'Chấm Công Tháng',
+                        'url'  => 'timekeeping/request_timekeeping',
+                    ],
+                    [
+                        'text' => '	Quản Lý Chấm Công ',
+                        'url'  => 'timekeeping/request_timekeeping/request_month',
+                    ],
+
+
+                ],
             ],
         ],
-//        [
-//            'text'    => 'SMS',
-//            'icon'    => 'fas fa-sms',
-//            'submenu' => [
-//                [
-//                    'text' => 'SMS 1',
-//                    'url'  => 'pool/listMember',
-//                ],
-//                [
-//                    'text' => 'SMS 2',
-//                    'url'  => 'pool/pool_action',
-//                ],
-//            ],
-//        ],
-//        [
-//            'text'    => 'HỆ THỐNG',
-//            'icon'    => 'fab fa-affiliatetheme',
-//            'submenu' => [
-//                [
-//                    'text' => 'Hệ Thống 1',
-//                    'url'  => 'request/listRequest',
-//                ],
-//                [
-//                    'text' => 'Hệ Thống 2',
-//                    'url'  => 'request/create_request',
-//                ],
-//            ],
-//        ],
-        [
-            'text'    => 'THỐNG KÊ BÁO CÁO',
-            'icon'    => 'fas fa-clipboard-list',
-            'submenu' => [
-//                [
-//                    'text' => 'Sản Lượng Thời Gian Bất Kỳ',
-//                    'url'  => 'report/report_bk',
-//                ],
-//                [
-//                    'text' => 'Sản Lượng Ngày',
-//                    'url'  => 'report/report_day',
-//                ],
-                [
-                    'text' => 'Sản Lượng Theo Thời Gian',
-                    'url'  => 'report/report_week',
-                ],
-//                [
-//                    'text' => 'Sản Lượng Tháng',
-//                    'url'  => 'report/report_month',
-//                ],
-//                [
-//                    'text' => 'Sản Lượng Năm',
-//                    'url'  => 'report/report_year',
-//                ],
-            ],
         ],
         [
-            'text'    => 'CHĂM SÓC KHÁCH HÀNG',
-            'icon'    => 'fas fa-blender-phone',
+            'text'        => 'Menu',
+            'url'         => '/home1',
+            'icon'        => 'fas fa-tachometer-alt',
+            'can'         => 'system',
             'submenu' => [
                 [
-                    'text' => 'Giao dịch đăng ký',
-                    'url'  => 'cussv/reg_tran',
+                    'text'    => 'Tạo tài khoản Admin 2',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/admin1/view',
+                    'can'     => 'admin_lv1'
                 ],
                 [
-                    'text' => 'Giao dịch hủy',
-                    'url'  => 'cussv/unreg_tran',
+                    'text'    => 'Quản Lý Kho',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/admin1/warehouse',
+                    'can'     => 'admin_lv1'
                 ],
                 [
-                    'text' => 'Tra cứu MO/MT',
-                    'url'  => 'cussv/momt',
+                    'text'    => 'Quản Lý Kết Nối',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'can'     => 'admin_lv1',
+                    'submenu' => [
+                        [
+                            'text'    => 'Landing page bán hàng',
+                            'icon'    => 'fas fa-clipboard-list',
+                            'url'     => '/admin1/connect/landingpage',
+                            'can'     => 'admin_lv1'
+                        ],
+]
                 ],
                 [
-                    'text' => '	Tra cứu lịch sử trừ cước',
-                    'url'  => 'cussv/his_acc',
+                    'text'    => 'Người Dùng ',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => 'admin2/view',
+                    'can'     => 'admin_lv2',
+                    'submenu' => [
+                        [
+                            'text'    => 'Tạo  người dùng ',
+                            'url'     => 'admin2/view',
+                            'can'     => 'admin_lv2',
+                        ],
+                        [
+                            'text'    => 'Quản lý Người Dùng',
+                            'url'     => '/admin2/lock_acc_user',
+                            'can'     => 'admin_lv2'
+                        ],
+
+                    ],
+
                 ],
                 [
-                    'text' => '	Đăng ký/Hủy DV',
-                    'url'  => 'cussv/sub_unsub_acc',
+                    'text'    => 'Nhà cung cấp',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/admin2/supplier',
+                    'can'     => 'admin_lv2'
                 ],
                 [
-                    'text' => '	Thông tin thuê bao',
-                    'url'  => 'cussv/information_acc',
-                ],
-                [
-                    'text' => '	Đăng ký/Hủy theo danh sách',
-                    'url'  => 'cussv/upload_sub',
-                ],
-                [
-                    'text' => '	Lịch sử sử dụng',
-                    'url'  => 'cussv/his_acc_use',
-                ],
-                [
-                    'text' => '	Lịch sử tác động',
-                    'url'  => 'cussv/history_log',
-                ],
-                [
-                    'text' => '	Lịch sử gia hạn',
-                    'url'  => 'cussv/exten_acc',
+                    'text'    => 'Đối tác vận chuyển',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/admin2/transporter',
+                    'can'     => 'admin_lv2'
                 ],
 
-            ],
-        ],
-//        [
-//            'text'    => 'KPI',
-//            'icon'    => 'fas fa-clipboard-list',
-//            'submenu' => [
+                [
+                    'text'    => 'Sản Phẩm',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'can'     => 'admin_lv2',
+                    'submenu' =>[
+                        [
+                            'text'    => 'Thêm Sản Phẩm',
+                            'url'     => '/admin2/product/add/new',
+                            'can'     => 'admin_lv2',
+                        ],
+                       [
+                           'text'    => 'Quản lý Sản Phẩm',
+                           'url'     => '/admin2/product',
+                           'can'     => 'admin_lv2',
+                       ] ,
+                    ]
+                ],
+                [
+                    'text'    => 'Kho',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'can'     => 'admin_lv2',
+                    'submenu' =>[
+                        [
+                            'text'    => 'Chuyển Sản Phẩm',
+                            'url'     => '/admin2/chuyen_san_pham',
+                            'can'     => 'admin_lv2',
+                        ] ,
+                        [
+                            'text'    => 'Xác Nhận Sản Phẩm',
+                            'url'     => '/admin2/tiep_nhan_san_pham',
+                            'can'     => 'admin_lv2',
+                        ],
+                        [
+                            'text'    => 'Quản lý Kho',
+                            'url'     => '/admin2/report_warehouse',
+                            'can'     => 'admin_lv2'
+                        ],
+                    ]
+                ],
+                [
+                    'text'    => 'chương trình khuyến mại',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'can'     => 'admin_lv2',
+                    'submenu' =>[
+                        [
+                            'text'    => 'Tạo khuyến mại',
+                            'url'     => '/admin2/sales_product',
+                            'can'     => 'admin_lv2'
+                        ],
+                        [
+                            'text'    => 'Danh Sách khuyến mại',
+                            'url'     => '/admin2/list_sales_product',
+                            'can'     => 'admin_lv2'
+                        ],
+                    ]
+                ],
+                [
+                    'text'    => 'Chương trình thi đua',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'can'     => 'admin_lv2',
+                    'submenu'=>[
+
+                        [
+                            'text'    => 'Tạo chương trình thi đua',
+                            'url'     => '/admin2/emulation_product',
+                            'can'     => 'admin_lv2'
+                        ],
+                        [
+                            'text'    => 'Danh sách chương trình',
+                            'url'     => '/admin2/list_emulation_product',
+                            'can'     => 'admin_lv2'
+                        ],
+                        [
+                            'text'    => 'Tạo giải thưởng thi đua',
+                            'url'     => '/admin2/add_reward_emulation',
+                            'can'     => 'admin_lv2'
+                        ],
+                    ]
+                ],
+                [
+                    'text'    => 'Mục tiêu bán hàng',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'can'     => 'admin_lv2',
+                    'submenu' => [
+                        [
+                            'text'    => 'Tạo mục tiêu',
+                            'url'     => '/admin2/goal_product',
+                            'can'     => 'admin_lv2'
+                        ],
+                        [
+                            'text'    => 'Quản lý mục tiêu ',
+                            'url'     => '/admin2/list_goal_product',
+                            'can'     => 'admin_lv2'
+                        ],
+                    ]
+                ],
+                [
+                    'text'    => 'Nhóm',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => 'admin2/group',
+                    'can'     => 'admin_lv2'
+                ],
+                [
+                    'text'    => 'Tạo Hạn Mức Thu Tiền',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/admin2/add_han_muc',
+                    'can'     => 'admin_lv2'
+                ],
+                [
+                    'text'    => 'Banner',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'can'     => 'admin_lv2',
+                    'submenu' => [
+                        [
+                            'text'    => 'Thêm Banner',
+                            'icon'    => 'fas fa-clipboard-list',
+                            'url'     => '/admin2/banner_manager',
+                            'can'     => 'admin_lv2'
+                        ],
+                        [
+                            'text'    => 'Danh Sách Banner',
+                            'icon'    => 'fas fa-clipboard-list',
+                            'url'     => '/admin2/manager_list_banner',
+                            'can'     => 'admin_lv2'
+                        ],
+                    ]
+                ],
+                [
+                    'text'    => 'Thống Kê Báo Cáo',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'can'     => 'admin_lv2',
+                    'submenu' => [
+                        [
+                            'text'    => 'Hoa Hồng Bán Hàng',
+                            'url'     => '/admin2/report_sale',
+                            'can'     => 'admin_lv2'
+                        ],
+                        [
+                            'text'    => 'Quản lý Hoàn Ứng',
+                            'url'     => 'admin2/danh_sach_hoan_ung',
+                            'can'     => 'admin_lv2'
+                        ],
+                    ]
+                ],
+
 //                [
-//                    'text' => 'KPI Đồng bộ thuê bao',
-//                    'url'  => 'kpi/infor',
+//                    'text'    => 'Truy cập Thông tin cá nhân',
+//                    'icon'    => 'fas fa-clipboard-list',
+//                    'url'     => '/user1/view_information',
+//                    'can'     => 'user_lv1'
 //                ],
-//            ],
-//        ],
+
+                [
+                    'text'    => 'Trang Chủ Bán Hàng',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/user2/list_view_product',
+                    'can'     => 'user_lv2',
+                ] ,
+//                [
+//                    'text'    => 'Thông báo',
+//                    'icon'    => 'fas fa-clipboard-list',
+//                    'label'   => $count_nt,
+//                    'url'     => '/user2/view_manage_emulation',
+//                    'can'     => 'user_lv2',
+//                ] ,
+                [
+                    'text'    => 'Sản Phẩm',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/user2/list_product',
+                    'can'     => 'user_lv2',
+                ] ,
+//                        [
+//                            'text'    => 'Bán Hàng',
+//                            'url'     => '/user2/list_view_product',
+//                            'can'     => 'user_lv2',
+//                        ] ,
+                [
+                    'text'    => 'Nộp Tiền Về Công Ty',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => 'user2/danh_sach_hoan_ung',
+                    'can'     => 'user_lv2',
+                ] ,
+                [
+                    'text'    => 'Hoa Hồng',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => 'user2/danh_sach_hoa_hong',
+                    'can'     => 'user_lv2',
+                ] ,
+//                [
+//                    'text'    => 'Sản Phẩm',
+//                    'icon'    => 'fas fa-clipboard-list',
+//                    'can'     => 'user_lv2',
+//                    'submenu' =>[
+//
+//                    ]
+//                ],
+                [
+                    'text'    => 'Mục tiêu thi đua',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/user2/view_manage_goal',
+                    'can'     => 'user_lv2',
+                ] ,
+                [
+                    'text'    => 'Chương trình thi đua',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/user2/view_manage_emulation',
+                    'can'     => 'user_lv2',
+                ] ,
+                [
+                    'text'    => 'Thống Kê',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/user2/view_manage_emulation',
+                    'can'     => 'user_lv2',
+                    'submenu' =>[
+                        [
+                            'text'    => 'Mục Tiêu',
+                            'url'     => 'analysis/goal-product',
+                            'can'     => 'user_lv2',
+                        ] ,
+                        [
+                            'text'    => 'Bảng Xếp Hạng',
+                            'url'     => 'analysis/emulation-product',
+                            'can'     => 'user_lv2',
+                        ] ,
+                    ]
+                ] ,
+                [
+                    'text'    => 'Khóa Tài Khoản Người Dùng',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/user1/lock_acc_user',
+                    'can'     => 'user_lv1'
+                ],
+                [
+                    'text'    => 'Phân Quyền Sản Phẩm',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/user1/phan_quyen_san_pham',
+                    'can'     => 'user_lv1'
+                ],
+                [
+                    'text'    => 'Quản lý đơn hàng',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => '/user1/danh_sach_hoan_ung',
+                    'can'     => 'user_lv1'
+                ],
+                [
+                    'text'    => 'Kiểm tra hoàn ứng',
+                    'icon'    => 'fas fa-clipboard-list',
+                    'url'     => 'ktkt/danh_sach_hoan_ung',
+                    'can'     => 'ktkt'
+                ],
+
+            ]
+        ],
         // ['header' => 'labels'],
     ],
 

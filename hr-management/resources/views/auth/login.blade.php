@@ -12,7 +12,7 @@
                     <form method="POST" action="{{ route('login_process') }}">
                         @csrf
                         <div class="form-group row">
-                            <label for="login" class="col-md-4 col-form-label text-md-right">{{ __('Login Address') }}</label>
+                            <label for="login" class="col-md-4 col-form-label text-md-right">{{ __('Login') }}</label>
 
                             <div class="col-md-6">
                                 <input id="login" type="login" class="form-control @error('login') is-invalid @enderror" name="login" value="{{ old('login') }}" required autocomplete="login" autofocus>
